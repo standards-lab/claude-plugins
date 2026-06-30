@@ -1,0 +1,11 @@
+{
+  "name": "marathon",
+  "description": "Sustainable long-haul development workflow with context engineering: concept-driven init, branch-based sessions, mid-session handoff/resume, and volatile-vs-stable context promotion and decay",
+  "version": "0.1.0",
+  "homepage": "https://github.com/standards-lab/claude-plugins",
+  "repository": "https://github.com/standards-lab/claude-plugins",
+  "author": {
+    "name": "standards-lab",
+    "url": "https://github.com/standards-lab"
+  }
+}

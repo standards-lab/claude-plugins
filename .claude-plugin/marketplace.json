@@ -1,0 +1,16 @@
+{
+  "name": "claude-plugins",
+  "owner": {
+    "name": "standards-lab"
+  },
+  "metadata": {
+    "description": "Claude Code plugins for the standards lab"
+  },
+  "plugins": [
+    {
+      "name": "marathon",
+      "source": "./plugins/marathon",
+      "description": "Sustainable long-haul development workflow with context engineering"
+    }
+  ]
+}
