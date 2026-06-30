@@ -18,6 +18,8 @@ Read the `context/` notes against the code and look for:
 - **Promote** — `concepts/` candidates that have quietly proven out and belong in `design/`.
 - **Orientation** — whether the vision and capability map in `context/README.md` still match where the
   project actually is.
+- **Docs drift** — if the project has a `docs/` tier, pages whose code has moved on underneath them.
+  Flag them here; the rewriting itself is deliberate work for a `docs` pass, not part of review.
 
 ## 2. Agree, then apply
 

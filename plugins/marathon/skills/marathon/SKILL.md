@@ -1,6 +1,6 @@
 ---
 name: marathon
-argument-hint: "[init | start <development|context|experiment> | reset | close | review]"
+argument-hint: "[init | start <development|context|experiment> | reset | close | review | docs]"
 description: >
   Sustainable long-haul development workflow built on context engineering. Use this skill whenever
   the developer is initializing a project from a planning concept; starting, pausing, resuming, or
@@ -34,8 +34,9 @@ directory) and you're:
 
 - initializing a new project from a planning concept,
 - starting, pausing, resuming, or closing out a session,
-- handing off because the context window is getting full but the work isn't done, or
-- checking whether the notes in `context/` still match the code.
+- handing off because the context window is getting full but the work isn't done,
+- checking whether the notes in `context/` still match the code, or
+- authoring or curating the project's human-oriented reference documentation (the optional `docs/` tier).
 
 If a repository doesn't have a `context/` directory yet and you want this workflow, start with `init`.
 
@@ -50,6 +51,7 @@ Route on the first argument. Each command has a detailed playbook under `command
 | `reset` | Hand off mid-session: context is filling but the work isn't done | `commands/reset.md` |
 | `close` | The session's work is finished and validated | `commands/close.md` |
 | `review` | On demand: check the notes against the code and clean them up | `commands/review.md` |
+| `docs` | On demand: author and curate the optional human-oriented `docs/` tier | `commands/docs.md` |
 
 ## The session loop
 
@@ -118,11 +120,17 @@ The `context/` directory holds the project's written knowledge, grouped by how o
 - `context/guide.md` — the current session's implementation guide; deleted at closeout.
 - `context/reset.md` — the latest session's record and the pointer to the next step.
 - `experiments/` — top-level, for isolated spike work, created on demand.
+- `docs/` — top-level, optional, for human-oriented reference documentation; opted into via `docs`.
 - the source code — the implementation, and the last word on what the project does.
 
 A `design/` note gets deleted once the code expresses it; a candidate gets promoted to `design/` when it
 proves out, or culled when it doesn't. The full rules, and how to decide where something belongs, are in
 `references/context-engineering.md`.
+
+`docs/` is a separate, optional tier: human-oriented reference documentation, a peer to the agent-oriented
+`context/`. It shares the same maintenance discipline but not the decay rule — a `docs/` page describes
+code that exists, so it doesn't decay toward the code the way a `design/` note does. The `docs` command
+authors and curates it; see `commands/docs.md`.
 
 ## Role boundary
 
