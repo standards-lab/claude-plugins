@@ -5,6 +5,22 @@ All notable changes to the marathon plugin are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.2.0]
+
+### Added
+
+- **Human-oriented `docs/` tier** — an optional top-level `docs/` directory for reference documentation
+  written for people, a peer to the agent-oriented `context/`. It shares context engineering's
+  maintenance discipline (curate it, keep it in sync) but not its lifecycle: a `context/` note decays
+  once the code expresses it, while a `docs/` page exists to explain code that already does. A repository
+  opts in at any time; most stay `context/`-only.
+- **`docs` sub-command** — the deliberate authoring and curation pass for `docs/`. On a repository with
+  no `docs/`, the first run bootstraps the tier; later runs extend and restructure it. Plan-mode-driven,
+  no code handoff, landed on a branch like `review`.
+- **Docs drift in `review`** — `review` now also flags `docs/` pages that have drifted from the code,
+  once a `docs/` tier exists. The core build loop is unchanged; documentation is never cram-written at
+  closeout and never silently rots.
+
 ## [v0.1.0]
 
 Initial release — the standalone core workflow.

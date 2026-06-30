@@ -42,7 +42,26 @@ Kept outside `context/`:
 
 - `experiments/` — a top-level directory for spikes, isolated so throwaway work doesn't mix into the
   real tree. Created when an experiment session needs it.
+- `docs/` — an optional top-level directory for human-oriented reference documentation. See below.
 - the source code — the implementation, and the final word on what the project does.
+
+## The docs/ tier
+
+`docs/` is reference documentation written for people: the explanation a reader works through to
+understand the system. It is optional — most projects stay `context/`-only — and a project opts in at any
+time by running the `docs` command, which bootstraps the tier on its first run and curates it after that.
+
+`docs/` borrows the posture of context engineering — keep it curated, keep it in sync, don't let it rot —
+but not the lifecycle, because it is the opposite kind of writing:
+
+- `context/` is agent-oriented and decays *toward* the code. A `design/` note is a defect once the code
+  expresses it, so `context/` shrinks as the code grows.
+- `docs/` is human-oriented and *describes* the code. A page is born once the code is ready to be
+  explained, and it is durable and accretive.
+
+So the decay rule below applies to `context/`, never to `docs/`: a `docs/` page restating the code is
+doing its job, not duplicating it. The `docs` command does the deliberate authoring; `review` flags
+`docs/` pages the code has moved out from under, and a later `docs` pass rewrites them.
 
 ## Deciding where something goes
 
