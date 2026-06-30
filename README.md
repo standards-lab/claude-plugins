@@ -18,21 +18,21 @@ projects install only the ones they need.
 claude plugin marketplace add standards-lab/claude-plugins
 
 # Install the plugins you need
-claude plugin install marathon@claude-plugins
+claude plugin install marathon@standards-lab
 ```
 
 ## Update
 
 ```bash
 claude plugin marketplace update
-claude plugin update marathon@claude-plugins
+claude plugin update marathon@standards-lab
 ```
 
 ## Remove
 
 ```bash
-claude plugin remove marathon@claude-plugins
-claude plugin marketplace remove claude-plugins
+claude plugin remove marathon@standards-lab
+claude plugin marketplace remove standards-lab
 ```
 
 ## Configuration
