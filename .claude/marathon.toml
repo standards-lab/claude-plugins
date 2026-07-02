@@ -1,5 +1,9 @@
-# Remote platform and the command that publishes a finished branch.
+# Project kind: this repository is context (skills, manifests, prose), not production
+# source code. The agent authors it directly; there is no implementation guide or tests.
+[project]
+kind = "context"
 
+# Remote platform and the command that publishes a finished branch.
 [remote]
 platform = "github"
 publish = "gh pr create"

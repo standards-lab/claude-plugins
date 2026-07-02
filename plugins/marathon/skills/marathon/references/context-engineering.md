@@ -15,8 +15,9 @@ Two rules follow:
 
 1. The repository is the only source of truth — not an issue tracker, not the chat history. Project
    knowledge lives in the repo, either in `context/` or in the code.
-2. Within the repo, the code wins. `context/` is only for things the code can't express yet. Once the
-   code expresses something, the note describing it is redundant and should go.
+2. Within the repo, the built work wins — the code, or on a context project the authored deliverable
+   (its skills, prose, configuration). `context/` is only for things that work can't express yet. Once
+   it does, the note describing it is redundant and should go.
 
 ## How `context/` is organized
 
@@ -31,10 +32,10 @@ Stable (changes rarely, and on purpose):
 
 Volatile (changes often, and gets cleaned up):
 
-- `context/concepts/` — candidate notes: ideas and open questions that aren't settled. Most of the
-  churn lives here.
-- `context/guide.md` — the current session's implementation guide. One file, deleted when the session
-  closes.
+- `context/concepts/` — concepts: ideas and open questions that aren't settled. Most of the churn lives
+  here.
+- `context/guide.md` — a code project's implementation guide for the current `start`. Created during the
+  session and deleted when it closes; a context project never has one.
 - `context/reset.md` — the latest session's record and the pointer to the next step. One file; git
   keeps the older versions.
 
@@ -67,10 +68,10 @@ doing its job, not duplicating it. The `docs` command does the deliberate author
 
 - Orientation (vision or the capability map)? → `context/README.md`
 - Settled intent the code doesn't express yet? → `context/design/`
-- Still a candidate or an open question? → `context/concepts/`
-- Already expressed by the code? → it doesn't belong in `context/`; delete it.
+- Still a concept or an open question? → `context/concepts/`
+- Already expressed by the built work? → it doesn't belong in `context/`; delete it.
 
-When you can't tell whether something is settled, treat it as a candidate. Promoting it later is cheap;
+When you can't tell whether something is settled, treat it as a concept. Promoting it later is cheap;
 walking back a design note you committed to too early is not.
 
 ## Add detail late
@@ -84,15 +85,15 @@ maintain or delete the note when reality turns out different. Add detail at the 
 
 Three operations keep `context/` accurate:
 
-- **Promote** — move a candidate from `concepts/` to `design/` once it is settled: a decision fixed it,
-  code proved it out, or an experiment produced a result. Don't do it silently — move the file and note
-  why in `context/reset.md`. Organizing `concepts/` and `design/` the same way makes it obvious where a
-  note should land.
-- **Decay** — delete a `design/` note once the code fully expresses what it described. At that point the
-  note is a weaker second copy of the code, and the two will drift apart. Record the removal (and point
-  to the code) in the reset file.
-- **Cull** — delete a candidate in `concepts/` when it is no longer viable: superseded, abandoned, or
-  contradicted by the way the implementation actually went.
+- **Promote** — move a concept from `concepts/` to `design/` once it is settled: a decision fixed it,
+  the built work proved it out, or an experiment produced a result. Don't do it silently — move the file
+  and note why in `context/reset.md`. Organizing `concepts/` and `design/` the same way makes it obvious
+  where a note should land.
+- **Decay** — delete a `design/` note once the built work fully expresses what it described. At that
+  point the note is a weaker second copy, and the two will drift apart. Record the removal (and point to
+  the code or deliverable) in the reset file.
+- **Cull** — delete a concept in `concepts/` when it is no longer viable: superseded, abandoned, or
+  contradicted by the way the work actually went.
 
 The point of all three is to keep `context/` short and true, rather than letting it grow into a parallel
 description of the project that slowly disagrees with the code.
@@ -101,4 +102,5 @@ description of the project that slowly disagrees with the code.
 
 Promoting, decaying, and culling change what the documentation says about the project, so don't do them
 on your own. Show the developer what you propose to move or delete and get agreement first — in plan
-mode for `init`, a fresh `start`, and `review`, and as a quick confirmation during `reset` and `close`.
+mode for `init`, a fresh `start`, `plan`, and `review`, and as a quick confirmation during `reset` and
+`close`.
