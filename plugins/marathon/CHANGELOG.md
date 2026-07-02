@@ -5,6 +5,36 @@ All notable changes to the marathon plugin are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.3.0]
+
+### Added
+
+- **Project kinds (`code` / `context`)** — a project declares its kind at `init` in
+  `.claude/marathon.toml`. A `code` project holds production source the developer owns: `start` drafts
+  an implementation guide, the developer applies it, and closeout adds tests and documentation. A
+  `context` project *is* context — skills, prose, configuration — which the agent authors directly under
+  the developer's review, with no guide and no tests. The role boundary now has two shapes, one per kind.
+- **`plan` sub-command** — a planning-and-curation session that touches only `context/`: create and
+  refine concepts, settle a design, and decide what the next `start` should focus on. Forward-looking,
+  where `review` is the backward-looking drift audit. Lands on a branch like `review`.
+- **`experiment` sub-command** — a spike in the isolated top-level `experiments/` directory; results are
+  concepts, promoted deliberately at closeout, if at all. (Previously `start experiment`.)
+- **Workspace coordination (`coordinate`)** — run one change across several marathon projects that live
+  as siblings in a workspace. `coordinate` detects the workspace, reads a coordinator project's declared
+  dependency `order` (layered, with adjacent peers as sub-arrays), and fans a session out to each project
+  in order, honoring its kind. The workspace holds no context; continuity stays per repository.
+- **Plugin README** — a quick-reference `README.md` for the plugin directory.
+
+### Changed
+
+- **Sub-command restructure (breaking).** `start <development|context|experiment>` is replaced by
+  top-level commands: `plan`, `start`, and `experiment`. `start` no longer takes a type argument — it
+  advances the product one step, resolving by project kind. Older `reset.md` files carrying a
+  `Session type:` line are still read.
+- **Vocabulary** — the notes in `concepts/` are consistently called *concepts*, not *candidate notes*.
+- The role-boundary, session-loop, and context-engineering references are generalized so nothing assumes
+  a code-only, single-repository model.
+
 ## [v0.2.0]
 
 ### Added

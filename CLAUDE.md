@@ -8,14 +8,16 @@ workflow; start from `context/README.md`.
 ## Plugin design lives in the skill
 
 Each plugin's design and behavior is expressed in its own files under `plugins/<name>/` — that is the
-source of truth. `context/` holds the repository's vision, candidates, and session record, not a
+source of truth. `context/` holds the repository's vision, concepts, and session record, not a
 restatement of how the plugins work. See `context/design/skill-is-the-source-of-truth.md`.
 
 ## Role boundary
 
-The developer owns the production source — the plugin and skill files — and answers for it. The agent
-writes everything else: tests, prose documentation, the files in `context/`, the implementation guide, and
-the reset file.
+claude-plugins is a marathon **context** project (`.claude/marathon.toml` declares `kind = "context"`):
+the plugin and skill files are advanced context, not production source code. The agent authors the
+repository directly — the skills, plugin manifests, prose, and everything in `context/`. There is no
+implementation guide and no tests. The developer sets direction and owns the work by reviewing and
+approving each change; the pull request is the ownership seam.
 
 ## Repository specifics
 

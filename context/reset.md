@@ -1,25 +1,33 @@
-# reset · adopt-marathon
+# reset · project-kinds-and-coordination
 
 - **Status:** closeout
-- **Session type:** development
-- **Branch:** adopt-marathon
+- **Session:** start
+- **Branch:** project-kinds-and-coordination
 
 ## Disposition
 
-- **Adopted marathon** on `claude-plugins`, the harness level of the reference architecture — the plugin
-  marketplace is now managed the same way as the other levels, and marathon is battle-tested against its own
-  source. Scaffolded the `context/` tree (`README.md`, `design/`, `concepts/`, `reset.md`) and the Claude
-  configuration (`CLAUDE.md`, `.claude/settings.json`, `.claude/marathon.toml`; github / `gh pr create`,
-  standalone).
-- **Settled** (`design/`): `skill-is-the-source-of-truth` — plugin design lives in the skill files;
-  `context/` does not restate it.
-- **Candidate** (`concepts/`): `workspace-coordination` — running marathon from a contextless workspace that
-  coordinates the nested marathon projects.
+- **Integrated workspace coordination into the skill.** Culled `context/concepts/workspace-coordination.md`
+  — the marathon skill now expresses it, per `design/skill-is-the-source-of-truth.md`, via the new
+  `commands/coordinate.md` playbook and `references/workspace-coordination.md` deep-dive (workspace holds
+  no context; coordinator declares a layered `[workspace] order`; per-project fan-out honoring kind;
+  ephemeral consolidated guide; continuity per repository).
+- **Shipped project kinds and restructured the session API** in marathon 0.3.0. Added the `code`/`context`
+  project kind (declared in `.claude/marathon.toml`), and replaced `start <development|context|experiment>`
+  with top-level `plan`, `start`, and `experiment` commands. Harmonized the whole skill around both —
+  `SKILL.md`, every `commands/*.md`, and `role-boundary`/`session-loop`/`context-engineering`/
+  `implementation-guides`/`extension-hooks` — and standardized the notes-in-`concepts/` vocabulary on
+  "concepts". Bumped `plugin.json` to 0.3.0 with a `CHANGELOG.md` entry, and added a quick-reference
+  `plugins/marathon/README.md`.
+- **Dogfood.** Declared `claude-plugins` itself `kind = "context"` and rewrote its `CLAUDE.md` role
+  boundary to match — the agent authors the skill/plugin files directly under developer review.
+- **Retained:** `design/skill-is-the-source-of-truth.md` — the governing principle, unchanged.
 
 ## Next-focus
 
-Design and build **workspace coordination** in marathon: a workspace layer that holds no context and
-coordinates the nested marathon projects in dependency order. Start from
-`concepts/workspace-coordination.md` — settle the mechanism-versus-map split and how the coordinator
-declares itself, then work out the first concrete step (likely workspace detection and project
-enumeration). Start here next session with `marathon start`.
+Exercise workspace coordination for real. In `standards-lab` (the coordinator), add
+`[workspace] role = "coordinator"` with a layered `order`, and declare `[project] kind` in the workspace
+projects (`standards-lab` context, `go-libraries` code). Then run `marathon coordinate` on a genuine
+cross-repo objective — e.g. a `go-libraries` capability taken up into `go-service` for validation — to
+prove the mechanism end-to-end and surface what the design missed. Note: the active marathon skill is the
+installed marketplace copy, so reinstall `marathon@standards-lab` once 0.3.0 releases before coordinating.
+Start here next session.

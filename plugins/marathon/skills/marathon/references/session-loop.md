@@ -11,18 +11,22 @@ its own branch and ends by publishing that branch to the remote. Keeping session
 makes a long project manageable: you're never holding more than one step in your head, and the history
 reads as a sequence of clear, finished changes.
 
+Three commands open a working session — `plan`, `start`, and `experiment` — and which one you run says
+what the session is for: planning and curating the context, advancing the product, or spiking an idea.
+They share the loop below.
+
 ## Starting
 
-`start` reads `context/reset.md` and looks at its Status.
+A working session reads `context/reset.md` and looks at its Status.
 
 If the Status is `closeout`, the last piece of work is done and this is a new one. This begins with
 planning, and planning is not a formality — it carries as much weight as the build. In plan mode, get
 oriented from the Next-focus, the capability map, and the relevant notes, then work the step through
 with the developer in real depth: what it involves, how far it should go, and how it fits the wider
-design. You want to come out with a clear picture of what you're about to build. The discussion will
+design. You want to come out with a clear picture of what you're about to do. The discussion will
 naturally range past the single step, so use it to tend the context too — capture later ideas as
-candidates in `concepts/`, cull candidates it rules out, and note what the next focus looks like. Once
-the scope is agreed, branch and go.
+concepts in `concepts/`, cull the ones it rules out, and note what the next focus looks like. Once the
+scope is agreed, branch and go.
 
 If the Status is `handoff`, the last session stopped mid-work to free up context. The plan already
 exists, so skip planning: check out the open branch, read the in-progress state and Next-focus, and pick
@@ -30,19 +34,21 @@ up from there.
 
 ## Doing the work
 
-What happens next depends on the session type.
+What happens next depends on the command and the project's kind.
 
-In a development session, you write the implementation guide — the concrete changes to make, in order,
-with the reasoning where it's needed (see `implementation-guides.md`) — and then stop. The developer
-applies it. You stay available for fixes but don't get ahead of them. This pause is the role boundary in
-action (see `role-boundary.md`): the developer owns the implementation, so the agent hands off the draft
-and waits.
+In a `start` on a **code** project, you write the implementation guide — the concrete changes to make,
+in order, with the reasoning where it's needed (see `implementation-guides.md`) — and then stop. The
+developer applies it. You stay available for fixes but don't get ahead of them. This pause is the role
+boundary in action (see `role-boundary.md`): the developer owns the implementation, so the agent hands
+off the draft and waits.
 
-In a context session there's no code to hand off. You edit the notes in `context/` directly — this is
-where bigger-picture planning and writing happen, between builds.
+In a `start` on a **context** project there's no guide and no code to hand off. You author the change
+directly — the skills, prose, or configuration the step calls for — because on a context project the
+deliverable is the writing itself.
 
-In an experiment session you work in the isolated top-level `experiments/` directory and treat whatever
-you find as a candidate, not settled design.
+In a `plan` session you edit the notes in `context/` and nothing else — this is where bigger-picture
+planning and concept work happen, between builds. In an `experiment` session you work in the isolated
+top-level `experiments/` directory and treat whatever you find as a concept, not settled design.
 
 ## Handing off mid-session
 
@@ -54,11 +60,11 @@ window without losing the thread.
 
 ## Closing
 
-When the step is finished and validated, `close` ends the session: the agent finishes its part (tests
-and documentation), you tidy the notes against the new code, you agree on the next step with the
-developer, and the result is published to the remote — a pull request, a merge request, or the
-equivalent — with its description from the reset file. The Next-focus you set becomes the starting point
-for the next session.
+When the step is finished and validated, `close` ends the session: on a code project's `start` the agent
+finishes its part (tests and documentation); you tidy the notes against what now exists; you agree on the
+next step with the developer; and the result is published to the remote — a pull request, a merge
+request, or the equivalent — with its description from the reset file. The Next-focus you set becomes the
+starting point for the next session.
 
 ## Why the loop holds together
 

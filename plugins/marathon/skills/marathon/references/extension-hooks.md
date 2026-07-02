@@ -41,6 +41,15 @@ tools allowed. The file is per-project, so each repository opts in on its own.
 Information flows one way: an extension reads the repo and projects outward; it does not write back into
 the core. The repository is authoritative; the platform mirrors it.
 
+## Hooks under coordination
+
+A `coordinate` run fans out to per-project sessions (see `commands/coordinate.md`), and each project's
+hooks fire as they normally would within its own session — `on-session-start` when its part begins,
+`on-commit` and `on-closeout` at its close. What is *not* yet defined is how a single coordinated change
+should present across several trackers at once — one linked item spanning the projects, versus an
+independent item per project. Until that is settled, the hooks stay per project; cross-tracker
+coordination is left to a later step.
+
 ## Core neutrality
 
 Nothing in the core's skill or commands names a specific platform or assumes one is present. The platform

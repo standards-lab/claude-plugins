@@ -1,8 +1,9 @@
 # Writing implementation guides
 
-The implementation guide is how a development session hands work to the developer. The agent writes it
-at the end of planning; the developer applies it. It lives at `context/guide.md` and is deleted at
-closeout — a working document, not a lasting record.
+The implementation guide is how a `start` on a **code** project hands work to the developer. The agent
+writes it at the end of planning; the developer applies it. It lives at `context/guide.md` and is
+deleted at closeout — a working document, not a lasting record. A context project has no guide (there is
+no code to hand off), so this reference applies only to code projects.
 
 A good guide is exhaustive about *what* to change and sparing with prose. The developer reads code
 fluently and often prefers it; prose is for what code can't show — the reasoning and the concepts. Aim
@@ -44,7 +45,7 @@ Include exactly what's needed to apply the change with confidence.
 ## Stay within the step
 
 A guide covers the session's single step and nothing else. No opportunistic refactors, no unrelated
-cleanups riding along. If something else needs doing, it's a candidate note or a future step, not a
+cleanups riding along. If something else needs doing, it's a concept or a future step, not a
 detour in this guide.
 
 ## End with how to run and verify

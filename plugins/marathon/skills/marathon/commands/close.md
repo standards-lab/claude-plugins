@@ -5,8 +5,8 @@ completed work: tidy the notes, record what happened, and publish the work.
 
 ## 1. Finish the agent's part
 
-In a development session, the developer has applied the production code. Now add the parts the role
-boundary gives the agent:
+On a **code** project's `start`, the developer has applied the production code for this step. Now add
+the parts the role boundary gives the agent:
 
 - tests for the new behavior, and
 - in-source comments and API docs, plus any prose documentation.
@@ -14,16 +14,18 @@ boundary gives the agent:
 Then validate — run the tests and the build. Don't close on a failure; fix it (within the agent's part)
 or hand it back to the developer.
 
-A context session has no code to finish; for an experiment, decide what, if anything, the spike earned.
-Either way, go on to step 2.
+On a **context** project there is no code to finish — the change was authored directly, so validation is
+that it reads coherently and stays consistent. A `plan` session has nothing to build either. For an
+`experiment`, decide what, if anything, the spike earned. Either way, go on to step 2.
 
 ## 2. Tidy the notes
 
 Bring `context/` in line with what now exists:
 
-- **Decay** — delete `design/` notes the code now expresses, and record that you did.
-- **Cull** — drop `concepts/` candidates the implementation invalidated or replaced.
-- **Promote** — move proven candidates from `concepts/` into `design/`, and say why.
+- **Decay** — delete `design/` notes the code (or the authored deliverable) now expresses, and record
+  that you did.
+- **Cull** — drop the concepts the work invalidated or replaced.
+- **Promote** — move proven concepts from `concepts/` into `design/`, and say why.
 
 These changes matter, so show the developer and confirm before applying them.
 
@@ -35,15 +37,16 @@ the single concrete next piece of work. That becomes the Next-focus in the next 
 
 ## 4. Record what happened
 
-Rewrite `context/reset.md` with `Status: closeout`. Record what you integrated, promoted, culled, and
-retained, and set Next-focus to the next piece of work you agreed on in step 3 — the handoff the next
-`start` reads.
+Rewrite `context/reset.md` with `Status: closeout`. Record which session this was
+(`plan`/`start`/`experiment`), what you integrated, promoted, culled, and retained, and set Next-focus
+to the next piece of work you agreed on in step 3 — the handoff the next session reads.
 
 ## 5. Drop the guide
 
-Delete `context/guide.md`. It's done its job; what remains is the code and the reset file. A finished
-guide left lying around is exactly the kind of already-built documentation the workflow is trying to
-avoid.
+If this session created `context/guide.md` — a `code` project's `start` — delete it. It's done its job;
+what remains is the code and the reset file. A finished guide left lying around is exactly the kind of
+already-built documentation the workflow is trying to avoid. A `context` project and a `plan` session
+have no guide to drop.
 
 ## 6. Commit and publish
 
