@@ -7,7 +7,8 @@ the kind a person reads to understand the system — is worth writing and keepin
 
 Documentation is high-effort work that has to stay coherent as the project evolves, so it gets its own
 deliberate pass rather than being folded into the build loop. Run it in plan mode and settle the scope
-with the developer before writing.
+with the developer before writing. Write the pages per the voice standard in
+`references/writing-voice.md`.
 
 ## docs/ is not context/
 

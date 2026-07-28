@@ -40,7 +40,8 @@ self-evident, let it stand on its own.
 
 The balance to hold: enough that the change is unambiguous and easy to follow, and no more. Too terse
 and the developer is reconstructing your intent; too thorough and the guide is exhausting to read.
-Include exactly what's needed to apply the change with confidence.
+Include exactly what's needed to apply the change with confidence. The prose itself follows the voice
+standard in `writing-voice.md`.
 
 ## Stay within the step
 

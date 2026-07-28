@@ -27,6 +27,8 @@ Rewrite the reset file with `Status: handoff`. Record:
 - **Next-focus** — the in-progress state and the exact next move. Be specific: name the file you're
   editing, the decision that's pending, the next thing to do. This is what a cold context resumes from.
 
+Write it per the voice standard in `references/writing-voice.md`.
+
 ## 3. Keep the work
 
 Optionally make a WIP commit on the branch so in-progress work isn't lost. Leave the branch open and

@@ -190,7 +190,8 @@ On a **context** project there is no production code, so there is nothing to han
 the repository directly — its skills, prose, configuration, and everything in `context/`. The developer
 owns direction and reviews and approves the result; the pull request is where ownership is exercised.
 
-Keep the rule language-neutral. See `references/role-boundary.md`.
+Keep the rule language-neutral. See `references/role-boundary.md`. Everything the agent writes in
+prose, on either kind of project, follows the voice standard in `references/writing-voice.md`.
 
 ## Continuity
 

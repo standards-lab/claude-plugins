@@ -26,7 +26,7 @@ document — and look for:
 
 Show the developer what you propose to change and settle it together. Apply only what's agreed: delete
 the decayed notes (recording that you did), cull the dead concepts, promote the proven ones, and fix
-the orientation.
+the orientation. Anything rewritten follows the voice standard in `references/writing-voice.md`.
 
 Keep the bar high and the footprint small. Don't invent a home for a note that doesn't have one, and
 don't add detail a coming step doesn't need. The goal is fewer stale notes, not more structure.

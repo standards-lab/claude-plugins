@@ -5,6 +5,17 @@ All notable changes to the marathon plugin are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.4.0]
+
+### Added
+
+- **Writing-voice standard (`references/writing-voice.md`)** — the voice for every piece of prose the
+  agent is responsible for: design notes and concepts, reset files, implementation guides, godoc and
+  `doc.go`, in-source comments, prose documentation, profiles, and the skill files themselves. Plain
+  technical-documentation voice, concrete nouns, objective implementation detail; a list of habits to
+  avoid. godoc keeps its idiomatic form. Cited from `SKILL.md`, the role-boundary and
+  implementation-guides references, and the commands that author prose.
+
 ## [v0.3.0]
 
 ### Added

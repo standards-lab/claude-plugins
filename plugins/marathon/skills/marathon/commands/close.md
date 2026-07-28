@@ -9,7 +9,8 @@ On a **code** project's `start`, the developer has applied the production code f
 the parts the role boundary gives the agent:
 
 - tests for the new behavior, and
-- in-source comments and API docs, plus any prose documentation.
+- in-source comments and API docs, plus any prose documentation — written per the voice standard in
+  `references/writing-voice.md`.
 
 Then validate — run the tests and the build. Don't close on a failure; fix it (within the agent's part)
 or hand it back to the developer.

@@ -45,7 +45,8 @@ Then do the step, according to the project kind:
   it, staying available for fixes; don't run ahead.
 - **context project** — there is no guide and no code handoff. Author the change directly: the skills,
   prose, or configuration the step calls for, plus any `context/` the change settles. You are producing
-  the deliverable itself, under the developer's review. Stay within the one step.
+  the deliverable itself, under the developer's review; write its prose per the voice standard in
+  `references/writing-voice.md`. Stay within the one step.
 
 ## Ending the session
 
