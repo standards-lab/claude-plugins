@@ -40,7 +40,8 @@ and get agreement first.
 - **Add or sharpen** — write the new concepts and refine the capability map or the design note the
   coming work needs.
 
-Keep the bar high and the footprint small: fewer, truer notes, not more structure.
+Keep the bar high and the footprint small: fewer, truer notes, not more structure. Write new and
+revised notes per the voice standard in `references/writing-voice.md`.
 
 ## 3. Land the changes
 

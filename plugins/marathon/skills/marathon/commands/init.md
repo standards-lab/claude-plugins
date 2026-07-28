@@ -39,7 +39,7 @@ Don't create anything until the developer approves the plan.
 ## 3. Create the structure
 
 Set up the directories and files. Seed them shallow — a few sentences each is right; resist writing
-detail up front.
+detail up front. Write the prose per the voice standard in `references/writing-voice.md`.
 
 ```
 <repo>/
