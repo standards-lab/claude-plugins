@@ -30,7 +30,7 @@ is where the architectural work happens, so give it real depth.
 1. Get oriented: the Next-focus in `reset.md`, the capability map in `context/README.md`, and the
    `design/` and `concepts/` notes the topic touches. Load only what the topic needs.
 2. Work the topic through with the developer: refine a concept, settle a design decision, or map out
-   what the next step should be and how far it should go. Add detail only as far as the coming work
+   what the next step should be and how far it should go. Add detail only as far as the upcoming work
    needs it — no planning ahead into steps you haven't earned.
 3. The discussion will range wide; capture what belongs to later steps as concepts, and note what the
    next focus looks like.
@@ -46,9 +46,9 @@ agreement first.
 - **Promote** — move a concept from `concepts/` into `design/` if this session settled it, and say why.
 - **Cull** — drop a concept the discussion ruled out.
 - **Add or sharpen** — write the new concepts and refine the capability map or the design note the
-  coming work needs.
+  upcoming work needs.
 
-Keep the bar high and the footprint small: fewer, truer notes, not more structure. Write new and
+Capture only what the upcoming step needs; a note that serves no upcoming work is clutter. Write new and
 revised notes per the voice standard in `references/writing-voice.md`.
 
 ## 3. Land the changes

@@ -33,7 +33,7 @@ the architectural thinking happens, and it sets how deep and how wide the step s
 depth; don't rush to the code.
 
 1. Enter plan mode. Get oriented: read the Next-focus in `reset.md`, the capability map in
-   `context/README.md`, and the `design/` and `concepts/` notes the coming step touches. Load only what
+   `context/README.md`, and the `design/` and `concepts/` notes the upcoming step touches. Load only what
    the step needs.
 2. With the developer, work through the step in enough depth to come out with a clear picture of what to
    build: the single concrete step to take now, and how far it should go. Add detail to the relevant

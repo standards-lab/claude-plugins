@@ -118,9 +118,8 @@ core-lib = "~/code/core-lib"
   release what it ships (a plugin, a document set); it just has no code layer.
 
 Project kind decides how `start` and `close` behave, and how `coordinate` treats each project in a
-fan-out. When in doubt, ask whether `git blame` on the repository's real deliverable should point at
-the developer (code) or at the agent under the developer's review (context). See
-`references/role-boundary.md`.
+fan-out. When in doubt, apply the git-blame test in `references/role-boundary.md`: whom should the
+deliverable's history point at?
 
 ## Working sessions: plan, start, experiment
 
@@ -156,7 +155,7 @@ that turns out wrong. Keep the focus narrow and let the design grow out of worki
 
 ## Planning is half the work
 
-Planning carries as much weight as building. In `init`, in a fresh `start`, in a `plan` session, and in
+Planning matters as much as building. In `init`, in a fresh `start`, in a `plan` session, and in
 `review`, the planning phase is where the real architectural thinking happens — you work out what the
 step involves, how deep it needs to go, and how it fits the larger design. The quality of the
 implementation is largely set here, so plan with enough depth and clarity that you come out with a clear
@@ -203,8 +202,7 @@ project kind.
 On a **code** project, the developer owns the production code — they apply it, adjust it, and answer for
 it. The agent drafts each change in the implementation guide for the developer to apply, and writes
 everything else outright: tests, comments and API docs, prose documentation, the files in `context/`,
-the reset file, and the guide itself. If you're unsure who owns a line, ask who `git blame` should show
-on it in six months — the developer, because they put it there.
+the reset file, and the guide itself.
 
 On a **context** project there is no production code, so there is nothing to hand off. The agent authors
 the repository directly — its skills, prose, configuration, and everything in `context/`. The developer

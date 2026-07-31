@@ -26,7 +26,7 @@ The directory holds a few kinds of files, grouped by how often they change.
 Stable (changes rarely, and on purpose):
 
 - `context/README.md` — the project's orientation: a short vision statement and a map of the
-  capabilities the project will need. Keep the map broad and shallow; it is not an ordered plan.
+  capabilities the project will need. Keep the map broad, shallow, and unordered.
 - `context/design/` — design notes: validated intent the code can't express yet. The reasoning behind a
   decision, constraints, alternatives that were rejected, intent for parts not yet built.
 

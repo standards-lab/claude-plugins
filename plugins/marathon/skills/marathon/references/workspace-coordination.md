@@ -41,7 +41,7 @@ between them, so their order within the layer is free. This mirrors a real depen
 layered rather than strictly linear.
 
 The coordinator is normally the project that already narrates the estate in prose (its capability map or
-references catalog). Declaring `order` there is not a new source of truth; it is the executable
+references catalog). Declaring `order` there adds no second source of truth: it is the executable
 projection of a map the project already keeps. Each key resolves to a checkout — a sibling directory in
 the workspace by name, or, for a participant that lives elsewhere on disk, through the coordinator's
 optional `[workspace.paths]` table, which maps the key to a directory on this machine. A key that is
@@ -61,7 +61,7 @@ declaration.
 ## Honoring project kind in a fan-out
 
 The participating projects need not be the same kind. A fan-out treats each by its own kind (see
-`role-boundary.md`): a `code` project gets an implementation-guide slice the developer applies; a
+`references/role-boundary.md`): a `code` project gets an implementation-guide slice the developer applies; a
 `context` project gets its change authored directly. A single objective — build a capability in a code
 library and revise the skill that documents the workflow around it — can therefore span both kinds in one
 coordinated run.

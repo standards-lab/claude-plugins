@@ -41,7 +41,7 @@ self-evident, let it stand on its own.
 The balance to hold: enough that the change is unambiguous and easy to follow, and no more. Too terse
 and the developer is reconstructing your intent; too thorough and the guide is exhausting to read.
 Include exactly what's needed to apply the change with confidence. The prose itself follows the voice
-standard in `writing-voice.md`.
+standard in `references/writing-voice.md`.
 
 ## Stay within the step
 
@@ -53,5 +53,5 @@ detour in this guide.
 
 Finish with a short, concrete sequence for running the work and confirming it behaves as intended — the
 commands to run and what to look for. Enough that the developer can see the change is working before
-handing back for tests at closeout. Keep it to the actual steps; this is the run-and-see, not a test
-plan.
+handing back for tests at closeout. Keep it to the actual steps of a run-and-see; the tests come at
+closeout.

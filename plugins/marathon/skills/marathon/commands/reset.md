@@ -3,8 +3,8 @@
 Hand off in the middle of a session. Use this when the context window is filling up but the work isn't
 finished, and you want a fresh context to keep going on the same step and the same branch.
 
-The idea is that the written record, not the conversation, carries the work forward. Capture enough that
-a new context can pick up cold.
+The written record is what the next session resumes from, so capture enough that a new context can
+pick up cold.
 
 ## 1. Tidy the notes you touched
 

@@ -11,7 +11,7 @@ developer before creating any files.
 
 Find the project-planning concept: a document the developer points you to (often a `concept.md` or a
 charter), or, if there isn't one, work with the developer to write it. The concept gives you the vision
-and the rough territory. It's the starting point, not the finished structure.
+and the rough territory to start from; the structure comes out of planning.
 
 ## 2. Plan it out first
 
@@ -20,9 +20,9 @@ Enter plan mode, read the concept closely, and settle these with the developer r
 - **Vision** — one paragraph on what the project is for.
 - **Project kind** — whether the repository holds production source the developer authors (`code`) or
   is entirely context the agent authors directly (`context`: skills, prose, configuration). This sets
-  the role boundary and whether sessions hand off an implementation guide. When in doubt, ask whether
-  `git blame` on the real deliverable should point at the developer (`code`) or at the agent under the
-  developer's review (`context`). See `references/role-boundary.md`.
+  the role boundary and whether sessions hand off an implementation guide. When in doubt: whose hands
+  should the deliverable's history show — the developer applying drafted code, or the agent authoring
+  under review? See `references/role-boundary.md`.
 - **Capability map** — the major pieces the project will need. Broad, not ordered, and shallow; you'll
   add detail later, when a piece is about to be built.
 - **Settled vs. concept** — which intent is solid enough to start in `design/`, and which is still a

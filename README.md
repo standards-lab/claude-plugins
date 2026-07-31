@@ -1,6 +1,6 @@
 # claude-plugins
 
-Claude Code plugins for the standards lab — agentic infrastructure for the
+Claude Code plugins for Standards Lab — agentic infrastructure for the
 reference-architecture effort.
 
 This repository is a plugin **host**: each plugin is independently versioned and released, and
