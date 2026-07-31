@@ -5,7 +5,7 @@ Each plugin's design is expressed in its own files under `plugins/<name>/` — t
 
 `context/` does not restate that design. It holds what the code cannot yet express: the repository's vision
 and capability map (`README.md`), candidate ideas not yet built (`concepts/`), and the session record
-(`reset.md`). A design note here records intent the skill files do not yet capture; once the skill
+(`reset.md`) while one is open. A design note here records intent the skill files do not yet capture; once the skill
 expresses it, the note is removed — the same decay rule marathon applies everywhere.
 
 This keeps the repository free of the duplication a plugin host invites: a plugin documented in two places

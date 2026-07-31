@@ -8,7 +8,7 @@ one per kind.
 
 On a `code` project the developer owns the production source code — the implementation logic that makes
 the program do what it does. The agent drafts each change in the implementation guide (see
-`implementation-guides.md`), and the developer reads it, adjusts anything that's off, applies it, and
+`references/implementation-guides.md`), and the developer reads it, adjusts anything that's off, applies it, and
 commits it. Ownership is in applying and standing behind the code, not in typing it from a blank file:
 when `git blame` lands on a production line six months on, it should point at the developer, because
 they put it there and they answer for it.
@@ -23,7 +23,7 @@ directly:
 - the implementation guide itself.
 
 The prose in this material — comments and documentation, the files in `context/`, the guide — follows
-the voice standard in `writing-voice.md`.
+the voice standard in `references/writing-voice.md`.
 
 ## Context projects: the agent authors the repository
 
@@ -33,7 +33,7 @@ there is nothing to hand off through a guide: the agent authors the repository d
 including everything in `context/`. The developer owns the work by directing it and by reviewing and
 approving each change; the pull request is where that ownership is exercised, in place of applying a
 guide. There are no tests and no implementation guide, because there is no code layer to test or hand
-off. The prose the agent authors follows the voice standard in `writing-voice.md`.
+off. The prose the agent authors follows the voice standard in `references/writing-voice.md`.
 
 ## The test
 

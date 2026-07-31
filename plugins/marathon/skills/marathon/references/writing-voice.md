@@ -1,38 +1,39 @@
 # Writing voice
 
-How the agent writes prose. The standard covers every piece of prose the agent is responsible for, not
-`context/` alone: design notes and concepts, reset files, implementation guides, godoc and `doc.go`,
-in-source comments, prose documentation, project and organization profiles, and the skill files
-themselves.
+How the agent writes prose. The standard covers every piece of prose the agent is responsible for:
+design notes and concepts, reset files, implementation guides, API documentation and in-source
+comments, prose documentation, repository and organization landing pages (profiles), and the skill
+files themselves.
 
-## The voice
+## The principle
 
-Write in a plain, conventional technical-documentation voice.
+Write what a capable technical colleague would write. The prose is natural, clear, and
+professional, and it uses only the complexity the idea requires. The reader notices the subject,
+never the writing.
 
-- Use concrete nouns. Name the file, the directory, the function, the note. Avoid abstractions like
-  "surface" or "space" where a concrete noun exists.
-- State what the thing does, in present tense, as fact. Skill and infrastructure documentation records
-  objective implementation detail: what happens, where, in what order. It does not speculate, and it
-  does not argue for the design it describes; a reader who wants the rationale finds it in a design
-  note, where rationale is the subject.
-- Keep sentences declarative and even. The subject matter carries the interest.
+## The discipline
 
-## Habits to avoid
+- Say it once, concretely. Name the file, the directory, the function, the note.
+- State what exists in present tense, as fact; mark planned work as planned.
+- Keep sentences declarative and even, in ordinary words, with technical terms where they are the
+  precise ones. The subject matter supplies the interest.
+- Let structure convey emphasis: a defined term at first use, the key of a list entry.
+- Record objective detail where documentation is the subject; keep rationale in design notes,
+  where rationale is the subject.
 
-These habits read as machine-generated prose. Avoid them:
+## The test
 
-- Bold or italics scattered through running text for emphasis. Emphasis belongs to structure: a defined
-  term at first use, the key of a list entry.
-- Em-dashes used for dramatic pauses or as a repeated cadence. An em-dash is an ordinary punctuation
-  mark; use it occasionally, where a parenthetical genuinely helps.
-- The "not X, but Y" frame and its variants as a recurring rhetorical device.
-- Grandiose and promotional wording: "powerful", "robust", "seamless", "crucial", "comprehensive".
-- Comparisons to alternatives the document has no need to mention. Describe the thing itself.
+Does the sentence draw attention to its own craft? Rewrite it plainer.
 
-## godoc
+Habits that fail the test: emphasis styling scattered through running text, em-dashes as a
+recurring cadence, the "not X, but Y" frame as a repeated device, grandiose wording ("powerful",
+"robust", "seamless"), and comparisons to alternatives the document has no need to mention.
 
-godoc keeps its idiomatic form: the comment opens with the identifier it documents ("Load reads the
-configuration from…"). Within that form, the prose follows the same voice as everything else.
+## API documentation
+
+API documentation keeps its idiomatic form; godoc, for example, opens with the identifier it
+documents ("Load reads the configuration from…"). Within that form, the prose follows the same
+voice as everything else.
 
 ## When in doubt
 

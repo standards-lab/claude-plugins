@@ -63,14 +63,15 @@ Route on the first argument. Each command has a detailed playbook under `command
 ## The session loop
 
 ```
-  start ─► (plan mode: settle scope with developer) ─► do the step ─► STOP
-    ▲                                                                  │
-    │       code project:    the step is an implementation guide; the developer applies it
-    │       context project: the step is the change itself, authored directly (no guide, no handoff)
-    │                                                                  │
-    │                                                                  ▼
-    └─◄─ close (work done: publish) ─or─ reset (handing off: resume later) ─◄─ closeout
-                                              (code: + tests/docs · decay notes · write reset file)
+  start ─► (plan mode: settle scope with developer) ─► do the step ─┬─ finished ─► close
+    ▲                                                               │
+    │      code project:    the step is an implementation guide;    └─ context filling,
+    │                       the developer applies it                   work unfinished ─► reset
+    │      context project: the step is the change itself,
+    │                       authored directly (no guide, no handoff)
+    │
+    ├──◄── close — work done: (code: add tests/docs) · decay notes · write reset file · publish
+    └──◄── reset — handing off: write reset file · leave the branch open · resume later
 ```
 
 A session is one unit of work on one branch. It ends in one of two ways. If the work is finished,
@@ -82,12 +83,29 @@ for the full walk-through.
 ## Project kind
 
 A marathon project is one of two kinds, declared once at `init` in `.claude/marathon.toml` and read by
-every session afterward:
+every session afterward. This is the canonical shape of the whole file:
 
 ```toml
 [project]
-kind = "code"      # production source the developer authors and answers for
-# kind = "context" # the whole repository is context — the agent authors it directly
+kind = "code"        # production source the developer authors and answers for
+# kind = "context"   # the whole repository is context — the agent authors it directly
+
+[remote]
+platform = "github"  # the platform the project publishes to
+publish  = "gh pr create"
+
+# Optional: only a workspace coordinator declares this block.
+[workspace]
+role  = "coordinator"
+order = [
+  "core-lib",
+  ["service-a", "service-b"],
+  "gateway",
+]
+
+# Optional: resolves an order key that is not a sibling directory.
+[workspace.paths]
+core-lib = "~/code/core-lib"
 ```
 
 - **code** — the repository contains production source code: the implementation logic that makes a
@@ -100,9 +118,8 @@ kind = "code"      # production source the developer authors and answers for
   release what it ships (a plugin, a document set); it just has no code layer.
 
 Project kind decides how `start` and `close` behave, and how `coordinate` treats each project in a
-fan-out. When in doubt, ask whether `git blame` on the repository's real deliverable should point at
-the developer (code) or at the agent under the developer's review (context). See
-`references/role-boundary.md`.
+fan-out. When in doubt, apply the git-blame test in `references/role-boundary.md`: whom should the
+deliverable's history point at?
 
 ## Working sessions: plan, start, experiment
 
@@ -121,7 +138,9 @@ Three commands do the actual work of a session; which one you run says what the 
   where a new skill or agent idea gets tried before it becomes real.
 
 `plan`, `start`, and `experiment` all end the same way: `close` when the work is finished, or `reset`
-to hand off. `review` and `docs` are on-demand maintenance passes, not working sessions.
+to hand off. `review` and `docs` are on-demand maintenance passes rather than working sessions, but
+they end the same way too — their changes land through `close`, recorded under their own Session
+values.
 
 ## Iterative development
 
@@ -136,7 +155,7 @@ that turns out wrong. Keep the focus narrow and let the design grow out of worki
 
 ## Planning is half the work
 
-Planning carries as much weight as building. In `init`, in a fresh `start`, in a `plan` session, and in
+Planning matters as much as building. In `init`, in a fresh `start`, in a `plan` session, and in
 `review`, the planning phase is where the real architectural thinking happens — you work out what the
 step involves, how deep it needs to go, and how it fits the larger design. The quality of the
 implementation is largely set here, so plan with enough depth and clarity that you come out with a clear
@@ -183,8 +202,7 @@ project kind.
 On a **code** project, the developer owns the production code — they apply it, adjust it, and answer for
 it. The agent drafts each change in the implementation guide for the developer to apply, and writes
 everything else outright: tests, comments and API docs, prose documentation, the files in `context/`,
-the reset file, and the guide itself. If you're unsure who owns a line, ask who `git blame` should show
-on it in six months — the developer, because they put it there.
+the reset file, and the guide itself.
 
 On a **context** project there is no production code, so there is nothing to hand off. The agent authors
 the repository directly — its skills, prose, configuration, and everything in `context/`. The developer
@@ -200,6 +218,11 @@ session's record, and its Next-focus line is the handoff: written at the end of 
 start of the next. The Status line — `handoff` or `closeout` — tells the next session how to resume:
 pick up the open branch after a handoff, or start a new branch after a closeout.
 
+A repository in a workspace can also reach a resting point: its deliverable is released and it has no
+next step of its own. `close` then deletes the reset file instead of rewriting it, and continuity
+moves to the workspace coordinator. A session that finds no `context/reset.md` reads that as the
+resting state and defers to the coordinator's reset file.
+
 marathon's git workflow is branches and commits. A finished branch is published as the change proposal
 the project's remote uses — a pull request on GitHub, a merge request on GitLab, or the equivalent — with
 its description copied from the reset file. The remote platform is declared at `init`. Issues, boards,
@@ -213,7 +236,7 @@ and other platform project management aren't part of the core; they come from op
 # reset · wire-config-loader
 
 - **Status:** closeout            # handoff | closeout
-- **Session:** start              # plan | start | experiment
+- **Session:** start              # init | plan | start | experiment | review | docs
 - **Branch:** wire-config-loader
 
 ## Disposition
@@ -238,6 +261,11 @@ dependency order. `coordinate` runs that change: it detects the workspace, enume
 projects in order, and fans out a session to each, honoring each project's kind. The workspace itself
 holds no context, and the coordination run leaves no branch, reset, or committed context of its own;
 continuity stays per repository. See `commands/coordinate.md` and `references/workspace-coordination.md`.
+
+Any marathon command run from the workspace directory routes by the same map: detect the workspace,
+resolve the coordinator through its `[workspace] role`, and read the coordinator's `context/reset.md`
+as the continuity anchor. The reset file's Branch line names the repository the session continues in,
+so a session started at the workspace root finds its way without being told.
 
 ## Extension hooks
 

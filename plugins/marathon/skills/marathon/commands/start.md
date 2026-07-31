@@ -5,11 +5,18 @@ argument; how it hands off the step depends on the project's kind (see `referenc
 not on anything you pass it. For planning that touches only `context/`, use `plan`; for a spike, use
 `experiment`.
 
-The first thing `start` does is read `context/reset.md` and check its Status.
+The first thing `start` does is read `context/reset.md` and check its Status. If the file doesn't
+exist, the project is at a resting point: its deliverable was released and continuity sits with the
+workspace coordinator. Read the coordinator's reset file for the next step, or settle a fresh step
+with the developer if none names this project.
 
 ## Resuming a handoff (Status: handoff)
 
 A previous session stopped mid-work. The plan already exists, so don't re-plan from scratch.
+
+First check the Session line. If it records `plan` or `experiment`, the handed-off work belongs to
+that command — resume it with `plan` or `experiment` instead, which pick up their own kind of session
+the same way. If it records `start`:
 
 1. Check out the open branch named in `reset.md`.
 2. Read the in-progress state and the Next-focus; the Next-focus is your exact next move.
@@ -20,13 +27,13 @@ A previous session stopped mid-work. The plan already exists, so don't re-plan f
 
 ## Starting fresh (Status: closeout)
 
-The previous session finished, so this is a new piece of work. Plan it in plan mode and agree on the
+The previous session finished, so this is a new step. Plan it in plan mode and agree on the
 scope with the developer before writing anything. Planning matters as much as the build — this is where
 the architectural thinking happens, and it sets how deep and how wide the step should go. Give it real
 depth; don't rush to the code.
 
 1. Enter plan mode. Get oriented: read the Next-focus in `reset.md`, the capability map in
-   `context/README.md`, and the `design/` and `concepts/` notes the coming step touches. Load only what
+   `context/README.md`, and the `design/` and `concepts/` notes the upcoming step touches. Load only what
    the step needs.
 2. With the developer, work through the step in enough depth to come out with a clear picture of what to
    build: the single concrete step to take now, and how far it should go. Add detail to the relevant

@@ -1,6 +1,6 @@
 # claude-plugins
 
-Claude Code plugins for the standards lab — agentic infrastructure for the
+Claude Code plugins for Standards Lab — agentic infrastructure for the
 reference-architecture effort.
 
 This repository is a plugin **host**: each plugin is independently versioned and released, and
@@ -73,12 +73,19 @@ release from that plugin's `CHANGELOG.md`.
 
 ```
 claude-plugins/
+├── .claude/                     # marathon project configuration for this repository
 ├── .claude-plugin/
 │   └── marketplace.json         # Host manifest
 ├── .github/
 │   └── workflows/
 │       └── release.yml          # Tag-triggered release automation
+├── CLAUDE.md                    # Agent orientation: the repo is developed under marathon
+├── context/                     # marathon working context for the repo itself
 ├── plugins/
 │   └── marathon/                # Sustainable long-haul development workflow
+├── LICENSE
 └── README.md
 ```
+
+The repository is developed with the workflow it ships: `CLAUDE.md`, `context/`, and `.claude/` are
+marathon's own working infrastructure, so the plugin is exercised against its own source.

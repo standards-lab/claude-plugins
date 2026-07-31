@@ -7,7 +7,7 @@ branch-based sessions, one finished step at a time.
 
 This README is a quick reference. The skill itself is the source of truth for how marathon behaves;
 its files under [`skills/marathon/`](./skills/marathon/) — `SKILL.md`, the `commands/` playbooks, and
-the `references/` deep-dives — carry the full detail.
+the `references/` deep-dives — describe the full detail.
 
 ## Install
 

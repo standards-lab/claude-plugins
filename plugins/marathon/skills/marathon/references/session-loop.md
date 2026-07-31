@@ -17,10 +17,12 @@ They share the loop below.
 
 ## Starting
 
-A working session reads `context/reset.md` and looks at its Status.
+A working session reads `context/reset.md` and looks at its Status. A missing reset file means the
+project is at a resting point: its deliverable is released and continuity sits with the workspace
+coordinator (see the Continuity section in `SKILL.md`).
 
-If the Status is `closeout`, the last piece of work is done and this is a new one. This begins with
-planning, and planning is not a formality — it carries as much weight as the build. In plan mode, get
+If the Status is `closeout`, the last step is done and this is a new one. This begins with planning,
+which matters as much as the build. In plan mode, get
 oriented from the Next-focus, the capability map, and the relevant notes, then work the step through
 with the developer in real depth: what it involves, how far it should go, and how it fits the wider
 design. You want to come out with a clear picture of what you're about to do. The discussion will
@@ -37,9 +39,9 @@ up from there.
 What happens next depends on the command and the project's kind.
 
 In a `start` on a **code** project, you write the implementation guide — the concrete changes to make,
-in order, with the reasoning where it's needed (see `implementation-guides.md`) — and then stop. The
+in order, with the reasoning where it's needed (see `references/implementation-guides.md`) — and then stop. The
 developer applies it. You stay available for fixes but don't get ahead of them. This pause is the role
-boundary in action (see `role-boundary.md`): the developer owns the implementation, so the agent hands
+boundary in action (see `references/role-boundary.md`): the developer owns the implementation, so the agent hands
 off the draft and waits.
 
 In a `start` on a **context** project there's no guide and no code to hand off. You author the change
@@ -55,8 +57,8 @@ top-level `experiments/` directory and treat whatever you find as a concept, not
 If the context window fills up before the work is done, don't push through a degraded context. Run
 `reset`: tidy the notes you touched, then write `context/reset.md` with `Status: handoff` and a
 Next-focus that records exactly where you are and what's next. Leave the branch open. A fresh `start`
-resumes it cold from that record. This is what lets a single piece of work span more than one context
-window without losing the thread.
+resumes it cold from that record. This is what lets a single step span more than one context window
+without losing the thread.
 
 ## Closing
 

@@ -4,7 +4,7 @@
     "name": "standards-lab"
   },
   "metadata": {
-    "description": "Claude Code plugins for the standards lab"
+    "description": "Claude Code plugins for Standards Lab"
   },
   "plugins": [
     {

@@ -17,7 +17,9 @@ or hand it back to the developer.
 
 On a **context** project there is no code to finish — the change was authored directly, so validation is
 that it reads coherently and stays consistent. A `plan` session has nothing to build either. For an
-`experiment`, decide what, if anything, the spike earned. Either way, go on to step 2.
+`experiment`, decide what, if anything, the spike earned. A `review` session closes the same way as a
+context change: the cleanup itself is the deliverable. A `docs` session validates its pages against the
+current code — where they disagree, the page is what's wrong. Either way, go on to step 2.
 
 ## 2. Tidy the notes
 
@@ -34,13 +36,17 @@ These changes matter, so show the developer and confirm before applying them.
 
 Talk through what comes next — don't set the direction on your own. What the session turned up often
 changes the priority, and the conversation is usually where the next step comes from. Settle together on
-the single concrete next piece of work. That becomes the Next-focus in the next step.
+the single concrete next step. That becomes the Next-focus in step 4.
 
 ## 4. Record what happened
 
-Rewrite `context/reset.md` with `Status: closeout`. Record which session this was
-(`plan`/`start`/`experiment`), what you integrated, promoted, culled, and retained, and set Next-focus
-to the next piece of work you agreed on in step 3 — the handoff the next session reads.
+Rewrite `context/reset.md` with `Status: closeout`, filling every field of the schema in `SKILL.md`.
+The judgment fields are the Disposition — what you integrated, promoted, culled, and retained — and
+the Next-focus, set to the step you agreed on in step 3: the handoff the next session reads.
+
+When the project has instead reached a resting point — its deliverable is released, it has no next
+step of its own, and a workspace coordinator carries continuity — delete `context/reset.md` rather
+than rewriting it. The coordinator's reset file becomes the pointer to what happens next.
 
 ## 5. Drop the guide
 
