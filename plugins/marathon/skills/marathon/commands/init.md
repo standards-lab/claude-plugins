@@ -54,8 +54,9 @@ detail up front. Write the prose per the voice standard in `references/writing-v
     └── reset.md               # Status: closeout; Next-focus = the first step
 ```
 
-- `context/reset.md` — write it with `Status: closeout` and the first step as Next-focus, so the first
-  `start` begins from a clean handoff and creates a new branch.
+- `context/reset.md` — write it with `Status: closeout`, `Session: init`, a Disposition listing what
+  was scaffolded, and the first step as Next-focus, so the first `start` begins from a closeout and
+  creates a new branch.
 - `.claude/marathon.toml` — record the project kind (`[project] kind = "code"` or `"context"`) and the
   remote platform with its publish command. If this project coordinates a workspace, add the
   `[workspace]` block too (`role = "coordinator"` and a layered `order`); most projects don't. See

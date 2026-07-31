@@ -33,6 +33,7 @@ don't add detail a coming step doesn't need. The goal is fewer stale notes, not 
 
 ## 3. Land the changes
 
-Because `review` edits the agent's context notes, land them like any other work — on a branch, published
-the same way — so the cleanup is traceable. Record what you changed in `context/reset.md`, the same as
-any closeout.
+Because `review` edits the agent's context notes, land them like any other work so the cleanup is
+traceable: once the changes are agreed, run the `on-session-start` hook, create a branch named after
+the review's topic, and apply them there. Close the session with `close` — it records the
+dispositions in `context/reset.md` under `Session: review` and publishes the branch.

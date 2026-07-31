@@ -19,8 +19,13 @@ the notes feel stale against the code; reach for `plan` when you need to think t
 
 ## 1. Plan in plan mode
 
-Enter plan mode and settle the thinking with the developer before changing any notes — this is where
-the architectural work happens, so give it real depth.
+Read `context/reset.md` first. If its Status is `handoff` and its Session is `plan`, a previous
+planning session stopped mid-work: check out the open branch, read the Next-focus, and pick up from
+there — skip the fresh planning below. (A handoff recorded under another Session belongs to that
+command.)
+
+Otherwise enter plan mode and settle the thinking with the developer before changing any notes — this
+is where the architectural work happens, so give it real depth.
 
 1. Get oriented: the Next-focus in `reset.md`, the capability map in `context/README.md`, and the
    `design/` and `concepts/` notes the topic touches. Load only what the topic needs.
@@ -32,8 +37,11 @@ the architectural work happens, so give it real depth.
 
 ## 2. Tend the context
 
-With the shape agreed, bring `context/` in line. Show the developer what you propose to move or delete
-and get agreement first.
+With the scope approved, run the `on-session-start` hook and create a branch named after the topic —
+the session's changes land on it.
+
+Then bring `context/` in line. Show the developer what you propose to move or delete and get
+agreement first.
 
 - **Promote** — move a concept from `concepts/` into `design/` if this session settled it, and say why.
 - **Cull** — drop a concept the discussion ruled out.

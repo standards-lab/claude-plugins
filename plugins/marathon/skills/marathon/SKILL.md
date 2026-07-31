@@ -63,14 +63,15 @@ Route on the first argument. Each command has a detailed playbook under `command
 ## The session loop
 
 ```
-  start ─► (plan mode: settle scope with developer) ─► do the step ─► STOP
-    ▲                                                                  │
-    │       code project:    the step is an implementation guide; the developer applies it
-    │       context project: the step is the change itself, authored directly (no guide, no handoff)
-    │                                                                  │
-    │                                                                  ▼
-    └─◄─ close (work done: publish) ─or─ reset (handing off: resume later) ─◄─ closeout
-                                              (code: + tests/docs · decay notes · write reset file)
+  start ─► (plan mode: settle scope with developer) ─► do the step ─┬─ finished ─► close
+    ▲                                                               │
+    │      code project:    the step is an implementation guide;    └─ context filling,
+    │                       the developer applies it                   work unfinished ─► reset
+    │      context project: the step is the change itself,
+    │                       authored directly (no guide, no handoff)
+    │
+    ├──◄── close — work done: (code: add tests/docs) · decay notes · write reset file · publish
+    └──◄── reset — handing off: write reset file · leave the branch open · resume later
 ```
 
 A session is one unit of work on one branch. It ends in one of two ways. If the work is finished,
@@ -121,7 +122,9 @@ Three commands do the actual work of a session; which one you run says what the 
   where a new skill or agent idea gets tried before it becomes real.
 
 `plan`, `start`, and `experiment` all end the same way: `close` when the work is finished, or `reset`
-to hand off. `review` and `docs` are on-demand maintenance passes, not working sessions.
+to hand off. `review` and `docs` are on-demand maintenance passes rather than working sessions, but
+they end the same way too — their changes land through `close`, recorded under their own Session
+values.
 
 ## Iterative development
 
@@ -200,6 +203,11 @@ session's record, and its Next-focus line is the handoff: written at the end of 
 start of the next. The Status line — `handoff` or `closeout` — tells the next session how to resume:
 pick up the open branch after a handoff, or start a new branch after a closeout.
 
+A repository in a workspace can also reach a resting point: its deliverable is released and it has no
+next step of its own. `close` then deletes the reset file instead of rewriting it, and continuity
+moves to the workspace coordinator. A session that finds no `context/reset.md` reads that as the
+resting state and defers to the coordinator's reset file.
+
 marathon's git workflow is branches and commits. A finished branch is published as the change proposal
 the project's remote uses — a pull request on GitHub, a merge request on GitLab, or the equivalent — with
 its description copied from the reset file. The remote platform is declared at `init`. Issues, boards,
@@ -213,7 +221,7 @@ and other platform project management aren't part of the core; they come from op
 # reset · wire-config-loader
 
 - **Status:** closeout            # handoff | closeout
-- **Session:** start              # plan | start | experiment
+- **Session:** start              # init | plan | start | experiment | review | docs
 - **Branch:** wire-config-loader
 
 ## Disposition
@@ -238,6 +246,11 @@ dependency order. `coordinate` runs that change: it detects the workspace, enume
 projects in order, and fans out a session to each, honoring each project's kind. The workspace itself
 holds no context, and the coordination run leaves no branch, reset, or committed context of its own;
 continuity stays per repository. See `commands/coordinate.md` and `references/workspace-coordination.md`.
+
+Any marathon command run from the workspace directory routes by the same map: detect the workspace,
+resolve the coordinator through its `[workspace] role`, and read the coordinator's `context/reset.md`
+as the continuity anchor. The reset file's Branch line names the repository the session continues in,
+so a session started at the workspace root finds its way without being told.
 
 ## Extension hooks
 

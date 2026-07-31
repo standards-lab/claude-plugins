@@ -17,7 +17,9 @@ They share the loop below.
 
 ## Starting
 
-A working session reads `context/reset.md` and looks at its Status.
+A working session reads `context/reset.md` and looks at its Status. A missing reset file means the
+project is at a resting point: its deliverable is released and continuity sits with the workspace
+coordinator (see the Continuity section in `SKILL.md`).
 
 If the Status is `closeout`, the last piece of work is done and this is a new one. This begins with
 planning, and planning is not a formality — it carries as much weight as the build. In plan mode, get
@@ -55,8 +57,8 @@ top-level `experiments/` directory and treat whatever you find as a concept, not
 If the context window fills up before the work is done, don't push through a degraded context. Run
 `reset`: tidy the notes you touched, then write `context/reset.md` with `Status: handoff` and a
 Next-focus that records exactly where you are and what's next. Leave the branch open. A fresh `start`
-resumes it cold from that record. This is what lets a single piece of work span more than one context
-window without losing the thread.
+resumes it cold from that record. This is what lets a single step span more than one context window
+without losing the thread.
 
 ## Closing
 

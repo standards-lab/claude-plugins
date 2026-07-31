@@ -44,6 +44,7 @@ If `docs/` already exists, this run extends and maintains it:
 ## Land the changes
 
 Documentation is the agent's to write outright (see `references/role-boundary.md`), so there is no code
-handoff. Land the changes like any other work — on a branch, published the same way — and record what you
-changed in `context/reset.md`, the same as any closeout. The `review` command keeps `docs/` honest between
-`docs` passes by flagging pages that have drifted from the code.
+handoff. Once the scope is settled, run the `on-session-start` hook and create a branch named after the
+pass; write the pages there. Close the session with `close` — it records the pass in `context/reset.md`
+under `Session: docs` and publishes the branch. The `review` command keeps `docs/` honest between `docs`
+passes by flagging pages that have drifted from the code.
