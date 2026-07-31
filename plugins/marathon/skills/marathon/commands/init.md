@@ -78,5 +78,5 @@ the project's board, for example). With no extension, this does nothing.
 
 ## 4. Commit the setup
 
-Stage everything and make the first commit. The repo is now marathon-managed, and the developer starts
-real work with `plan` or `start`.
+Stage everything and make the first commit; this fires the `on-commit` hook. The repo is now
+marathon-managed, and the developer starts real work with `plan` or `start`.

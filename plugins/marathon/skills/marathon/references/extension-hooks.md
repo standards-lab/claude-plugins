@@ -14,7 +14,8 @@ platform-specific and is determined by the remote platform declared at `init`.
 - another platform — the equivalent command the project supplies
 - none — local-only; closeout commits and stops
 
-marathon stores this in its per-project config under `.claude/`. Plugin and skill permissions live in
+marathon stores this in the `[remote]` table (`platform`, `publish`) of `.claude/marathon.toml`; the
+canonical example of the whole file is in `SKILL.md`. Plugin and skill permissions live in
 `.claude/settings.json`.
 
 At closeout the core commits, then runs the declared publish command with the change description taken
@@ -24,10 +25,12 @@ from `context/reset.md`.
 
 The core calls these points, where an optional extension can act:
 
-- `on-init` — a project is set up
-- `on-session-start` — a session begins
-- `on-commit` — the core makes a commit
-- `on-closeout` — a session closes
+| Hook | Trigger | Fired by | Frequency |
+|------|---------|----------|-----------|
+| `on-init` | a project is set up | `init` | once per project |
+| `on-session-start` | a session begins: scope approved, branch created | `plan`, `start`, `experiment`, `review`, `docs`; per project in a `coordinate` fan-out | once per session |
+| `on-commit` | the core makes a commit | `init` (setup commit), `reset` (WIP commit, when made), `close` (closeout commit) | once per commit |
+| `on-closeout` | a session closes | `close` | once per session |
 
 With no extension configured, the points do nothing. The core never loads a platform skill on its own.
 

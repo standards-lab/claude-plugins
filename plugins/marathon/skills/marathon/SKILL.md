@@ -83,12 +83,29 @@ for the full walk-through.
 ## Project kind
 
 A marathon project is one of two kinds, declared once at `init` in `.claude/marathon.toml` and read by
-every session afterward:
+every session afterward. This is the canonical shape of the whole file:
 
 ```toml
 [project]
-kind = "code"      # production source the developer authors and answers for
-# kind = "context" # the whole repository is context — the agent authors it directly
+kind = "code"        # production source the developer authors and answers for
+# kind = "context"   # the whole repository is context — the agent authors it directly
+
+[remote]
+platform = "github"  # the platform the project publishes to
+publish  = "gh pr create"
+
+# Optional: only a workspace coordinator declares this block.
+[workspace]
+role  = "coordinator"
+order = [
+  "core-lib",
+  ["service-a", "service-b"],
+  "gateway",
+]
+
+# Optional: resolves an order key that is not a sibling directory.
+[workspace.paths]
+core-lib = "~/code/core-lib"
 ```
 
 - **code** — the repository contains production source code: the implementation logic that makes a

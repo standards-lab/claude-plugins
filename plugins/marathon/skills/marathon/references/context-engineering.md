@@ -89,11 +89,18 @@ Three operations keep `context/` accurate:
   the built work proved it out, or an experiment produced a result. Don't do it silently — move the file
   and note why in `context/reset.md`. Organizing `concepts/` and `design/` the same way makes it obvious
   where a note should land.
-- **Decay** — delete a `design/` note once the built work fully expresses what it described. At that
-  point the note is a weaker second copy, and the two will drift apart. Record the removal (and point to
-  the code or deliverable) in the reset file.
+- **Decay** — delete a `design/` note once the built work fully expresses what it described and the
+  note holds no conceptual or pattern detail beyond it. A note that still explains a pattern, a
+  boundary, or a style the built work cannot state on its own is doing design work and stays;
+  duplication in API documentation alone is not decay. A note that does decay is a weaker second copy
+  the built work will drift from — record the removal (and point to the code or deliverable) in the
+  reset file.
 - **Cull** — delete a concept in `concepts/` when it is no longer viable: superseded, abandoned, or
   contradicted by the way the work actually went.
+
+The reset file records these operations in its ledger vocabulary: a decayed note is recorded as
+**Integrated**, a note deliberately left in place as **Retained**; Promoted and Culled record
+themselves.
 
 The point of all three is to keep `context/` short and true, rather than letting it grow into a parallel
 description of the project that slowly disagrees with the code.

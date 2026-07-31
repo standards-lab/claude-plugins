@@ -50,8 +50,9 @@ Run from the workspace directory (or name it). Then:
 2. Find the coordinator: the participating project whose `.claude/marathon.toml` has
    `[workspace] role = "coordinator"`. Read its `order` and flatten it into layers.
 3. Resolve each key to a checkout — a sibling directory in the workspace by name, or, when a
-   participant lives outside the workspace root, through the local path map the coordinator provides
-   (for example a references catalog that maps each key to a directory on this machine).
+   participant lives outside the workspace root, through the optional `[workspace.paths]` table in
+   the coordinator's `marathon.toml`, which maps the key to a directory on this machine. Ask the
+   developer about a key that is neither a sibling nor mapped.
 4. **Degrade gracefully.** If no project declares itself coordinator, don't assume an order: enumerate
    the sibling projects (the directories with a `context/`) and ask the developer which participate and
    in what order.
@@ -89,7 +90,10 @@ the session, exactly like a single project's `context/guide.md`.
 Work the layers in order, lowest first. Finish a layer before starting the next, so a higher layer
 builds against the real change beneath it and not a promise. Within a layer, the peer projects have no
 dependency between them: do them in any order. For each project, run its part as the marathon session it
-would be on its own, honoring the project's kind:
+would be on its own, honoring the project's kind. Each project branches at the start of its own part,
+under the coordinated change's shared slug; the plan approved collectively in step 3 substitutes for
+that project's own plan-mode gate; and `on-session-start` fires per project as its part begins (see
+`references/extension-hooks.md`).
 
 - **code project** — hand the developer that project's slice of the consolidated guide and let them
   apply it; stay available for fixes. Then, at that project's closeout, the agent adds its tests and

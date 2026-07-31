@@ -29,6 +29,6 @@ Write it per the voice standard in `references/writing-voice.md`.
 
 ## 3. Keep the work
 
-Optionally make a WIP commit on the branch so in-progress work isn't lost. Leave the branch open and
-don't publish it — the work isn't finished. A later `start` will see `Status: handoff`, check out the
-branch, and keep going.
+Optionally make a WIP commit on the branch so in-progress work isn't lost; a commit made here fires
+the `on-commit` hook. Leave the branch open and don't publish it — the work isn't finished. A later
+session will see `Status: handoff`, check out the branch, and keep going.

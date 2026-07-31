@@ -21,6 +21,10 @@ document — and look for:
   project actually is.
 - **Docs drift** — if the project has a `docs/` tier, pages whose code has moved on underneath them.
   Flag them here; the rewriting itself is deliberate work for a `docs` pass, not part of review.
+- **Coordinator conventions** — when the project belongs to a workspace, the conventions its
+  coordinator keeps for member repositories (naming, authoring, awareness rules), checked against
+  this repository's prose and structure. The member repo never cites those conventions; the review
+  consults them at session time. See `references/workspace-coordination.md`.
 
 ## 2. Agree, then apply
 
