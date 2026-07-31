@@ -27,7 +27,7 @@ the same way. If it records `start`:
 
 ## Starting fresh (Status: closeout)
 
-The previous session finished, so this is a new piece of work. Plan it in plan mode and agree on the
+The previous session finished, so this is a new step. Plan it in plan mode and agree on the
 scope with the developer before writing anything. Planning matters as much as the build — this is where
 the architectural thinking happens, and it sets how deep and how wide the step should go. Give it real
 depth; don't rush to the code.

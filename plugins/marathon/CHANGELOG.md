@@ -4,6 +4,46 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## [v0.5.0]
+
+### Added
+
+- **Resting point and workspace-entry routing** — `close` deletes the reset file when the project's
+  deliverable is released, it has no next step of its own, and a workspace coordinator carries
+  continuity; a session that finds no reset file defers to the coordinator, and a marathon command
+  run from the workspace root resolves the coordinator through `[workspace] role` and routes into
+  the member repository named by its reset file's Branch line.
+- **`[workspace.paths]`** — an optional table in the coordinator's `marathon.toml` that resolves an
+  `order` key living outside the workspace root to a directory on this machine.
+- **LICENSE** — the repository is licensed Apache-2.0, recorded in the plugin manifest.
+
+### Changed
+
+- **Writing voice restructured** — `references/writing-voice.md` is principle-led: the goal (what a
+  capable technical colleague would write), the discipline, and one applicable test, with the former
+  habit list demoted to an illustrative aside. Adds the built/planned tense rule and generalizes the
+  godoc section to API documentation.
+- **Secondary sessions specified** — `plan` and `experiment` open with the same reset-file Status
+  check as `start` and resume their own handoffs; `review` and `docs` close through `close`; the
+  Session enum grows to `init | plan | start | experiment | review | docs`; branch creation and
+  `on-session-start` are sequenced for every session; the session-loop diagram is redrawn so `reset`
+  branches off the step.
+- **Experiments are tracked** — spikes commit under `experiments/<slug>/` and merge with the branch
+  as the durable record of exploratory work; promotion moves proven work out, and stable context
+  never cites the directory.
+- **Hook contract table** — `references/extension-hooks.md` states each hook's trigger, firing
+  commands, and frequency; `init`'s setup commit and `reset`'s WIP commit fire `on-commit`.
+- **Canonical configuration** — `SKILL.md` documents the whole `marathon.toml` in one example:
+  `[project]`, `[remote]`, and the optional `[workspace]` and `[workspace.paths]`.
+- **Coordinator conventions** — an organization-level coordinator's conventions bind member
+  repositories through sessions: a member's `review` consults them, a coordinated fan-out applies
+  them, and the awareness rule keeps member repos from citing them.
+- **Decay rule refined** — a `design/` note decays only when the built work expresses it and the
+  note holds no conceptual or pattern detail beyond it; the reset ledger vocabulary (Integrated,
+  Retained) is mapped to the operations.
+- **Prose normalized** — the skill corpus is rewritten against the restructured voice standard, with
+  root-relative cross-references throughout.
+
 ## [v0.4.0]
 
 ### Added

@@ -14,7 +14,7 @@ change that expresses it.
 
 Both `plan` and `review` touch only `context/`, but they look in opposite directions. `review` is a
 backward-looking audit: has the context drifted from what the code now expresses? `plan` is
-forward-looking: what is the next piece of work, and what shape should it take? Reach for `review` when
+forward-looking: what is the next step, and what shape should it take? Reach for `review` when
 the notes feel stale against the code; reach for `plan` when you need to think the next step through.
 
 ## 1. Plan in plan mode
