@@ -78,8 +78,8 @@ walking back a design note you committed to too early is not.
 
 Notes start short. A capability in the map, or a topic in `design/`, begins as a sentence or two and
 gets filled in only when you are about to work on it. Writing detailed design for distant work has the
-same problem as writing the code too early: you commit to a shape before you understand it, then have to
-maintain or delete the note when reality turns out different. Add detail at the point you need it.
+same problem as writing the code too early: you commit to a design before you understand it, then have
+to maintain or delete the note when reality turns out different. Add detail at the point you need it.
 
 ## Moving and removing notes
 

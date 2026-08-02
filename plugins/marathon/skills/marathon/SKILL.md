@@ -83,7 +83,7 @@ for the full walk-through.
 ## Project kind
 
 A marathon project is one of two kinds, declared once at `init` in `.claude/marathon.toml` and read by
-every session afterward. This is the canonical shape of the whole file:
+every session afterward. This is the canonical layout of the whole file:
 
 ```toml
 [project]

@@ -10,9 +10,9 @@ fluently and often prefers it; prose is for what code can't show — the reasoni
 for the point where someone can apply the whole change from the guide alone, without filling in gaps and
 without wading through explanation they didn't need.
 
-## Shape
+## Structure
 
-Open with a short preamble: the shape of the change and why, in a few sentences, so the developer has
+Open with a short preamble: what the change does and why, in a few sentences, so the developer has
 the model before the mutations. Then the mutations, in the order they should be applied — dependencies
 before the code that uses them, so the developer can work top to bottom and keep the tree coherent.
 Close with how to run and verify the work.
