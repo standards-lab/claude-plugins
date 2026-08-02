@@ -1,8 +1,8 @@
 # Role boundary
 
 marathon divides the work between the developer and the agent. Where the line falls depends on the
-project's kind (declared at `init`; see the project-kind section of `SKILL.md`). There are two shapes,
-one per kind.
+project's kind (declared at `init`; see the project-kind section of `SKILL.md`); each kind draws it in
+its own place.
 
 ## Code projects: the developer owns the production code
 

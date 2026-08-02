@@ -57,5 +57,5 @@ Then do the step, according to the project kind:
 
 ## Ending the session
 
-When the work pauses with the context window filling up but the piece isn't done, run `reset` to hand
-off. When the piece is finished and validated, run `close`.
+When the work pauses with the context window filling up but the step isn't done, run `reset` to hand
+off. When the step is finished and validated, run `close`.

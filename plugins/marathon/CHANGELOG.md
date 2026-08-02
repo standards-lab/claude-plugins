@@ -4,6 +4,19 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## [v0.5.1]
+
+### Changed
+
+- **Specificity in the writing voice** — `references/writing-voice.md` adds the discipline of naming
+  what is actually happening in a detail rather than reaching for a stock noun or verb, a second
+  test (does each term belong to the vocabulary of the discipline it describes?), the
+  colon-versus-semicolon rule, and the stock-vocabulary habit in the illustrative aside.
+- **Skill prose swept for stock vocabulary** — the commands and references now use the terms their
+  subjects already have: the session works on a *step*, the capability map lists *capabilities*,
+  the guide preamble states *what the change does*, `marathon.toml` has a canonical *layout*, and
+  the role boundary is drawn per kind rather than coming in "shapes".
+
 ## [v0.5.0]
 
 ### Added

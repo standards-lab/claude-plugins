@@ -4,8 +4,8 @@ Set up marathon on a repository, starting from a project-planning concept. Run t
 When it's done, the repo has a top-level `context/` directory that the rest of the workflow reads and
 maintains, plus the Claude configuration the project needs.
 
-`init` commits to the project's initial shape, so do the thinking in plan mode and agree on it with the
-developer before creating any files.
+`init` commits to the project's founding decisions, so do the thinking in plan mode and agree on them
+with the developer before creating any files.
 
 ## 1. Find the concept
 
@@ -23,8 +23,8 @@ Enter plan mode, read the concept closely, and settle these with the developer r
   the role boundary and whether sessions hand off an implementation guide. When in doubt: whose hands
   should the deliverable's history show — the developer applying drafted code, or the agent authoring
   under review? See `references/role-boundary.md`.
-- **Capability map** — the major pieces the project will need. Broad, not ordered, and shallow; you'll
-  add detail later, when a piece is about to be built.
+- **Capability map** — the major capabilities the project will need. Broad, not ordered, and shallow;
+  you'll add detail later, when a capability is about to be built.
 - **Settled vs. concept** — which intent is solid enough to start in `design/`, and which is still a
   concept for `concepts/`. When in doubt, it's a concept.
 - **First step** — the one concrete thing the first session will do.

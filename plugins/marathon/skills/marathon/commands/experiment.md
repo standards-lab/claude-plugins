@@ -27,7 +27,7 @@ same way — in isolation, treating the result as evidence:
 
 - a **code** project tries an implementation approach in throwaway code;
 - a **context** project trials a new skill or agent idea before it becomes real — a draft skill, a
-  reworked command shape — kept in `experiments/` until it's proven worth adopting.
+  reworked command playbook — kept in `experiments/` until it's proven worth adopting.
 
 Stay inside `experiments/`. Don't reach into the real tree or the product; the isolation is what makes
 the spike safe to explore. The directory is tracked like any other: commit the spike's work on the
