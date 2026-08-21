@@ -11,9 +11,10 @@ deliberate promotion at closeout.
 
 ## 1. Plan the spike
 
-Read `context/reset.md` first. If its Status is `handoff` and its Session is `experiment`, a previous
-spike stopped mid-work: check out the open branch, read the Next-focus, and resume it. (A handoff
-recorded under another Session belongs to that command.)
+First locate the project (`SKILL.md`'s "Finding your project" — a workspace root routes to the
+coordinator before anything else). Then read its `context/reset.md`. If its Status is `handoff` and its
+Session is `experiment`, a previous spike stopped mid-work: check out the open branch, read the
+Next-focus, and resume it. (A handoff recorded under another Session belongs to that command.)
 
 Otherwise enter plan mode and settle with the developer what the experiment is testing and how you'll
 know it worked — the question the spike answers. Keep the scope to that question; an experiment that

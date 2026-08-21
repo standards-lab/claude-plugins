@@ -22,6 +22,21 @@ different kinds of writing with opposite lifecycles:
 
 So the decay rule does not apply to `docs/`. Documenting the code is the point.
 
+## Find the landing zone
+
+Before bootstrapping or curating anything, work out which project `docs/` belongs to. Check whether
+this project is a standalone project or sits in a workspace (see `SKILL.md`'s "Finding your project").
+
+- **Standalone.** `docs/` belongs here; continue below as usual.
+- **In a workspace, and the coordinator's `[workspace] docs` names this project.** This project is the
+  landing zone; continue below as usual.
+- **In a workspace, and `[workspace] docs` names a different project.** Don't bootstrap or curate a
+  `docs/` here. Tell the developer the workspace centralizes documentation in that project, and point
+  them there.
+- **In a workspace, and the coordinator declares no `[workspace] docs`.** No landing zone is settled.
+  Ask the developer whether this project should be the one — and add the field to the coordinator's
+  `marathon.toml` if so — or whether another project holds it.
+
 ## Bootstrapping (first run, no docs/)
 
 If the project has no `docs/` yet, this run establishes it:

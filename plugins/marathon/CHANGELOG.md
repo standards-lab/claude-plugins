@@ -4,6 +4,27 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## [v0.6.0]
+
+### Added
+
+- **Workspace docs centralization** — a project in a workspace no longer bootstraps its own `docs/`;
+  documentation centralizes in one landing-zone project, named by a new optional `[workspace] docs`
+  field in the coordinator's `marathon.toml` (an order key, alongside `role` and `order`). `docs` checks
+  which case applies — standalone, this project is the landing zone, or another project is — before it
+  bootstraps or curates anything. A standalone project is unaffected. `context-engineering.md`'s Decay
+  rule gains a second target: a `design/` note also decays once a landing-zone page expresses it, not
+  only when the code does. A repository whose own convention narrows or adds to a linked landing-zone
+  page records that addition beside the link instead of duplicating the page.
+
+### Fixed
+
+- **Workspace entry routing** — `plan`, `start`, and `experiment` located their project by reading
+  `context/reset.md` first, which left a workspace root (no `context/` of its own) an unhandled case
+  discovered only by the absence turning up empty. A new `SKILL.md` section, "Finding your project,"
+  states the two directory kinds — project and workspace root — as the first check every session-opening
+  command makes, and the three commands now point to it ahead of their reset-file logic.
+
 ## [v0.5.1]
 
 ### Changed

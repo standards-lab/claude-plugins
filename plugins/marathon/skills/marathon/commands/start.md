@@ -5,10 +5,11 @@ argument; how it hands off the step depends on the project's kind (see `referenc
 not on anything you pass it. For planning that touches only `context/`, use `plan`; for a spike, use
 `experiment`.
 
-The first thing `start` does is read `context/reset.md` and check its Status. If the file doesn't
-exist, the project is at a resting point: its deliverable was released and continuity sits with the
-workspace coordinator. Read the coordinator's reset file for the next step, or settle a fresh step
-with the developer if none names this project.
+`start` first locates its project (`SKILL.md`'s "Finding your project" — a workspace root routes to the
+coordinator before anything else). Once the project is in hand, read its `context/reset.md` and check
+Status. If the file doesn't exist, the project is at a resting point: its deliverable was released and
+continuity sits with the workspace coordinator. Read the coordinator's reset file for the next step, or
+settle a fresh step with the developer if none names this project.
 
 ## Resuming a handoff (Status: handoff)
 

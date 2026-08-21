@@ -20,10 +20,11 @@ the notes feel stale against the code; reach for `plan` when you need to think t
 
 ## 1. Plan in plan mode
 
-Read `context/reset.md` first. If its Status is `handoff` and its Session is `plan`, a previous
-planning session stopped mid-work: check out the open branch, read the Next-focus, and pick up from
-there — skip the fresh planning below. (A handoff recorded under another Session belongs to that
-command.)
+First locate the project (`SKILL.md`'s "Finding your project" — a workspace root routes to the
+coordinator before anything else). Then read its `context/reset.md`. If its Status is `handoff` and its
+Session is `plan`, a previous planning session stopped mid-work: check out the open branch, read the
+Next-focus, and pick up from there — skip the fresh planning below. (A handoff recorded under another
+Session belongs to that command.)
 
 Otherwise enter plan mode and settle the thinking with the developer before changing any notes — this
 is where the architectural work happens, so give it real depth.

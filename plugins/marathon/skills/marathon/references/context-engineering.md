@@ -49,8 +49,17 @@ Kept outside `context/`:
 ## The docs/ tier
 
 `docs/` is reference documentation written for people: the explanation a reader works through to
-understand the system. It is optional — most projects stay `context/`-only — and a project opts in at any
-time by running the `docs` command, which bootstraps the tier on its first run and curates it after that.
+understand the system. It is optional — most projects stay `context/`-only — and a project opts in at
+any time by running the `docs` command, which bootstraps the tier on its first run and curates it after
+that.
+
+Where `docs/` lives depends on whether the project stands alone or belongs to a workspace. A standalone
+project keeps its own `docs/`, built and curated the way described above. A project in a workspace never
+grows a `docs/` of its own; documentation centralizes in one landing-zone project instead, named by the
+coordinator's `[workspace] docs` field. A member repository links to the landing zone's pages rather
+than restating them, and, where its own convention adds to or narrows what a linked page states, records
+that addition beside the link — in its README or its `context/` — rather than duplicating the page.
+`commands/docs.md` checks which case applies before it bootstraps or curates anything.
 
 `docs/` borrows the posture of context engineering — keep it curated, keep it in sync, don't let it rot —
 but not the lifecycle, because it is the opposite kind of writing:
@@ -89,12 +98,12 @@ Three operations keep `context/` accurate:
   the built work proved it out, or an experiment produced a result. Don't do it silently — move the file
   and note why in `context/reset.md`. Organizing `concepts/` and `design/` the same way makes it obvious
   where a note should land.
-- **Decay** — delete a `design/` note once the built work fully expresses what it described and the
-  note holds no conceptual or pattern detail beyond it. A note that still explains a pattern, a
-  boundary, or a style the built work cannot state on its own is doing design work and stays;
-  duplication in API documentation alone is not decay. A note that does decay is a weaker second copy
-  the built work will drift from — record the removal (and point to the code or deliverable) in the
-  reset file.
+- **Decay** — delete a `design/` note once the built work, or (in a workspace) the docs landing zone,
+  fully expresses what it described, and the note holds no conceptual or pattern detail beyond it. A
+  note that still explains a pattern, a boundary, or a style neither can state on its own is doing
+  design work and stays; duplication in API documentation or a landing-zone page alone is not decay. A
+  note that does decay is a weaker second copy the built work will drift from — record the removal (and
+  point to the code, deliverable, or landing-zone page) in the reset file.
 - **Cull** — delete a concept in `concepts/` when it is no longer viable: superseded, abandoned, or
   contradicted by the way the work actually went.
 
