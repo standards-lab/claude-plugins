@@ -60,6 +60,23 @@ Route on the first argument. Each command has a detailed playbook under `command
 | `review` | On demand: check the notes against the code and clean them up | `commands/review.md` |
 | `docs` | On demand: author and curate the optional human-oriented `docs/` tier | `commands/docs.md` |
 
+## Finding your project
+
+A command's first task is locating the marathon project it's working in. Two kinds of directory answer
+to that: a project, and a workspace root.
+
+A **project** has its own top-level `context/`; that directory is what every command reads and
+maintains. A **workspace root** has no `context/` of its own — its subdirectories are the projects,
+each with a `context/`, and one of them declares `[workspace] role = "coordinator"` in its
+`.claude/marathon.toml`. At a workspace root, resolve the coordinator and read its `context/reset.md` as
+the continuity anchor: its Next-focus (Status: closeout) or Branch line (Status: handoff) names the
+member project the session actually continues in.
+
+Check which kind of directory this is before reading anything else. `init` applies only once both
+checks come back empty: no `context/` here, and no sibling project declaring a coordinator.
+`coordinate` is the exception: it targets the workspace itself, so this same check is step 1 of
+`commands/coordinate.md` rather than a preamble to it.
+
 ## The session loop
 
 ```
@@ -102,6 +119,7 @@ order = [
   ["service-a", "service-b"],
   "gateway",
 ]
+docs  = "core-lib"   # optional: the order key that is this workspace's docs landing zone
 
 # Optional: resolves an order key that is not a sibling directory.
 [workspace.paths]
@@ -182,7 +200,9 @@ The `context/` directory holds the project's written knowledge, grouped by how o
   closeout. A context project has no guide.
 - `context/reset.md` — the latest session's record and the pointer to the next step.
 - `experiments/` — top-level, for isolated spike work, created on demand.
-- `docs/` — top-level, optional, for human-oriented reference documentation; opted into via `docs`.
+- `docs/` — top-level, optional, for human-oriented reference documentation; opted into via `docs`. In a
+  workspace, one project holds it as the docs landing zone; the others link to that project instead of
+  growing their own.
 - the source code — the implementation, and the last word on what the project does.
 
 A `design/` note gets deleted once the code expresses it; a concept gets promoted to `design/` when it
