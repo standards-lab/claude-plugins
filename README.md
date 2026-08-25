@@ -11,6 +11,7 @@ projects install only the ones they need.
 | Plugin | Description |
 |--------|-------------|
 | [marathon](./plugins/marathon/) | Sustainable long-haul development workflow with context engineering |
+| [marathon-roadmap](./plugins/marathon-roadmap/) | Marathon extension: a roadmap manifest of goals, tasks, and backlog the sessions keep current |
 
 ## Installation
 
@@ -19,6 +20,7 @@ claude plugin marketplace add standards-lab/claude-plugins
 
 # Install the plugins you need
 claude plugin install marathon@standards-lab
+claude plugin install marathon-roadmap@standards-lab
 ```
 
 ## Update
@@ -26,11 +28,13 @@ claude plugin install marathon@standards-lab
 ```bash
 claude plugin marketplace update
 claude plugin update marathon@standards-lab
+claude plugin update marathon-roadmap@standards-lab
 ```
 
 ## Remove
 
 ```bash
+claude plugin remove marathon-roadmap@standards-lab
 claude plugin remove marathon@standards-lab
 claude plugin marketplace remove standards-lab
 ```
@@ -51,9 +55,11 @@ The `marathon` core is standalone — it needs only its own skill permission:
 }
 ```
 
-`marathon init` writes this file when it scaffolds a project. Opt-in platform extensions (added
-later) are enabled per project by adding their plugin to `enabledPlugins` and their skill to
-`permissions.allow` — the core never requires them.
+`marathon init` writes this file when it scaffolds a project. Marathon extensions such as
+`marathon-roadmap` are opt-in: install the plugin, grant its skill in `permissions.allow`
+(e.g. `Skill(marathon-roadmap:marathon-roadmap)`), and enable it in the repository's
+`.claude/marathon.toml` — an `extensions` key under `[project]`, or under `[workspace]` at a
+coordinator for every member project. The core never requires an extension.
 
 ## How It Works
 
@@ -82,7 +88,8 @@ claude-plugins/
 ├── CLAUDE.md                    # Agent orientation: the repo is developed under marathon
 ├── context/                     # marathon working context for the repo itself
 ├── plugins/
-│   └── marathon/                # Sustainable long-haul development workflow
+│   ├── marathon/                # Sustainable long-haul development workflow
+│   └── marathon-roadmap/        # Marathon extension: the roadmap manifest convention
 ├── LICENSE
 └── README.md
 ```

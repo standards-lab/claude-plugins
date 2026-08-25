@@ -11,6 +11,11 @@
       "name": "marathon",
       "source": "./plugins/marathon",
       "description": "Sustainable long-haul development workflow with context engineering"
+    },
+    {
+      "name": "marathon-roadmap",
+      "source": "./plugins/marathon-roadmap",
+      "description": "Marathon extension: a roadmap manifest of goals, tasks, and backlog the sessions keep current"
     }
   ]
 }
