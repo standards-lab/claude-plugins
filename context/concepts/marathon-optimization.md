@@ -1,7 +1,21 @@
 # Marathon optimization pass
 
-Candidate direction for a dedicated future session (or sessions) over the marathon skill, along two
-axes. Both are unscheduled; the 0.7.0 restructure should see real use first.
+Candidate direction for a dedicated future session (or sessions) over the marathon skill, along
+three axes. All are unscheduled; the 0.7.0 restructure should see real use first — except the
+workspace-reset convention, which is already settled in practice and scheduled as
+`backlog.marathon-workspace-reset` in the workspace roadmap.
+
+## Workspace axis: a single reset file at the coordinator
+
+Settled in practice at the go-database `query-vocabulary` closeout (2026-08-25), codification
+tracked as `backlog.marathon-workspace-reset`. A workspace maintains one reset file, at the
+coordinator; member projects carry none. The current mechanics route continuity through member
+reset files — the coordinator's reset names the member, and the member's own `reset.md` carries
+the record — which splits one session's story across repositories and is exactly where a session
+already failed to keep both current. Under the convention, LOCATE at any workspace directory
+resolves the coordinator's reset directly, Next-focus names the member project a session
+continues in, and the member-reset routing (including the resting-point deletion rule) drops out
+of `mechanics/pipeline.md` and `SKILL.md`. A standalone project keeps its own reset unchanged.
 
 ## Mechanical axis: how the skill files load
 
