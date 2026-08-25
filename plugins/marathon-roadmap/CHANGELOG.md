@@ -4,6 +4,14 @@ All notable changes to the marathon-roadmap plugin are documented here. Versions
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## [v0.1.1]
+
+### Changed
+
+- **The skill is passive** — `user-invocable: false` in the SKILL.md frontmatter keeps it out of
+  the slash-command menu. An extension skill is resolved by marathon's hook firing, or loaded by
+  the model on a roadmap question; it is never typed as a command.
+
 ## [v0.1.0]
 
 ### Added

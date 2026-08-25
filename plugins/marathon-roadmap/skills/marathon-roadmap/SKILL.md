@@ -1,5 +1,6 @@
 ---
 name: marathon-roadmap
+user-invocable: false
 description: >
   A marathon extension that keeps a roadmap manifest — context/roadmap.toml — as the single
   source of what remains on a project's or workspace's path to its target end state: goals,
