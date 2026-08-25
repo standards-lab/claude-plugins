@@ -1,34 +1,32 @@
-# reset · marathon-extensions
+# reset · marathon-roadmap
 
 - **Status:** closeout
 - **Session:** start
-- **Branch:** marathon-extensions
+- **Branch:** marathon-roadmap
 
 ## Disposition
 
-- **Integrated:** the extension-system and voice-wiring halves of `concepts/marathon-extensions.md`
-  — built into marathon 0.7.0. The session's plan-mode work also widened the settled design:
-  extensions enable through a `marathon.toml` `extensions` key (`[project]`, or `[workspace]` at a
-  coordinator) rather than artifact presence; no separate hook-contract version — an extension
-  targets a marathon version; every hook fires before the moment it names, with `on-close` ahead of
-  the closeout commit so extension finalization lands inside it. Two new skill tiers carry the
-  result: `mechanics/` (`pipeline.md`, the five-stage session pipeline all nine commands now layer
-  into; `hooks.md`, the firing spec) and `behavior/` (`voice.md`, always active via SKILL.md's
-  Behavior section, naming the framing intent). `references/extensions.md` documents the system;
-  `extension-hooks.md` and `session-loop.md` retired into the mechanics tier. `docs/` articulated as
-  the standardized tier of the context lifecycle (`references/context-engineering.md`). The
-  user-scope voice companion landed in ~/claude-settings (`69a7fcf`).
-- **Retained:** the concept's remaining half, renamed `concepts/marathon-roadmap.md` and updated to
-  the 0.7.0 contract — the next session's input.
-- **Added:** `concepts/marathon-optimization.md` — an unscheduled pass over data flow and context
-  budget once the restructure has seen real use.
-- **Cross-repo:** standards-lab `context/roadmap.toml` — `backlog.marathon-extensions` deleted,
-  `next` advanced to `backlog.marathon-roadmap`, its context link updated to the renamed concept.
-  docs gained `context/concepts/harness-engineering.md`, capturing a landing-zone layer for harness
-  engineering conventions.
+- **Integrated:** `concepts/marathon-roadmap.md` — built as the marathon-roadmap plugin at
+  0.1.0 (`plugins/marathon-roadmap/`) and culled per the skill-is-the-source-of-truth rule.
+  The skill mirrors marathon's tiers: SKILL.md carries the identity and declaration (artifact
+  `context/roadmap.toml`; hooks `on-start`, `on-reset`, `on-close`; targets marathon 0.7);
+  `mechanics/pipeline.md` maps marathon's firing points to the per-hook instruction files,
+  listing only the hooks the extension connects to; `references/manifest.md` is the full
+  manifest format with bootstrap header and worked example. Host surfaces updated:
+  `marketplace.json`, the repository README (plugin table, install commands, the
+  `marathon.toml` enablement model, structure tree), and the capability map in
+  `context/README.md`.
+- **Cross-repo:** standards-lab — `[workspace] extensions = ["marathon-roadmap"]` in
+  `.claude/marathon.toml`; `context/roadmap.toml`'s convention header slimmed to a pointer at
+  the plugin; and the extension's `on-close` applied by hand as its first exercise —
+  `backlog.marathon-roadmap` deleted, `next` advanced to `v1.data.reads`.
+- **Retained:** `concepts/marathon-functions.md` and `concepts/marathon-optimization.md`,
+  untouched by this step. The developer's post-merge steps: tag `marathon-roadmap/v0.1.0` to
+  cut the release, and install the plugin so the workspace-enabled extension resolves in
+  future sessions.
 
 ## Next-focus
 
-`backlog.marathon-roadmap`: build the marathon-roadmap extension plugin on the 0.7.0 contract, per
-`concepts/marathon-roadmap.md` — the `context/roadmap.toml` manifest convention as a marathon
-extension declaring `on-start`, `on-reset`, and `on-close`. After it, `v1.data.reads` (go-core).
+`v1.data.reads` — the coordinated reads slice across go-database, go-web-sdk, and
+go-web-service, per `go-web-service/context/concepts/data-layer.md`. A `coordinate` session
+from the workspace root.

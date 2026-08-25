@@ -13,6 +13,8 @@ Broad and shallow; detail is added when a capability is about to be built.
 - **marathon** — the sustainable long-haul development workflow, built on context engineering. The
   substance of the repository today; it distinguishes code from context projects, runs `plan`/`start`/
   `experiment` sessions, and coordinates a change across several projects in a workspace.
+- **marathon-roadmap** — the first marathon extension: the roadmap manifest convention
+  (`context/roadmap.toml` — goals, tasks, backlog) kept current through marathon's session hooks.
 - **marketplace host** — the marketplace manifest and the per-plugin, independent versioning and release of
   each hosted plugin.
 - **further plugins** (candidate) — the set grows as processes prove worth codifying: diagram
