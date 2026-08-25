@@ -1,7 +1,8 @@
 # marathon close
 
 Close out a session whose work is finished and validated. It's the same idea as `reset`, but for
-completed work: tidy the notes, record what happened, and publish the work.
+completed work: tidy the notes, record what happened, and publish the work. `close` is the pipeline's
+CONCLUDE stage for a finished step (`mechanics/pipeline.md`).
 
 ## 1. Finish the agent's part
 
@@ -9,8 +10,7 @@ On a **code** project's `start`, the developer has applied the production code f
 the parts the role boundary gives the agent:
 
 - tests for the new behavior, and
-- in-source comments and API docs, plus any prose documentation — written per the voice standard in
-  `references/writing-voice.md`.
+- in-source comments and API docs, plus any prose documentation.
 
 Then validate — run the tests and the build. Don't close on a failure; fix it (within the agent's part)
 or hand it back to the developer.
@@ -57,10 +57,6 @@ have no guide to drop.
 
 ## 6. Commit and publish
 
-Stage everything and commit; this fires the `on-commit` hook. Then publish the branch with the remote
-platform's command from `.claude/marathon.toml` — `gh pr create`, `glab mr create`, or the project's
-equivalent — using the change description from `context/reset.md`. If the project declared no remote,
-stop after the commit.
-
-Run the `on-closeout` hook so any project-management extension can mirror the result outward. With no
-extension, it does nothing.
+Stage everything and commit. Then publish the branch with the remote platform's command from
+`.claude/marathon.toml` — `gh pr create`, `glab mr create`, or the project's equivalent — using the
+change description from `context/reset.md`. If the project declared no remote, stop after the commit.

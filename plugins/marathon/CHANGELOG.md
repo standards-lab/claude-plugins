@@ -4,7 +4,42 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
-## [v0.6.0]
+## [v0.7.0]
+
+### Added
+
+- **Mechanics tier** — a new `mechanics/` directory holds the skill's execution specs, written for
+  agent action. `mechanics/pipeline.md` defines the five-stage session pipeline every command runs —
+  locate, start, settle, execute, conclude — and how each command layers into it; the nine command
+  playbooks are slimmed to the content of their stages. `mechanics/hooks.md` is the hook firing spec:
+  resolution of the enabled extension set, the firing table, and per-command ordering constraints.
+- **Generic extension system** — the platform-tracker hook points (`on-init`, `on-session-start`,
+  `on-commit`, `on-closeout`) become five universal hooks bound to the pipeline stages: `on-start`,
+  `on-execute`, `on-commit`, `on-reset`, `on-close`, each firing before the moment it names. An
+  extension is a separately installed skill; a repository enables it with an `extensions` key in
+  `.claude/marathon.toml` — `[project]` for itself, `[workspace]` at a coordinator for every member —
+  replacing `init`-time selection. `references/extensions.md` documents the system: installed vs.
+  enabled, the extension's SKILL.md declaration, artifact bootstrapping, and the source-of-truth rule
+  restated for repo-native extensions (an extension may own its artifact inside the repository;
+  anything projected outward is a read-only mirror). `references/extension-hooks.md` is retired.
+- **Behavior tier** — a new `behavior/` directory holds always-active conduct, mirroring the
+  user-scope `behavior/` convention. The voice standard moves there
+  (`references/writing-voice.md` → `behavior/voice.md`) and loads with the skill through an `@`
+  reference in SKILL.md's new Behavior section, instead of waiting to be consulted; the standard now
+  names its intent — natural language rooted in proper American English grammar, free of the patterns
+  identifiable as machine-generated prose.
+
+### Changed
+
+- **SKILL.md reorganized around the sub-structures** — new Behavior and Mechanics sections initialize
+  those tiers directly below the direct skill context; the Extensions section replaces Extension
+  hooks.
+- **`docs/` articulated as the standardized tier of context** — the lifecycle reads
+  `concepts/` (volatile) → `design/` (settled) → `docs/` (standardized convention), with the
+  established rule unchanged: a `docs/` page itself never decays. Stated in
+  `references/context-engineering.md` and `commands/docs.md`.
+
+
 
 ### Added
 

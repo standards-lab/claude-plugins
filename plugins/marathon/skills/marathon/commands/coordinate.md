@@ -90,10 +90,10 @@ the session, exactly like a single project's `context/guide.md`.
 Work the layers in order, lowest first. Finish a layer before starting the next, so a higher layer
 builds against the real change beneath it and not a promise. Within a layer, the peer projects have no
 dependency between them: do them in any order. For each project, run its part as the marathon session it
-would be on its own, honoring the project's kind. Each project branches at the start of its own part,
-under the coordinated change's shared slug; the plan approved collectively in step 3 substitutes for
-that project's own plan-mode gate; and `on-session-start` fires per project as its part begins (see
-`references/extension-hooks.md`).
+would be on its own, honoring the project's kind. Each project's part runs the session pipeline
+(`mechanics/pipeline.md`): it branches at the start of its own part, under the coordinated change's
+shared slug, and the plan approved collectively in step 3 substitutes for that project's own SETTLE
+stage.
 
 - **code project** — hand the developer that project's slice of the consolidated guide and let them
   apply it; stay available for fixes. Then, at that project's closeout, the agent adds its tests and
@@ -121,6 +121,7 @@ project's `reset.md` says it is.
 
 ## Not yet handled
 
-When a coordinated change touches several projects that each mirror to a project-management tracker, how
-the extension hooks fire across them is not yet defined. For now the hooks fire per project as they
-normally do; cross-tracker coordination is left to a later step. See `references/extension-hooks.md`.
+When a coordinated change touches several projects whose extensions each mirror outward, how the
+change should present across those mirrors at once is not yet defined. For now each project's hooks
+fire within its own session as they normally do; cross-mirror coordination is left to a later step.
+See `references/extensions.md`.

@@ -4,8 +4,11 @@ Set up marathon on a repository, starting from a project-planning concept. Run t
 When it's done, the repo has a top-level `context/` directory that the rest of the workflow reads and
 maintains, plus the Claude configuration the project needs.
 
-`init` commits to the project's founding decisions, so do the thinking in plan mode and agree on them
-with the developer before creating any files.
+`init` runs the session pipeline (`mechanics/pipeline.md`) on a repository that has none of it yet:
+its LOCATE is the check that both marks are absent — no `context/` here, no sibling project declaring
+a coordinator — and its CONCLUDE is its own setup commit. `init` commits to the project's founding
+decisions, so do the thinking in plan mode and agree on them with the developer before creating any
+files.
 
 ## 1. Find the concept
 
@@ -13,9 +16,9 @@ Find the project-planning concept: a document the developer points you to (often
 charter), or, if there isn't one, work with the developer to write it. The concept gives you the vision
 and the rough territory to start from; the structure comes out of planning.
 
-## 2. Plan it out first
+## 2. Settle the founding decisions
 
-Enter plan mode, read the concept closely, and settle these with the developer rather than assuming them:
+Read the concept closely, and settle these with the developer rather than assuming them:
 
 - **Vision** — one paragraph on what the project is for.
 - **Project kind** — whether the repository holds production source the developer authors (`code`) or
@@ -31,21 +34,19 @@ Enter plan mode, read the concept closely, and settle these with the developer r
 - **Remote platform** — which remote the project publishes to, and the command that proposes a change
   there: `gh pr create` for GitHub, `glab mr create` for GitLab, the equivalent for another platform, or
   none for local-only. This is required; closeout uses it to publish.
-- **Project-management extension** — optionally, whether to turn on a project-management extension now
-  (issues, boards) or stay standalone. The core works without one, and you can add it later.
 
 Don't create anything until the developer approves the plan.
 
 ## 3. Create the structure
 
 Set up the directories and files. Seed them shallow — a few sentences each is right; resist writing
-detail up front. Write the prose per the voice standard in `references/writing-voice.md`.
+detail up front.
 
 ```
 <repo>/
 ├── CLAUDE.md                  # short: says the repo uses marathon; points into context/; states the role boundary
 ├── .claude/
-│   ├── settings.json          # plansDirectory; permissions; any chosen extension
+│   ├── settings.json          # plansDirectory; permissions
 │   └── marathon.toml          # project kind; remote platform + publish command
 └── context/
     ├── README.md              # vision + capability map
@@ -60,10 +61,10 @@ detail up front. Write the prose per the voice standard in `references/writing-v
 - `.claude/marathon.toml` — record the project kind (`[project] kind = "code"` or `"context"`) and the
   remote platform with its publish command. If this project coordinates a workspace, add the
   `[workspace]` block too (`role = "coordinator"` and a layered `order`); most projects don't. See
-  `references/workspace-coordination.md`.
+  `references/workspace-coordination.md`. Extensions are not an `init` decision: a repository enables
+  one whenever the convention is adopted, by adding the `extensions` key (see
+  `references/extensions.md`).
 - `.claude/settings.json` — set `plansDirectory` to `./.claude/plans` and allow `Skill(marathon:marathon)`.
-  If you chose a project-management extension, enable its plugin and allow its skill and tools here too;
-  otherwise leave it out.
 - `CLAUDE.md` — keep it short: name the workflow, point to `context/README.md` for orientation, and
   state the role boundary for the project's kind in plain, language-neutral terms — for a `code`
   project, the developer owns the production code and the agent writes tests, documentation, and
@@ -73,10 +74,7 @@ detail up front. Write the prose per the voice standard in `references/writing-v
   when the session needs it and closeout deletes it. A `context` project never has one.
 - Don't create `experiments/` now; an experiment session makes it when it's needed.
 
-If you set up a platform extension, run its `on-init` hook so it can establish its outward side (creating
-the project's board, for example). With no extension, this does nothing.
-
 ## 4. Commit the setup
 
-Stage everything and make the first commit; this fires the `on-commit` hook. The repo is now
-marathon-managed, and the developer starts real work with `plan` or `start`.
+Stage everything and make the first commit. The repo is now marathon-managed, and the developer starts
+real work with `plan` or `start`.
