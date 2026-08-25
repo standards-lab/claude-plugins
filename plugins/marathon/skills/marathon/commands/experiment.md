@@ -9,19 +9,18 @@ An experiment earns nothing by default. Its results are concepts, not settled de
 works is evidence, not a decision. Nothing moves into `design/` — or into the product — without a
 deliberate promotion at closeout.
 
-## 1. Plan the spike
+`experiment` runs the session pipeline (`mechanics/pipeline.md`). A handoff recorded under Session
+`experiment` resumes here.
 
-First locate the project (`SKILL.md`'s "Finding your project" — a workspace root routes to the
-coordinator before anything else). Then read its `context/reset.md`. If its Status is `handoff` and its
-Session is `experiment`, a previous spike stopped mid-work: check out the open branch, read the
-Next-focus, and resume it. (A handoff recorded under another Session belongs to that command.)
+## Settle
 
-Otherwise enter plan mode and settle with the developer what the experiment is testing and how you'll
-know it worked — the question the spike answers. Keep the scope to that question; an experiment that
-sprawls stops being cheap to set aside. Once the question is agreed, run the `on-session-start` hook
-and create a branch named after the spike.
+The scope to settle is what the experiment is testing and how you'll know it worked — the question
+the spike answers. Keep the scope to that question; an experiment that sprawls stops being cheap to
+set aside.
 
-## 2. Work in experiments/
+Branch slug: the spike.
+
+## Execute: work in experiments/
 
 Make the top-level `experiments/<slug>/` directory and do the spike there. Both project kinds spike the
 same way — in isolation, treating the result as evidence:
@@ -34,7 +33,7 @@ Stay inside `experiments/`. Don't reach into the real tree or the product; the i
 the spike safe to explore. The directory is tracked like any other: commit the spike's work on the
 branch as you go.
 
-## 3. Close out: promote deliberately, or don't
+## Conclude: promote deliberately, or don't
 
 At `close`, decide with the developer what the spike earned. A result that proved out is promoted on
 purpose — captured as a concept in `concepts/`, or teed up as the next `start` — and promotion is what

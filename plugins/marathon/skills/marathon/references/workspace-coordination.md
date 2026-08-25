@@ -100,6 +100,6 @@ fan-out applies them as it works each project.
 
 ## Not yet settled
 
-How a coordinated change should present when several participating projects each mirror to a
-project-management tracker is left open; see `references/extension-hooks.md`. Until it is settled, hooks
-fire per project and cross-tracker coordination is deferred.
+How a coordinated change should present when several participating projects' extensions each mirror
+outward is left open; see `references/extensions.md`. Until it is settled, hooks fire per project and
+cross-mirror coordination is deferred.

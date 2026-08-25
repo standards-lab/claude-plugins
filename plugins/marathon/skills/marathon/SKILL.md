@@ -44,6 +44,22 @@ directory) and you're:
 
 If a repository doesn't have a `context/` directory yet and you want this workflow, start with `init`.
 
+## Behavior
+
+Always active, loaded with this skill: the voice standard governing everything the agent writes in
+prose — design notes and concepts, reset files, implementation guides, documentation, and the skill's
+own files.
+
+@behavior/voice.md
+
+## Mechanics
+
+Every command runs the same five-stage session pipeline — locate, start, settle, execute, conclude —
+and the extension hooks fire only at the points the pipeline names. The specs under `mechanics/` are
+the execution layer: `mechanics/pipeline.md` defines the stages and how each command layers into
+them; `mechanics/hooks.md` defines how extensions are resolved and their hooks fired. A command's
+playbook under `commands/` supplies only the content of its stages.
+
 ## Sub-commands
 
 Route on the first argument. Each command has a detailed playbook under `commands/`.
@@ -94,8 +110,8 @@ checks come back empty: no `context/` here, and no sibling project declaring a c
 A session is one unit of work on one branch. It ends in one of two ways. If the work is finished,
 `close` commits and publishes it. If the context window is filling up before the work is done, `reset`
 checkpoints it and hands off, so a fresh context can pick up the same branch. Both write
-`context/reset.md`; `close` is the version that also finishes the work. See `references/session-loop.md`
-for the full walk-through.
+`context/reset.md`; `close` is the version that also finishes the work. The execution spec behind the
+loop is the session pipeline (see Mechanics).
 
 ## Project kind
 
@@ -106,6 +122,8 @@ every session afterward. This is the canonical layout of the whole file:
 [project]
 kind = "code"        # production source the developer authors and answers for
 # kind = "context"   # the whole repository is context — the agent authors it directly
+# Optional: marathon extensions enabled for this project, by skill name.
+# extensions = ["<extension>"]
 
 [remote]
 platform = "github"  # the platform the project publishes to
@@ -120,6 +138,8 @@ order = [
   "gateway",
 ]
 docs  = "core-lib"   # optional: the order key that is this workspace's docs landing zone
+# Optional: marathon extensions enabled for every project in the workspace.
+# extensions = ["<extension>"]
 
 # Optional: resolves an order key that is not a sibling directory.
 [workspace.paths]
@@ -200,9 +220,9 @@ The `context/` directory holds the project's written knowledge, grouped by how o
   closeout. A context project has no guide.
 - `context/reset.md` — the latest session's record and the pointer to the next step.
 - `experiments/` — top-level, for isolated spike work, created on demand.
-- `docs/` — top-level, optional, for human-oriented reference documentation; opted into via `docs`. In a
-  workspace, one project holds it as the docs landing zone; the others link to that project instead of
-  growing their own.
+- `docs/` — top-level, optional, for human-oriented reference documentation: the standardized tier of
+  the context lifecycle, above `design/`; opted into via `docs`. In a workspace, one project holds it
+  as the docs landing zone; the others link to that project instead of growing their own.
 - the source code — the implementation, and the last word on what the project does.
 
 A `design/` note gets deleted once the code expresses it; a concept gets promoted to `design/` when it
@@ -229,7 +249,7 @@ the repository directly — its skills, prose, configuration, and everything in 
 owns direction and reviews and approves the result; the pull request is where ownership is exercised.
 
 Keep the rule language-neutral. See `references/role-boundary.md`. Everything the agent writes in
-prose, on either kind of project, follows the voice standard in `references/writing-voice.md`.
+prose, on either kind of project, follows the voice standard loaded in Behavior.
 
 ## Continuity
 
@@ -287,12 +307,15 @@ resolve the coordinator through its `[workspace] role`, and read the coordinator
 as the continuity anchor. The reset file's Branch line names the repository the session continues in,
 so a session started at the workspace root finds its way without being told.
 
-## Extension hooks
+## Extensions
 
-The core's git workflow is platform-neutral; the remote platform, and the command that publishes a
-finished branch (`gh pr create`, `glab mr create`, or another), is declared at `init` and stored in
-`.claude/marathon.toml`. On top of that, the core calls named hook points — `on-init`,
-`on-session-start`, `on-commit`, `on-closeout` — where an optional project-management extension can
-mirror the repo's state onto a platform's tracker (issues, boards). The points do nothing when no
-extension is set up. Information flows one way: an extension reads the repo and projects outward, never
-back into the core. See `references/extension-hooks.md`.
+An extension is a separately installed skill that layers a convention into marathon's sessions: a
+roadmap manifest the sessions keep current, or a tracker that mirrors the repository's state. Every
+session fires five universal hooks — `on-start` when any command begins, `on-execute` at plan
+approval, `on-commit` before each commit, `on-reset` before the reset file is written, `on-close` at
+closeout before the closeout commit — and at each point the agent applies every enabled extension
+that declares it. A repository enables an extension in `.claude/marathon.toml`, under `[project]`
+for itself or under `[workspace]` at a coordinator for every member project. The repository stays
+the source of truth: an extension maintains its artifact inside the repository, and anything it
+projects outward is a read-only mirror. `references/extensions.md` documents the system;
+`mechanics/hooks.md` is the firing spec the pipeline executes.

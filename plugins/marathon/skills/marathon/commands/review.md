@@ -5,10 +5,11 @@ they've drifted from the code, or before starting something big. `review` keeps 
 source of truth. It is the backward-looking counterpart to `plan`: `review` asks whether the notes have
 fallen behind what the project now expresses, where `plan` works out what comes next.
 
-Reviewing means deciding what to delete and what to promote, which matters, so run it in plan mode and
-agree with the developer before changing anything.
+`review` runs the session pipeline (`mechanics/pipeline.md`), recorded under `Session: review`.
+Reviewing means deciding what to delete and what to promote, which matters, so the whole proposal is
+settled with the developer before anything changes.
 
-## 1. Look for drift
+## Settle: look for drift
 
 Read the `context/` notes against the code — or, on a context project, against the deliverable they
 document — and look for:
@@ -26,18 +27,19 @@ document — and look for:
   this repository's prose and structure. The member repo never cites those conventions; the review
   consults them at session time. See `references/workspace-coordination.md`.
 
-## 2. Agree, then apply
+Show the developer what you propose to change and settle it together.
 
-Show the developer what you propose to change and settle it together. Apply only what's agreed: delete
-the decayed notes (recording that you did), cull the dead concepts, promote the proven ones, and fix
-the orientation. Anything rewritten follows the voice standard in `references/writing-voice.md`.
+Branch slug: the review's topic.
+
+## Execute: apply what's agreed
+
+Apply only what's agreed: delete the decayed notes (recording that you did), cull the dead concepts,
+promote the proven ones, and fix the orientation.
 
 End the pass with fewer notes, each one true. Don't invent a home for a note that doesn't have one,
 and don't add detail an upcoming step doesn't need.
 
-## 3. Land the changes
+## Conclude
 
-Because `review` edits the agent's context notes, land them like any other work so the cleanup is
-traceable: once the changes are agreed, run the `on-session-start` hook, create a branch named after
-the review's topic, and apply them there. Close the session with `close` — it records the
-dispositions in `context/reset.md` under `Session: review` and publishes the branch.
+Close with `close` — it records the dispositions in `context/reset.md` under `Session: review` and
+publishes the branch.

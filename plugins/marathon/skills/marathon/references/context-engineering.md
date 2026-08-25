@@ -61,8 +61,14 @@ than restating them, and, where its own convention adds to or narrows what a lin
 that addition beside the link — in its README or its `context/` — rather than duplicating the page.
 `commands/docs.md` checks which case applies before it bootstraps or curates anything.
 
-`docs/` borrows the posture of context engineering — keep it curated, keep it in sync, don't let it rot —
-but not the lifecycle, because it is the opposite kind of writing:
+`docs/` is also the top of the context lifecycle: its standardized tier. The three tiers hold the same
+kind of knowledge at different stages of settlement — `concepts/` is volatile context, `design/` is
+non-volatile settled intent, and `docs/` is standardized convention, stated for a general reader and
+relied on from outside the project. Knowledge graduates upward: a concept that proves out is promoted
+into `design/`, and a design note is expressed either by the built work or by a `docs/` page that
+standardizes it — the decay rule below names both targets.
+
+What `docs/` does not share is decay itself:
 
 - `context/` is agent-oriented and decays *toward* the code. A `design/` note is a defect once the code
   expresses it, so `context/` shrinks as the code grows.

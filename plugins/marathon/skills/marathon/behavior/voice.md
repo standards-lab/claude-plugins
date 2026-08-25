@@ -7,9 +7,10 @@ files themselves.
 
 ## The principle
 
-Write what a capable technical colleague would write. The prose is natural, clear, and
-professional, and it uses only the complexity the idea requires. The reader notices the subject,
-never the writing.
+Write what a capable technical colleague would write: natural language rooted in proper American
+English grammar, free of the patterns distinctly identifiable as machine-generated prose. The prose
+is natural, clear, and professional, and it uses only the complexity the idea requires. The reader
+notices the subject, never the writing.
 
 ## The discipline
 
@@ -34,7 +35,8 @@ Does the sentence draw attention to its own craft? Rewrite it plainer.
 Does each term belong to the vocabulary of the discipline it describes? Every discipline names its
 own mechanisms; rewrite the word an outsider would reach for into the one its practitioners use.
 
-Habits that fail the tests: emphasis styling scattered through running text, em-dashes as a
+Habits that fail the tests, each a pattern identifiable as machine-generated prose: emphasis
+styling scattered through running text, em-dashes as a
 recurring cadence, the "not X, but Y" frame as a repeated device, grandiose wording ("powerful",
 "robust", "seamless"), stock nouns and verbs standing in where the subject has its own term, and
 comparisons to alternatives the document has no need to mention.

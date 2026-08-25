@@ -6,8 +6,9 @@ promoting notes that prove out, deleting notes the code has caught up to — and
 branch-based sessions, one finished step at a time.
 
 This README is a quick reference. The skill itself is the source of truth for how marathon behaves;
-its files under [`skills/marathon/`](./skills/marathon/) — `SKILL.md`, the `commands/` playbooks, and
-the `references/` deep-dives — describe the full detail.
+its files under [`skills/marathon/`](./skills/marathon/) — `SKILL.md`, the `commands/` playbooks, the
+`mechanics/` execution specs, the `behavior/` always-active conduct, and the `references/` deep-dives —
+describe the full detail.
 
 ## Install
 
@@ -58,6 +59,16 @@ When several marathon projects live as siblings under one directory — a worksp
 single change across them in dependency order, fanning out a session to each and honoring its kind. The
 workspace holds no context of its own; continuity stays per repository. See
 [`references/workspace-coordination.md`](./skills/marathon/references/workspace-coordination.md).
+
+## Extensions
+
+marathon is extensible: a separately installed skill can act at the five hooks every session fires —
+`on-start`, `on-execute`, `on-commit`, `on-reset`, `on-close` — and a repository enables it in
+`.claude/marathon.toml`, for itself under `[project]` or for a whole workspace under the coordinator's
+`[workspace]`. The repository stays the source of truth; anything an extension projects outward is a
+read-only mirror. See
+[`references/extensions.md`](./skills/marathon/references/extensions.md) for the system and
+[`mechanics/hooks.md`](./skills/marathon/mechanics/hooks.md) for the firing spec.
 
 ## Releases
 

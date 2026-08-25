@@ -23,7 +23,7 @@ directly:
 - the implementation guide itself.
 
 The prose in this material — comments and documentation, the files in `context/`, the guide — follows
-the voice standard in `references/writing-voice.md`.
+the voice standard in `behavior/voice.md`.
 
 ## Context projects: the agent authors the repository
 
@@ -33,7 +33,7 @@ there is nothing to hand off through a guide: the agent authors the repository d
 including everything in `context/`. The developer owns the work by directing it and by reviewing and
 approving each change; the pull request is where that ownership is exercised, in place of applying a
 guide. There are no tests and no implementation guide, because there is no code layer to test or hand
-off. The prose the agent authors follows the voice standard in `references/writing-voice.md`.
+off. The prose the agent authors follows the voice standard in `behavior/voice.md`.
 
 ## The test
 
