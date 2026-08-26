@@ -1,14 +1,15 @@
 # Marathon optimization pass
 
-Candidate direction for a dedicated future session (or sessions) over the marathon skill, along
-three axes. All are unscheduled; the 0.7.0 restructure should see real use first — except the
-workspace-reset convention, which is already settled in practice and scheduled as
-`backlog.marathon-workspace-reset` in the workspace roadmap.
+Candidate direction for a dedicated future session (or sessions) over the marathon skill. The
+pass is scheduled as `backlog.marathon-optimization` in the workspace roadmap; the 0.7.0
+restructure should see real use before the mechanical and decision-guidance axes run. Two
+conventions within it — the workspace reset and the comment-free guide — are already settled
+in practice and wait only on codification.
 
 ## Workspace axis: a single reset file at the coordinator
 
-Settled in practice at the go-database `query-vocabulary` closeout (2026-08-25), codification
-tracked as `backlog.marathon-workspace-reset`. A workspace maintains one reset file, at the
+Settled in practice at the go-database `query-vocabulary` closeout (2026-08-25). A workspace
+maintains one reset file, at the
 coordinator; member projects carry none. The current mechanics route continuity through member
 reset files — the coordinator's reset names the member, and the member's own `reset.md` carries
 the record — which splits one session's story across repositories and is exactly where a session
@@ -16,6 +17,22 @@ already failed to keep both current. Under the convention, LOCATE at any workspa
 resolves the coordinator's reset directly, Next-focus names the member project a session
 continues in, and the member-reset routing (including the resting-point deletion rule) drops out
 of `mechanics/pipeline.md` and `SKILL.md`. A standalone project keeps its own reset unchanged.
+
+## Guide axis: no comments in implementation guides
+
+Settled in the go-web-sdk `read-contract` session (2026-08-26), after guides had carried godoc
+comments for several sessions running. The rule was already implied but never stated in one
+place: `commands/start.md` excludes "the tests or documentation the agent adds at closeout,"
+`references/role-boundary.md` puts in-source comments and API documentation on the agent's
+side of the line, and `references/implementation-guides.md` bans "explanatory comments" in
+code blocks. What defeats the implication each session is the same reference's "the same as
+the production code will be" — the finished code *does* carry godoc, so the idiomatic-Go prior
+resolves the ambiguity toward documented code every time a fresh context reads it.
+
+Codification: one explicit sentence in `references/implementation-guides.md` — the guide's
+code blocks carry no comments of any kind; doc comments and API documentation are the agent's
+closeout work, not part of the handoff. Under the git-blame test, a comment the developer
+types from the guide would blame to the wrong party.
 
 ## Mechanical axis: how the skill files load
 
