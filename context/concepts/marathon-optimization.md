@@ -2,9 +2,9 @@
 
 Candidate direction for a dedicated future session (or sessions) over the marathon skill. The
 pass is scheduled as `backlog.marathon-optimization` in the workspace roadmap; the 0.7.0
-restructure should see real use before the mechanical and decision-guidance axes run. Two
-conventions within it — the workspace reset and the comment-free guide — are already settled
-in practice and wait only on codification.
+restructure should see real use before the mechanical and decision-guidance axes run. Three
+conventions within it — the workspace reset, the comment-free guide, and validation-gated
+tending — are already settled in practice and wait only on codification.
 
 ## Workspace axis: a single reset file at the coordinator
 
@@ -33,6 +33,28 @@ Codification: one explicit sentence in `references/implementation-guides.md` —
 code blocks carry no comments of any kind; doc comments and API documentation are the agent's
 closeout work, not part of the handoff. Under the git-blame test, a comment the developer
 types from the guide would blame to the wrong party.
+
+## Tending axis: context tending follows validation
+
+Settled in the go-web-service `organization-reads` session (2026-08-26). The pipeline directs
+the context edits noted during SETTLE into EXECUTE — `mechanics/pipeline.md` SETTLE step 3:
+"These edits are made in 4 · EXECUTE, after approval" — which on a code project places the
+record of the session's conventions *before* the developer has applied and validated the guide.
+The session hit exactly that: layout conventions settled in plan mode were about to be written
+into the service's design notes while the implementation existed only as an unapplied guide. Had
+validation then reshaped a convention, the notes would already assert the unproven version — the
+decay rule's failure mode, created by the workflow itself.
+
+The convention: on a code project, tending waits for validation. EXECUTE produces the guide and
+nothing else; the notes record what the applied code proved, so the tending pass — integrating,
+promoting, culling, and recording settled conventions — belongs to CONCLUDE, where `close`
+already tidies notes. A handoff records in-flight direction in the reset Disposition without
+touching the notes. A context project is unchanged: there the change *is* the context, and
+authoring it is EXECUTE's whole job.
+
+Codification: reword `mechanics/pipeline.md` SETTLE step 3 to defer the noted edits to CONCLUDE
+on a code project, and one sentence in `commands/start.md` Execute — the guide is the step's
+only artifact; context tending is closeout work.
 
 ## Mechanical axis: how the skill files load
 
