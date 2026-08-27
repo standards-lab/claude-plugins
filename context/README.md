@@ -15,6 +15,9 @@ Broad and shallow; detail is added when a capability is about to be built.
   `experiment` sessions, and coordinates a change across several projects in a workspace.
 - **marathon-roadmap** — the first marathon extension: the roadmap manifest convention
   (`context/roadmap.toml` — goals, tasks, backlog) kept current through marathon's session hooks.
+- **marathon-sitrep** (candidate) — audience-calibrated situation reports over a date range, read
+  from the workspace's git history, session record, and roadmap deltas; the first enhancement-facet
+  extension. Concept: `concepts/marathon-sitrep.md`.
 - **marketplace host** — the marketplace manifest and the per-plugin, independent versioning and release of
   each hosted plugin.
 - **further plugins** (candidate) — the set grows as processes prove worth codifying: diagram
