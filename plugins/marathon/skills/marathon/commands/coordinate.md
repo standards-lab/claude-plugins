@@ -3,7 +3,7 @@
 Run one change across several marathon projects that live together in a workspace. Use `coordinate`
 when a single objective genuinely spans more than one project in dependency order — build a capability
 in a lower project and take it up into the one that consumes it, in the same effort. Each project is
-handled as a normal marathon session with its own branch, `reset.md`, and published change;
+handled as a normal marathon session with its own branch and published change;
 `coordinate` is the orchestration wrapper around them, and it holds no state of its own.
 
 For the design behind this — why the workspace holds no context, and how the mechanism splits from the
@@ -60,12 +60,10 @@ Run from the workspace directory (or name it). Then:
 ## 2. Take the objective
 
 `coordinate` needs to know which projects the change touches and what each one does. It accepts the
-objective in any of three forms:
+objective in either of two forms:
 
-- **a set of reset files** — the participating projects are already checkpointed; their `reset.md`
-  Next-focus lines are the per-project instructions.
-- **a single reset** the orchestration points to — one project's Next-focus that names the cross-repo
-  work; expand it into the participants.
+- **the coordinator's reset** — its Next-focus names the cross-repo work; expand it into the
+  participants.
 - **direct instructions** — described in the session, in place of pre-planned per-project detail.
 
 From whichever form, settle the set of involved projects and what each contributes, placed in the
@@ -76,8 +74,8 @@ project collapses.
 
 Plan in plan mode, spanning the projects together, before touching any of them. Work out how the change
 decomposes across the layers — what lands in each project, and what a higher layer depends on from a
-lower one. Where a project already has a `reset.md` Next-focus for its part, resume that plan; where the
-objective is fresh, plan that project's step as a normal fresh `start` would.
+lower one. Where the coordinator's reset already records a plan for a project's part, resume that
+plan; where the objective is fresh, plan that project's step as a normal fresh `start` would.
 
 On a **code** project the plan produces an implementation-guide slice; on a **context** project it is
 direct authoring. Collect the guide slices into one **consolidated guide** authored at the directory
@@ -104,20 +102,22 @@ stage.
 ## 5. Close each project
 
 Context management, validation, and closeout happen **per project**, not across the workspace. In each
-project, run `close` as usual: tidy that project's `context/`, write its `reset.md`, commit, and publish
-its own branch as its own change proposal. Each project ends with its own `reset.md`, branch, and PR.
+project, run `close` as usual: tidy that project's `context/`, rewrite the coordinator's reset with
+that part's record, commit, and publish the project's own branch as its own change proposal. Each
+project ends with its own branch and PR; the session record accumulates in the workspace's single
+reset at the coordinator.
 
-The coordination run itself produces nothing to commit: no workspace branch, no workspace `reset.md`, no
-workspace context. When every participating project has closed, the objective is done and the ephemeral
-guide is discarded.
+The coordination run itself produces nothing of its own to commit: no workspace branch and no
+workspace context. When every participating project has closed, the objective is done and the
+ephemeral guide is discarded.
 
 ## Continuity and interruption
 
-Because each project checkpoints independently, an interrupted fan-out resumes per project: a project
-mid-work has left its `reset.md` at `Status: handoff` and is picked up by a normal `start` on its
-branch. The cross-project order on resume comes from the coordinator's `order`, not from any workspace
-record — there is none. Re-running `coordinate` re-reads the layers and continues from wherever each
-project's `reset.md` says it is.
+The workspace's continuity is the coordinator's reset (`mechanics/reset-file.md`). An interrupted
+fan-out leaves it at `Status: handoff`, its Project and Branch lines naming the mid-work project and
+its open branch, with the remaining layers recorded in Next-focus; each touched project's work waits
+on that project's branch. Re-running `coordinate` — or a `start` that finds the handoff — resumes
+there, and the cross-project order comes from re-reading the coordinator's `order`.
 
 ## Not yet handled
 

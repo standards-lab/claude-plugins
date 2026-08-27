@@ -1,6 +1,7 @@
 # on-reset
 
-Fires before `context/reset.md` is written, in `reset` and in `close`.
+Fires before the reset file is written — a standalone project's own `context/reset.md`, or in a
+workspace the coordinator's — in `reset` and in `close`.
 
 - Next-focus names the roadmap task the next session advances by its dotted path, alongside
   whatever else the record says about picking it up.

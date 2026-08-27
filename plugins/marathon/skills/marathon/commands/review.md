@@ -41,5 +41,5 @@ and don't add detail an upcoming step doesn't need.
 
 ## Conclude
 
-Close with `close` — it records the dispositions in `context/reset.md` under `Session: review` and
+Close with `close` — it records the dispositions in the reset file under `Session: review` and
 publishes the branch.

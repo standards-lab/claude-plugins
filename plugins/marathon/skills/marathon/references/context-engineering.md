@@ -36,8 +36,9 @@ Volatile (changes often, and gets cleaned up):
   here.
 - `context/guide.md` — a code project's implementation guide for the current `start`. Created during the
   session and deleted when it closes; a context project never has one.
-- `context/reset.md` — the latest session's record and the pointer to the next step. One file; git
-  keeps the older versions.
+- `context/reset.md` — the latest session's record and the pointer to the next step, kept by a
+  standalone project and by a workspace coordinator; a workspace member carries none. One file;
+  git keeps the older versions (`mechanics/reset-file.md`).
 
 Kept outside `context/`:
 
@@ -96,13 +97,22 @@ gets filled in only when you are about to work on it. Writing detailed design fo
 same problem as writing the code too early: you commit to a design before you understand it, then have
 to maintain or delete the note when reality turns out different. Add detail at the point you need it.
 
+## Name the assumptions
+
+A note in `design/` or `concepts/` names the unverified assumptions it rests on — the claims that,
+if a build falsifies them, invalidate the note. A line or two is enough ("assumes the loader keeps
+config immutable after start"). The payoff comes at the surprise: when work falsifies an
+assumption, the notes that named it are the ones to revisit, and the reset Disposition records the
+falsification — instead of a judgment sweep over the whole tree at the next `review`. A note that
+rests only on what is already built needs no annotation.
+
 ## Moving and removing notes
 
 Three operations keep `context/` accurate:
 
 - **Promote** — move a concept from `concepts/` to `design/` once it is settled: a decision fixed it,
   the built work proved it out, or an experiment produced a result. Don't do it silently — move the file
-  and note why in `context/reset.md`. Organizing `concepts/` and `design/` the same way makes it obvious
+  and note why in the reset file. Organizing `concepts/` and `design/` the same way makes it obvious
   where a note should land.
 - **Decay** — delete a `design/` note once the built work, or (in a workspace) the docs landing zone,
   fully expresses what it described, and the note holds no conceptual or pattern detail beyond it. A

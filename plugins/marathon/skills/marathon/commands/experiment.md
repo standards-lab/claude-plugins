@@ -15,8 +15,10 @@ deliberate promotion at closeout.
 ## Settle
 
 The scope to settle is what the experiment is testing and how you'll know it worked — the question
-the spike answers. Keep the scope to that question; an experiment that sprawls stops being cheap to
-set aside.
+the spike answers. Name, alongside the question, the decision its answer changes: a spike is worth
+running only if some choice comes out differently depending on the result. If no decision changes
+either way, don't run it. Keep the scope to that question; an experiment that sprawls stops being
+cheap to set aside.
 
 Branch slug: the spike.
 

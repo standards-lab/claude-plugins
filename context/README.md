@@ -24,5 +24,5 @@ Broad and shallow; detail is added when a capability is about to be built.
 
 - **Plugin design lives in the skill files**, not in `context/`. See
   `design/skill-is-the-source-of-truth.md`.
-- Candidates in flight go to `concepts/`; the session record, while one is open, is `reset.md`. At a
-  resting point the repository holds neither, and continuity sits with the workspace coordinator.
+- Candidates in flight go to `concepts/`. The session record is the workspace's single reset file
+  at the coordinator (standards-lab); this repository keeps no `reset.md` of its own.

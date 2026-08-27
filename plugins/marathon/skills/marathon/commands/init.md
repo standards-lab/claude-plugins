@@ -59,7 +59,8 @@ detail up front.
   was scaffolded, and the first step as Next-focus, so the first `start` begins from a closeout and
   creates a new branch.
 - `.claude/marathon.toml` — record the project kind (`[project] kind = "code"` or `"context"`) and the
-  remote platform with its publish command. If this project coordinates a workspace, add the
+  remote platform with its publish command, in the canonical layout of
+  `mechanics/configuration.md`. If this project coordinates a workspace, add the
   `[workspace]` block too (`role = "coordinator"` and a layered `order`); most projects don't. See
   `references/workspace-coordination.md`. Extensions are not an `init` decision: a repository enables
   one whenever the convention is adopted, by adding the `extensions` key (see

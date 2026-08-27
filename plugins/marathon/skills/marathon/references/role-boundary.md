@@ -1,7 +1,7 @@
 # Role boundary
 
 marathon divides the work between the developer and the agent. Where the line falls depends on the
-project's kind (declared at `init`; see the project-kind section of `SKILL.md`); each kind draws it in
+project's kind (declared at `init`; see `mechanics/configuration.md`); each kind draws it in
 its own place.
 
 ## Code projects: the developer owns the production code
@@ -22,9 +22,6 @@ directly:
 - everything in `context/`, including the reset file, and
 - the implementation guide itself.
 
-The prose in this material — comments and documentation, the files in `context/`, the guide — follows
-the voice standard in `behavior/voice.md`.
-
 ## Context projects: the agent authors the repository
 
 On a `context` project there is no production source code. The repository *is* context — its skills,
@@ -33,7 +30,7 @@ there is nothing to hand off through a guide: the agent authors the repository d
 including everything in `context/`. The developer owns the work by directing it and by reviewing and
 approving each change; the pull request is where that ownership is exercised, in place of applying a
 guide. There are no tests and no implementation guide, because there is no code layer to test or hand
-off. The prose the agent authors follows the voice standard in `behavior/voice.md`.
+off.
 
 ## The test
 

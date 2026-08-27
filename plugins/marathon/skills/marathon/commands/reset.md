@@ -19,9 +19,11 @@ handoff doesn't carry stale notes forward:
 These changes matter, so show the developer what you plan to change and get a quick confirmation before
 you do it.
 
-## 2. Write context/reset.md
+## 2. Write the reset file
 
-Rewrite the reset file with `Status: handoff`, filling every field of the schema in `SKILL.md`. The
+Rewrite the reset file with `Status: handoff`, filling every field of the schema in
+`mechanics/reset-file.md` — the coordinator's `context/reset.md` in a workspace, the project's own
+when standalone. The
 Disposition records what step 1 integrated, promoted, culled, or retained. The judgment field is
 **Next-focus** — the in-progress state and the exact next move. Be specific: name the file you're
 editing, the decision that's pending, the next thing to do. This is what a cold context resumes from.

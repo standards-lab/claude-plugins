@@ -4,6 +4,17 @@ All notable changes to the marathon-roadmap plugin are documented here. Versions
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## [v0.1.2]
+
+### Changed
+
+- **SKILL.md is an index** — the entry file follows marathon 0.8's index layout: front matter, the
+  description, and an index into the sub-layers, with the hook map (`mechanics/pipeline.md`)
+  `@`-loaded and the hook instructions and manifest reference linked.
+- **Targets marathon 0.8** — the reset file the `on-reset` hook shapes now resolves per marathon's
+  `mechanics/reset-file.md`: a standalone project's own, or the workspace's single reset at the
+  coordinator.
+
 ## [v0.1.1]
 
 ### Changed

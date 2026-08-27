@@ -55,19 +55,13 @@ artifact does not exist yet, the next session creates it as the extension's SKIL
 ## The hook points
 
 Five universal hooks fire in every session type, each just before the moment it names, so an
-extension can shape what that moment produces:
-
-| Hook | The moment | What an extension does there |
-|------|------------|------------------------------|
-| `on-start` | the session begins, before orientation | layer its conventions into the session; bootstrap a missing artifact |
-| `on-execute` | the plan is approved and work begins (on a resume, the open branch is checked out) | mark work in progress; prepare its artifact for the step |
-| `on-commit` | the session is about to commit | stage its artifact edits into the commit |
-| `on-reset` | `context/reset.md` is about to be written | shape the record — a citation format, a field convention |
-| `on-close` | closeout, after the reset file and before the closeout commit | finalize its artifact so the closeout commit carries it |
-
-Session-specific moments beyond the five follow the naming convention `<command>:<moment>`, added
-to the firing spec only when an extension earns them. The exact firing points, resolution order,
-and per-command constraints are in `mechanics/hooks.md`.
+extension can shape what that moment produces: `on-start` (the session begins — conventions layer
+in, a missing artifact bootstraps), `on-execute` (the plan is approved and work begins),
+`on-commit` (the session is about to commit), `on-reset` (the reset file is about to be written),
+and `on-close` (closeout, between the reset file and the closeout commit). The firing table, the
+resolution order, and the per-command constraints live in `mechanics/hooks.md`; session-specific
+moments beyond the five follow the naming convention `<command>:<moment>`, added to that spec only
+when an extension earns them.
 
 ## Source of truth
 
