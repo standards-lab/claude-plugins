@@ -26,8 +26,10 @@ Do the step, according to the project kind:
 - **code project** — write `context/guide.md`, the implementation guide: the full code for each change,
   in the order to apply it, with prose only where the reasoning needs it, and a short run-and-verify at
   the end. It does not include the tests or documentation the agent adds at closeout. See
-  `references/implementation-guides.md` for how to write it well. Then stop and let the developer apply
-  it, staying available for fixes; don't run ahead.
+  `references/implementation-guides.md` for how to write it well. The guide is the step's only
+  artifact: context tending — including the edits noted at SETTLE — is closeout work, done after the
+  developer has applied and validated the code. Then stop and let the developer apply it, staying
+  available for fixes; don't run ahead.
 - **context project** — there is no guide and no code handoff. Author the change directly: the skills,
   prose, or configuration the step calls for, plus any `context/` the change settles. You are producing
   the deliverable itself, under the developer's review. Stay within the one step.

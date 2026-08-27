@@ -31,17 +31,19 @@ Show the code, not a description of it. For new code, give the full block. For a
 code, show the region as it should look afterward, with enough surrounding lines to place it
 unambiguously — not the whole file.
 
-Keep the code blocks clean, the same as the production code will be: no explanatory comments inside
-them. To point out what changed, use a line of prose before the block ("in `Load`, the final return now
-validates the parsed config") rather than marking it inside the code — that way the block matches
-exactly what lands. When a change needs reasoning — why this approach, what a concept means, a
+The guide's code blocks carry no comments of any kind — not explanatory asides, and not doc
+comments either: API documentation and in-source comments are the agent's closeout work, not part
+of the handoff. Under the git-blame test, a comment the developer types from the guide would blame
+to the wrong party. The finished production code will carry its documentation; the guide's blocks
+deliberately do not. To point out what changed, use a line of prose before the block ("in `Load`,
+the final return now validates the parsed config") rather than marking it inside the code — that
+way the block matches exactly what the developer applies. When a change needs reasoning — why this approach, what a concept means, a
 constraint that isn't obvious — put a line or two of prose above the block. When the code is
 self-evident, let it stand on its own.
 
 The balance to hold: enough that the change is unambiguous and easy to follow, and no more. Too terse
 and the developer is reconstructing your intent; too thorough and the guide is exhausting to read.
-Include exactly what's needed to apply the change with confidence. The prose itself follows the voice
-standard in `behavior/voice.md`.
+Include exactly what's needed to apply the change with confidence.
 
 ## Stay within the step
 

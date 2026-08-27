@@ -1,7 +1,7 @@
 {
   "name": "marathon",
   "description": "Sustainable long-haul development workflow with context engineering: concept-driven init, code and context project kinds, plan/start/experiment sessions with review and docs passes, workspace coordination and entry routing, mid-session handoff/resume, a standardized session pipeline with universal extension hooks, and volatile-vs-stable context promotion and decay",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "license": "Apache-2.0",
   "homepage": "https://github.com/standards-lab/claude-plugins",
   "repository": "https://github.com/standards-lab/claude-plugins",

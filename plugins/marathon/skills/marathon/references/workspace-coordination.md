@@ -72,15 +72,19 @@ For the code-project slices of a coordinated change, the plan is collected into 
 authored at the directory `coordinate` was launched from (typically the workspace root). Because the
 workspace versions nothing, this guide is never committed and does not outlive the session — the same
 lifetime as a single project's `context/guide.md`. It is a working document for the fan-out, not a record.
-The lasting record is what each project commits: its own branch, `reset.md`, and published change.
+The lasting record is what each project commits — its own branch and published change — and the
+session record at the coordinator.
 
-## Continuity stays per repository
+## Continuity lives at the coordinator
 
-A coordinated change checkpoints in each repository independently. There is no workspace-level state to
-resume from, and none is needed: an interrupted fan-out picks up per project, each from its own
-`reset.md` Status, and the cross-project order on resume comes from re-reading the coordinator's `order`.
-This is why the coordination run itself produces no branch, no reset, and no context — the per-repository
-records already carry everything continuity needs.
+A workspace maintains one reset file, at the coordinator; member projects carry none
+(`mechanics/reset-file.md`). One session's story then lives in one place: the record names the
+member project it concerns, and its Next-focus names where the next session continues, so a
+session entered anywhere in the workspace routes through the same anchor. An interrupted fan-out
+resumes from that record plus each touched project's open branch, and the cross-project order on
+resume comes from re-reading the coordinator's `order`. The coordination run itself still produces
+no branch and no context of its own — the coordinator's reset and the per-project branches carry
+everything continuity needs.
 
 ## Awareness follows the dependency direction
 

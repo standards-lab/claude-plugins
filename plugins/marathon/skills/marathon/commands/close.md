@@ -23,7 +23,9 @@ current code — where they disagree, the page is what's wrong. Either way, go o
 
 ## 2. Tidy the notes
 
-Bring `context/` in line with what now exists:
+Bring `context/` in line with what now exists. This pass absorbs the edits noted at SETTLE: on a
+code project they waited here for the applied code to validate them, so the notes record what the
+work proved, not what the plan intended.
 
 - **Decay** — delete `design/` notes the code (or the authored deliverable) now expresses, and record
   that you did.
@@ -40,13 +42,12 @@ the single concrete next step. That becomes the Next-focus in step 4.
 
 ## 4. Record what happened
 
-Rewrite `context/reset.md` with `Status: closeout`, filling every field of the schema in `SKILL.md`.
-The judgment fields are the Disposition — what you integrated, promoted, culled, and retained — and
-the Next-focus, set to the step you agreed on in step 3: the handoff the next session reads.
-
-When the project has instead reached a resting point — its deliverable is released, it has no next
-step of its own, and a workspace coordinator carries continuity — delete `context/reset.md` rather
-than rewriting it. The coordinator's reset file becomes the pointer to what happens next.
+Rewrite the reset file with `Status: closeout`, filling every field of the schema in
+`mechanics/reset-file.md`. In a workspace that is the coordinator's `context/reset.md` — the
+workspace's only reset, committed in the coordinator's repository; a standalone project rewrites
+its own. The judgment fields are the Disposition — what you integrated, promoted, culled, and
+retained — and the Next-focus, set to the step you agreed on in step 3: the handoff the next
+session reads.
 
 ## 5. Drop the guide
 
@@ -57,6 +58,7 @@ have no guide to drop.
 
 ## 6. Commit and publish
 
-Stage everything and commit. Then publish the branch with the remote platform's command from
+Stage everything and commit — in a workspace, the coordinator's reset rewrite is a second commit,
+in the coordinator's repository. Then publish the branch with the remote platform's command from
 `.claude/marathon.toml` — `gh pr create`, `glab mr create`, or the project's equivalent — using the
-change description from `context/reset.md`. If the project declared no remote, stop after the commit.
+change description from the reset file. If the project declared no remote, stop after the commit.

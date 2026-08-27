@@ -28,6 +28,10 @@ design decision, or map out what the next step should be and how far it should g
 far as the upcoming work needs it — no planning ahead into steps you haven't earned. This is where the
 architectural work happens, so give it real depth.
 
+When the topic is choosing the next focus, weigh uncertainty against consequence together: probe
+where an answer would change what the project does next, not merely where the most is unknown. An
+unknown that changes no decision can stay unknown.
+
 Branch slug: the topic.
 
 ## Execute: tend the context
@@ -45,5 +49,5 @@ Capture only what the upcoming step needs; a note that serves no upcoming work i
 ## Conclude
 
 A `plan` session's output is context, so land it like any other work — on a branch, published the same
-way — so the planning is traceable. Close with `close`: it records the dispositions in
-`context/reset.md` and sets the Next-focus to the step this planning teed up.
+way — so the planning is traceable. Close with `close`: it records the dispositions in the reset
+file and sets the Next-focus to the step this planning teed up.

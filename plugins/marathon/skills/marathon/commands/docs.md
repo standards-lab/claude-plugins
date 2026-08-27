@@ -20,7 +20,8 @@ what exists, and it is durable and accretive. The tiers and their rules are laid
 ## Find the landing zone
 
 Before bootstrapping or curating anything, work out which project `docs/` belongs to. Check whether
-this project is a standalone project or sits in a workspace (see `SKILL.md`'s "Finding your project").
+this project is a standalone project or sits in a workspace (the LOCATE stage of
+`mechanics/pipeline.md` makes the same check).
 
 - **Standalone.** `docs/` belongs here; continue below as usual.
 - **In a workspace, and the coordinator's `[workspace] docs` names this project.** This project is the
@@ -53,6 +54,6 @@ If `docs/` already exists, this run extends and maintains it:
 
 ## Conclude
 
-Close with `close` — it records the pass in `context/reset.md` under `Session: docs` and publishes the
+Close with `close` — it records the pass in the reset file under `Session: docs` and publishes the
 branch. The `review` command keeps `docs/` honest between `docs` passes by flagging pages that have
 drifted from the code.

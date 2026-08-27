@@ -29,7 +29,7 @@ SKILL.md specifies there. A hook fires before the moment it names.
 | `on-start` | pipeline 2 · START, step 1, before orientation |
 | `on-execute` | 3 · SETTLE step 4, on approval; or 3R · RESUME step 2, after checkout |
 | `on-commit` | immediately before each commit the session makes |
-| `on-reset` | before `context/reset.md` is written — in `reset` and in `close` |
+| `on-reset` | before the reset file (`mechanics/reset-file.md`) is written — in `reset` and in `close` |
 | `on-close` | in `close` only: after the reset file is written, before the closeout commit |
 
 Ordering constraints:

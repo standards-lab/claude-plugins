@@ -39,10 +39,11 @@ Invoke as `marathon <command>` (or `/marathon:marathon <command>`).
 ## The session loop
 
 A session is one step, on one branch. A working session — `plan`, `start`, or `experiment` — begins by
-reading `context/reset.md`: a `closeout` status means plan a new step in plan mode; a `handoff` status
-means resume the open branch. The session ends with `close` (finished → publish) or `reset` (handing
-off → resume later). Both rewrite `context/reset.md`, whose Next-focus line is the handoff to the next
-session.
+reading the reset file — a standalone project's `context/reset.md`, or in a workspace the single
+reset kept at the coordinator: a `closeout` status means plan a new step in plan mode; a `handoff`
+status means resume the open branch. The session ends with `close` (finished → publish) or `reset`
+(handing off → resume later). Both rewrite the reset file, whose Next-focus line is the handoff to
+the next session.
 
 ## Project kinds
 
@@ -57,7 +58,8 @@ A project is declared `code` or `context` at `init`, in `.claude/marathon.toml`:
 
 When several marathon projects live as siblings under one directory — a workspace — `coordinate` runs a
 single change across them in dependency order, fanning out a session to each and honoring its kind. The
-workspace holds no context of its own; continuity stays per repository. See
+workspace holds no context of its own; its continuity lives in the single reset file at the
+coordinator. See
 [`references/workspace-coordination.md`](./skills/marathon/references/workspace-coordination.md).
 
 ## Extensions

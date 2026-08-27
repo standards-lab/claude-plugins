@@ -4,6 +4,48 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## [v0.8.0]
+
+### Changed
+
+- **A single workspace reset at the coordinator** — a workspace maintains one reset file, at the
+  coordinator; member projects carry none, and a standalone project keeps its own unchanged. LOCATE
+  resolves the coordinator's reset from anywhere in the workspace, `reset` and `close` write it
+  there (a commit in the coordinator's repository), and the member-reset routing — including the
+  resting-point deletion rule — is retired. The schema gains a **Project** line naming the member a
+  workspace record concerns. The new `mechanics/reset-file.md` holds the schema, locations, and
+  Status semantics; `coordinate` and `references/workspace-coordination.md` re-anchor continuity on
+  the coordinator's record plus each project's open branch.
+- **Comment-free implementation guides** — stated outright in
+  `references/implementation-guides.md`: the guide's code blocks carry no comments of any kind; doc
+  comments and API documentation are the agent's closeout work. The "same as the production code"
+  clause that pulled sessions toward documented blocks is reworded.
+- **Context tending follows validation** — on a code project, the context edits noted at SETTLE
+  wait for CONCLUDE, after the developer has applied and validated the guide; EXECUTE produces the
+  guide and nothing else. A context project is unchanged. Stated in `mechanics/pipeline.md`
+  (SETTLE, CONCLUDE, and a new invariant), `commands/start.md`, and `commands/close.md`.
+- **SKILL.md is an index** — the entry file reduces to front matter, the description, and an index
+  into the sub-layers: `@` pointers for always-loaded conventions (`behavior/planning.md`,
+  `mechanics/pipeline.md`), `./` links for material consulted on demand. The content it restated
+  moves to one home each: the reset schema to `mechanics/reset-file.md`, the `marathon.toml`
+  canonical layout to the new `mechanics/configuration.md`, the planning philosophy (one step at a
+  time, planning is half the work) to the new `behavior/planning.md`, and the hook table lives only
+  in `mechanics/hooks.md`, summarized in prose by `references/extensions.md`.
+- **Voice is out of scope** — the skill no longer defines or references a writing voice.
+  Communication style is identity-level behavior and belongs to user-scoped configuration;
+  `behavior/voice.md` is removed and the skill's `behavior/` tier holds workflow conduct only.
+
+### Added
+
+- **Value-of-information test** — `experiment` settles, alongside the question a spike answers, the
+  decision the answer changes; a spike that changes no decision isn't run. `plan` weighs
+  uncertainty against consequence when choosing the next focus.
+- **Assumption annotations** — a `design/` or `concepts/` note names the unverified assumptions it
+  rests on, and the reset Disposition records a falsification, so a surprise invalidates identified
+  notes instead of forcing a judgment sweep. Stated in `references/context-engineering.md`.
+- **Risk-first spiking** — builds proceed in dependency order while `experiment` probes the
+  highest-consequence unknown out of band. Stated in `behavior/planning.md`.
+
 ## [v0.7.0]
 
 ### Added

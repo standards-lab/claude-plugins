@@ -37,19 +37,27 @@ here.
   manifest at the coordinator serves every member project; enabled under `[project]`, the
   project keeps its own.
 - **Hooks:** `on-start`, `on-reset`, `on-close`.
-- **Targets:** marathon 0.7.
+- **Targets:** marathon 0.8.
 
 ## Mechanics
 
-The specs under `mechanics/` are the execution layer. `mechanics/pipeline.md` maps marathon's
-firing points to the hooks this extension declares and names the file to act from at each;
-`mechanics/on-start.md`, `mechanics/on-reset.md`, and `mechanics/on-close.md` are those hook
-instructions.
+The execution layer, loaded with this skill: the map from marathon's firing points to this
+extension's hooks, and where the manifest resolves.
+
+@mechanics/pipeline.md
+
+The hook instructions the pipeline acts from:
+
+- [`mechanics/on-start.md`](./mechanics/on-start.md) — layer the conventions in; bootstrap a
+  missing manifest.
+- [`mechanics/on-reset.md`](./mechanics/on-reset.md) — cite roadmap tasks in the session record.
+- [`mechanics/on-close.md`](./mechanics/on-close.md) — delete the finished task; advance `next`.
 
 ## References
 
-- `references/manifest.md` — the `roadmap.toml` format: structure, fields, dotted citations, the
-  bootstrap header, and a worked example. Load it before editing or creating the manifest.
+- [`references/manifest.md`](./references/manifest.md) — the `roadmap.toml` format: structure,
+  fields, dotted citations, the bootstrap header, and a worked example. Load it before editing or
+  creating the manifest.
 
 ## Scope
 
