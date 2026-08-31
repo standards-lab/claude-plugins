@@ -15,7 +15,7 @@ for plugin in plugins/*/; do
   name=$(jq -r .name "$manifest")
   version=$(jq -r .version "$manifest")
 
-  top=$(grep -m1 -oP '^## \[v\K[0-9]+\.[0-9]+\.[0-9]+(?=\]$)' "${plugin}CHANGELOG.md")
+  top=$(grep -m1 -oP '^## v\K[0-9]+\.[0-9]+\.[0-9]+$' "${plugin}CHANGELOG.md")
   [ "$version" = "$top" ] ||
     err "$name: plugin.json version $version != CHANGELOG top heading ${top:-<none>}"
 

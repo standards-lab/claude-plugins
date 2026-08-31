@@ -4,7 +4,7 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
-## [v0.9.0]
+## v0.9.0
 
 ### Changed
 
@@ -71,7 +71,7 @@ GitHub releases the tags cut.
   `commands/coordinate.md`, and the coordinated fan-out's consolidated guide. The guide-era
   workflow remains available at the `marathon/v0.8.0` tag.
 
-## [v0.8.0]
+## v0.8.0
 
 ### Changed
 
@@ -113,7 +113,7 @@ GitHub releases the tags cut.
 - **Risk-first spiking** — builds proceed in dependency order while `experiment` probes the
   highest-consequence unknown out of band. Stated in `behavior/planning.md`.
 
-## [v0.7.0]
+## v0.7.0
 
 ### Added
 
@@ -148,7 +148,7 @@ GitHub releases the tags cut.
   established rule unchanged: a `docs/` page itself never decays. Stated in
   `references/context-engineering.md` and `commands/docs.md`.
 
-
+## v0.6.0
 
 ### Added
 
@@ -169,7 +169,7 @@ GitHub releases the tags cut.
   states the two directory kinds — project and workspace root — as the first check every session-opening
   command makes, and the three commands now point to it ahead of their reset-file logic.
 
-## [v0.5.1]
+## v0.5.1
 
 ### Changed
 
@@ -182,7 +182,7 @@ GitHub releases the tags cut.
   the guide preamble states *what the change does*, `marathon.toml` has a canonical *layout*, and
   the role boundary is drawn per kind rather than coming in "shapes".
 
-## [v0.5.0]
+## v0.5.0
 
 ### Added
 
@@ -222,7 +222,7 @@ GitHub releases the tags cut.
 - **Prose normalized** — the skill corpus is rewritten against the restructured voice standard, with
   root-relative cross-references throughout.
 
-## [v0.4.0]
+## v0.4.0
 
 ### Added
 
@@ -233,7 +233,7 @@ GitHub releases the tags cut.
   avoid. godoc keeps its idiomatic form. Cited from `SKILL.md`, the role-boundary and
   implementation-guides references, and the commands that author prose.
 
-## [v0.3.0]
+## v0.3.0
 
 ### Added
 
@@ -263,7 +263,7 @@ GitHub releases the tags cut.
 - The role-boundary, session-loop, and context-engineering references are generalized so nothing assumes
   a code-only, single-repository model.
 
-## [v0.2.0]
+## v0.2.0
 
 ### Added
 
@@ -279,7 +279,7 @@ GitHub releases the tags cut.
   once a `docs/` tier exists. The core build loop is unchanged; documentation is never cram-written at
   closeout and never silently rots.
 
-## [v0.1.0]
+## v0.1.0
 
 Initial release — the standalone core workflow.
 
