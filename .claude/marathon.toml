@@ -1,5 +1,5 @@
 # Project kind: this repository is context (skills, manifests, prose), not production
-# source code. The agent authors it directly; there is no implementation guide or tests.
+# source code.
 [project]
 kind = "context"
 

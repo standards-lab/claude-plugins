@@ -30,7 +30,6 @@ Invoke as `marathon <command>` (or `/marathon:marathon <command>`).
 | `plan` | Planning/curation session that touches only `context/` — refine concepts, decide the next step. |
 | `start` | Advance the product one concrete step. |
 | `experiment` | Spike an idea in the isolated `experiments/` directory. |
-| `coordinate` | Run one change across several marathon projects in a workspace. |
 | `reset` | Hand off mid-session so a fresh context can resume the same branch. |
 | `close` | Finish and publish a completed session. |
 | `review` | Audit the notes for drift from the code and clean them up. |
@@ -49,26 +48,25 @@ the next session.
 
 A project is declared `code` or `context` at `init`, in `.claude/marathon.toml`:
 
-- **code** — the repository holds production source the developer owns. `start` drafts an implementation
-  guide, the developer applies it, and closeout adds tests and documentation.
+- **code** — the repository holds production source. The agent implements in reviewed stages, each a
+  green compilation unit with its tests; the architect directs and reviews every stage.
 - **context** — the repository *is* context (skills, prose, configuration). The agent authors it
-  directly under the developer's review; there is no implementation guide and no tests.
+  directly under the architect's review; there are no tests.
 
-## Workspace coordination
+## Workspaces
 
-When several marathon projects live as siblings under one directory — a workspace — `coordinate` runs a
-single change across them in dependency order, fanning out a session to each and honoring its kind. The
-workspace holds no context of its own; its continuity lives in the single reset file at the
-coordinator. See
+When several marathon projects live as siblings under one directory — a workspace — a session's step
+may span them: one session works the touched repos in the coordinator's declared dependency order,
+each on its own branch under the step's shared slug. The workspace holds no context of its own; its
+continuity lives in the single reset file at the coordinator. See
 [`references/workspace-coordination.md`](./skills/marathon/references/workspace-coordination.md).
 
 ## Extensions
 
-marathon is extensible: a separately installed skill can act at the five hooks every session fires —
-`on-start`, `on-execute`, `on-commit`, `on-reset`, `on-close` — and a repository enables it in
-`.claude/marathon.toml`, for itself under `[project]` or for a whole workspace under the coordinator's
-`[workspace]`. The repository stays the source of truth; anything an extension projects outward is a
-read-only mirror. See
+marathon is extensible: a separately installed skill can act at the five universal hooks every
+session fires, and a repository enables it in `.claude/marathon.toml`, for itself under `[project]`
+or for a whole workspace under the coordinator's `[workspace]`. The repository stays the source of
+truth; anything an extension projects outward is a read-only mirror. See
 [`references/extensions.md`](./skills/marathon/references/extensions.md) for the system and
 [`mechanics/hooks.md`](./skills/marathon/mechanics/hooks.md) for the firing spec.
 

@@ -7,25 +7,24 @@ maintains, plus the Claude configuration the project needs.
 `init` runs the session pipeline (`mechanics/pipeline.md`) on a repository that has none of it yet:
 its LOCATE is the check that both marks are absent — no `context/` here, no sibling project declaring
 a coordinator — and its CONCLUDE is its own setup commit. `init` commits to the project's founding
-decisions, so do the thinking in plan mode and agree on them with the developer before creating any
+decisions, so do the thinking in plan mode and agree on them with the architect before creating any
 files.
 
 ## 1. Find the concept
 
-Find the project-planning concept: a document the developer points you to (often a `concept.md` or a
-charter), or, if there isn't one, work with the developer to write it. The concept gives you the vision
+Find the project-planning concept: a document the architect points you to (often a `concept.md` or a
+charter), or, if there isn't one, work with the architect to write it. The concept gives you the vision
 and the rough territory to start from; the structure comes out of planning.
 
 ## 2. Settle the founding decisions
 
-Read the concept closely, and settle these with the developer rather than assuming them:
+Read the concept closely, and settle these with the architect rather than assuming them:
 
 - **Vision** — one paragraph on what the project is for.
-- **Project kind** — whether the repository holds production source the developer authors (`code`) or
-  is entirely context the agent authors directly (`context`: skills, prose, configuration). This sets
-  the role boundary and whether sessions hand off an implementation guide. When in doubt: whose hands
-  should the deliverable's history show — the developer applying drafted code, or the agent authoring
-  under review? See `references/role-boundary.md`.
+- **Project kind** — whether the repository holds production source with a build-and-test loop
+  (`code`) or is entirely context the agent authors directly (`context`: skills, prose,
+  configuration). This sets how sessions execute. When in doubt: is there a build-and-test loop
+  that defines stage boundaries and a validation phase? If there is, it's `code`.
 - **Capability map** — the major capabilities the project will need. Broad, not ordered, and shallow;
   you'll add detail later, when a capability is about to be built.
 - **Settled vs. concept** — which intent is solid enough to start in `design/`, and which is still a
@@ -35,7 +34,7 @@ Read the concept closely, and settle these with the developer rather than assumi
   there: `gh pr create` for GitHub, `glab mr create` for GitLab, the equivalent for another platform, or
   none for local-only. This is required; closeout uses it to publish.
 
-Don't create anything until the developer approves the plan.
+Don't create anything until the architect approves the plan.
 
 ## 3. Create the structure
 
@@ -44,7 +43,7 @@ detail up front.
 
 ```
 <repo>/
-├── CLAUDE.md                  # short: says the repo uses marathon; points into context/; states the role boundary
+├── CLAUDE.md                  # short: says the repo uses marathon; points into context/
 ├── .claude/
 │   ├── settings.json          # plansDirectory; permissions
 │   └── marathon.toml          # project kind; remote platform + publish command
@@ -66,16 +65,12 @@ detail up front.
   one whenever the convention is adopted, by adding the `extensions` key (see
   `references/extensions.md`).
 - `.claude/settings.json` — set `plansDirectory` to `./.claude/plans` and allow `Skill(marathon:marathon)`.
-- `CLAUDE.md` — keep it short: name the workflow, point to `context/README.md` for orientation, and
-  state the role boundary for the project's kind in plain, language-neutral terms — for a `code`
-  project, the developer owns the production code and the agent writes tests, documentation, and
-  context; for a `context` project, the agent authors the repository directly under the developer's
-  review. The detail goes in `context/`, not here.
-- Don't create `context/guide.md`; it isn't a scaffolded file. On a `code` project a `start` creates it
-  when the session needs it and closeout deletes it. A `context` project never has one.
+- `CLAUDE.md` — keep it short: name the workflow and point to `context/README.md` for
+  orientation. The kind lives in `marathon.toml` and the skill formalizes what it means; the
+  detail goes in `context/`, not here.
 - Don't create `experiments/` now; an experiment session makes it when it's needed.
 
 ## 4. Commit the setup
 
-Stage everything and make the first commit. The repo is now marathon-managed, and the developer starts
+Stage everything and make the first commit. The repo is now marathon-managed, and the architect starts
 real work with `plan` or `start`.

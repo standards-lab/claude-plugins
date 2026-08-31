@@ -7,17 +7,16 @@ fallen behind what the project now expresses, where `plan` works out what comes 
 
 `review` runs the session pipeline (`mechanics/pipeline.md`), recorded under `Session: review`.
 Reviewing means deciding what to delete and what to promote, which matters, so the whole proposal is
-settled with the developer before anything changes.
+settled with the architect before anything changes.
 
 ## Settle: look for drift
 
 Read the `context/` notes against the code — or, on a context project, against the deliverable they
 document — and look for:
 
-- **Decay** — `design/` notes the project now fully expresses. These should go; the design is describing
-  the present instead of the unbuilt.
-- **Cull** — concepts the work invalidated or replaced, or that have just gone stale.
-- **Promote** — concepts that have quietly proven out and belong in `design/`.
+- **Tending candidates** — notes due for the operations of `references/context-engineering.md`,
+  under that reference's rules: `design/` notes due to decay, concepts to cull, concepts that have
+  quietly proven out and belong in `design/`.
 - **Orientation** — whether the vision and capability map in `context/README.md` still match where the
   project actually is.
 - **Docs drift** — if the project has a `docs/` tier, pages whose code has moved on underneath them.
@@ -27,7 +26,7 @@ document — and look for:
   this repository's prose and structure. The member repo never cites those conventions; the review
   consults them at session time. See `references/workspace-coordination.md`.
 
-Show the developer what you propose to change and settle it together.
+Show the architect what you propose to change and settle it together.
 
 Branch slug: the review's topic.
 

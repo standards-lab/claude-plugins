@@ -1,21 +1,27 @@
 # marathon start
 
 Advance the product one concrete step — or resume a step already in progress. `start` takes no
-argument; how it hands off the step depends on the project's kind (see `references/role-boundary.md`),
-not on anything you pass it. For planning that touches only `context/`, use `plan`; for a spike, use
-`experiment`.
+argument; how it executes the step depends on the project's kind (see
+`mechanics/configuration.md`), not on anything you pass it. For planning that touches only
+`context/`, use `plan`; for a spike, use `experiment`.
 
-`start` runs the session pipeline (`mechanics/pipeline.md`). A handoff recorded under Session `start`
-resumes here; on a **code** project, `context/guide.md` is then still the live implementation guide —
-follow it from where the Next-focus leaves off.
+`start` runs the session pipeline (`mechanics/pipeline.md`). A handoff recorded under Session
+`start` resumes here; on a **code** project, the reset file's Next-focus carries the approved
+stage list and the stage position — pick up the loop from there.
 
 ## Settle
 
 The scope to settle is the single concrete step to take now, and how far it should go. Work it
-through with the developer in enough depth to come out with a clear picture of what to build —
-planning matters as much as the build; this is where the architectural thinking happens, so give it
-real depth and don't rush to the code. Add detail to the relevant `design/` note only as far as this
-step needs — no further.
+through with the architect in enough depth to come out with a clear picture of what to build —
+planning matters as much as the build; this is where the architectural thinking happens, so give
+it real depth and don't rush to the code. Add detail to the relevant `design/` note only as far as
+this step needs — no further.
+
+On a **code** project, the settled scope is expressed as the stage list
+(`references/staged-execution.md`), approved by the architect before the branch is created. In a
+workspace, a step may span member repos: the stage list then groups by repository, ordered by the
+coordinator's `order` map, and the session creates a branch in each touched repo under the step's
+shared slug.
 
 Branch slug: the step.
 
@@ -23,16 +29,13 @@ Branch slug: the step.
 
 Do the step, according to the project kind:
 
-- **code project** — write `context/guide.md`, the implementation guide: the full code for each change,
-  in the order to apply it, with prose only where the reasoning needs it, and a short run-and-verify at
-  the end. It does not include the tests or documentation the agent adds at closeout. See
-  `references/implementation-guides.md` for how to write it well. The guide is the step's only
-  artifact: context tending — including the edits noted at SETTLE — is closeout work, done after the
-  developer has applied and validated the code. Then stop and let the developer apply it, staying
-  available for fixes; don't run ahead.
-- **context project** — there is no guide and no code handoff. Author the change directly: the skills,
-  prose, or configuration the step calls for, plus any `context/` the change settles. You are producing
-  the deliverable itself, under the developer's review. Stay within the one step.
+- **code project** — run the stage loop of `references/staged-execution.md`: implement a stage,
+  bring its compilation unit to green, commit, report, and stop for the architect's review;
+  repeat through the list, then run validation. Context tending — including the edits noted at
+  SETTLE — is closeout work, done after validation.
+- **context project** — author the change directly: the skills, prose, or configuration the step
+  calls for, plus any `context/` the change settles. You are producing the deliverable itself,
+  under the architect's review. Stay within the one step.
 
 ## Conclude
 

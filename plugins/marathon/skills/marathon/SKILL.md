@@ -1,10 +1,10 @@
 ---
 name: marathon
-argument-hint: "[init | plan | start | experiment | coordinate | reset | close | review | docs]"
+argument-hint: "[init | plan | start | experiment | reset | close | review | docs]"
 description: >
   Sustainable long-haul development workflow built on context engineering. Use this skill whenever
-  the developer is initializing a project from a planning concept; planning, advancing, pausing,
-  resuming, or closing out a session; spiking an idea; coordinating one change across several projects
+  the architect is initializing a project from a planning concept; planning, advancing, pausing,
+  resuming, or closing out a session; spiking an idea; running one step across several projects
   in a workspace; handing off work because the context window is growing large; or reviewing whether
   design notes have drifted from the code. Natural triggers include "start a session", "plan the next
   step", "begin working on this", "hand off / I'm running low on context", "resume where I left off",
@@ -12,11 +12,13 @@ description: >
   drift", "initialize this project", and "set up marathon here". marathon keeps the repository itself
   the single source of truth: it manages a volatile-vs-stable top-level context/ tree, promotes and
   decays knowledge deliberately, and drives branch-based sessions. Prefer this skill for any
-  structured, multi-session work on a marathon-managed repo, even when the developer doesn't name it
+  structured, multi-session work on a marathon-managed repo, even when the architect doesn't name it
   explicitly.
 ---
 
 # Marathon
+
+Version: 0.9.0
 
 marathon is a workflow for long-haul development that stays sustainable. Within a session you work
 fast: plan the next step, build it, close it out. Across the project you go the distance, advancing one
@@ -67,7 +69,6 @@ Route on the first argument; each command's playbook supplies its stages' conten
 | `plan` | Refine concepts and settle what the next session should focus on; touches only `context/` | [`commands/plan.md`](./commands/plan.md) |
 | `start` | Advance the product one concrete step | [`commands/start.md`](./commands/start.md) |
 | `experiment` | Spike an idea in the isolated `experiments/` directory | [`commands/experiment.md`](./commands/experiment.md) |
-| `coordinate` | Run one change across several marathon projects in a workspace | [`commands/coordinate.md`](./commands/coordinate.md) |
 | `reset` | Hand off mid-session: context is filling but the work isn't done | [`commands/reset.md`](./commands/reset.md) |
 | `close` | The session's work is finished and validated | [`commands/close.md`](./commands/close.md) |
 | `review` | On demand: check the notes against the code and clean them up | [`commands/review.md`](./commands/review.md) |
@@ -81,14 +82,12 @@ off), recorded under their own Session values.
 
 Consulted when their subject is in play:
 
-- [`references/role-boundary.md`](./references/role-boundary.md) — how the work divides between
-  developer and agent, per project kind; the git-blame test.
 - [`references/context-engineering.md`](./references/context-engineering.md) — how `context/` is
   organized and maintained: the tiers, promote/decay/cull, assumption annotations, the `docs/`
   tier's place in the lifecycle.
-- [`references/implementation-guides.md`](./references/implementation-guides.md) — how a code
-  project's `start` writes the guide the developer applies.
+- [`references/staged-execution.md`](./references/staged-execution.md) — how a code project's
+  `start` executes: stages, the stage list, the report, review outcomes, re-plan, validation.
 - [`references/workspace-coordination.md`](./references/workspace-coordination.md) — the design
-  behind workspaces: the coordinator, the order map, continuity.
+  behind workspaces: the coordinator, the order map, cross-repo steps, continuity.
 - [`references/extensions.md`](./references/extensions.md) — the extension system: installed vs.
   enabled, declarations, the hook points, the source-of-truth rule.

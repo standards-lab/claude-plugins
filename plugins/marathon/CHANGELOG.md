@@ -4,6 +4,73 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## [v0.9.0]
+
+### Changed
+
+- **Staged execution replaces the implementation guide** — on a `code` project the agent
+  implements the settled step directly, in stages, and the architect reviews each stage before
+  the next begins. A stage is the smallest change set that leaves one compilation unit green —
+  its tests and in-source comments included; the check is scoped to that unit, and the module may
+  be red between stages because the sequence is in dependency order. The stage list — unit,
+  files, one-line why per entry — is the SETTLE artifact, produced in the planning phase and
+  approved before any code changes. Each stage lands as its own commit (`on-commit` fires first)
+  with a conversational report: `diff --stat`, the check result, prose only on decisions the plan
+  didn't spell out. Review outcomes are approve, adjust, and re-plan (the architect enters plan
+  mode with findings; invalidated commits revert first; a revised list from stage k is approved
+  like the original). Validation — the whole-module build, full test run, and run-and-verify
+  check — runs once after the last stage. The new `references/staged-execution.md` holds the
+  loop; `start`, `close`, `reset`, the pipeline, and the reset-file schema (stage position in a
+  handoff's Next-focus) are rewritten around it.
+- **The human is the architect** — vision, direction, and quality control, exercised where the
+  processes name them: the SETTLE approval, the per-stage review, the tending confirmation, and
+  the pull request. Each playbook states what it expects of the architect at the moment it
+  occurs; the standalone role-boundary reference and the git-blame test are retired, and
+  "developer" becomes "architect" throughout the skill. `kind` survives on narrower grounds —
+  `code` means a build-and-test loop defines stage boundaries and a validation phase; `context`
+  has neither.
+- **Cross-repo steps replace `coordinate`** — the fan-out model is retired; an orchestrated
+  change across workspace projects runs as one working session whose settled step names the
+  repos it touches: one spanning stage list in the coordinator's dependency order, a branch per
+  touched repo under the step's shared slug, one close that commits and publishes each.
+  `references/workspace-coordination.md` is rewritten around what remains: the coordinator and
+  its order map, the workspace-holds-no-context rule, continuity at the single reset, downward
+  awareness, coordinator conventions.
+- **The reset file is purely ephemeral** — its sole purpose is contextual bootstrapping between
+  sessions; durable detail belongs in the context layers. Stated outright in
+  `mechanics/reset-file.md`, with two fixes: the file is rewritten each session and git is the
+  archive (the "accumulates" wording is gone), and an interrupted cross-repo step is expressible —
+  the Project line lists the touched repos, the branches share the step's slug, and Next-focus
+  carries whatever bootstrap state resuming cold needs. **Cross-repo** joins the declared
+  Disposition ledger vocabulary.
+- **Close tends the full context scope** — the tending pass establishes the written context the
+  step touched before operating on it: standalone, the project's own `context/`; in a workspace,
+  each touched repo's `context/`, the coordinator's notes on the changed capability, the docs
+  landing zone pages the change moved out from under, and claims about the changed behavior in
+  other member repos' context — a stale claim found anywhere in that scope is a defect the pass
+  fixes, recorded under **Cross-repo**.
+- **Single-source pass** — the decay rule is stated once, in
+  `references/context-engineering.md` with its protective qualifier; `close`, `reset`, and
+  `review` cite it instead of restating the lossy short form. The `[workspace]` TOML block is
+  printed once (`mechanics/configuration.md`), the five-hook list once (`mechanics/hooks.md`),
+  and `init`'s hook constraints live only there.
+
+### Added
+
+- **The skill states its version** — a `Version:` line under the SKILL.md title makes the
+  extension compatibility check of `mechanics/hooks.md` executable and installed-vs-source skew
+  detectable at runtime.
+- **Plugin CI** — a push-triggered workflow at the host checks, per plugin, that the manifest
+  version, the top CHANGELOG heading, and the SKILL.md version line agree, that
+  `marketplace.json` sources resolve, and that every `@`-pointer and `./`-link inside each skill
+  resolves to a real file.
+
+### Removed
+
+- `references/implementation-guides.md`, `references/role-boundary.md`, `context/guide.md`,
+  `commands/coordinate.md`, and the coordinated fan-out's consolidated guide. The guide-era
+  workflow remains available at the `marathon/v0.8.0` tag.
+
 ## [v0.8.0]
 
 ### Changed

@@ -10,8 +10,8 @@ names it. Everything here is candidate direction for a future session on this re
 ## The gap
 
 The skill's `commands/` directory holds session verbs. Each command defines what a session is
-(`plan`, `start`, `experiment`), how it ends (`reset`, `close`), or how it fans out
-(`coordinate`); all of them are bound to the session loop. The skill has no vocabulary for an
+(`plan`, `start`, `experiment`) or how it ends (`reset`, `close`); all of them are bound to the
+session loop. The skill has no vocabulary for an
 operation invoked at a moment inside a running session, whatever kind of session it is. The
 strain is already visible: `review` and `docs` are documented as on-demand maintenance passes
 rather than working sessions, a third category squeezed into the command table.
@@ -32,7 +32,7 @@ Candidate admission criteria, so the tier does not become a junk drawer:
 
 Invoked when a design under discussion outgrows a single session. The function:
 
-- settles the strategy spine of the oversized design with the developer;
+- settles the strategy spine of the oversized design with the architect;
 - writes a ladder concept into `concepts/`: a sequence of named, session-sized scopes, each rung
   settling its own API in its own session, all direction candidate until a rung settles it;
 - redirects the running session: the reset records it as a planning capture (`Session: plan`)

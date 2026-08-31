@@ -33,7 +33,7 @@ context: capture ideas that belong to later steps as concepts in `concepts/`, cu
 discussion has ruled out, and start to spot what the next session's focus should be. When those
 edits land depends on the project kind; the pipeline's SETTLE stage holds the rule.
 
-marathon plans in plan mode and settles things with the developer before any consequential
-action — `init` before scaffolding, a fresh `start` before writing the guide or authoring the
-change, `plan` and `review` before changing notes. (A `start` that resumes a handoff skips this
+marathon plans in plan mode and settles things with the architect before any consequential
+action — `init` before scaffolding, a fresh `start` before implementing the first stage or
+authoring the change, `plan` and `review` before changing notes. (A `start` that resumes a handoff skips this
 and picks up the existing plan.)

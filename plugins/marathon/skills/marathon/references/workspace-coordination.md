@@ -1,109 +1,76 @@
-# Workspace coordination
+# Workspaces
 
 marathon manages one repository. But related repositories are often developed together — a set of
-capability libraries, a template, and a service that consumes them — and a single objective sometimes
-crosses several of them in dependency order. Workspace coordination lets marathon run that objective as
-one orchestrated change while keeping each repository a self-contained marathon project. The `coordinate`
-command is the mechanism; this note is the design behind it.
+capability libraries, a template, and a service that consumes them — and a settled step sometimes
+crosses several of them in dependency order. A workspace lets marathon run that step as one
+session while keeping each repository a self-contained marathon project. This note is the design.
 
 ## The workspace holds no context
 
-A **workspace** is the directory the related projects sit under as siblings. It is not itself a marathon
-project: it has no `context/`, and coordination adds none. That is deliberate. The knowledge a workspace
-might seem to want — which repositories exist, how they depend, which one leads — already has a home in
-whichever project describes the estate as a whole (typically an organization-context project). Giving the
-workspace its own `context/` would be a second description of the same thing, and the two would drift.
-So the coordination knowledge splits in two, and neither part is a workspace file:
+A **workspace** is the directory the related projects sit under as siblings. It is not itself a
+marathon project: it has no `context/`, and the workspace adds none. That is deliberate. The
+knowledge a workspace might seem to want — which repositories exist, how they depend, which one
+leads — already has a home in whichever project describes the estate as a whole (typically an
+organization-context project). Giving the workspace its own `context/` would be a second
+description of the same thing, and the two would drift. So the workspace knowledge splits in two,
+and neither part is a workspace file:
 
-- **Mechanism — general, in the skill.** How to detect a workspace, enumerate the participating
-  projects, and fan a session out to each. This lives in `commands/coordinate.md` and applies to any
-  workspace.
-- **Map — specific, in the coordinator project.** Which projects participate and in what order. marathon
-  does not hardcode this; it reads it from the project that declares itself coordinator.
+- **Mechanism — general, in the skill.** How a session locates the workspace, resolves the
+  coordinator's reset, and runs a step that spans member repos. This lives in
+  `mechanics/pipeline.md` and the working-session playbooks, and applies to any workspace.
+- **Map — specific, in the coordinator project.** Which projects the workspace holds and in what
+  dependency order. marathon does not hardcode this; it reads it from the project that declares
+  itself coordinator.
 
 ## The coordinator and the map
 
-One project in the workspace declares itself the coordinator in its `.claude/marathon.toml`:
+One project in the workspace declares itself the coordinator in its `.claude/marathon.toml`, with
+the `[workspace]` block whose canonical layout is `mechanics/configuration.md`. Its `order` is the
+map in machine-readable form: a list of **layers**, lowest dependency first. Each entry is either
+one project or an array of **adjacent** projects — peers at the same depth with no dependency
+between them, so their order within a layer is free. This mirrors a real dependency graph, which
+is layered rather than strictly linear.
 
-```toml
-[workspace]
-role  = "coordinator"
-order = [
-  "core-lib",
-  ["service-a", "service-b"],
-  "gateway",
-]
-```
+The coordinator is normally the project that already narrates the estate in prose (its capability
+map or references catalog). Declaring `order` there adds no second source of truth: it is the
+executable projection of a map the project already keeps. Each key resolves to a checkout — a
+sibling directory in the workspace by name, or, for a participant that lives elsewhere on disk,
+through the coordinator's optional `[workspace.paths]` table, which maps the key to a directory on
+this machine. A key that is neither a sibling nor mapped is resolved by asking the architect. If
+no project declares itself coordinator, don't assume an order: enumerate the sibling projects (the
+directories with a `context/`) and ask the architect.
 
-`order` is the map in machine-readable form: a list of **layers**, lowest dependency first. Each entry is
-either one project or an array of **adjacent** projects — peers at the same depth with no dependency
-between them, so their order within the layer is free. This mirrors a real dependency graph, which is
-layered rather than strictly linear.
+## Cross-repo steps
 
-The coordinator is normally the project that already narrates the estate in prose (its capability map or
-references catalog). Declaring `order` there adds no second source of truth: it is the executable
-projection of a map the project already keeps. Each key resolves to a checkout — a sibling directory in
-the workspace by name, or, for a participant that lives elsewhere on disk, through the coordinator's
-optional `[workspace.paths]` table, which maps the key to a directory on this machine. A key that is
-neither a sibling nor mapped is resolved by asking the developer.
-
-## Detection and degradation
-
-A directory that contains marathon projects but is not one itself (no `context/`) is a workspace.
-`coordinate` finds the coordinator by looking for the participating project whose `marathon.toml`
-declares `role = "coordinator"`, and reads its `order`.
-
-With no coordinator present, marathon degrades rather than guessing: it enumerates the sibling projects
-(the directories that do have a `context/`) and asks the developer which participate and in what order.
-Coordination still runs; it just sources the order from the developer for that session instead of from a
-declaration.
-
-## Honoring project kind in a fan-out
-
-The participating projects need not be the same kind. A fan-out treats each by its own kind (see
-`references/role-boundary.md`): a `code` project gets an implementation-guide slice the developer applies; a
-`context` project gets its change authored directly. A single objective — build a capability in a code
-library and revise the skill that documents the workflow around it — can therefore span both kinds in one
-coordinated run.
-
-## The consolidated guide is ephemeral
-
-For the code-project slices of a coordinated change, the plan is collected into one consolidated guide,
-authored at the directory `coordinate` was launched from (typically the workspace root). Because the
-workspace versions nothing, this guide is never committed and does not outlive the session — the same
-lifetime as a single project's `context/guide.md`. It is a working document for the fan-out, not a record.
-The lasting record is what each project commits — its own branch and published change — and the
-session record at the coordinator.
+A working session whose settled step spans member repos runs as one session. The step's scope
+names the repos it touches, placed in the map's layers; the session works them lowest layer first,
+so a higher layer builds against the real change beneath it. On the code-project parts, the stage
+list of `references/staged-execution.md` is one list spanning the repos, its stages grouped by
+repository in map order; a context project's part is authored directly. The session creates a
+branch in each touched repo under the step's shared slug, and its `close` commits and publishes
+each repo's branch as that repository's own change proposal.
 
 ## Continuity lives at the coordinator
 
 A workspace maintains one reset file, at the coordinator; member projects carry none
 (`mechanics/reset-file.md`). One session's story then lives in one place: the record names the
-member project it concerns, and its Next-focus names where the next session continues, so a
-session entered anywhere in the workspace routes through the same anchor. An interrupted fan-out
-resumes from that record plus each touched project's open branch, and the cross-project order on
-resume comes from re-reading the coordinator's `order`. The coordination run itself still produces
-no branch and no context of its own — the coordinator's reset and the per-project branches carry
-everything continuity needs.
+member repos it concerns, and its Next-focus names where the next session continues, so a session
+entered anywhere in the workspace routes through the same anchor. An interrupted cross-repo step
+resumes from that record plus each touched repo's open branch, and the dependency order on resume
+comes from re-reading the coordinator's `order`.
 
 ## Awareness follows the dependency direction
 
-Coordination reads the map from the coordinator; it never teaches a lower project about the projects that
-consume it. A dependency graph's awareness runs downward — a project knows what it builds on, not what
-builds on it — and coordination respects that: the estate-wide view lives only in the coordinator, the
-one place the whole is legitimately described together. A lower project stays unaware of its consumers,
-even inside a coordinated change.
+Sessions read the map from the coordinator; they never teach a lower project about the projects
+that consume it. A dependency graph's awareness runs downward — a project knows what it builds on,
+not what builds on it — and marathon respects that: the estate-wide view lives only in the
+coordinator, the one place the whole is legitimately described together. A lower project stays
+unaware of its consumers, even inside a cross-repo step.
 
 ## Coordinator conventions
 
-An organization-level coordinator often keeps conventions that bind the member repositories — naming
-rules, authoring rules, the awareness direction itself. Because awareness runs downward, a member
-repository never cites them in its own stable context. The binding runs through sessions instead: a
-member's `review` consults the coordinator's conventions as part of its drift check, and a coordinated
-fan-out applies them as it works each project.
-
-## Not yet settled
-
-How a coordinated change should present when several participating projects' extensions each mirror
-outward is left open; see `references/extensions.md`. Until it is settled, hooks fire per project and
-cross-mirror coordination is deferred.
+An organization-level coordinator often keeps conventions that bind the member repositories —
+naming rules, authoring rules, the awareness direction itself. Because awareness runs downward, a
+member repository never cites them in its own stable context. The binding runs through sessions
+instead: a member's `review` consults the coordinator's conventions as part of its drift check,
+and a cross-repo step applies them as it works each repo.

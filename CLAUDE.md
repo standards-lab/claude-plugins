@@ -11,14 +11,6 @@ Each plugin's design and behavior is expressed in its own files under `plugins/<
 source of truth. `context/` holds the repository's vision, concepts, and session record, not a
 restatement of how the plugins work. See `context/design/skill-is-the-source-of-truth.md`.
 
-## Role boundary
-
-claude-plugins is a marathon **context** project (`.claude/marathon.toml` declares `kind = "context"`):
-the plugin and skill files are advanced context, not production source code. The agent authors the
-repository directly — the skills, plugin manifests, prose, and everything in `context/`. There is no
-implementation guide and no tests. The developer sets direction and owns the work by reviewing and
-approving each change; the pull request is the ownership seam.
-
 ## Repository specifics
 
 - **Marketplace host.** Each plugin under `plugins/` is independently versioned and released; consumers
