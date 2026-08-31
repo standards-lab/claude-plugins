@@ -1,7 +1,8 @@
 # The skill is the source of truth
 
 Each plugin's design is expressed in its own files under `plugins/<name>/` — the skill's `SKILL.md`, its
-`commands/`, and its `references/`. Those files are the authority on how the plugin behaves.
+`commands/`, `mechanics/`, `behavior/`, and `references/` tiers. Those files are the authority on how the
+plugin behaves.
 
 `context/` does not restate that design. It holds what the code cannot yet express: the repository's vision
 and capability map (`README.md`), candidate ideas not yet built (`concepts/`), and the session record
