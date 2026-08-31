@@ -4,7 +4,7 @@ All notable changes to the marathon-roadmap plugin are documented here. Versions
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
-## [v0.1.3]
+## v0.1.3
 
 ### Changed
 
@@ -13,7 +13,7 @@ GitHub releases the tags cut.
   per finished task as before. The SKILL.md gains the `Version:` line marathon 0.9 makes
   checkable, and the prose follows marathon 0.9's terminology: the human is the architect.
 
-## [v0.1.2]
+## v0.1.2
 
 ### Changed
 
@@ -24,7 +24,7 @@ GitHub releases the tags cut.
   `mechanics/reset-file.md`: a standalone project's own, or the workspace's single reset at the
   coordinator.
 
-## [v0.1.1]
+## v0.1.1
 
 ### Changed
 
@@ -32,7 +32,7 @@ GitHub releases the tags cut.
   the slash-command menu. An extension skill is resolved by marathon's hook firing, or loaded by
   the model on a roadmap question; it is never typed as a command.
 
-## [v0.1.0]
+## v0.1.0
 
 ### Added
 
