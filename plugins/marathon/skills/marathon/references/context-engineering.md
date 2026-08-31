@@ -34,8 +34,6 @@ Volatile (changes often, and gets cleaned up):
 
 - `context/concepts/` — concepts: ideas and open questions that aren't settled. Most of the churn lives
   here.
-- `context/guide.md` — a code project's implementation guide for the current `start`. Created during the
-  session and deleted when it closes; a context project never has one.
 - `context/reset.md` — the latest session's record and the pointer to the next step, kept by a
   standalone project and by a workspace coordinator; a workspace member carries none. One file;
   git keeps the older versions (`mechanics/reset-file.md`).
@@ -133,6 +131,6 @@ description of the project that slowly disagrees with the code.
 ## Check before you cut
 
 Promoting, decaying, and culling change what the documentation says about the project, so don't do them
-on your own. Show the developer what you propose to move or delete and get agreement first — in plan
+on your own. Show the architect what you propose to move or delete and get agreement first — in plan
 mode for `init`, a fresh `start`, `plan`, and `review`, and as a quick confirmation during `reset` and
 `close`.

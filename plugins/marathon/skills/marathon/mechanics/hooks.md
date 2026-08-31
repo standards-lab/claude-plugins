@@ -12,7 +12,7 @@ Resolve the enabled extension set once, at 2 · START, before the first fire:
 2. In a workspace, also read `[workspace] extensions` from the coordinator's `marathon.toml`.
 3. Union the two lists, preserving order. For each name:
    - skill installed (its skill-listing description contains "marathon extension") → active;
-   - not installed → report the missing plugin to the developer and continue without it.
+   - not installed → report the missing plugin to the architect and continue without it.
 4. For each active extension, read its SKILL.md declaration: the artifact it owns, the hook points
    it acts at, the marathon version it targets. On an incompatible version, report the mismatch and
    ask before applying.
@@ -37,7 +37,6 @@ Ordering constraints:
 - `close`: `on-reset` → `on-close` → `on-commit` → publish.
 - `reset` (handoff): never fires `on-close`.
 - `init`: fires `on-start`, `on-execute`, `on-reset`, `on-commit`; never `on-close`.
-- `coordinate`: fires nothing itself; each fanned-out project session fires its own.
 
 ## Artifact bootstrap
 
@@ -47,5 +46,5 @@ extension's SKILL.md directs.
 ## Session-specific moments
 
 Moments beyond the five universal hooks are named `<command>:<moment>` — for example
-`start:guide-written`, or `close:published` for the point after publish when the change proposal's
+`start:stage-committed`, or `close:published` for the point after publish when the change proposal's
 URL is known. None are defined; one is added to this spec when an extension earns it.

@@ -7,11 +7,13 @@ description: >
   tasks, and a backlog in one TOML file, cited by dotted slug paths. marathon sessions keep it
   current through the extension hooks — conventions layered in at session start, task citations
   in the reset file, the finished task deleted and `next` advanced at closeout. Load this skill
-  when a marathon session resolves it as an enabled extension, or when the developer asks about
+  when a marathon session resolves it as an enabled extension, or when the architect asks about
   the roadmap, roadmap.toml, goals and tasks, the backlog, or what comes next.
 ---
 
 # marathon-roadmap
+
+Version: 0.1.3
 
 marathon plans one step at a time and deliberately keeps `context/` shallow past the step in
 front. What that leaves unwritten is the path: the outcomes the project is working toward and the
@@ -37,7 +39,7 @@ here.
   manifest at the coordinator serves every member project; enabled under `[project]`, the
   project keeps its own.
 - **Hooks:** `on-start`, `on-reset`, `on-close`.
-- **Targets:** marathon 0.8.
+- **Targets:** marathon 0.9.
 
 ## Mechanics
 

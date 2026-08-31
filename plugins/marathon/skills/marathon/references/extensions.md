@@ -18,7 +18,7 @@ An extension acts in a session when two conditions hold:
   data: it travels with a clone, and the repository remains the record of its own process.
 
 An installed extension that no repository enables stays inert. An enabled extension whose skill is
-missing gets surfaced to the developer, naming the plugin to install, rather than silently skipped.
+missing gets surfaced to the architect, naming the plugin to install, rather than silently skipped.
 
 ## Enabling in marathon.toml
 
@@ -35,7 +35,7 @@ extensions = ["<extension>"]   # coordinator only: enabled for every project in 
 
 A project enables an extension for itself under `[project]`. A workspace coordinator may enable one
 for every member project under `[workspace]`; a member's session reads its own file and the
-coordinator's. Removing the entry disables the extension. Its artifact is the developer's call:
+coordinator's. Removing the entry disables the extension. Its artifact is the architect's call:
 delete it when the convention is retired, or keep it as a plain file the extension no longer
 maintains.
 
@@ -47,7 +47,7 @@ The extension's own files carry its whole declaration:
   identifies it without loading the skill.
 - Its SKILL.md names the artifact it owns, if it owns one; the hook points it acts at; and the
   marathon version it targets. A session that finds the targeted version incompatible with the
-  marathon it runs surfaces the mismatch to the developer instead of guessing.
+  marathon it runs surfaces the mismatch to the architect instead of guessing.
 
 An extension that owns an artifact also bootstraps it: when the extension is enabled and the
 artifact does not exist yet, the next session creates it as the extension's SKILL.md directs.
@@ -55,10 +55,7 @@ artifact does not exist yet, the next session creates it as the extension's SKIL
 ## The hook points
 
 Five universal hooks fire in every session type, each just before the moment it names, so an
-extension can shape what that moment produces: `on-start` (the session begins — conventions layer
-in, a missing artifact bootstraps), `on-execute` (the plan is approved and work begins),
-`on-commit` (the session is about to commit), `on-reset` (the reset file is about to be written),
-and `on-close` (closeout, between the reset file and the closeout commit). The firing table, the
+extension can shape what that moment produces. The hooks themselves, their firing table, the
 resolution order, and the per-command constraints live in `mechanics/hooks.md`; session-specific
 moments beyond the five follow the naming convention `<command>:<moment>`, added to that spec only
 when an extension earns them.
@@ -69,10 +66,3 @@ The repository is the source of truth. An extension may own and maintain its art
 repository; that is the normal shape of a repo-native extension. Anything it projects outside the
 repository, onto a tracker or any other platform surface, is a read-only mirror of repository
 state, and the projection never feeds back into the core's files or decisions.
-
-## Under coordination
-
-A `coordinate` run fans out to per-project sessions, and each project's hooks fire as they normally
-would within its own session. How a single coordinated change should present across several outward
-mirrors at once — one linked item spanning the projects, versus an independent item per project —
-is not yet defined; until it is, extensions act per project.

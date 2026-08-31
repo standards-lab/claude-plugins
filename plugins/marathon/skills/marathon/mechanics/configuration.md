@@ -5,7 +5,7 @@ configuration. `init` writes it once; every session afterward reads it.
 
 ```toml
 [project]
-kind = "code"        # production source the developer authors and answers for
+kind = "code"        # production source with a build-and-test loop
 # kind = "context"   # the whole repository is context — the agent authors it directly
 # Optional: marathon extensions enabled for this project, by skill name.
 # extensions = ["<extension>"]
@@ -34,20 +34,19 @@ core-lib = "~/code/core-lib"
 ## Project kind
 
 `[project] kind` declares which of the two kinds the repository is. It decides how `start` and
-`close` behave, and how `coordinate` treats the project in a fan-out; the role boundary each kind
-draws is `references/role-boundary.md`.
+`close` behave.
 
 - **code** — the repository contains production source code: the implementation logic that makes
-  a program behave. The agent drafts each change as an implementation guide, the developer
-  applies it, and closeout adds tests and documentation.
+  a program behave. The agent implements each step directly in stages, each reviewed before the
+  next; closeout follows validation.
 - **context** — the repository *is* context: prose, configuration, and skills (which are advanced
-  context, not source). The agent authors the whole repository directly — no implementation
-  guide, no tests. The developer sets direction and reviews and approves each change; the pull
-  request is the ownership seam. A context project can still version and release what it ships (a
-  plugin, a document set); it just has no code layer.
+  context, not source). The agent authors the whole repository directly — no tests. The architect
+  sets direction and reviews and approves each change; the pull request is the ownership seam. A
+  context project can still version and release what it ships (a plugin, a document set); it just
+  has no code layer.
 
-When in doubt, apply the git-blame test in `references/role-boundary.md`: whom should the
-deliverable's history point at?
+When in doubt, ask whether there is a build-and-test loop that defines stage boundaries and a
+validation phase; if there is, it's `code`.
 
 ## Remote
 
@@ -57,7 +56,7 @@ runs it to publish the finished branch.
 
 ## Workspace
 
-Only a coordinator declares `[workspace]`. `order` is the dependency map a coordinated change
+Only a coordinator declares `[workspace]`. `order` is the dependency map a cross-repo step
 flows through — a list of layers, lowest first; an array entry is a layer of adjacent peers.
 `docs` names the workspace's docs landing zone by order key. `[workspace.paths]` resolves an
 order key that is not a sibling directory. The design is

@@ -13,5 +13,5 @@ Fires as the session begins, before orientation.
    - Treat a stale claim as a defect: the session that finds it fixes it.
 3. If the extension is enabled and the manifest does not exist, bootstrap it: create
    `context/roadmap.toml` at the resolved location with the header and empty `next` from
-   `references/manifest.md`. Populate it with the developer when the session settles its scope —
-   the roadmap is the developer's path, not the agent's guess.
+   `references/manifest.md`. Populate it with the architect when the session settles its scope —
+   the roadmap is the architect's path, not the agent's guess.

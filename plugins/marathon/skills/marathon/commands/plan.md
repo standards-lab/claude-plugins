@@ -23,7 +23,7 @@ step through.
 
 ## Settle
 
-The scope to settle is the topic: work it through with the developer — refine a concept, settle a
+The scope to settle is the topic: work it through with the architect — refine a concept, settle a
 design decision, or map out what the next step should be and how far it should go. Add detail only as
 far as the upcoming work needs it — no planning ahead into steps you haven't earned. This is where the
 architectural work happens, so give it real depth.
@@ -36,7 +36,7 @@ Branch slug: the topic.
 
 ## Execute: tend the context
 
-Bring `context/` in line with what the discussion settled. Show the developer what you propose to move
+Bring `context/` in line with what the discussion settled. Show the architect what you propose to move
 or delete and get agreement first.
 
 - **Promote** — move a concept from `concepts/` into `design/` if this session settled it, and say why.

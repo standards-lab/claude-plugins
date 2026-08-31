@@ -60,7 +60,7 @@ The manifest is ephemeral, unordered, and proximate:
 ## Bootstrap
 
 A manifest created at `on-start` opens with this header and an empty `next`; the session
-populates it with the developer when it settles scope:
+populates it with the architect when it settles scope:
 
 ```toml
 # Roadmap — the path to the target end state, holding only what remains. Maintained by

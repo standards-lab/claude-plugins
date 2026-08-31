@@ -12,14 +12,14 @@ The repository-as-source-of-truth principle produces an accomplishment ledger as
 the workflow. The coordinator reset file's git history is a session-by-session record of
 dispositions and focus; the roadmap manifest's history shows each task deleted as it finished and
 each goal closed; every member repository's log and merged pull requests carry the work itself.
-Nothing reads that ledger back out. A developer who owes a stakeholder an account of the last
+Nothing reads that ledger back out. A architect who owes a stakeholder an account of the last
 month re-walks the history by hand and calibrates the telling by feel, and the result is bound to
 one audience at one depth.
 
 There is a second gap underneath the first. `references/extensions.md` defines an extension by
 the hooks it declares: "it declares what happens at the hook points every session fires; marathon
 applies it at those points and otherwise never names it." A capability that layers on top of
-marathon — invoked by the developer, firing at no hook — has no shape in the specification at
+marathon — invoked by the architect, firing at no hook — has no shape in the specification at
 all.
 
 ## Proposal
@@ -37,7 +37,7 @@ The concept treats "extension" as the higher-level idea, with two implementation
   `marathon.toml`; the sessions apply it. marathon-roadmap is the existing member.
 - An **enhancement** layers functionality on top of the marathon skill — and potentially its
   enabled integrations — by reading the specification's own structures. It fires at no hook and
-  the sessions never apply it; the developer invokes it.
+  the sessions never apply it; the architect invokes it.
 
 A hybrid carries both facets. marathon-sitrep is the first pure enhancement. Building it amends
 `references/extensions.md` to name the taxonomy; that amendment is part of the build session, not
@@ -61,12 +61,12 @@ dimension — tasks and goals closed within the range, and the remaining path th
 
 ### The owned artifact: `context/sitrep.toml`
 
-Audiences are the developer's stakeholders, not the agent's guess, so they are repository data.
+Audiences are the architect's stakeholders, not the agent's guess, so they are repository data.
 The extension owns `context/sitrep.toml`, resolved the way the roadmap manifest is: at the
 coordinator when serving a workspace, at the project itself when standalone. Each
 `[audiences.<slug>]` table carries a name, a description of who the audience is, and calibration
 guidance — depth, register, what this audience cares about and what it should be spared.
-Bootstrapped at first invocation and populated with the developer.
+Bootstrapped at first invocation and populated with the architect.
 
 ### Output formats
 

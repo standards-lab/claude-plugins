@@ -4,6 +4,15 @@ All notable changes to the marathon-roadmap plugin are documented here. Versions
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## [v0.1.3]
+
+### Changed
+
+- **Targets marathon 0.9** — marathon's staged execution and cross-repo steps leave the hook
+  contract unchanged: a cross-repo step is one session with one close, so `on-close` fires once
+  per finished task as before. The SKILL.md gains the `Version:` line marathon 0.9 makes
+  checkable, and the prose follows marathon 0.9's terminology: the human is the architect.
+
 ## [v0.1.2]
 
 ### Changed

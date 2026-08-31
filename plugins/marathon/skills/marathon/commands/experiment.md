@@ -37,7 +37,7 @@ branch as you go.
 
 ## Conclude: promote deliberately, or don't
 
-At `close`, decide with the developer what the spike earned. A result that proved out is promoted on
+At `close`, decide with the architect what the spike earned. A result that proved out is promoted on
 purpose — captured as a concept in `concepts/`, or teed up as the next `start` — and promotion is what
 moves proven work into its real home. A result that didn't prove out is simply not promoted.
 

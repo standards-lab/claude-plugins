@@ -27,17 +27,17 @@ this project is a standalone project or sits in a workspace (the LOCATE stage of
 - **In a workspace, and the coordinator's `[workspace] docs` names this project.** This project is the
   landing zone; continue below as usual.
 - **In a workspace, and `[workspace] docs` names a different project.** Don't bootstrap or curate a
-  `docs/` here. Tell the developer the workspace centralizes documentation in that project, and point
+  `docs/` here. Tell the architect the workspace centralizes documentation in that project, and point
   them there.
 - **In a workspace, and the coordinator declares no `[workspace] docs`.** No landing zone is settled.
-  Ask the developer whether this project should be the one — and add the field to the coordinator's
+  Ask the architect whether this project should be the one — and add the field to the coordinator's
   `marathon.toml` if so — or whether another project holds it.
 
 ## Bootstrapping (first run, no docs/)
 
 If the project has no `docs/` yet, this run establishes it:
 
-1. Settle with the developer what the documentation needs to cover and how to structure it — the
+1. Settle with the architect what the documentation needs to cover and how to structure it — the
    layers or topics a reader moves through, and where to start.
 2. Create `docs/` and write the first pages from the code and the `context/` notes as they stand.
 3. Keep it shallow where the project is still moving; document what is settled enough to explain.

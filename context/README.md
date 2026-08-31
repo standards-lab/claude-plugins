@@ -11,8 +11,9 @@ exercised against its own source.
 Broad and shallow; detail is added when a capability is about to be built.
 
 - **marathon** — the sustainable long-haul development workflow, built on context engineering. The
-  substance of the repository today; it distinguishes code from context projects, runs `plan`/`start`/
-  `experiment` sessions, and coordinates a change across several projects in a workspace.
+  substance of the repository today; it distinguishes code from context projects and runs `plan`/
+  `start`/`experiment` sessions on a standalone repository or in a workspace, where one session can
+  carry a step across several member projects.
 - **marathon-roadmap** — the first marathon extension: the roadmap manifest convention
   (`context/roadmap.toml` — goals, tasks, backlog) kept current through marathon's session hooks.
 - **marathon-sitrep** (candidate) — audience-calibrated situation reports over a date range, read
