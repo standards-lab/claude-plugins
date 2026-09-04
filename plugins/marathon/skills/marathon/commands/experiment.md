@@ -24,8 +24,17 @@ Branch slug: the spike.
 
 ## Execute: work in experiments/
 
-Make the top-level `experiments/<slug>/` directory and do the spike there. Both project kinds spike the
-same way — in isolation, treating the result as evidence:
+Make the `experiments/<slug>/` directory and do the spike there. Where that directory is depends
+on how the project sits:
+
+- A **standalone** project keeps its own top-level `experiments/`.
+- In a **workspace**, every experiment lives at the coordinator, under the coordinator's top-level
+  `experiments/`, whatever the spike's scope and whichever member repository's question it
+  answers. The branch is created at the coordinator, and the reset file's Project line names the
+  coordinator, plus any member repository the session also edits. The reasons are in
+  `references/workspace-coordination.md`.
+
+Both project kinds spike the same way, in isolation, treating the result as evidence:
 
 - a **code** project tries an implementation approach in throwaway code;
 - a **context** project trials a new skill or agent idea before it becomes real — a draft skill, a

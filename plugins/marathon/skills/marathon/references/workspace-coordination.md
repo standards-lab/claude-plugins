@@ -59,6 +59,22 @@ entered anywhere in the workspace routes through the same anchor. An interrupted
 resumes from that record plus each touched repo's open branch, and the dependency order on resume
 comes from re-reading the coordinator's `order`.
 
+## Experiments live at the coordinator
+
+In a workspace, every experiment lives under the coordinator's top-level `experiments/`, never
+inside a member repository. A member repository carries the tooling of a code project: a Go
+workspace file, a CI matrix, format sweeps, module lists. A spike placed inside it sits under all
+of that and either breaks against it or has to be fenced from each piece in turn. The coordinator
+carries no such tooling, so a spike there collides with nothing. The spike depends on the member
+modules it needs as published versions, through its own `go.mod` or the equivalent, never
+through a replace directive to a sibling checkout. A change the spike implies for a member
+repository's code is laid out inside the experiment, and it reaches that repository only by
+promotion at `close`, when the architect accepts the result into the workspace's effort. The
+session's branch is the coordinator's; if the spike's outcome changes a member repository's
+context, that edit is a cross-repo edit on that repository's own branch, recorded under
+**Cross-repo** in the reset disposition. A standalone project keeps its own `experiments/`, as
+`commands/experiment.md` states.
+
 ## Awareness follows the dependency direction
 
 Sessions read the map from the coordinator; they never teach a lower project about the projects

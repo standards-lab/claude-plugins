@@ -37,7 +37,9 @@ Add secret sourcing on top of the validated loader. Start here next session.
 A standalone project's reset omits the Project line. In a workspace reset, Next-focus also names
 the member project the next session continues in, so a session entered anywhere in the workspace
 finds its way. A step that spanned several member repos lists them all on the Project line; its
-branches share the step's slug, so the Branch line stays one value.
+branches share the step's slug, so the Branch line stays one value. An experiment in a workspace
+names the coordinator on its Project line, since the spike lives there, and any member repository
+the session also edited.
 
 ## Status semantics
 
