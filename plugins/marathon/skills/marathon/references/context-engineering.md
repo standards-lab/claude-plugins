@@ -41,7 +41,8 @@ Volatile (changes often, and gets cleaned up):
 Kept outside `context/`:
 
 - `experiments/` — a top-level directory for spikes, isolated so throwaway work doesn't mix into the
-  real tree. Created when an experiment session needs it.
+  real tree. Created when an experiment session needs it. A standalone project keeps its own; in
+  a workspace, the coordinator keeps the only one (`references/workspace-coordination.md`).
 - `docs/` — an optional top-level directory for human-oriented reference documentation. See below.
 - the source code — the implementation, and the final word on what the project does.
 

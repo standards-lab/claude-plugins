@@ -44,9 +44,9 @@ directories with a `context/`) and ask the architect.
 
 A working session whose settled step spans member repos runs as one session. The step's scope
 names the repos it touches, placed in the map's layers; the session works them lowest layer first,
-so a higher layer builds against the real change beneath it. On the code-project parts, the stage
-list of `references/staged-execution.md` is one list spanning the repos, its stages grouped by
-repository in map order; a context project's part is authored directly. The session creates a
+so a higher layer builds against the real change beneath it. The stage list of
+`references/staged-execution.md` is one list spanning the repos, its stages grouped by repository
+in map order, each stage's unit set by its repository's project kind. The session creates a
 branch in each touched repo under the step's shared slug, and its `close` commits and publishes
 each repo's branch as that repository's own change proposal.
 
@@ -58,6 +58,22 @@ member repos it concerns, and its Next-focus names where the next session contin
 entered anywhere in the workspace routes through the same anchor. An interrupted cross-repo step
 resumes from that record plus each touched repo's open branch, and the dependency order on resume
 comes from re-reading the coordinator's `order`.
+
+## Experiments live at the coordinator
+
+In a workspace, every experiment lives under the coordinator's top-level `experiments/`, never
+inside a member repository. A member repository carries the tooling of a code project: a Go
+workspace file, a CI matrix, format sweeps, module lists. A spike placed inside it sits under all
+of that and either breaks against it or has to be fenced from each piece in turn. The coordinator
+carries no such tooling, so a spike there collides with nothing. The spike depends on the member
+modules it needs as published versions, through its own `go.mod` or the equivalent, never
+through a replace directive to a sibling checkout. A change the spike implies for a member
+repository's code is laid out inside the experiment, and it reaches that repository only by
+promotion at `close`, when the architect accepts the result into the workspace's effort. The
+session's branch is the coordinator's; if the spike's outcome changes a member repository's
+context, that edit is a cross-repo edit on that repository's own branch, recorded under
+**Cross-repo** in the reset disposition. A standalone project keeps its own `experiments/`, as
+`commands/experiment.md` states.
 
 ## Awareness follows the dependency direction
 

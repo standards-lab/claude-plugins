@@ -42,8 +42,8 @@ sibling declaring a coordinator — and that check is its LOCATE.
 
 1. Enter plan mode.
 2. Work the scope through with the architect, to the depth the command's playbook calls for. On a
-   **code** project's `start`, the settled scope is expressed as the stage list of
-   `references/staged-execution.md`. Change nothing yet.
+   working session, the settled scope is expressed as the stage list of
+   `references/staged-execution.md`, whatever the project kind. Change nothing yet.
 3. As the discussion ranges wider than the step, note the context tending it implies — ideas to
    capture as concepts, concepts it rules out, the next focus taking shape. On a **context**
    project these edits are made in 4 · EXECUTE, after approval — there the change is the context.
@@ -59,13 +59,15 @@ sibling declaring a coordinator — and that check is its LOCATE.
 1. Check out the open branch named in the reset file — in each touched repo, for a step that
    spans several.
 2. Fire `on-execute`.
-3. Read the in-progress state; the Next-focus is the exact next move. Continue: 4 · EXECUTE.
+3. Read the in-progress state: the stage list, the stage position, and the exact next move the
+   Next-focus records. Continue: 4 · EXECUTE.
 
 ### 4 · EXECUTE
 
-1. Do the command's work, per its playbook and the project kind. On a **code** project's `start`,
-   EXECUTE is the stage loop of `references/staged-execution.md`; a re-plan re-enters 3 · SETTLE
-   for the remaining stages without leaving the branch.
+1. Do the command's work, per its playbook and the project kind, as the stage loop of
+   `references/staged-execution.md`: each stage is reported with the working tree uncommitted and
+   commits only on the architect's approval. A re-plan re-enters 3 · SETTLE for the remaining
+   stages without leaving the branch.
 2. Fire `on-commit` immediately before any commit the session makes, in this stage or a later one.
 
 ### 5 · CONCLUDE
@@ -101,5 +103,7 @@ coordinator's repository, alongside the session's own.
   continuity.
 - Nothing is created or changed before the architect approves at SETTLE, except by a RESUME picking
   up an approved plan.
+- A stage commits only on the architect's approval. The report precedes the commit, in every
+  command that executes.
 - On a code project, `context/` asserts only what validated work proved; tending follows
   validation.

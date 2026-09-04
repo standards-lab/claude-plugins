@@ -33,7 +33,9 @@ Branch slug: the review's topic.
 ## Execute: apply what's agreed
 
 Apply only what's agreed: delete the decayed notes (recording that you did), cull the dead concepts,
-promote the proven ones, and fix the orientation.
+promote the proven ones, and fix the orientation. The edits run in stages under
+`references/staged-execution.md`: each stage is reported with the working tree uncommitted and
+commits on approval.
 
 End the pass with fewer notes, each one true. Don't invent a home for a note that doesn't have one,
 and don't add detail an upcoming step doesn't need.

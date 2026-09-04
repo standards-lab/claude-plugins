@@ -18,7 +18,7 @@ description: >
 
 # Marathon
 
-Version: 0.9.0
+Version: 0.10.0
 
 marathon is a workflow for long-haul development that stays sustainable. Within a session you work
 fast: plan the next step, build it, close it out. Across the project you go the distance, advancing one
@@ -85,8 +85,9 @@ Consulted when their subject is in play:
 - [`references/context-engineering.md`](./references/context-engineering.md) — how `context/` is
   organized and maintained: the tiers, promote/decay/cull, assumption annotations, the `docs/`
   tier's place in the lifecycle.
-- [`references/staged-execution.md`](./references/staged-execution.md) — how a code project's
-  `start` executes: stages, the stage list, the report, review outcomes, re-plan, validation.
+- [`references/staged-execution.md`](./references/staged-execution.md) — how every working
+  session executes: stages per project kind, the stage list, the review gate, the report, review
+  outcomes, re-plan, validation.
 - [`references/workspace-coordination.md`](./references/workspace-coordination.md) — the design
   behind workspaces: the coordinator, the order map, cross-repo steps, continuity.
 - [`references/extensions.md`](./references/extensions.md) — the extension system: installed vs.

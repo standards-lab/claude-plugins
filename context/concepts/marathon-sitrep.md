@@ -12,7 +12,7 @@ The repository-as-source-of-truth principle produces an accomplishment ledger as
 the workflow. The coordinator reset file's git history is a session-by-session record of
 dispositions and focus; the roadmap manifest's history shows each task deleted as it finished and
 each goal closed; every member repository's log and merged pull requests carry the work itself.
-Nothing reads that ledger back out. A architect who owes a stakeholder an account of the last
+Nothing reads that ledger back out. An architect who owes a stakeholder an account of the last
 month re-walks the history by hand and calibrates the telling by feel, and the result is bound to
 one audience at one depth.
 

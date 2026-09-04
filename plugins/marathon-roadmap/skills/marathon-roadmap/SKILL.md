@@ -13,7 +13,7 @@ description: >
 
 # marathon-roadmap
 
-Version: 0.1.3
+Version: 0.1.4
 
 marathon plans one step at a time and deliberately keeps `context/` shallow past the step in
 front. What that leaves unwritten is the path: the outcomes the project is working toward and the
@@ -39,7 +39,7 @@ here.
   manifest at the coordinator serves every member project; enabled under `[project]`, the
   project keeps its own.
 - **Hooks:** `on-start`, `on-reset`, `on-close`.
-- **Targets:** marathon 0.9.
+- **Targets:** marathon 0.10.
 
 ## Mechanics
 

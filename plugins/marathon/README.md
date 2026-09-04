@@ -48,17 +48,22 @@ the next session.
 
 A project is declared `code` or `context` at `init`, in `.claude/marathon.toml`:
 
-- **code** — the repository holds production source. The agent implements in reviewed stages, each a
-  green compilation unit with its tests; the architect directs and reviews every stage.
-- **context** — the repository *is* context (skills, prose, configuration). The agent authors it
-  directly under the architect's review; there are no tests.
+Both kinds execute in stages, and the architect reviews each stage, uncommitted, before it commits.
+The kind sets what a stage is:
+
+- **code** — the repository contains production source. A stage is a compilation unit brought to
+  green with its tests, and the step ends with a whole-module validation.
+- **context** — the repository *is* context (skills, prose, configuration). A stage is the smallest
+  set of files that must change together, checked by the repository's own consistency script and
+  a coherent read; there are no tests.
 
 ## Workspaces
 
 When several marathon projects live as siblings under one directory — a workspace — a session's step
 may span them: one session works the touched repos in the coordinator's declared dependency order,
-each on its own branch under the step's shared slug. The workspace holds no context of its own; its
-continuity lives in the single reset file at the coordinator. See
+each on its own branch under the step's shared slug. The workspace has no context of its own; its
+continuity lives in the single reset file at the coordinator, and every experiment lives in the
+coordinator's `experiments/`. See
 [`references/workspace-coordination.md`](./skills/marathon/references/workspace-coordination.md).
 
 ## Extensions
