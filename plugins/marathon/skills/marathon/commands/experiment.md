@@ -32,8 +32,9 @@ same way — in isolation, treating the result as evidence:
   reworked command playbook — kept in `experiments/` until it's proven worth adopting.
 
 Stay inside `experiments/`. Don't reach into the real tree or the product; the isolation is what makes
-the spike safe to explore. The directory is tracked like any other: commit the spike's work on the
-branch as you go.
+the spike safe to explore. The directory is tracked like any other, and the spike runs in stages
+under the review gate of `references/staged-execution.md`: each stage is reported with the working
+tree uncommitted and commits on the architect's approval.
 
 ## Conclude: promote deliberately, or don't
 

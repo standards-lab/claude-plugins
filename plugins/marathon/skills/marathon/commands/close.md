@@ -4,13 +4,12 @@ Close out a session whose work is finished and validated. It's the same idea as 
 completed work: tidy the notes, record what happened, and publish the work. `close` is the
 pipeline's CONCLUDE stage for a finished step (`mechanics/pipeline.md`).
 
-`close` assumes the work is validated. On a **code** project's `start`, that means validation
-(`references/staged-execution.md`) has passed: the whole-module build, the full test run, and the
-run-and-verify check. On a **context** project the change was authored directly, so validation is
-that it reads coherently and stays consistent. A `plan` session has nothing to build. For an
-`experiment`, decide what, if anything, the spike earned. A `review` session's cleanup is itself
-the deliverable. A `docs` session validates its pages against the current code — where they
-disagree, the page is what's wrong. Don't close on a failure; fix it first.
+`close` assumes the work is validated per `references/staged-execution.md`: every stage approved
+and committed, then the validation for the project kind. A `plan` session has nothing to build.
+For an `experiment`, validation is the spike's answer to its question; decide with the architect
+what, if anything, the spike earned. A `review` session's cleanup is itself the deliverable. A
+`docs` session validates its pages against the current code, and where they disagree, the page is
+what's wrong. Don't close on a failure; fix it first.
 
 ## 1. Tend the context
 

@@ -23,14 +23,16 @@ Rewrite the reset file with `Status: handoff`, filling every field of the schema
 `mechanics/reset-file.md` — the coordinator's `context/reset.md` in a workspace, the project's own
 when standalone. The Disposition records what step 1 integrated, promoted, culled, or retained.
 The judgment field is **Next-focus** — the in-progress state and the exact next move. Be specific:
-name the file you're editing, the decision that's pending, the next thing to do. On a code
-project's `start`, Next-focus carries the approved stage list, which stage the pointer is on, and
-whether that stage is implemented-unreviewed or reviewed; after a re-plan it carries the revised
-list. This is what a cold context resumes from.
+name the file you're editing, the decision that's pending, the next thing to do. On a working
+session, Next-focus carries the approved stage list, which stage the pointer is on, and whether
+that stage is implemented-unreviewed or reviewed; after a re-plan it carries the revised list.
+This is what a cold context resumes from.
 
 ## 3. Keep the work
 
-On a code project's `start`, the finished stages already sit on the branch as their own commits; a
-WIP commit is only for an in-progress stage. Otherwise, optionally make a WIP commit so
-in-progress work isn't lost. Leave the branch open and don't publish it — the work isn't finished.
-A later session will see `Status: handoff`, check out the branch, and keep going.
+A `reset` normally follows an approval, so every finished stage already sits on the branch as its
+own commit and the working tree is clean. If the context fills mid-stage, make a WIP commit so the
+unapproved work isn't lost, and say in Next-focus that the stage awaits review; the resuming
+session reports it before anything else. Leave the branch open and don't publish it, since the
+work isn't finished. A later session will see `Status: handoff`, check out the branch, and keep
+going.

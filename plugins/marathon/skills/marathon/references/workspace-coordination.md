@@ -44,9 +44,9 @@ directories with a `context/`) and ask the architect.
 
 A working session whose settled step spans member repos runs as one session. The step's scope
 names the repos it touches, placed in the map's layers; the session works them lowest layer first,
-so a higher layer builds against the real change beneath it. On the code-project parts, the stage
-list of `references/staged-execution.md` is one list spanning the repos, its stages grouped by
-repository in map order; a context project's part is authored directly. The session creates a
+so a higher layer builds against the real change beneath it. The stage list of
+`references/staged-execution.md` is one list spanning the repos, its stages grouped by repository
+in map order, each stage's unit set by its repository's project kind. The session creates a
 branch in each touched repo under the step's shared slug, and its `close` commits and publishes
 each repo's branch as that repository's own change proposal.
 

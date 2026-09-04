@@ -37,7 +37,8 @@ Branch slug: the topic.
 ## Execute: tend the context
 
 Bring `context/` in line with what the discussion settled. Show the architect what you propose to move
-or delete and get agreement first.
+or delete and get agreement first. The edits run in stages under `references/staged-execution.md`:
+each stage is reported with the working tree uncommitted and commits on approval.
 
 - **Promote** — move a concept from `concepts/` into `design/` if this session settled it, and say why.
 - **Cull** — drop a concept the discussion ruled out.

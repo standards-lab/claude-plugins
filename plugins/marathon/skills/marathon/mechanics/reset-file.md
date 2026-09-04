@@ -46,8 +46,8 @@ branches share the step's slug, so the Branch line stays one value.
 - **handoff** — the recorded session stopped mid-work with its branch open. The Session line
   names the command that resumes it; the Branch line (and, in a workspace, the Project line)
   names where; Next-focus records the in-progress state and the exact next move, so a fresh
-  context can resume without working it out again. A code-project `start` records its stage
-  position there — e.g. `Stages: 3/7 · stage 3 implemented, unreviewed · list: …`. A step
+  context can resume without working it out again. A working session records its stage list and
+  position there, for example `Stages: 3/7 · stage 3 implemented, unreviewed · list: …`. A step
   spanning member repos records each touched repo's branch state there too; whatever the shape of
   the interrupted work, Next-focus carries enough bootstrap state to resume it cold.
 

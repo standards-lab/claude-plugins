@@ -7,7 +7,9 @@ the kind a person reads to understand the system — is worth writing and keepin
 
 Documentation is high-effort work that has to stay coherent as the project evolves, so it gets its own
 deliberate pass rather than being folded into the build loop. `docs` runs the session pipeline
-(`mechanics/pipeline.md`), recorded under `Session: docs`. Branch slug: the pass.
+(`mechanics/pipeline.md`), recorded under `Session: docs`, and writes its pages in stages under
+`references/staged-execution.md`: each stage is reported with the working tree uncommitted and
+commits on approval. Branch slug: the pass.
 
 ## The standardized tier of context
 
