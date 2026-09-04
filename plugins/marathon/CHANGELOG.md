@@ -4,6 +4,33 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.10.0
+
+### Changed
+
+- **The review gate, for every working session** — a stage is reported with the working tree
+  uncommitted, so the diff reads cleanly in the architect's tools; it commits only on the
+  architect's approval, who then states whether a `reset` follows. Under 0.9.0 the commit
+  preceded the report, and the loop applied to a code project's `start` alone. Now every command
+  that executes runs it: `start` on either kind, `experiment`, and the context edits of `plan`,
+  `review`, and `docs`. A stage's unit follows the project kind: a compilation unit on a code
+  project; on a context project, the smallest set of files that must change together, checked by
+  the repository's own consistency script and a coherent read. Validation is per kind, and an
+  experiment's is its answer to the question it was settled to answer. Stated once in
+  `references/staged-execution.md`; the pipeline gains the invariant, and the reset-file schema,
+  `start`, `experiment`, `reset`, `close`, `plan`, `review`, `docs`, and the cross-repo stage
+  list follow. Found by the `v1.data.sql.prototype` experiment, whose first three stages were
+  committed before review.
+- **Experiments live at the workspace coordinator** — in a workspace, every experiment sits
+  under the coordinator's top-level `experiments/`, on the coordinator's branch, with the reset
+  file's Project line naming the coordinator; a standalone project keeps its own `experiments/`.
+  A spike depends on member modules as published versions, never through a replace directive,
+  and a change it implies for a member's code reaches that repository only by promotion at
+  `close`. The reasons are a new section of `references/workspace-coordination.md`;
+  `commands/experiment.md`, the tier list of `references/context-engineering.md`, and the
+  reset-file schema notes state the rule. Settled by the same experiment, which moved from a
+  member repository to the coordinator for exactly this reason.
+
 ## v0.9.0
 
 ### Changed

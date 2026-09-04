@@ -4,6 +4,14 @@ All notable changes to the marathon-roadmap plugin are documented here. Versions
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.1.4
+
+### Changed
+
+- **Targets marathon 0.10** — the review gate and the coordinator's `experiments/` leave the hook
+  contract unchanged: `on-start`, `on-reset`, and `on-close` fire at the same points, and a stage's
+  commit still fires marathon's own `on-commit`, which this extension does not use.
+
 ## v0.1.3
 
 ### Changed
