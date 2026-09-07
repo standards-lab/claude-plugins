@@ -11,9 +11,10 @@ exercised against its own source.
 Broad and shallow; detail is added when a capability is about to be built.
 
 - **marathon** — the sustainable long-haul development workflow, built on context engineering. The
-  substance of the repository today; it distinguishes code from context projects and runs `plan`/
-  `start`/`experiment` sessions on a standalone repository or in a workspace, where one session can
-  carry a step across several member projects.
+  substance of the repository today: it distinguishes code from context projects, executes every
+  session in architect-reviewed stages, and runs on a standalone repository or in a workspace,
+  where one session can carry a step across several member projects and the coordinator holds
+  the experiments.
 - **marathon-roadmap** — the first marathon extension: the roadmap manifest convention
   (`context/roadmap.toml` — goals, tasks, backlog) kept current through marathon's session hooks.
 - **marathon-sitrep** (candidate) — audience-calibrated situation reports over a date range, read
@@ -26,7 +27,7 @@ Broad and shallow; detail is added when a capability is about to be built.
 
 ## How this repository works
 
-- **Plugin design lives in the skill files**, not in `context/`. See
-  `design/skill-is-the-source-of-truth.md`.
+- **Plugin design lives in the skill files**, not in `context/`; `scripts/check.sh` verifies that
+  every pointer inside them resolves.
 - Candidates in flight go to `concepts/`. The session record is the workspace's single reset file
   at the coordinator (standards-lab); this repository keeps no `reset.md` of its own.

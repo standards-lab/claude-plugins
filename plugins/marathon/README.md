@@ -49,13 +49,8 @@ the next session.
 A project is declared `code` or `context` at `init`, in `.claude/marathon.toml`:
 
 Both kinds execute in stages, and the architect reviews each stage, uncommitted, before it commits.
-The kind sets what a stage is:
-
-- **code** — the repository contains production source. A stage is a compilation unit brought to
-  green with its tests, and the step ends with a whole-module validation.
-- **context** — the repository *is* context (skills, prose, configuration). A stage is the smallest
-  set of files that must change together, checked by the repository's own consistency script and
-  a coherent read; there are no tests.
+What a stage is under each kind, and how the step validates, is
+[`references/staged-execution.md`](skills/marathon/references/staged-execution.md).
 
 ## Workspaces
 

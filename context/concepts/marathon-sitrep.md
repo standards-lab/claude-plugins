@@ -68,12 +68,12 @@ coordinator when serving a workspace, at the project itself when standalone. Eac
 guidance — depth, register, what this audience cares about and what it should be spared.
 Bootstrapped at first invocation and populated with the architect.
 
-### Output formats
+### Publication
 
-The invocation selects a format: rendered in the conversation, written to a markdown file, an
-HTML page, the clipboard. Candidate direction: the format set is itself extensible, with
-`[formats.<slug>]` tables in `sitrep.toml` letting a workspace declare its own — a house template,
-a distribution channel — so formats stay as workspace-defined as audiences are.
+The publish target is settled in the roadmap's `v1.harness.sitrep`: a GitHub Pages dev blog,
+whose scaffold and publish mechanics belong to a dev-blog skill the extension calls rather than
+re-encodes. The extension owns reading the workspace and drafting. The brief, orientation for
+leadership framed per audience, joins the sitrep there as the second entry category.
 
 ### Boundaries
 
@@ -87,8 +87,6 @@ directs it and feeds nothing back.
 - How an enhancement records its enablement: a `marathon.toml` `extensions` entry like an
   integration's, or the presence of its owned artifact. The entry keeps one enablement mechanism;
   the artifact would make the sessions' resolution list carry names they never fire.
-- The format-extensibility mechanism: what a `[formats.<slug>]` declaration contains, and where
-  the line sits between a format and a template.
 - How an enhancement declares the marathon version it targets, since no session checks it — the
   invocation itself has to surface a mismatch.
 - Scoping a run: whole workspace by default, with a single member project as a narrowing
