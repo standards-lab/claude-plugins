@@ -8,8 +8,9 @@ workflow; start from `context/README.md`.
 ## Plugin design lives in the skill
 
 Each plugin's design and behavior is expressed in its own files under `plugins/<name>/` — that is the
-source of truth. `context/` holds the repository's vision, concepts, and session record, not a
-restatement of how the plugins work. See `context/design/skill-is-the-source-of-truth.md`.
+source of truth, and `scripts/check.sh` verifies that every pointer inside them resolves. `context/`
+holds the repository's vision, concepts, and session record, not a restatement of how the plugins
+work.
 
 ## Repository specifics
 

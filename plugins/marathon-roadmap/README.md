@@ -35,7 +35,7 @@ extensions = ["marathon-roadmap"]     # one context/roadmap.toml at the coordina
 ```
 
 The next marathon session bootstraps the manifest if it doesn't exist yet. Requires marathon
-0.7 or later.
+0.10 or later.
 
 ## The manifest
 

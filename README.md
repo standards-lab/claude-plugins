@@ -56,10 +56,9 @@ The `marathon` core is standalone — it needs only its own skill permission:
 ```
 
 `marathon init` writes this file when it scaffolds a project. Marathon extensions such as
-`marathon-roadmap` are opt-in: install the plugin, grant its skill in `permissions.allow`
-(e.g. `Skill(marathon-roadmap:marathon-roadmap)`), and enable it in the repository's
-`.claude/marathon.toml` — an `extensions` key under `[project]`, or under `[workspace]` at a
-coordinator for every member project. The core never requires an extension.
+`marathon-roadmap` are opt-in; installing and enabling one is
+[`references/extensions.md`](plugins/marathon/skills/marathon/references/extensions.md) in the
+marathon skill. The core never requires an extension.
 
 ## How It Works
 
