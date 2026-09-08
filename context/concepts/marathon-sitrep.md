@@ -70,7 +70,7 @@ Bootstrapped at first invocation and populated with the architect.
 
 ### Publication
 
-The publish target is settled in the roadmap's `v1.harness.sitrep`: a GitHub Pages dev blog,
+The publish target is settled in the roadmap's `backlog.marathon-sitrep`: a GitHub Pages dev blog,
 whose scaffold and publish mechanics belong to a dev-blog skill the extension calls rather than
 re-encodes. The extension owns reading the workspace and drafting. The brief, orientation for
 leadership framed per audience, joins the sitrep there as the second entry category.
