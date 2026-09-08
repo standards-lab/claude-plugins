@@ -20,7 +20,7 @@ keeps every older version.
 # reset · wire-config-loader
 
 - **Status:** closeout            # handoff | closeout
-- **Session:** start              # init | plan | start | experiment | review | docs
+- **Session:** start              # init | plan | start | experiment | review
 - **Project:** core-lib           # workspace reset only: the member repo(s) the step touched
 - **Branch:** wire-config-loader
 

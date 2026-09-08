@@ -9,21 +9,23 @@ before anything changes.
 
 A stage is the smallest change set that leaves one unit of the project consistent on its own. A
 stage includes its tests and its in-source comments, so nothing is left invalidated for later.
-What the unit is, and what its check is, follows the project kind:
+What the unit is, and what its check is, follows what the stage produces:
 
-- On a **code** project the unit is a compilation unit, the smallest unit the language builds on
-  its own: a package in Go, a crate in Rust, a module in Python. The check is scoped to that unit
-  (in Go: `go build`, `go vet`, and `go test` on the package path). The module as a whole may be
-  red between stages, because the stage sequence is in dependency order and every broken caller
-  is a later stage.
-- On a **context** project the unit is the smallest set of files that must change together to
-  stay consistent: a command playbook and the reference it cites, or one design note. The check
-  is the repository's own consistency script where one exists, and a read of the touched files
-  for coherence.
+- A stage that produces **source** has a compilation unit as its unit, the smallest unit the
+  language builds on its own: a package in Go, a crate in Rust, a module in Python. The check
+  is scoped to that unit (in Go: `go build`, `go vet`, and `go test` on the package path). The
+  module as a whole may be red between stages, because the stage sequence is in dependency
+  order and every broken caller is a later stage.
+- A stage that produces **prose or configuration** has as its unit the smallest set of files
+  that must change together to stay consistent: a command playbook and the reference it cites,
+  one design note, or one page of the project's documentation. The check is the repository's
+  own consistency script where one exists, and a read of the touched files for coherence.
 
-An `experiment` runs in stages the same way. Its unit is whatever the spike builds next, and its
-check is the spike's own. A `plan`, `review`, or `docs` session runs in stages of context edits
-under the context-project rule.
+On a **code** project most stages produce source, and a documentation step's stages produce
+prose under the second rule. On a **context** project every stage produces prose or
+configuration. An `experiment` runs in stages the same way: its unit is whatever the spike
+builds next, and its check is the spike's own. A `plan` or `review` session runs in stages of
+context edits under the second rule.
 
 ## The stage list
 

@@ -1,6 +1,6 @@
 ---
 name: marathon
-argument-hint: "[init | plan | start | experiment | reset | close | review | docs]"
+argument-hint: "[init | plan | start | experiment | reset | close | review]"
 description: >
   Sustainable long-haul development workflow built on context engineering. Use this skill whenever
   the architect is initializing a project from a planning concept; planning, advancing, pausing,
@@ -72,10 +72,9 @@ Route on the first argument; each command's playbook supplies its stages' conten
 | `reset` | Hand off mid-session: context is filling but the work isn't done | [`commands/reset.md`](./commands/reset.md) |
 | `close` | The session's work is finished and validated | [`commands/close.md`](./commands/close.md) |
 | `review` | On demand: check the notes against the code and clean them up | [`commands/review.md`](./commands/review.md) |
-| `docs` | On demand: author and curate the optional human-oriented `docs/` tier | [`commands/docs.md`](./commands/docs.md) |
 
-`plan`, `start`, and `experiment` are the working sessions; `review` and `docs` are on-demand
-maintenance passes. All five end through `close` (finished and validated) or `reset` (handing
+`plan`, `start`, and `experiment` are the working sessions; `review` is the on-demand
+maintenance pass. All four end through `close` (finished and validated) or `reset` (handing
 off), recorded under their own Session values.
 
 ## References
@@ -83,8 +82,8 @@ off), recorded under their own Session values.
 Consulted when their subject is in play:
 
 - [`references/context-engineering.md`](./references/context-engineering.md) — how `context/` is
-  organized and maintained: the tiers, promote/decay/cull, assumption annotations, the `docs/`
-  tier's place in the lifecycle.
+  organized and maintained: the tiers, promote/decay/cull, assumption annotations, the architecture
+  layer's place in the lifecycle.
 - [`references/staged-execution.md`](./references/staged-execution.md) — how every working
   session executes: stages per project kind, the stage list, the review gate, the report, review
   outcomes, re-plan, validation.

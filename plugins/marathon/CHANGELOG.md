@@ -4,6 +4,38 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## Unreleased
+
+### Changed
+
+- **The architecture layer, and documentation as the project's own** — every marathon project
+  has an architecture layer: the principles, definitions, and conventions that have generalized
+  past one repository, the top of the context lifecycle and the target a design note promotes
+  to when the built work cannot express it. A standalone project keeps it as a top-level
+  `architecture/` directory, scaffolded by `init`; a workspace keeps it as one repository, named
+  by the coordinator's `[workspace] architecture` key, whose tree is the architecture with a
+  README as every directory's index. It holds nothing a reader could infer from a repository's
+  source, and a page that restates a repository is a defect. `docs/` is now only the project's
+  own documentation, the guide over its README, API documentation, and source, with the code as
+  its source of truth, written by a documentation step of a `start` session like any other
+  built work. Under 0.10.0 the docs tier doubled as the workspace's landing zone, named by
+  `[workspace] docs`, a member never grew a `docs/` of its own, and the landing zone documented
+  each member's implementation, which drifted with every release. `review` gains the
+  promotion-candidates check and `close` lands a generalized design note in the architecture
+  repository under **Cross-repo**. Found by the `v1.alignment.docs` session, whose module pages
+  restated package documentation and were reverted.
+
+### Removed
+
+- **The `docs` command** — project documentation is built work, so a `start` step writes and
+  curates it and `review` flags its drift; the architecture repository is a `context` project
+  that `start` and `plan` author. What the command's playbook stated about establishing a
+  `docs/` directory is one paragraph of `references/context-engineering.md`. The stage rule in
+  `references/staged-execution.md` generalizes to carry it: a stage's unit and check follow what
+  the stage produces, source or prose, rather than the project kind alone, so a code project's
+  `start` runs a documentation step under the prose rule. The Session values of the reset file
+  lose `docs`.
+
 ## v0.10.0
 
 ### Changed
