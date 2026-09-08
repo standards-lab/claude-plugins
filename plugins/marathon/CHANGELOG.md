@@ -8,18 +8,33 @@ GitHub releases the tags cut.
 
 ### Changed
 
-- **Two kinds of docs directory** — a `docs/` directory is either a repository's own
-  documentation, the accessibility layer over its README, API documentation, and source, with
-  the code as its source of truth; or a workspace's landing zone, the architecture, its
-  principles, and a catalog of the repositories, holding only what has generalized past one
-  repository. Under 0.10.0 a project in a workspace never grew a `docs/` of its own and the
-  landing zone documented each member's implementation, which drifted with every release. Now
-  every member keeps its own `docs/`, the landing zone holds principles alone, knowledge
-  reaches it only through the promotion sequence (concept, design note, landing-zone page), and
-  a landing-zone page that restates a repository is a defect. `commands/docs.md` routes on the
-  kind, `references/context-engineering.md` states the rule and the lifecycle of each kind, and
-  the `[workspace] docs` description follows. Found by the `v1.alignment.docs` session, whose
-  module pages restated package documentation and were reverted.
+- **The architecture layer, and documentation as the project's own** — every marathon project
+  has an architecture layer: the principles, definitions, and conventions that have generalized
+  past one repository, the top of the context lifecycle and the target a design note promotes
+  to when the built work cannot express it. A standalone project keeps it as a top-level
+  `architecture/` directory, scaffolded by `init`; a workspace keeps it as one repository, named
+  by the coordinator's `[workspace] architecture` key, whose tree is the architecture with a
+  README as every directory's index. It holds nothing a reader could infer from a repository's
+  source, and a page that restates a repository is a defect. `docs/` is now only the project's
+  own documentation, the guide over its README, API documentation, and source, with the code as
+  its source of truth, written by a documentation step of a `start` session like any other
+  built work. Under 0.10.0 the docs tier doubled as the workspace's landing zone, named by
+  `[workspace] docs`, a member never grew a `docs/` of its own, and the landing zone documented
+  each member's implementation, which drifted with every release. `review` gains the
+  promotion-candidates check and `close` lands a generalized design note in the architecture
+  repository under **Cross-repo**. Found by the `v1.alignment.docs` session, whose module pages
+  restated package documentation and were reverted.
+
+### Removed
+
+- **The `docs` command** — project documentation is built work, so a `start` step writes and
+  curates it and `review` flags its drift; the architecture repository is a `context` project
+  that `start` and `plan` author. What the command's playbook stated about establishing a
+  `docs/` directory is one paragraph of `references/context-engineering.md`. The stage rule in
+  `references/staged-execution.md` generalizes to carry it: a stage's unit and check follow what
+  the stage produces, source or prose, rather than the project kind alone, so a code project's
+  `start` runs a documentation step under the prose rule. The Session values of the reset file
+  lose `docs`.
 
 ## v0.10.0
 

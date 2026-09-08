@@ -90,7 +90,7 @@ coordinator's repository, alongside the session's own.
 | Command | Layering |
 |---------|----------|
 | `plan`, `start`, `experiment` | full pipeline; working sessions |
-| `review`, `docs` | full pipeline; on-demand passes, recorded under their own Session values |
+| `review` | full pipeline; the on-demand pass, recorded under its own Session value |
 | `init` | LOCATE is the empty checks; SETTLE the founding decisions; EXECUTE the scaffold; CONCLUDE its own setup commit, with the hook constraints of `mechanics/hooks.md` |
 | `reset`, `close` | CONCLUDE invoked directly, ending the current session |
 

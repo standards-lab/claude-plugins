@@ -8,8 +8,8 @@ pipeline's CONCLUDE stage for a finished step (`mechanics/pipeline.md`).
 and committed, then the validation for the project kind. A `plan` session has nothing to build.
 For an `experiment`, validation is the spike's answer to its question; decide with the architect
 what, if anything, the spike earned. A `review` session's cleanup is itself the deliverable. A
-`docs` session validates its pages against the current code, and where they disagree, the page is
-what's wrong. Don't close on a failure; fix it first.
+documentation step validates its pages against the current code, and where they disagree, the
+page is what's wrong. Don't close on a failure; fix it first.
 
 ## 1. Tend the context
 
@@ -23,10 +23,10 @@ The scope follows from where the project sits:
 
 - **Standalone** — the project's own `context/`.
 - **In a workspace** — each touched repo's `context/`; the coordinator's notes that describe the
-  changed capability; the repository's own `docs/` pages the change moved out from under, and
-  any landing-zone page the change shows to be restating this repository (flag them; the
-  rewriting itself is a `docs` pass); and claims about the changed behavior in other member
-  repos' context. A stale claim found in any of them is a defect this pass fixes, recorded under
+  changed capability; the repository's own `docs/` pages the change moved out from under, fixed
+  in this change or flagged for a documentation step; a design note the change shows to have
+  generalized past this repository, landed as a concept in the architecture repository; and
+  claims about the changed behavior in other member repos' context. A stale claim found in any of them is a defect this pass fixes, recorded under
   **Cross-repo** in the Disposition.
 
 These changes matter, so show the architect and confirm before applying them.

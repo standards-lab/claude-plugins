@@ -33,7 +33,6 @@ Invoke as `marathon <command>` (or `/marathon:marathon <command>`).
 | `reset` | Hand off mid-session so a fresh context can resume the same branch. |
 | `close` | Finish and publish a completed session. |
 | `review` | Audit the notes for drift from the code and clean them up. |
-| `docs` | Author and curate the optional `docs/` directory: a repository's own documentation, or a workspace's landing zone of principles. |
 
 ## The session loop
 

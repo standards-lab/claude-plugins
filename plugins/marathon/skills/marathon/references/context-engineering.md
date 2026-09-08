@@ -43,45 +43,65 @@ Kept outside `context/`:
 - `experiments/` — a top-level directory for spikes, isolated so throwaway work doesn't mix into the
   real tree. Created when an experiment session needs it. A standalone project keeps its own; in
   a workspace, the coordinator keeps the only one (`references/workspace-coordination.md`).
-- `docs/` — an optional top-level directory for human-oriented reference documentation. See below.
+- `architecture/` — the architecture layer: the principles, definitions, and conventions that
+  have generalized past one repository. A conventional layer, present in every marathon
+  project: a standalone project keeps it as a top-level directory, and a workspace keeps it as
+  one repository named by the coordinator. See below.
+- `docs/` — an optional top-level directory for the project's own documentation, the guide a
+  person reads to use or contribute to the repository. See below.
 - the source code — the implementation, and the final word on what the project does.
 
-## The docs/ tier
+## The architecture layer
 
-`docs/` is documentation written for people. It is optional: most projects stay `context/`-only,
-and a project opts in at any time by running the `docs` command, which bootstraps the directory
-on its first run and curates it after that. A `docs/` directory holds one of two kinds of
-documentation, and the kind decides its rules.
+The architecture layer is the top of the context lifecycle: the principles, the definitions, and
+the conventions that have generalized past one repository, written for a general reader and
+relied on from outside the project. It is a conventional layer of every marathon project, not
+an option, because it is where a design note goes when the built work cannot express it.
 
-**A repository's own documentation** is the accessibility layer over the repository's README,
-its API documentation, and its source: the guide a person reads to use or contribute to the
-repository, indexed by the README, shipped with the code where the ecosystem packages a
-repository's tree. The code is its source of truth. A page is born once the code is ready to be
-explained, it is durable and accretive, and a page the code has moved out from under is a defect
-the next `docs` session fixes. A standalone project's `docs/` is this kind, and so is every
-member project's `docs/` in a workspace.
+- A **standalone project** keeps its architecture in a top-level `architecture/` directory,
+  scaffolded by `init` with a README as its index.
+- A **workspace** keeps its architecture in one repository, named by the coordinator's
+  `[workspace] architecture` field (`mechanics/configuration.md`). That repository is a
+  `context` project whose whole tree is the architecture, with a README at its root and in
+  every directory as the index GitHub renders, and it runs sessions like any other project.
 
-**A landing zone's documentation** is the architecture, its principles, and a catalog of the
-repositories that implement it. In a workspace, the coordinator's `[workspace] docs` field names
-the one project whose `docs/` is the landing zone. It holds only what has generalized past one
-repository: a principle, a convention, a definition. Nothing a reader could infer from a
-repository's source belongs in it, so it stays stable while the repositories change beneath it,
-and a page that restates a repository's implementation is a defect, reduced to the principle it
-states or removed. A repository links the landing zone's principles from its README and states
-beside the link any convention of its own that narrows a principle; it never restates the page.
+The architecture holds only what generalizes. Nothing a reader could infer from a repository's
+source belongs in it, so it stays stable while the repositories change beneath it, and a page
+that restates a repository's implementation is a defect, reduced to the principle it states or
+removed. A repository links the architecture's principles from its README and states beside the
+link any convention of its own that narrows a principle; it never restates the page. The
+architecture may catalog the repositories that implement it, with a description and a link for
+each, and goes no deeper.
 
-Knowledge reaches a landing zone through the promotion sequence, and only by it. A concept
+Knowledge reaches the architecture through the promotion sequence, and only by it. A concept
 proves out and is promoted into `design/` in the repository that owns it. A design note is
-expressed either by the built work, at which point it decays under the rule below, or by a
-landing-zone page, once the knowledge has generalized past that one repository. A design note
-that describes one repository's implementation is expressed by the code and the repository's own
-documentation, never by the landing zone.
+expressed either by the built work, at which point it decays under the rule below, or by an
+architecture page, once the knowledge has generalized past that one repository. In a workspace
+the second case is a cross-repository step: the member's `close` or `review` finds that a design
+note has generalized and lands it as a concept in the architecture repository, recorded under
+**Cross-repo**, and the architecture repository authors the page in a session of its own. A
+design note that describes one repository's implementation is expressed by the code and the
+repository's own documentation, never by the architecture.
 
-The decay rule below applies to `context/` and never to a `docs/` directory of either kind.
-`context/` is agent-oriented and decays toward the code; a repository's documentation describes
-the code; a landing zone states what generalizes. The `docs` command does the deliberate
-authoring, and `review` flags a page the code has moved out from under in a repository's own
-documentation and a page that restates a repository in a landing zone.
+## Project documentation
+
+`docs/` is the project's own documentation: the guide a person reads to use or contribute to the
+repository, indexed by the README in reading order, shipped with the code where the ecosystem
+packages a repository's tree. It is optional. Many projects never need it, because the README,
+the API documentation, and the source are the documentation until a reader needs more, and a
+project establishes it when a documentation step of a `start` session settles what the guide
+covers and how a reader moves through it. It is not a tier of the context lifecycle. It sits
+beside the code as part of the built work, the code is its source of truth, and a page the code
+has moved out from under is a defect fixed in the change that moved the code or in the next
+documentation step. What generalizes past the repository, a principle, a convention, a
+definition, is not project documentation: it belongs to the architecture layer and reaches it by
+promotion from `design/`, never by a documentation step.
+
+The decay rule below applies to `context/` and never to the architecture or to `docs/`.
+`context/` is agent-oriented and decays toward the code; project documentation describes the
+code and is durable and accretive; the architecture states what generalizes and changes only
+when a principle does. `review` flags a `docs/` page the code has moved out from under, and, in
+an architecture repository, a page that restates a repository.
 
 ## Deciding where something goes
 
@@ -117,12 +137,12 @@ Three operations keep `context/` accurate:
   the built work proved it out, or an experiment produced a result. Don't do it silently — move the file
   and note why in the reset file. Organizing `concepts/` and `design/` the same way makes it obvious
   where a note should land.
-- **Decay** — delete a `design/` note once the built work, or (in a workspace) the docs landing zone,
-  fully expresses what it described, and the note holds no conceptual or pattern detail beyond it. A
-  note that still explains a pattern, a boundary, or a style neither can state on its own is doing
-  design work and stays; duplication in API documentation or a landing-zone page alone is not decay. A
-  note that does decay is a weaker second copy the built work will drift from — record the removal (and
-  point to the code, deliverable, or landing-zone page) in the reset file.
+- **Decay** — delete a `design/` note once the built work, or an architecture page, fully expresses
+  what it described, and the note holds no conceptual or pattern detail beyond it. A note that still
+  explains a pattern, a boundary, or a style neither can state on its own is doing design work and
+  stays; duplication in API documentation or an architecture page alone is not decay. A note that
+  does decay is a weaker second copy the built work will drift from — record the removal (and point
+  to the code, deliverable, or architecture page) in the reset file.
 - **Cull** — delete a concept in `concepts/` when it is no longer viable: superseded, abandoned, or
   contradicted by the way the work actually went.
 
