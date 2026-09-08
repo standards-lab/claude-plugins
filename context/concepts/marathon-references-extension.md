@@ -2,8 +2,7 @@
 
 Captured 2026-08-31 during the workspace-sweep session, after establishing that the references
 system is a workspace convention with no marathon footprint. This concept proposes evaluating
-its promotion to a marathon extension, alongside `concepts/marathon-docs-extension.md` and
-`concepts/marathon-sitrep.md`. Everything here is candidate direction for a future session on
+its promotion to a marathon extension, alongside `concepts/marathon-sitrep.md`. Everything here is candidate direction for a future session on
 this repository.
 
 ## The gap
