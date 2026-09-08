@@ -48,36 +48,40 @@ Kept outside `context/`:
 
 ## The docs/ tier
 
-`docs/` is reference documentation written for people: the explanation a reader works through to
-understand the system. It is optional — most projects stay `context/`-only — and a project opts in at
-any time by running the `docs` command, which bootstraps the tier on its first run and curates it after
-that.
+`docs/` is documentation written for people. It is optional: most projects stay `context/`-only,
+and a project opts in at any time by running the `docs` command, which bootstraps the directory
+on its first run and curates it after that. A `docs/` directory holds one of two kinds of
+documentation, and the kind decides its rules.
 
-Where `docs/` lives depends on whether the project stands alone or belongs to a workspace. A standalone
-project keeps its own `docs/`, built and curated the way described above. A project in a workspace never
-grows a `docs/` of its own; documentation centralizes in one landing-zone project instead, named by the
-coordinator's `[workspace] docs` field. A member repository links to the landing zone's pages rather
-than restating them, and, where its own convention adds to or narrows what a linked page states, records
-that addition beside the link — in its README or its `context/` — rather than duplicating the page.
-`commands/docs.md` checks which case applies before it bootstraps or curates anything.
+**A repository's own documentation** is the accessibility layer over the repository's README,
+its API documentation, and its source: the guide a person reads to use or contribute to the
+repository, indexed by the README, shipped with the code where the ecosystem packages a
+repository's tree. The code is its source of truth. A page is born once the code is ready to be
+explained, it is durable and accretive, and a page the code has moved out from under is a defect
+the next `docs` session fixes. A standalone project's `docs/` is this kind, and so is every
+member project's `docs/` in a workspace.
 
-`docs/` is also the top of the context lifecycle: its standardized tier. The three tiers hold the same
-kind of knowledge at different stages of settlement — `concepts/` is volatile context, `design/` is
-non-volatile settled intent, and `docs/` is standardized convention, stated for a general reader and
-relied on from outside the project. Knowledge graduates upward: a concept that proves out is promoted
-into `design/`, and a design note is expressed either by the built work or by a `docs/` page that
-standardizes it — the decay rule below names both targets.
+**A landing zone's documentation** is the architecture, its principles, and a catalog of the
+repositories that implement it. In a workspace, the coordinator's `[workspace] docs` field names
+the one project whose `docs/` is the landing zone. It holds only what has generalized past one
+repository: a principle, a convention, a definition. Nothing a reader could infer from a
+repository's source belongs in it, so it stays stable while the repositories change beneath it,
+and a page that restates a repository's implementation is a defect, reduced to the principle it
+states or removed. A repository links the landing zone's principles from its README and states
+beside the link any convention of its own that narrows a principle; it never restates the page.
 
-What `docs/` does not share is decay itself:
+Knowledge reaches a landing zone through the promotion sequence, and only by it. A concept
+proves out and is promoted into `design/` in the repository that owns it. A design note is
+expressed either by the built work, at which point it decays under the rule below, or by a
+landing-zone page, once the knowledge has generalized past that one repository. A design note
+that describes one repository's implementation is expressed by the code and the repository's own
+documentation, never by the landing zone.
 
-- `context/` is agent-oriented and decays *toward* the code. A `design/` note is a defect once the code
-  expresses it, so `context/` shrinks as the code grows.
-- `docs/` is human-oriented and *describes* the code. A page is born once the code is ready to be
-  explained, and it is durable and accretive.
-
-So the decay rule below applies to `context/`, never to `docs/`: a `docs/` page restating the code is
-doing its job, not duplicating it. The `docs` command does the deliberate authoring; `review` flags
-`docs/` pages the code has moved out from under, and a later `docs` pass rewrites them.
+The decay rule below applies to `context/` and never to a `docs/` directory of either kind.
+`context/` is agent-oriented and decays toward the code; a repository's documentation describes
+the code; a landing zone states what generalizes. The `docs` command does the deliberate
+authoring, and `review` flags a page the code has moved out from under in a repository's own
+documentation and a page that restates a repository in a landing zone.
 
 ## Deciding where something goes
 

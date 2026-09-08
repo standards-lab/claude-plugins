@@ -23,8 +23,9 @@ The scope follows from where the project sits:
 
 - **Standalone** — the project's own `context/`.
 - **In a workspace** — each touched repo's `context/`; the coordinator's notes that describe the
-  changed capability; the docs landing zone pages the change moved out from under (flag them —
-  the rewriting itself is a `docs` pass); and claims about the changed behavior in other member
+  changed capability; the repository's own `docs/` pages the change moved out from under, and
+  any landing-zone page the change shows to be restating this repository (flag them; the
+  rewriting itself is a `docs` pass); and claims about the changed behavior in other member
   repos' context. A stale claim found in any of them is a defect this pass fixes, recorded under
   **Cross-repo** in the Disposition.
 

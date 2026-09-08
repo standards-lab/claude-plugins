@@ -22,7 +22,7 @@ order = [
   ["service-a", "service-b"],
   "gateway",
 ]
-docs  = "core-lib"   # optional: the order key that is this workspace's docs landing zone
+docs  = "core-lib"   # optional: the order key whose docs/ is the workspace's landing zone
 # Optional: marathon extensions enabled for every project in the workspace.
 # extensions = ["<extension>"]
 
@@ -58,7 +58,9 @@ runs it to publish the finished branch.
 
 Only a coordinator declares `[workspace]`. `order` is the dependency map a cross-repo step
 flows through — a list of layers, lowest first; an array entry is a layer of adjacent peers.
-`docs` names the workspace's docs landing zone by order key. `[workspace.paths]` resolves an
+`docs` names, by order key, the project whose `docs/` is the workspace's landing zone: the
+architecture, its principles, and the catalog, never a repository's implementation
+(`references/context-engineering.md`). `[workspace.paths]` resolves an
 order key that is not a sibling directory. The design is
 `references/workspace-coordination.md`.
 

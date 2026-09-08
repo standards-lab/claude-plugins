@@ -19,8 +19,10 @@ document — and look for:
   quietly proven out and belong in `design/`.
 - **Orientation** — whether the vision and capability map in `context/README.md` still match where the
   project actually is.
-- **Docs drift** — if the project has a `docs/` tier, pages whose code has moved on underneath them.
-  Flag them here; the rewriting itself is deliberate work for a `docs` pass, not part of review.
+- **Docs drift** — if the project has a `docs/` directory, the pages that have drifted: in a
+  repository's own documentation, pages whose code has moved on underneath them; in a landing
+  zone, pages that restate a repository's implementation. Flag them here; the rewriting itself
+  is deliberate work for a `docs` pass, not part of review.
 - **Coordinator conventions** — when the project belongs to a workspace, the conventions its
   coordinator keeps for member repositories (naming, authoring, awareness rules), checked against
   this repository's prose and structure. The member repo never cites those conventions; the review

@@ -72,7 +72,7 @@ Route on the first argument; each command's playbook supplies its stages' conten
 | `reset` | Hand off mid-session: context is filling but the work isn't done | [`commands/reset.md`](./commands/reset.md) |
 | `close` | The session's work is finished and validated | [`commands/close.md`](./commands/close.md) |
 | `review` | On demand: check the notes against the code and clean them up | [`commands/review.md`](./commands/review.md) |
-| `docs` | On demand: author and curate the optional human-oriented `docs/` tier | [`commands/docs.md`](./commands/docs.md) |
+| `docs` | On demand: author and curate the optional `docs/` directory, a repository's own documentation or a workspace's landing zone | [`commands/docs.md`](./commands/docs.md) |
 
 `plan`, `start`, and `experiment` are the working sessions; `review` and `docs` are on-demand
 maintenance passes. All five end through `close` (finished and validated) or `reset` (handing

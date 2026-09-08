@@ -4,6 +4,23 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## Unreleased
+
+### Changed
+
+- **Two kinds of docs directory** — a `docs/` directory is either a repository's own
+  documentation, the accessibility layer over its README, API documentation, and source, with
+  the code as its source of truth; or a workspace's landing zone, the architecture, its
+  principles, and a catalog of the repositories, holding only what has generalized past one
+  repository. Under 0.10.0 a project in a workspace never grew a `docs/` of its own and the
+  landing zone documented each member's implementation, which drifted with every release. Now
+  every member keeps its own `docs/`, the landing zone holds principles alone, knowledge
+  reaches it only through the promotion sequence (concept, design note, landing-zone page), and
+  a landing-zone page that restates a repository is a defect. `commands/docs.md` routes on the
+  kind, `references/context-engineering.md` states the rule and the lifecycle of each kind, and
+  the `[workspace] docs` description follows. Found by the `v1.alignment.docs` session, whose
+  module pages restated package documentation and were reverted.
+
 ## v0.10.0
 
 ### Changed
