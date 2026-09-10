@@ -4,6 +4,14 @@ All notable changes to the marathon-roadmap plugin are documented here. Versions
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.1.5
+
+### Changed
+
+- **Targets marathon 0.11** — delegation, the sufficiency question, and a stage's check running
+  the repository's own tooling all act inside SETTLE and the stage loop, at no hook this
+  extension uses; `on-start`, `on-reset`, and `on-close` fire at the same points.
+
 ## v0.1.4
 
 ### Changed
