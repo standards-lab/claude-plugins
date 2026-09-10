@@ -4,7 +4,42 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
-## Unreleased
+## v0.11.0
+
+### Added
+
+- **Delegation** — a session may hand one unit of its own work (a stage's implementation, a
+  design decision, a call too consequential to settle alone) to another agent and stays its
+  owner; marathon states the contract a delegation runs under and names no agent of its own. A
+  project catalogs which agents its sessions may reach for under `[agents]` in `marathon.toml`,
+  one sub-table per agent with a `delegation` field describing what it's for and why, in the
+  project's own words; a session judges fit against that text, never a fixed role lookup. A
+  workspace coordinator's `[workspace.agents]` is the baseline, a project's own table overrides
+  it key by key. `behavior/delegation.md` holds the contract; `mechanics/configuration.md` holds
+  the schema. SETTLE names where a design decision may go to a declared escalation agent, and the
+  stage loop of `references/staged-execution.md` names where a stage's implementation may go to
+  a declared technical agent; either way the session reports and commits exactly as it would
+  have for work it did itself.
+
+- **Sufficiency before building it directly** — before the stage list is settled, a step that
+  plans to develop a solution directly asks whether the problem is already resolved by the
+  established, idiomatic approach for the language — the standard library, or a dependency the
+  ecosystem already treats as standard. If it is, the step needs an adequate reason to build its
+  own instead of adopting that approach. Asked at SETTLE, while the answer still changes the
+  plan, not discovered at review. A step that proceeds with its own implementation anyway
+  carries its reason into the design note it touches, as a rejected alternative; a step with no
+  adequate reason adopts the existing approach instead. Stated in `behavior/planning.md`, named
+  at the pipeline's SETTLE step. Found by the SQL strategy's own sufficiency rule
+  (`standards-lab/context/design/dsl-driven-services.md` §2.4), which names the marathon harness
+  as where the question belongs.
+
+- **A stage's check runs the repository's own tooling** — on a code project, a stage that
+  produces source now runs whatever conventions or lint tool the repository already wires into
+  its own CI or task runner, over the files the stage touched, alongside the language's build,
+  vet, and test. The session runs the tool and resolves its findings; it never restates what the
+  tool checks. Stated once in `references/staged-execution.md`'s "What a stage is." First
+  consumer: sqlate's `sqlint`, which a consuming repository already runs through its own `mise`
+  task or CI step.
 
 ### Changed
 

@@ -19,6 +19,19 @@ Builds proceed in dependency order; risk is probed out of band. When the highest
 unknown sits above the step in front, `experiment` is the risk-first instrument: spike it cheaply
 while the builds continue from the bottom.
 
+## Sufficiency before building it directly
+
+Before the stage list is settled, a step that plans to develop a solution directly asks whether
+the problem is already resolved by the established, idiomatic approach for the language — the
+standard library, or a dependency the ecosystem already treats as standard. If it is, the step
+needs an adequate reason to build its own instead of adopting that approach — asked at SETTLE,
+while the answer still changes the plan, not discovered at review, when the custom code already
+exists and someone has to argue for replacing it.
+
+A step that proceeds with its own implementation anyway carries its reason into the design note
+it touches, as a rejected alternative (`references/context-engineering.md`); a step with no
+adequate reason adopts the existing approach instead.
+
 ## Planning is half the work
 
 Planning matters as much as building. In `init`, in a fresh `start`, in a `plan` session, and in

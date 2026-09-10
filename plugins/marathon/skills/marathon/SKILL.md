@@ -18,7 +18,7 @@ description: >
 
 # Marathon
 
-Version: 0.10.0
+Version: 0.11.0
 
 marathon is a workflow for long-haul development that stays sustainable. Within a session you work
 fast: plan the next step, build it, close it out. Across the project you go the distance, advancing one
@@ -38,9 +38,12 @@ with `init`.
 
 ## Behavior
 
-Always active, loaded with this skill: the planning conduct every session settles scope by.
+Always active, loaded with this skill: the planning conduct every session settles scope by, and
+the contract for handing one unit of work to another agent.
 
 @behavior/planning.md
+
+@behavior/delegation.md
 
 ## Mechanics
 
