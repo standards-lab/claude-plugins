@@ -33,6 +33,14 @@ GitHub releases the tags cut.
   (`standards-lab/context/design/dsl-driven-services.md` §2.4), which names the marathon harness
   as where the question belongs.
 
+- **A stage's check runs the repository's own tooling** — on a code project, a stage that
+  produces source now runs whatever conventions or lint tool the repository already wires into
+  its own CI or task runner, over the files the stage touched, alongside the language's build,
+  vet, and test. The session runs the tool and resolves its findings; it never restates what the
+  tool checks. Stated once in `references/staged-execution.md`'s "What a stage is." First
+  consumer: sqlate's `sqlint`, which a consuming repository already runs through its own `mise`
+  task or CI step.
+
 ### Changed
 
 - **The architecture layer, and documentation as the project's own** — every marathon project

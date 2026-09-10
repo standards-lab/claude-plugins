@@ -12,10 +12,13 @@ stage includes its tests and its in-source comments, so nothing is left invalida
 What the unit is, and what its check is, follows what the stage produces:
 
 - A stage that produces **source** has a compilation unit as its unit, the smallest unit the
-  language builds on its own: a package in Go, a crate in Rust, a module in Python. The check
-  is scoped to that unit (in Go: `go build`, `go vet`, and `go test` on the package path). The
-  module as a whole may be red between stages, because the stage sequence is in dependency
-  order and every broken caller is a later stage.
+  language builds on its own: a package in Go, a crate in Rust, a module in Python. The check is
+  scoped to that unit and runs whatever the repository's own tooling declares over the files the
+  stage touched: the language's build, vet, and test (in Go: `go build`, `go vet`, and `go test`
+  on the package path), and a conventions or lint tool the repository already wires into its own
+  CI or task runner. The session runs the tool and resolves its findings; it never restates what
+  the tool checks. The module as a whole may be red between stages, because the stage sequence is
+  in dependency order and every broken caller is a later stage.
 - A stage that produces **prose or configuration** has as its unit the smallest set of files
   that must change together to stay consistent: a command playbook and the reference it cites,
   one design note, or one page of the project's documentation. The check is the repository's
