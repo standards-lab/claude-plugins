@@ -6,6 +6,18 @@ GitHub releases the tags cut.
 
 ## Unreleased
 
+### Added
+
+- **Delegation** — a session may hand one unit of its own work (a stage's implementation, a
+  design decision, a call too consequential to settle alone) to another agent and stays its
+  owner; marathon states the contract a delegation runs under and names no agent of its own. A
+  project catalogs which agents its sessions may reach for under `[agents]` in `marathon.toml`,
+  one sub-table per agent with a `delegation` field describing what it's for and why, in the
+  project's own words; a session judges fit against that text, never a fixed role lookup. A
+  workspace coordinator's `[workspace.agents]` is the baseline, a project's own table overrides
+  it key by key. `behavior/delegation.md` holds the contract; `mechanics/configuration.md` holds
+  the schema.
+
 ### Changed
 
 - **The architecture layer, and documentation as the project's own** — every marathon project

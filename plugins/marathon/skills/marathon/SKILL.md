@@ -38,9 +38,12 @@ with `init`.
 
 ## Behavior
 
-Always active, loaded with this skill: the planning conduct every session settles scope by.
+Always active, loaded with this skill: the planning conduct every session settles scope by, and
+the contract for handing one unit of work to another agent.
 
 @behavior/planning.md
+
+@behavior/delegation.md
 
 ## Mechanics
 
