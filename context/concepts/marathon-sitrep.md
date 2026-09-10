@@ -10,9 +10,9 @@ the specification. Everything here is candidate direction for a future session o
 
 The repository-as-source-of-truth principle produces an accomplishment ledger as a byproduct of
 the workflow. The coordinator reset file's git history is a session-by-session record of
-dispositions and focus; the roadmap manifest's history shows each task deleted as it finished and
-each goal closed; every member repository's log and merged pull requests carry the work itself.
-Nothing reads that ledger back out. An architect who owes a stakeholder an account of the last
+dispositions and focus. The roadmap manifest's history shows each task deleted as it finished
+and each goal closed. Every member repository's log and merged pull requests carry the work
+itself. Nothing reads that ledger back out. An architect who owes a stakeholder an account of the last
 month re-walks the history by hand and calibrates the telling by feel, and the result is bound to
 one audience at one depth.
 
@@ -43,9 +43,9 @@ A hybrid carries both facets. marathon-sitrep is the first pure enhancement. Bui
 `references/extensions.md` to name the taxonomy; that amendment is part of the build session, not
 a prerequisite.
 
-An enhancement navigates by the specification rather than by private knowledge: coordinator
-resolution and the `[workspace] order` map give it the member repositories; `[remote]` names the
-platform whose merged pull requests it reads; the `extensions` lists in `marathon.toml` tell it
+An enhancement navigates by the specification rather than by private knowledge. Coordinator
+resolution and the `[workspace] order` map give it the member repositories. `[remote]` names the
+platform whose merged pull requests it reads. The `extensions` lists in `marathon.toml` tell it
 which integrations are enabled. With marathon-roadmap enabled, the report gains the roadmap
 dimension — tasks and goals closed within the range, and the remaining path the manifest asserts.
 
