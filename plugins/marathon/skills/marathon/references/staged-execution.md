@@ -46,7 +46,10 @@ A stage is not complete until the architect has reviewed it. Per-stage review is
 stages: a misstep never spreads across the code base, and the architect never reviews a whole
 session at once. Every stage runs in this order:
 
-1. **Execute.** Implement the stage and run its check; fix until the check passes.
+1. **Execute.** Implement the stage and run its check; fix until the check passes. The session
+   may hand the stage to a declared technical agent instead (`behavior/delegation.md`); the stage
+   still reports and commits the same way, and the session reads what the agent produced
+   firsthand before reporting it.
 2. **Report, uncommitted.** Stop and report with the working tree uncommitted, so the diff reads
    cleanly in the architect's tools. Iterate on adjustments until the architect approves. Never
    run ahead into the next stage.

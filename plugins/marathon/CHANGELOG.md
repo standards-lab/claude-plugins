@@ -16,7 +16,10 @@ GitHub releases the tags cut.
   project's own words; a session judges fit against that text, never a fixed role lookup. A
   workspace coordinator's `[workspace.agents]` is the baseline, a project's own table overrides
   it key by key. `behavior/delegation.md` holds the contract; `mechanics/configuration.md` holds
-  the schema.
+  the schema. SETTLE names where a design decision may go to a declared escalation agent, and the
+  stage loop of `references/staged-execution.md` names where a stage's implementation may go to
+  a declared technical agent; either way the session reports and commits exactly as it would
+  have for work it did itself.
 
 ### Changed
 
