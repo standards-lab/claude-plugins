@@ -14,7 +14,10 @@ Broad and shallow; detail is added when a capability is about to be built.
   substance of the repository today: it distinguishes code from context projects, executes every
   session in architect-reviewed stages, and runs on a standalone repository or in a workspace,
   where one session can carry a step across several member projects and the coordinator holds
-  the experiments.
+  the experiments. A session may hand a stage or a design decision to another agent a project
+  declares. It also asks whether a solution it plans to build directly is already resolved by
+  the established approach before building it, and runs a repository's own conventions tooling
+  as part of a stage's check rather than restating what the tool covers.
 - **marathon-roadmap** — the first marathon extension: the roadmap manifest convention
   (`context/roadmap.toml` — goals, tasks, backlog) kept current through marathon's session hooks.
 - **marathon-sitrep** (candidate) — audience-calibrated situation reports over a date range, read
