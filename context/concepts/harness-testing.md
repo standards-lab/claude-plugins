@@ -11,10 +11,12 @@ The position on record:
 - CI's job is tangible validation: version numbers aligned and correct, file references
   resolving, marketplace sources present — what `scripts/check.sh` does today. It stays cheap,
   deterministic, and always on.
-- Behavioral testing of the skill, if it earns a place, needs its own evaluation: which failure
-  modes have actually occurred, whether a fixture can catch them cheaply, what the run cost is,
-  and whether `claude plugin eval` (early access; not yet enabled for this environment) is the
-  right harness.
+- Behavioral testing of the skill, if it earns a place, needs its own evaluation:
+  - which failure modes have actually occurred
+  - whether a fixture can catch them cheaply
+  - what the run cost is
+  - whether `claude plugin eval` (early access; not yet enabled for this environment) is the
+    right harness
 
 ## Assumptions
 
