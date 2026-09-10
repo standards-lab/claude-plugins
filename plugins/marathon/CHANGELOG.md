@@ -21,6 +21,18 @@ GitHub releases the tags cut.
   a declared technical agent; either way the session reports and commits exactly as it would
   have for work it did itself.
 
+- **Sufficiency before building it directly** — before the stage list is settled, a step that
+  plans to develop a solution directly asks whether the problem is already resolved by the
+  established, idiomatic approach for the language — the standard library, or a dependency the
+  ecosystem already treats as standard. If it is, the step needs an adequate reason to build its
+  own instead of adopting that approach. Asked at SETTLE, while the answer still changes the
+  plan, not discovered at review. A step that proceeds with its own implementation anyway
+  carries its reason into the design note it touches, as a rejected alternative; a step with no
+  adequate reason adopts the existing approach instead. Stated in `behavior/planning.md`, named
+  at the pipeline's SETTLE step. Found by the SQL strategy's own sufficiency rule
+  (`standards-lab/context/design/dsl-driven-services.md` §2.4), which names the marathon harness
+  as where the question belongs.
+
 ### Changed
 
 - **The architecture layer, and documentation as the project's own** — every marathon project

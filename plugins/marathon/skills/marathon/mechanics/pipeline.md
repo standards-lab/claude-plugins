@@ -41,10 +41,11 @@ sibling declaring a coordinator — and that check is its LOCATE.
 ### 3 · SETTLE
 
 1. Enter plan mode.
-2. Work the scope through with the architect, to the depth the command's playbook calls for. On a
-   working session, the settled scope is expressed as the stage list of
-   `references/staged-execution.md`, whatever the project kind. A design decision the session
-   judges too consequential to settle alone may go to a declared escalation agent instead
+2. Work the scope through with the architect, to the depth the command's playbook calls for,
+   weighing what the step proposes against what the project already has
+   (`behavior/planning.md`). On a working session, the settled scope is expressed as the stage
+   list of `references/staged-execution.md`, whatever the project kind. A design decision the
+   session judges too consequential to settle alone may go to a declared escalation agent instead
    (`behavior/delegation.md`); the session states which one and why before engaging it, and
    nothing changes until the architect approves what comes back. Change nothing yet.
 3. As the discussion ranges wider than the step, note the context tending it implies — ideas to
