@@ -49,22 +49,27 @@ A stage is not complete until the architect has reviewed it. Per-stage review is
 stages: a misstep never spreads across the code base, and the architect never reviews a whole
 session at once. Every stage runs in this order:
 
-1. **Execute.** Implement the stage and run its check; fix until the check passes. The session
-   may hand the stage to a declared technical agent instead (`behavior/delegation.md`); the stage
-   still reports and commits the same way, and the session reads what the agent produced
-   firsthand before reporting it.
-2. **Report, uncommitted.** Stop and report with the working tree uncommitted, so the diff reads
+1. **State the delegation call.** Before executing, say out loud whether this stage goes to a
+   declared technical agent (`behavior/delegation.md`) or stays with the session, and why — the
+   same way SETTLE already requires stating an escalation before engaging it
+   (`mechanics/pipeline.md` 3 · SETTLE step 2). This turns delegation from a silently skippable
+   option into a decision made every stage, whichever way it goes.
+2. **Execute.** Implement the stage and run its check; fix until the check passes. A stage
+   delegated in step 1 still reports and commits the same way, and the session reads what the
+   agent produced firsthand before reporting it.
+3. **Report, uncommitted.** Stop and report with the working tree uncommitted, so the diff reads
    cleanly in the architect's tools. Iterate on adjustments until the architect approves. Never
    run ahead into the next stage.
-3. **Commit on approval.** Fire `on-commit`, then commit with the stage's decision lines in the
+4. **Commit on approval.** Fire `on-commit`, then commit with the stage's decision lines in the
    message. The architect states whether a `reset` follows, to keep the context small.
-4. **Move to the next stage.**
+5. **Move to the next stage.**
 
 ## The stage report
 
-The report is conversational, not a file: the `diff --stat`, the check result, then prose only on
-the decisions the plan did not spell out and the parts you are least confident of. Code carries
-the what; the report carries the why. Do not restate what the diff shows.
+The report is conversational, not a file: the `diff --stat`, the check result, the delegation
+call from step 1, then prose only on the decisions the plan did not spell out and the parts you
+are least confident of. Code carries the what; the report carries the why. Do not restate what
+the diff shows.
 
 ## Review outcomes
 

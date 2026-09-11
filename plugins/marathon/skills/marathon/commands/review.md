@@ -22,11 +22,6 @@ document — and look for:
 - **Docs drift** — if the project has a `docs/` directory, pages whose code has moved on
   underneath them. Flag them here; the rewriting itself is a documentation step of a `start`
   session, not part of review.
-- **Promotion candidates** — design notes that have generalized past this repository and belong
-  in the architecture layer (`references/context-engineering.md`). In a standalone project, the
-  page is authored in `architecture/` here; in a workspace, the note lands as a concept in the
-  architecture repository, recorded under **Cross-repo**. In an architecture repository, the
-  check runs the other way: pages that restate a repository's implementation are defects.
 - **Coordinator conventions** — when the project belongs to a workspace, the conventions its
   coordinator keeps for member repositories (naming, authoring, awareness rules), checked against
   this repository's prose and structure. The member repo never cites those conventions; the review

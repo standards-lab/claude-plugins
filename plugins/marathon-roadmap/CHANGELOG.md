@@ -4,6 +4,16 @@ All notable changes to the marathon-roadmap plugin are documented here. Versions
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.1.6
+
+### Changed
+
+- **Targets marathon 0.12** — the architecture layer's extraction into the separate
+  `marathon-architecture` extension, the stage-loop delegation checkpoint, and the two context
+  disciplines all leave the hook contract unchanged: `on-start`, `on-reset`, and `on-close` fire
+  at the same points. Also fixes a stale claim in this README, which named marathon 0.10 as the
+  requirement two targets after this extension last moved past it.
+
 ## v0.1.5
 
 ### Changed

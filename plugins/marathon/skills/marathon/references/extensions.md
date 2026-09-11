@@ -20,6 +20,14 @@ An extension acts in a session when two conditions hold:
 An installed extension that no repository enables stays inert. An enabled extension whose skill is
 missing gets surfaced to the architect, naming the plugin to install, rather than silently skipped.
 
+## Extensions never touch core's config schema
+
+An extension never adds a key to `.claude/marathon.toml`'s schema — the `extensions` list under
+`[project]` or `[workspace]` is the whole of what core exposes to it. Configuration beyond
+enablement is the extension's own concern: it owns a separate file of its own, alongside
+`marathon.toml`, that only it reads and writes. Core never parses, documents, or mentions that
+file.
+
 ## Enabling in marathon.toml
 
 The `extensions` key lists enabled extensions by skill name, and the table it sits in sets the

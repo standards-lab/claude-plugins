@@ -20,6 +20,9 @@ Broad and shallow; detail is added when a capability is about to be built.
   as part of a stage's check rather than restating what the tool covers.
 - **marathon-roadmap** — the first marathon extension: the roadmap manifest convention
   (`context/roadmap.toml` — goals, tasks, backlog) kept current through marathon's session hooks.
+- **marathon-architecture** — a marathon extension: the architecture layer for principles and
+  conventions that outgrow a single repository, kept current through marathon's session hooks as
+  design notes prove out across the project.
 - **marathon-sitrep** (candidate) — audience-calibrated situation reports over a date range, read
   from the workspace's git history, session record, and roadmap deltas; the first enhancement-facet
   extension. Concept: `concepts/marathon-sitrep.md`.

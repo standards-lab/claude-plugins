@@ -18,7 +18,7 @@ description: >
 
 # Marathon
 
-Version: 0.11.0
+Version: 0.12.0
 
 marathon is a workflow for long-haul development that stays sustainable. Within a session you work
 fast: plan the next step, build it, close it out. Across the project you go the distance, advancing one
@@ -85,8 +85,8 @@ off), recorded under their own Session values.
 Consulted when their subject is in play:
 
 - [`references/context-engineering.md`](./references/context-engineering.md) — how `context/` is
-  organized and maintained: the tiers, promote/decay/cull, assumption annotations, the architecture
-  layer's place in the lifecycle.
+  organized and maintained: the tiers, promote/decay/cull, assumption annotations, and deciding
+  where a note belongs.
 - [`references/staged-execution.md`](./references/staged-execution.md) — how every working
   session executes: stages per project kind, the stage list, the review gate, the report, review
   outcomes, re-plan, validation.

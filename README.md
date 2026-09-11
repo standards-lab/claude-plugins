@@ -12,6 +12,7 @@ projects install only the ones they need.
 |--------|-------------|
 | [marathon](./plugins/marathon/) | Sustainable long-haul development workflow with context engineering |
 | [marathon-roadmap](./plugins/marathon-roadmap/) | Marathon extension: a roadmap manifest of goals, tasks, and backlog the sessions keep current |
+| [marathon-architecture](./plugins/marathon-architecture/) | Marathon extension: an architecture layer for the principles and conventions that outgrow a single repository, kept current as settled design proves out across the project |
 
 ## Installation
 
@@ -21,6 +22,7 @@ claude plugin marketplace add standards-lab/claude-plugins
 # Install the plugins you need
 claude plugin install marathon@standards-lab
 claude plugin install marathon-roadmap@standards-lab
+claude plugin install marathon-architecture@standards-lab
 ```
 
 ## Update
@@ -29,11 +31,13 @@ claude plugin install marathon-roadmap@standards-lab
 claude plugin marketplace update
 claude plugin update marathon@standards-lab
 claude plugin update marathon-roadmap@standards-lab
+claude plugin update marathon-architecture@standards-lab
 ```
 
 ## Remove
 
 ```bash
+claude plugin remove marathon-architecture@standards-lab
 claude plugin remove marathon-roadmap@standards-lab
 claude plugin remove marathon@standards-lab
 claude plugin marketplace remove standards-lab
@@ -88,7 +92,8 @@ claude-plugins/
 ├── context/                     # marathon working context for the repo itself
 ├── plugins/
 │   ├── marathon/                # Sustainable long-haul development workflow
-│   └── marathon-roadmap/        # Marathon extension: the roadmap manifest convention
+│   ├── marathon-roadmap/        # Marathon extension: the roadmap manifest convention
+│   └── marathon-architecture/   # Marathon extension: the architecture layer
 ├── LICENSE
 └── README.md
 ```
