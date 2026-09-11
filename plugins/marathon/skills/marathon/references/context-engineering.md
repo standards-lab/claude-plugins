@@ -43,45 +43,12 @@ Kept outside `context/`:
 - `experiments/` — a top-level directory for spikes, isolated so throwaway work doesn't mix into the
   real tree. Created when an experiment session needs it. A standalone project keeps its own; in
   a workspace, the coordinator keeps the only one (`references/workspace-coordination.md`).
-- `architecture/` — the architecture layer: the principles, definitions, and conventions that
-  have generalized past one repository. A conventional layer, present in every marathon
-  project: a standalone project keeps it as a top-level directory, and a workspace keeps it as
-  one repository named by the coordinator. See below.
 - `docs/` — an optional top-level directory for the project's own documentation, the guide a
   person reads to use or contribute to the repository. See below.
+- whatever an enabled extension owns — a directory or file outside `context/` that the extension
+  maintains and bootstraps in the session after it is enabled (`references/extensions.md`). The
+  core adds none.
 - the source code — the implementation, and the final word on what the project does.
-
-## The architecture layer
-
-The architecture layer is the top of the context lifecycle: the principles, the definitions, and
-the conventions that have generalized past one repository, written for a general reader and
-relied on from outside the project. It is a conventional layer of every marathon project, not
-an option, because it is where a design note goes when the built work cannot express it.
-
-- A **standalone project** keeps its architecture in a top-level `architecture/` directory,
-  scaffolded by `init` with a README as its index.
-- A **workspace** keeps its architecture in one repository, named by the coordinator's
-  `[workspace] architecture` field (`mechanics/configuration.md`). That repository is a
-  `context` project whose whole tree is the architecture, with a README at its root and in
-  every directory as the index GitHub renders, and it runs sessions like any other project.
-
-The architecture holds only what generalizes. Nothing a reader could infer from a repository's
-source belongs in it, so it stays stable while the repositories change beneath it, and a page
-that restates a repository's implementation is a defect, reduced to the principle it states or
-removed. A repository links the architecture's principles from its README and states beside the
-link any convention of its own that narrows a principle; it never restates the page. The
-architecture may catalog the repositories that implement it, with a description and a link for
-each, and goes no deeper.
-
-Knowledge reaches the architecture through the promotion sequence, and only by it. A concept
-proves out and is promoted into `design/` in the repository that owns it. A design note is
-expressed either by the built work, at which point it decays under the rule below, or by an
-architecture page, once the knowledge has generalized past that one repository. In a workspace
-the second case is a cross-repository step: the member's `close` or `review` finds that a design
-note has generalized and lands it as a concept in the architecture repository, recorded under
-**Cross-repo**, and the architecture repository authors the page in a session of its own. A
-design note that describes one repository's implementation is expressed by the code and the
-repository's own documentation, never by the architecture.
 
 ## Project documentation
 
@@ -94,14 +61,12 @@ covers and how a reader moves through it. It is not a tier of the context lifecy
 beside the code as part of the built work, the code is its source of truth, and a page the code
 has moved out from under is a defect fixed in the change that moved the code or in the next
 documentation step. What generalizes past the repository, a principle, a convention, a
-definition, is not project documentation: it belongs to the architecture layer and reaches it by
-promotion from `design/`, never by a documentation step.
+definition, is not project documentation: it settles in `design/` like any other intent, and no
+documentation step writes it.
 
-The decay rule below applies to `context/` and never to the architecture or to `docs/`.
-`context/` is agent-oriented and decays toward the code; project documentation describes the
-code and is durable and accretive; the architecture states what generalizes and changes only
-when a principle does. `review` flags a `docs/` page the code has moved out from under, and, in
-an architecture repository, a page that restates a repository.
+The decay rule below applies to `context/` and never to `docs/`. `context/` is agent-oriented
+and decays toward the code; project documentation describes the code and is durable and
+accretive. `review` flags a `docs/` page the code has moved out from under.
 
 ## Deciding where something goes
 
@@ -112,6 +77,12 @@ an architecture repository, a page that restates a repository.
 
 When you can't tell whether something is settled, treat it as a concept. Promoting it later is cheap;
 walking back a design note you committed to too early is not.
+
+Before writing any of it, check whether the fact already has exactly one home outside
+`context/` — settled documentation included, not only the built work in the strict code sense.
+If it does, write a pointer to it (a path, a citation), never a restatement. This is what keeps
+`context/` from becoming a second, drifting description of material a repository's own docs
+already carry.
 
 ## Add detail late
 
@@ -136,13 +107,17 @@ Three operations keep `context/` accurate:
 - **Promote** — move a concept from `concepts/` to `design/` once it is settled: a decision fixed it,
   the built work proved it out, or an experiment produced a result. Don't do it silently — move the file
   and note why in the reset file. Organizing `concepts/` and `design/` the same way makes it obvious
-  where a note should land.
-- **Decay** — delete a `design/` note once the built work, or an architecture page, fully expresses
-  what it described, and the note holds no conceptual or pattern detail beyond it. A note that still
-  explains a pattern, a boundary, or a style neither can state on its own is doing design work and
-  stays; duplication in API documentation or an architecture page alone is not decay. A note that
-  does decay is a weaker second copy the built work will drift from — record the removal (and point
-  to the code, deliverable, or architecture page) in the reset file.
+  where a note should land. A note documenting an interface, a contract, or a shape a session just
+  designed is not promoted in that same session — the same rule applies to authoring a skill.
+  Promotion waits for a session where something real, a caller, a build, an experiment, exercised the
+  shape and it held; until then it stays in `concepts/`, explicitly provisional, even if it reads as
+  finished.
+- **Decay** — delete a `design/` note once the built work fully expresses what it described, and
+  the note holds no conceptual or pattern detail beyond it. A note that still explains a pattern,
+  a boundary, or a style the built work cannot state on its own is doing design work and stays;
+  duplication in API documentation alone is not decay. A note that does decay is a weaker second
+  copy the built work will drift from — record the removal (and point to the code or deliverable
+  that expresses it) in the reset file.
 - **Cull** — delete a concept in `concepts/` when it is no longer viable: superseded, abandoned, or
   contradicted by the way the work actually went.
 
@@ -152,6 +127,16 @@ themselves.
 
 The point of all three is to keep `context/` short and true, rather than letting it grow into a parallel
 description of the project that slowly disagrees with the code.
+
+## State current truth, not history
+
+A note in `design/` or `concepts/` states what is true now — never how it changed, when, or why.
+A changelog entry embedded in a note's own prose ("amended: X caused Y", a dated revision log,
+"replacing the earlier Z approach") is exactly the kind of parallel description `context/` exists
+to avoid: it makes the note larger without making it truer, and the next reader has to separate
+the current claim from its history to use it. Provenance — what a session did, and why — belongs
+in the reset file's Disposition, the session's own ledger; the note it concerns keeps only the
+fact the session settled.
 
 ## Check before you cut
 

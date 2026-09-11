@@ -24,10 +24,9 @@ The scope follows from where the project sits:
 - **Standalone** — the project's own `context/`.
 - **In a workspace** — each touched repo's `context/`; the coordinator's notes that describe the
   changed capability; the repository's own `docs/` pages the change moved out from under, fixed
-  in this change or flagged for a documentation step; a design note the change shows to have
-  generalized past this repository, landed as a concept in the architecture repository; and
-  claims about the changed behavior in other member repos' context. A stale claim found in any of them is a defect this pass fixes, recorded under
-  **Cross-repo** in the Disposition.
+  in this change or flagged for a documentation step; and claims about the changed behavior in
+  other member repos' context. A stale claim found in any of them is a defect this pass fixes,
+  recorded under **Cross-repo** in the Disposition.
 
 These changes matter, so show the architect and confirm before applying them.
 

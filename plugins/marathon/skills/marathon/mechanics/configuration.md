@@ -42,7 +42,6 @@ order = [
   ["service-a", "service-b"],
   "gateway",
 ]
-architecture = "architecture"   # the order key of the workspace's architecture repository
 # Optional: marathon extensions enabled for every project in the workspace.
 # extensions = ["<extension>"]
 
@@ -97,10 +96,7 @@ whose `delegation` fits the work at hand, changes nothing — the session does t
 
 Only a coordinator declares `[workspace]`. `order` is the dependency map a cross-repo step
 flows through — a list of layers, lowest first; an array entry is a layer of adjacent peers.
-`architecture` names, by order key, the workspace's architecture repository: the project whose
-whole tree is the architecture layer (`references/context-engineering.md`). Every workspace
-declares one. `[workspace.paths]` resolves an
-order key that is not a sibling directory. The design is
+`[workspace.paths]` resolves an order key that is not a sibling directory. The design is
 `references/workspace-coordination.md`.
 
 ## Extensions

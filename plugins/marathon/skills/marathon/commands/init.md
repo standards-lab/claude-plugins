@@ -2,8 +2,7 @@
 
 Set up marathon on a repository, starting from a project-planning concept. Run this once per project.
 When it's done, the repo has a top-level `context/` directory that the rest of the workflow reads and
-maintains, the `architecture/` directory a standalone project keeps, plus the Claude configuration
-the project needs.
+maintains, plus the Claude configuration the project needs.
 
 `init` runs the session pipeline (`mechanics/pipeline.md`) on a repository that has none of it yet:
 its LOCATE is the check that both marks are absent — no `context/` here, no sibling project declaring
@@ -30,12 +29,6 @@ Read the concept closely, and settle these with the architect rather than assumi
   you'll add detail later, when a capability is about to be built.
 - **Settled vs. concept** — which intent is solid enough to start in `design/`, and which is still a
   concept for `concepts/`. When in doubt, it's a concept.
-- **Architecture** — where the project's architecture layer lives
-  (`references/context-engineering.md`). A standalone project keeps a top-level `architecture/`
-  directory, seeded with a README that states what the layer will hold. A workspace keeps one
-  architecture repository, named by the coordinator's `[workspace] architecture` field; a member
-  project keeps none, and the architecture repository itself is initialized as a `context`
-  project whose tree is the architecture.
 - **First step** — the one concrete thing the first session will do.
 - **Remote platform** — which remote the project publishes to, and the command that proposes a change
   there: `gh pr create` for GitHub, `glab mr create` for GitLab, the equivalent for another platform, or
@@ -54,8 +47,6 @@ detail up front.
 ├── .claude/
 │   ├── settings.json          # plansDirectory; permissions
 │   └── marathon.toml          # project kind; remote platform + publish command
-├── architecture/
-│   └── README.md              # the architecture layer's index (standalone project only)
 └── context/
     ├── README.md              # vision + capability map
     ├── design/                # settled-intent notes (shallow)
@@ -69,17 +60,14 @@ detail up front.
 - `.claude/marathon.toml` — record the project kind (`[project] kind = "code"` or `"context"`) and the
   remote platform with its publish command, in the canonical layout of
   `mechanics/configuration.md`. If this project coordinates a workspace, add the
-  `[workspace]` block too (`role = "coordinator"`, a layered `order`, and the `architecture` key
-  naming the workspace's architecture repository); most projects don't. See
+  `[workspace]` block too (`role = "coordinator"` and a layered `order`); most projects don't. See
   `references/workspace-coordination.md`. Extensions are not an `init` decision: a repository enables
-  one whenever the convention is adopted, by adding the `extensions` key (see
-  `references/extensions.md`).
+  one whenever the convention is adopted, by adding the `extensions` key, and the next session
+  bootstraps whatever artifact the extension owns (see `references/extensions.md`).
 - `.claude/settings.json` — set `plansDirectory` to `./.claude/plans` and allow `Skill(marathon:marathon)`.
 - `CLAUDE.md` — keep it short: name the workflow and point to `context/README.md` for
   orientation. The kind lives in `marathon.toml` and the skill formalizes what it means; the
   detail goes in `context/`, not here.
-- `architecture/README.md` — in a standalone project, a short index: what the layer holds and
-  that it fills by promotion from `context/design/`. A workspace member creates none.
 - Don't create `experiments/` or `docs/` now; an experiment session makes the first when it's
   needed, and a documentation step of a `start` session establishes the second.
 
