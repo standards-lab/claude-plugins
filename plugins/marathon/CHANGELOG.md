@@ -4,6 +4,32 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.12.0
+
+### Changed
+
+- **The architecture layer is no longer mandatory** — extracted out of core entirely into the new
+  `marathon-architecture` extension. `init` no longer scaffolds an `architecture/` directory or
+  asks it as a founding decision; `context-engineering.md` no longer describes the layer;
+  `close` and `review` lose their architecture-specific clauses; `configuration.md` carries no
+  `architecture` key. A project that never generalizes past itself now enables nothing and
+  scaffolds nothing, instead of carrying a directory that never gains a second sentence.
+- **Extensions never touch core's config schema** — a new rule in `references/extensions.md`: an
+  extension's only foothold in `marathon.toml` is the shared `extensions` list; configuration
+  beyond enablement lives in a file the extension owns, that only it reads. Named explicitly
+  because `marathon-architecture` is the first extension that needed it.
+- **Two new context disciplines** in `context-engineering.md`: a pre-write check before anything
+  lands in `context/` (does this fact already have exactly one home outside it? cite it, never
+  restate it), and a rule against promoting a design note or authoring a skill in the same
+  session that designed the shape it documents — promotion waits for a session where something
+  real exercised the shape and it held.
+- **Context states current truth only** — `design/` and `concepts/` notes, and an architecture
+  page, hold what is true now and never a changelog of how it changed; that accounting belongs
+  solely to the reset file's Disposition.
+- **The stage-loop delegation call is stated, not silently skippable** — every stage now opens by
+  stating whether it goes to a declared technical agent or stays with the session, and why,
+  mirroring how SETTLE already requires stating an escalation before engaging it.
+
 ## v0.11.0
 
 ### Added
