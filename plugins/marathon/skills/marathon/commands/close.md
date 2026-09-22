@@ -18,15 +18,16 @@ stage has landed rather than stage by stage. It runs on a `start` or an `experim
 changed code or a deliverable; a `plan` or `review` session, whose branch changed only
 `context/`, skips it.
 
-1. Engage the reviewer profile (`behavior/delegation.md`), stating the model and why, or do the
+1. Prepare the report's location. The report is `.claude/report.md`: the project's own when it
+   stands alone, the coordinator's in a workspace. It is never committed, so before anything
+   writes it, confirm that repository's `.gitignore` lists `.claude/report.md`. If it doesn't,
+   add the line now; the line rides the closeout commit.
+2. Engage the reviewer profile (`behavior/delegation.md`), stating the model and why, or do the
    review directly when briefing the reviewer would cost more. The brief carries the approved
-   stage list, the branch in each touched repository, the confirmed checkpoints, and any
-   architecture or documented practice the project declares, cited by path. Without a declared
-   one, the review checks the result against the ecosystem's idiomatic practice.
-2. The review writes the report to `.claude/report.md`: the project's own when it stands alone,
-   the coordinator's in a workspace. The report is never committed. If the repository's
-   `.gitignore` doesn't list `.claude/report.md`, add it; that line rides the closeout commit.
-   The report's format is in the reviewer profile, the plugin's `agents/reviewer.md`.
+   stage list, the branch in each touched repository, the confirmed checkpoints, the report's
+   path, and any architecture or documented practice the project declares, cited by path.
+   Without a declared one, the review checks the result against the ecosystem's idiomatic
+   practice. The report's format is in the reviewer profile, the plugin's `agents/reviewer.md`.
 3. Read the report firsthand, correct anything it gets wrong, and tell the architect it's ready
    to read.
 4. Settle each finding with the architect: fix it in a new commit on the branch and re-run the

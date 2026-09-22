@@ -30,9 +30,10 @@ A finding that belongs to a later step is noted as such. It isn't a defect in th
 
 ## The report
 
-Write the report to `.claude/report.md` in the repository the session names: the project
-itself when it stands alone, the coordinator in a workspace. The file is gitignored, and the
-session deletes it at closeout. Write it for a person reading it once in an editor: clear
+Write the report to the `.claude/report.md` path the session's brief names: the project
+itself when it stands alone, the coordinator in a workspace. The session has already confirmed
+that the path is gitignored, and it deletes the report at closeout. If the brief names no path,
+or `git check-ignore` shows the path isn't ignored, stop and ask the session before you write. Write it for a person reading it once in an editor: clear
 sentences, only the details the architect needs to follow what the session did, and nothing
 the diff already makes obvious. It has three sections.
 
