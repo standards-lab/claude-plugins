@@ -7,9 +7,9 @@ description: >
   relied on from outside the project. A standalone project keeps the layer as a top-level
   architecture/ directory; a workspace keeps it as the one member repository this extension's
   own .claude/marathon-architecture.toml names, at the coordinator. marathon's sessions fill it
-  by promotion from design/ through the extension hooks — the conventions layered in at session
-  start, a generalized design note landed and recorded before the session record is written, the
-  landing committed at closeout. Load this skill when a marathon session resolves it as an
+  by promotion from settled context/ notes through the extension hooks — the conventions layered
+  in at session start, a generalized note landed and recorded before the session record is
+  written, the landing committed at closeout. Load this skill when a marathon session resolves it as an
   enabled extension, or when the architect asks about the architecture layer, promoting a note
   past the repository that owns it, or what belongs in the architecture repository.
 ---
@@ -19,7 +19,8 @@ description: >
 Version: 0.1.0
 
 marathon keeps a project's written context decaying toward the built work: a concept proves out
-and becomes a design note, and the design note goes once the code expresses it. Some knowledge
+and its note states itself settled, and the note goes once the code or its documentation
+expresses it. Some knowledge
 never reaches that end, because it is not about this repository. A principle, a definition, or a
 convention that holds across repositories has no code to decay into. This extension gives that
 knowledge a home, the architecture layer, and binds the promotion into it to marathon's session
@@ -28,11 +29,11 @@ hooks, so the layer fills deliberately instead of by accumulation.
 The layer is the top of the context lifecycle and the last stop on the promotion path:
 
 - **concept** — an idea in the repository that owns it.
-- **design note** — the same idea once it settles, still about that repository.
+- **settled note** — the same note once it states itself settled, still about that repository.
 - **architecture page** — the idea once it has generalized past that repository, written for a
   general reader.
 
-A project that never produces the third does not need this extension. Enable it when a design
+A project that never produces the third does not need this extension. Enable it when a settled
 note has outgrown the repository it lives in and needs somewhere more general to go.
 
 ## Declaration
@@ -43,7 +44,7 @@ note has outgrown the repository it lives in and needs somewhere more general to
   `.claude/marathon-architecture.toml` at the coordinator, serving every member project's
   sessions.
 - **Hooks:** `on-start`, `on-reset`, `on-close`.
-- **Targets:** marathon 0.12.
+- **Targets:** marathon 0.13.
 
 ## Mechanics
 
@@ -56,7 +57,7 @@ The hook instructions the pipeline acts from:
 
 - [`mechanics/on-start.md`](./mechanics/on-start.md) — layer the conventions in; bootstrap a
   missing layer, or adopt the one that already exists.
-- [`mechanics/on-reset.md`](./mechanics/on-reset.md) — land a design note that has generalized,
+- [`mechanics/on-reset.md`](./mechanics/on-reset.md) — land a settled note that has generalized,
   and record the landing in the session record.
 - [`mechanics/on-close.md`](./mechanics/on-close.md) — commit the landing where it landed.
 

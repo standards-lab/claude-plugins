@@ -7,7 +7,7 @@ act from the mechanics file the table names. Nothing here runs outside a maratho
 | marathon hook | This extension | Act from |
 |---------------|----------------|----------|
 | `on-start` | layer the architecture conventions into the session; bootstrap or adopt the layer | `mechanics/on-start.md` |
-| `on-reset` | land a design note that has generalized, and record the landing | `mechanics/on-reset.md` |
+| `on-reset` | land a settled note that has generalized, and record the landing | `mechanics/on-reset.md` |
 | `on-close` | commit the landing where it landed | `mechanics/on-close.md` |
 
 ## Locating the layer

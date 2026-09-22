@@ -2,7 +2,7 @@
 
 The principles, the definitions, and the conventions that have generalized past one repository,
 written for a general reader and relied on from outside the project. It is the top of marathon's
-context lifecycle: where a design note goes when the built work cannot express it, because the
+context lifecycle: where a settled note goes when the built work cannot express it, because the
 knowledge is not about the built work.
 
 ## Where it lives
@@ -35,27 +35,27 @@ deeper.
 A page holds what is true now, and nothing about how it got that way: no changelog entry, no
 dated revision log, no note of the session or repository that promoted it. That history belongs
 to the promoting session's own reset file, never the page — the same rule marathon's core applies
-to `design/` and `concepts/` notes (`references/context-engineering.md`).
+to the notes in `context/` (`references/context-engineering.md`).
 
 ## How knowledge reaches it
 
-By promotion, and only by promotion. A concept proves out and is promoted into `design/` in the
-repository that owns it. A design note is then expressed either by the built work, at which point
-it decays under marathon's rule, or by an architecture page, once the knowledge has generalized
-past that one repository.
+By promotion, and only by promotion. A concept proves out in the repository that owns it, and its
+note in `context/` states itself settled. A settled note is then expressed either by the built
+work or its documentation, at which point it decays under marathon's rule, or by an architecture
+page, once the knowledge has generalized past that one repository.
 
 In a workspace the second case is a cross-repository step: a member's `close` or `review` finds
-that a design note has generalized and lands it as a concept in the architecture repository,
-recorded under **Cross-repo**, and the architecture repository authors the page in a session of
-its own. A design note that describes one repository's implementation is expressed by the code
-and the repository's own documentation, never by the architecture.
+that a settled note has generalized and lands it as a concept note in the architecture
+repository's `context/`, recorded under **Cross-repo**, and the architecture repository authors
+the page in a session of its own. A note that describes one repository's implementation is
+expressed by the code and the repository's own documentation, never by the architecture.
 
 ## What the layer is not
 
 The layer is not the project's own documentation. `docs/` is the guide a person reads to use or
 contribute to one repository; the code is its source of truth, and a documentation step of a
 `start` session writes it. What generalizes past the repository reaches the layer by promotion
-from `design/`, never by a documentation step.
+from a settled note in `context/`, never by a documentation step.
 
 marathon's decay rule applies to `context/` and never to the layer. `context/` is agent-oriented
 and decays toward the built work; the architecture states what generalizes and changes only when
@@ -74,6 +74,6 @@ The principles, definitions, and conventions that have generalized past this rep
 for a general reader. Nothing a reader could infer from the source belongs here, and a page that
 restates the implementation is a defect.
 
-A page arrives by promotion: a concept in `context/concepts/`, a design note in `context/design/`
-once it settles, and a page here once the design has generalized past this repository.
+A page arrives by promotion: a concept note in `context/`, the same note once it states itself
+settled, and a page here once the knowledge has generalized past this repository.
 ```

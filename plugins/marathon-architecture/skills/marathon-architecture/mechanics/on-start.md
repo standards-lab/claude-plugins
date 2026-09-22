@@ -9,18 +9,18 @@ Fires as the session begins, before orientation.
 2. Layer the conventions into the session:
    - The layer holds only what has generalized past one repository. Nothing a reader could infer
      from a repository's source belongs in it (`references/architecture-layer.md`).
-   - Knowledge reaches the layer by promotion and only by promotion: a concept in the repository
-     that owns it, a design note once it settles, and a page once the knowledge has outgrown that
-     repository.
+   - Knowledge reaches the layer by promotion and only by promotion: a concept note in the
+     repository that owns it, the same note once it states itself settled, and a page once the
+     knowledge has outgrown that repository.
    - A repository links the layer's principles from its README and states beside the link any
      convention of its own that narrows a principle; it never restates the page.
-   - An architecture page, like every design note and concept, states what is true now — never
+   - An architecture page, like every note in `context/`, states what is true now — never
      the session or repository that promoted it, or how the principle has changed
      (`references/architecture-layer.md`). That history belongs to the promoting session's own
      reset file, never the page.
-   - A `design/` note also decays once an architecture page fully expresses it, under marathon's
-     decay rule. The removal points at the page.
-   - In a `review` session, two checks join the drift scan: design notes that have generalized
+   - A settled note also decays once an architecture page fully expresses it, recorded as
+     **Integrated** under marathon's decay rule. The removal points at the page.
+   - In a `review` session, two checks join the drift scan: settled notes that have generalized
      past this repository and belong in the layer, and, in the architecture repository itself,
      pages that restate a repository's implementation, which are defects reduced to the principle
      they state or removed.
