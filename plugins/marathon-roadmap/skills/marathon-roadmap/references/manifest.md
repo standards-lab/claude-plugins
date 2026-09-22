@@ -12,8 +12,12 @@ The three primitives nest like a filesystem:
 - A goal's tasks live under its reserved `tasks` table (`[goals.v1.data.tasks.reads]`).
 - Backlog tasks — assigned to no goal — live under the root `backlog` table
   (`[backlog.<slug>]`).
-- `next`, a root-level list of dotted paths, is the only sequence the file asserts; the tree
-  itself is unordered.
+- `next`, a root-level list of waves, is the only sequence the file asserts; the tree itself is
+  unordered. A wave is a dotted path, or an array of dotted paths the architect judges safe to
+  run at the same time: no dependency between them and no repository they share. The current
+  wave is the first entry.
+- `active`, an optional root-level list of dotted paths, names the tasks in flight in an
+  experiment's own project, outside the sessions that read this manifest.
 
 The composed key is the identity. Renaming a slug changes the id and is done deliberately,
 updating every reference with it.
@@ -36,7 +40,7 @@ Task:
 - `context` (optional) — linked context files carrying the detail.
 
 `context` entries are file paths. In a workspace they are workspace-relative, the first segment
-naming the repository (`go-web-service/context/concepts/data-layer.md`); in a standalone project
+naming the repository (`go-web-service/context/data-layer.md`); in a standalone project
 they are repository-relative.
 
 ## Dotted citations
@@ -53,7 +57,8 @@ The manifest is ephemeral, unordered, and proximate:
 - **Ephemeral** — a finished task is deleted, the session record keeping the disposition; a
   goal whose criteria hold is deleted with it; a stale claim is a defect, fixed by the session
   that finds it.
-- **Unordered** — `next` is the only sequence; nothing else in the file implies one.
+- **Unordered** — `next` is the only sequence; nothing else in the file implies one. The tasks
+  within a wave have no order among themselves.
 - **Proximate** — the task in front carries detail; everything else stays at claim resolution,
   its depth living in the linked context files, settled by its own session's plan mode.
 
@@ -76,9 +81,11 @@ next = []
 # the marathon-roadmap extension; the format is the plugin's references/manifest.md.
 
 next = [
-  "v1.data.reads",
+  ["v1.data.reads", "v1.messaging.experiment"],
   "backlog.docs-site",
 ]
+
+active = ["v1.messaging.experiment"]
 
 [goals.v1]
 name = "The service at v1.0"
@@ -90,7 +97,7 @@ criteria = [
 [goals.v1.data]
 name = "Data layer"
 summary = "A composed data model over plain SQL with a CQRS-oriented interface."
-context = ["service/context/concepts/data-layer.md"]
+context = ["service/context/data-layer.md"]
 
 [goals.v1.data.tasks.reads]
 name = "Reads"
@@ -98,8 +105,16 @@ repos = ["service"]
 summary = "The reads slice: query vocabulary, pagination, and the first domain package."
 proof = "Paginated, filtered, sorted reads over HTTP."
 
+[goals.v1.messaging]
+name = "Messaging"
+summary = "A messaging library and the reactor services it enables."
+
+[goals.v1.messaging.tasks.experiment]
+name = "Messaging experiment"
+summary = "Spike the reactor model in its own experiment project."
+
 [backlog.docs-site]
 name = "The docs site"
 summary = "The documentation site serving the landing zone's content."
-context = ["context/concepts/docs-site.md"]
+context = ["context/docs-site.md"]
 ```
