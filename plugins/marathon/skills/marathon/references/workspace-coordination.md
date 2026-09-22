@@ -1,83 +1,38 @@
 # Workspaces
 
-marathon manages one repository. But related repositories are often developed together — a set of
-capability libraries, a template, and a service that consumes them — and a settled step sometimes
-crosses several of them in dependency order. A workspace lets marathon run that step as one
-session while keeping each repository a self-contained marathon project. This note is the design.
-
-## The workspace holds no context
-
-A **workspace** is the directory the related projects sit under as siblings. It is not itself a
-marathon project: it has no `context/`, and the workspace adds none. That is deliberate. The
-knowledge a workspace might seem to want — which repositories exist, how they depend, which one
-leads — already has a home in whichever project describes the estate as a whole (typically an
-organization-context project). Giving the workspace its own `context/` would be a second
-description of the same thing, and the two would drift. So the workspace knowledge splits in two,
-and neither part is a workspace file:
-
-- **Mechanism — general, in the skill.** How a session locates the workspace, resolves the
-  coordinator's reset, and runs a step that spans member repos. This lives in
-  `mechanics/pipeline.md` and the working-session playbooks, and applies to any workspace.
-- **Map — specific, in the coordinator project.** Which projects the workspace holds and in what
-  dependency order. marathon does not hardcode this; it reads it from the project that declares
-  itself coordinator.
+Related repositories, such as libraries, a template, and the service that consumes them, are often
+developed together, and a step sometimes crosses several of them. A workspace runs that step as
+one session while each repository stays a self-contained marathon project.
 
 ## The coordinator and the map
 
-One project in the workspace declares itself the coordinator in its `.claude/marathon.toml`, with
-the `[workspace]` block whose canonical layout is `mechanics/configuration.md`. Its `order` is the
-map in machine-readable form: a list of **layers**, lowest dependency first. Each entry is either
-one project or an array of **adjacent** projects — peers at the same depth with no dependency
-between them, so their order within a layer is free. This mirrors a real dependency graph, which
-is layered rather than strictly linear.
-
-The coordinator is normally the project that already narrates the estate in prose (its capability
-map or references catalog). Declaring `order` there adds no second source of truth: it is the
-executable projection of a map the project already keeps. Each key resolves to a checkout — a
-sibling directory in the workspace by name, or, for a participant that lives elsewhere on disk,
-through the coordinator's optional `[workspace.paths]` table, which maps the key to a directory on
-this machine. A key that is neither a sibling nor mapped is resolved by asking the architect. If
-no project declares itself coordinator, don't assume an order: enumerate the sibling projects (the
-directories with a `context/`) and ask the architect.
+A workspace is the directory the projects sit under as siblings. It has no `context/` of its own:
+the project that already describes the estate, typically an organization-context project,
+declares itself coordinator with a `[workspace]` block (`mechanics/configuration.md`). Its `order`
+lists **layers**, lowest dependency first; an array entry is a layer of peers with no dependency
+between them. Each key resolves to a sibling directory by name, or through `[workspace.paths]`;
+ask the architect about a key that resolves to neither. With no coordinator, enumerate the sibling
+projects and ask.
 
 ## Cross-repo steps
 
-A working session whose settled step spans member repos runs as one session. The step's scope
-names the repos it touches, placed in the map's layers; the session works them lowest layer first,
-so a higher layer builds against the real change beneath it. The stage list of
-`references/staged-execution.md` is one list spanning the repos, its stages grouped by repository
-in map order, each stage's unit set by its repository's project kind. The session creates a
-branch in each touched repo under the step's shared slug, and its `close` commits and publishes
-each repo's branch as that repository's own change proposal.
-
-## Continuity lives at the coordinator
-
-A workspace maintains one reset file, at the coordinator; member projects carry none
-(`mechanics/reset-file.md`). One session's story then lives in one place: the record names the
-member repos it concerns, and its Next-focus names where the next session continues, so a session
-entered anywhere in the workspace routes through the same anchor. An interrupted cross-repo step
-resumes from that record plus each touched repo's open branch, and the dependency order on resume
-comes from re-reading the coordinator's `order`. Steps that run concurrently as a wave each keep
-a record of their own until the wave folds (`mechanics/reset-file.md`).
+A step that spans member repos runs as one session, lowest layer first, so a higher layer builds
+against the real change beneath it. Its one stage list groups stages by repository in map order,
+and it creates a branch per touched repo under a shared slug; `close` publishes each as that
+repository's own change proposal. The coordinator's single reset file carries the step's
+continuity, and a resumed step re-reads `order`.
 
 ## Experiments
 
-An experiment is never part of the workspace. It is a standalone project outside the workspace
-tree, with its own reset file, so it runs in parallel with the workspace's own sessions. The
-coordinator catalogs it and takes in its results (`commands/experiment.md`).
+An experiment is a standalone project outside the workspace, with its own reset file, so it runs
+in parallel with the workspace's sessions. The coordinator catalogs it and takes in its results
+(`commands/experiment.md`).
 
 ## Awareness follows the dependency direction
 
-Sessions read the map from the coordinator; they never teach a lower project about the projects
-that consume it. A dependency graph's awareness runs downward — a project knows what it builds on,
-not what builds on it — and marathon respects that: the estate-wide view lives only in the
-coordinator, the one place the whole is legitimately described together. A lower project stays
-unaware of its consumers, even inside a cross-repo step.
+A project knows what it builds on, never what builds on it. The estate-wide view lives only in the
+coordinator, and a lower project stays unaware of its consumers, even inside a cross-repo step.
 
-## Coordinator conventions
-
-An organization-level coordinator often keeps conventions that bind the member repositories —
-naming rules, authoring rules, the awareness direction itself. Because awareness runs downward, a
-member repository never cites them in its own stable context. The binding runs through sessions
-instead: a member's `review` consults the coordinator's conventions as part of its drift check,
-and a cross-repo step applies them as it works each repo.
+Conventions the coordinator keeps for its members, such as naming and authoring rules, bind
+through sessions rather than citations: a member's `review` checks against them, and a cross-repo
+step applies them.

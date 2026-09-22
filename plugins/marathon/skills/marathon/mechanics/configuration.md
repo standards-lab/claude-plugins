@@ -34,44 +34,17 @@ core-lib = "~/code/core-lib"
 serves = "org"  # the project, or workspace coordinator, this experiment serves
 ```
 
-## Project kind
+## Keys
 
-`[project] kind` declares which of the two kinds the repository is. It decides how `start` and
-`close` behave.
-
-- **code** — the repository contains production source code: the implementation logic that makes
-  a program behave. The agent implements each step in stages, each committed once its check
-  passes, with the architect confirming behavior at checkpoints; closeout follows validation.
-- **context** — the repository *is* context: prose, configuration, and skills (which are advanced
-  context, not source). The agent authors the whole repository directly — no tests. The architect
-  sets direction, confirms each checkpoint, and approves the pull request, which is where
-  ownership of the change passes to the project. A context project can still version and
-  release what it ships (a plugin, a document set); it just has no code layer.
-
-When in doubt, ask whether there is a build-and-test loop that defines stage boundaries and a
-validation phase; if there is, it's `code`.
-
-## Remote
-
-`[remote]` names the platform the project publishes to and the command that proposes a change
-there — `gh pr create` on GitHub, `glab mr create` on GitLab, the equivalent elsewhere. Closeout
-runs it to publish the finished branch.
-
-## Workspace
-
-Only a coordinator declares `[workspace]`. `order` is the dependency map a cross-repo step
-flows through — a list of layers, lowest first; an array entry is a layer of adjacent peers.
-`[workspace.paths]` resolves an order key that is not a sibling directory. The design is
-`references/workspace-coordination.md`.
-
-## Experiment
-
-Only an experiment declares `[experiment]` (`commands/experiment.md`). `serves` names the project,
-or the workspace's coordinator, that reads its results. The experiment is never a workspace
-member.
-
-## Extensions
-
-`extensions` lists enabled extensions by skill name: under `[project]` for this repository, under
-`[workspace]` at a coordinator for every member project. Enabling, resolution, and the hook
-points are `references/extensions.md` and `mechanics/hooks.md`.
+- **`[project] kind`** — `code` when the repository holds production source with a build-and-test
+  loop that defines stage boundaries and validation; `context` when the repository is itself
+  context (prose, configuration, skills) that the agent authors directly, with no tests. A context
+  project can still version and release what it ships.
+- **`[remote]`** — the platform and the command `close` runs to publish a branch.
+- **`[workspace]`** — coordinator only: `order` lists layers lowest first, an array entry a layer
+  of peers, and `[workspace.paths]` maps a key that isn't a sibling directory
+  (`references/workspace-coordination.md`).
+- **`[experiment]`** — experiment only: `serves` names the project, or the workspace's
+  coordinator, that reads its results (`commands/experiment.md`).
+- **`extensions`** — enabled extensions by skill name, under `[project]` for this repository or
+  `[workspace]` for every member (`references/extensions.md`).
