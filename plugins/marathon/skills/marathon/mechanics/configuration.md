@@ -28,6 +28,10 @@ order = [
 # Optional: resolves an order key that is not a sibling directory.
 [workspace.paths]
 core-lib = "~/code/core-lib"
+
+# Optional: only an isolated experiment that serves a workspace declares this block.
+[experiment]
+workspace = "org"  # the name of the coordinator repository this experiment serves
 ```
 
 ## Project kind
@@ -59,6 +63,13 @@ Only a coordinator declares `[workspace]`. `order` is the dependency map a cross
 flows through — a list of layers, lowest first; an array entry is a layer of adjacent peers.
 `[workspace.paths]` resolves an order key that is not a sibling directory. The design is
 `references/workspace-coordination.md`.
+
+## Experiment
+
+Only an isolated experiment declares `[experiment]` (`commands/experiment.md`). `workspace` names
+the coordinator repository the experiment serves. The experiment is not a workspace member: it
+keeps its own reset file, and the key records only which workspace reads its results. The goal
+it serves is cited in its `context/README.md`.
 
 ## Extensions
 

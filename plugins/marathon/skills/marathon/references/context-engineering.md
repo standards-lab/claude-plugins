@@ -39,9 +39,10 @@ Volatile (changes often, and gets cleaned up):
 
 Kept outside `context/`:
 
-- `experiments/` — a top-level directory for spikes, isolated so throwaway work doesn't mix into the
-  real tree. Created when an experiment session needs it. A standalone project keeps its own; in
-  a workspace, the coordinator keeps the only one (`references/workspace-coordination.md`).
+- `experiments/` — a top-level directory for in-tree spikes, isolated so throwaway work doesn't mix
+  into the real tree. Created when an experiment session needs it. A standalone project keeps its
+  own; in a workspace, the coordinator keeps the only one (`references/workspace-coordination.md`).
+  An isolated experiment is a project of its own and never appears here.
 - `docs/` — an optional top-level directory for the project's own documentation, the guide a
   person reads to use or contribute to the repository. See below.
 - whatever an enabled extension owns — a directory or file outside `context/` that the extension

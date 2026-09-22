@@ -59,10 +59,10 @@ entered anywhere in the workspace routes through the same anchor. An interrupted
 resumes from that record plus each touched repo's open branch, and the dependency order on resume
 comes from re-reading the coordinator's `order`.
 
-## Experiments live at the coordinator
+## Experiments
 
-In a workspace, every experiment lives under the coordinator's top-level `experiments/`, never
-inside a member repository. A member repository carries the tooling of a code project: a Go
+In a workspace, every in-tree experiment lives under the coordinator's top-level `experiments/`,
+never inside a member repository. A member repository carries the tooling of a code project: a Go
 workspace file, a CI matrix, format sweeps, module lists. A spike placed inside it sits under all
 of that and either breaks against it or has to be fenced from each piece in turn. The coordinator
 carries no such tooling, so a spike there collides with nothing. The spike depends on the member
@@ -74,6 +74,15 @@ session's branch is the coordinator's; if the spike's outcome changes a member r
 context, that edit is a cross-repo edit on that repository's own branch, recorded under
 **Cross-repo** in the reset disposition. A standalone project keeps its own `experiments/`, as
 `commands/experiment.md` states.
+
+An isolated experiment is the other form, for a spike that needs several sessions, may become a
+repository, or should run in parallel with the workspace's own sessions. It is a standalone
+project outside the workspace tree: not a member, not in `order`, and not mapped through
+`[workspace.paths]`. It keeps its own reset file, so its sessions never pass through the
+coordinator's, and the workspace can run its own session at the same time. It reads the member
+repositories it needs from their local checkouts and never writes them. The workspace takes in
+its results by reading the closed experiment in a coordinator `plan` session
+(`commands/experiment.md`).
 
 ## Awareness follows the dependency direction
 

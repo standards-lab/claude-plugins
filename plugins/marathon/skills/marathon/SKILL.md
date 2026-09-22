@@ -71,7 +71,7 @@ Route on the first argument; each command's playbook supplies its stages' conten
 | `init` | One-time, to set up marathon on a repo from a planning concept | [`commands/init.md`](./commands/init.md) |
 | `plan` | Refine concepts and settle what the next session should focus on; touches only `context/` | [`commands/plan.md`](./commands/plan.md) |
 | `start` | Advance the product one concrete step | [`commands/start.md`](./commands/start.md) |
-| `experiment` | Spike an idea in the isolated `experiments/` directory | [`commands/experiment.md`](./commands/experiment.md) |
+| `experiment` | Spike an idea in the isolated `experiments/` directory, or as a standalone project of its own | [`commands/experiment.md`](./commands/experiment.md) |
 | `reset` | Hand off mid-session: context is filling but the work isn't done | [`commands/reset.md`](./commands/reset.md) |
 | `close` | The session's work is finished and validated | [`commands/close.md`](./commands/close.md) |
 | `review` | On demand: check the notes against the code and clean them up | [`commands/review.md`](./commands/review.md) |

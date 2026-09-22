@@ -29,7 +29,7 @@ Invoke as `marathon <command>` (or `/marathon:marathon <command>`).
 | `init` | One-time setup of marathon on a repository, from a planning concept. |
 | `plan` | Planning/curation session that touches only `context/` — refine concepts, decide the next step. |
 | `start` | Advance the product one concrete step. |
-| `experiment` | Spike an idea in the isolated `experiments/` directory. |
+| `experiment` | Spike an idea in the isolated `experiments/` directory, or as a standalone project of its own. |
 | `reset` | Hand off mid-session so a fresh context can resume the same branch. |
 | `close` | Finish and publish a completed session. |
 | `review` | Audit the notes for drift from the code and clean them up. |
@@ -57,8 +57,9 @@ publishes. What a stage is under each kind, and how the step validates, is
 When several marathon projects live as siblings under one directory — a workspace — a session's step
 may span them: one session works the touched repos in the coordinator's declared dependency order,
 each on its own branch under the step's shared slug. The workspace has no context of its own; its
-continuity lives in the single reset file at the coordinator, and every experiment lives in the
-coordinator's `experiments/`. See
+continuity lives in the single reset file at the coordinator, and every in-tree experiment lives in
+the coordinator's `experiments/`. An isolated experiment is a standalone project outside the
+workspace, so it runs in parallel with the workspace's own sessions. See
 [`references/workspace-coordination.md`](./skills/marathon/references/workspace-coordination.md).
 
 ## Extensions
