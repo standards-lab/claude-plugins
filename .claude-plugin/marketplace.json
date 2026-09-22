@@ -15,12 +15,12 @@
     {
       "name": "marathon-roadmap",
       "source": "./plugins/marathon-roadmap",
-      "description": "Marathon extension: a roadmap manifest of goals, tasks, and backlog the sessions keep current"
+      "description": "Marathon extension: a roadmap manifest of goals, tasks, and backlog, sequenced in waves, that the sessions keep current"
     },
     {
       "name": "marathon-architecture",
       "source": "./plugins/marathon-architecture",
-      "description": "Marathon extension: an architecture layer for the principles and conventions that outgrow a single repository, kept current as settled design proves out across the project"
+      "description": "Marathon extension: an architecture layer for the principles and conventions that outgrow a single repository, filled by promotion from settled context/ notes"
     }
   ]
 }

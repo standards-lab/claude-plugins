@@ -4,6 +4,16 @@ All notable changes to the marathon-roadmap plugin are documented here. Versions
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.2.0
+
+### Changed
+
+- **Waves in `next`.** An entry is a dotted path, or an array of paths to tasks or goals safe to
+  run at the same time; a flat list reads as one-task waves. Within a wave, `on-close` records its
+  edits in the session's own record, and the session folding the wave applies them.
+- **Targets marathon 0.13**, with flat `context/` paths in the examples; the skill is trimmed and
+  `on-start` layers in `references/manifest.md` instead of restating it.
+
 ## v0.1.6
 
 ### Changed

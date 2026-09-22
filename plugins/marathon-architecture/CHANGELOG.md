@@ -4,6 +4,16 @@ All notable changes to the marathon-architecture plugin are documented here. Ver
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.2.0
+
+### Changed
+
+- **Targets marathon 0.13** and its flat `context/`: the promotion path reads a concept note, the
+  same note once it states itself settled, and a page once the knowledge generalizes. A
+  workspace landing is a concept note in the architecture repository's `context/`.
+- **Trimmed**: `on-start` layers in `references/architecture-layer.md` instead of restating it,
+  and the skill's files are about 40% shorter.
+
 ## v0.1.0
 
 ### Added
