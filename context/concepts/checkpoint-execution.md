@@ -55,17 +55,15 @@ make a future `marathon-sitrep` cheap to build, without building it now.
 ## The delegated review and report pattern
 
 The architect has already been hand-instructing this on live sessions: code-producing stages
-delegated to `opus`, no pause at stage boundaries, a holistic review from `fable` once the last
-stage lands, then a report for the architect's own final review with `[overview]`, `[changelog]`
+delegated to an execution agent, no pause at stage boundaries, a holistic review from a review
+agent once the last stage lands, then a report for the architect's own final review with `[overview]`, `[changelog]`
 (critical files, lowest to highest dependency layer, tests excluded), and `[verification]` (how to
 run and interact with the result — omitted when there's no runnable surface). This becomes
 `close`'s default rather than something specified per session:
 
-- `.claude/marathon.toml`'s `[agents]` convention (`behavior/delegation.md`) already lets a
-  project declare an agent and what it's for; a code project declares its default execution agent
-  and its default branch-review agent the same way, no new schema.
-- The branch-review step defaults to the declared review agent when one exists; the architect can
-  still override per session.
+- The stages run through marathon's executor profile and the branch review through its reviewer
+  profile, with the session choosing each engagement's model (`agent-profiles.md`). The architect
+  can still override either per session.
 - **The alignment check defaults to ecosystem idiom, not to an assumed architecture.** Marathon
   stays project-agnostic: core carries no assumption that a project has an `architecture/`
   repository or an Elemental-Architecture-style layer. The review checks the result against
@@ -75,7 +73,7 @@ run and interact with the result — omitted when there's no runnable surface). 
   optional `marathon-architecture` extension or a plain context citation, never a default core
   supplies. This mirrors `behavior/planning.md`'s existing sufficiency rule (prefer the ecosystem's
   standard approach absent a reason not to), applied at review time instead of SETTLE time.
-- The review agent's report is a scratch markdown file, not committed — it's a rendering for the
+- The reviewer's report is a scratch markdown file, not committed — it's a rendering for the
   architect's convenience, not project knowledge, so it has no home in `context/`.
 
 ## Open questions for the implementing session
@@ -83,9 +81,6 @@ run and interact with the result — omitted when there's no runnable surface). 
 - Exact report file location and lifecycle (a scratchpad path, deleted after the architect reads
   it, or kept until the next session starts) — small enough to settle in that session's own
   SETTLE rather than fix here.
-- Whether `[agents]` needs a second role key (e.g. `role = "review"`) or whether the project's own
-  prose in `delegation` is enough for a session to infer which declared agent is the branch
-  reviewer.
 - Whether the Interrupt outcome needs anything in `mechanics/hooks.md`, or is purely a
   `staged-execution.md` behavior with no hook implication.
 
