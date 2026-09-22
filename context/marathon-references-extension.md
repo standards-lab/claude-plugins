@@ -2,8 +2,8 @@
 
 Captured 2026-08-31 during the workspace-sweep session, after establishing that the references
 system is a workspace convention with no marathon footprint. This concept proposes evaluating
-its promotion to a marathon extension, alongside `concepts/marathon-sitrep.md`. Everything here is candidate direction for a future session on
-this repository.
+its promotion to a marathon extension, alongside `marathon-sitrep.md`. Open: everything here is
+candidate direction for a future session on this repository.
 
 ## The gap
 
@@ -28,7 +28,7 @@ committed/gitignored split — and stays non-prescriptive about what a workspace
 
 ## Open questions
 
-- Facet: integration, enhancement, or hybrid (the taxonomy in `concepts/marathon-sitrep.md`).
+- Facet: integration, enhancement, or hybrid (the taxonomy in `marathon-sitrep.md`).
   The catalog may need no hooks at all — sessions read it for orientation but never advance it —
   which would make it a pure artifact convention; whether the extension contract even has a
   shape for that is the interesting question.

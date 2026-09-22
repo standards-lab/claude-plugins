@@ -1,5 +1,8 @@
 # Harness testing
 
+Open: the position below is settled; the deep dive waits on observed failure modes and on
+`claude plugin eval` enablement (`v1.harness.testing`).
+
 What is functionally helpful to test about a living workflow skill, and how it should fit the CI
 pipeline. Deferred from the v0.9.0 session, where a first cut of per-command
 `claude plugin eval` fixtures was authored and then dropped as speculative: the workflow evolves

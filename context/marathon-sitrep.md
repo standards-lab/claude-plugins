@@ -4,7 +4,7 @@ Captured 2026-08-27 from a planning session in the reference-architecture worksp
 discipline already leaves a complete record of what a period accomplished — the question a
 situation report answers — but reading that record today is manual archaeology. This concept
 proposes the extension that narrates it, and the taxonomy that gives such an extension a place in
-the specification. Everything here is candidate direction for a future session on this repository.
+the specification. Open: everything here is candidate direction for a future session on this repository.
 
 ## The gap
 
