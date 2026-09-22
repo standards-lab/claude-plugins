@@ -1,22 +1,11 @@
 # on-reset
 
-Fires before the reset file is written — a standalone project's own `context/reset.md`, or in a
-workspace the coordinator's — in `reset` and in `close`.
-
-1. On a closeout (`Status: closeout`), take from the session's tending pass any settled note the
-   work showed to have generalized past this repository, and land it by the shape the layer takes:
-   - **Standalone** — the knowledge is written as a page under `architecture/` in this
-     repository, in this session. The note then decays under marathon's rule, its removal
-     pointing at the page.
-   - **In a workspace** — the note lands as a concept note in the architecture repository's
-     `context/`, and that repository authors the page in a session of its own. The member's note
-     does not decay yet: it decays when the page exists, not when the
-     concept lands.
-
-2. Record the landing in the Disposition, in marathon's ledger vocabulary: **Promoted** for the
-   note that moved, **Integrated** for a note the new page let go, and **Cross-repo** for
-   anything a member project's session wrote in the architecture repository.
-
-3. On a handoff (`Status: handoff`), nothing is promoted. A candidate the session turned up is
-   in-flight direction: it goes in the Disposition as the session's own note, and the promotion
-   waits for the closeout that finishes the step.
+1. On a closeout, take any settled note the work showed to have generalized past this repository
+   and land it:
+   - **Standalone** — write it as a page under `architecture/` this session; the note is then
+     **Integrated**, pointing at the page.
+   - **Workspace** — land it as a concept note in the architecture repository's `context/`, which
+     authors the page in a session of its own. The member's note stays until the page exists.
+2. Record **Promoted** for the note that moved, **Integrated** for a note a page let go, and
+   **Cross-repo** for anything written in the architecture repository.
+3. On a handoff, promote nothing; note the candidate in the Disposition for the closeout.
