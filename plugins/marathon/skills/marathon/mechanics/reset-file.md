@@ -25,10 +25,10 @@ keeps every older version.
 - **Branch:** wire-config-loader
 
 ## Disposition
-- **Integrated:** removed the "three-phase load" note from design/config.md — the code now expresses it (config/loader).
-- **Promoted:** concepts/config-validation.md → design/ (validation rules settled this session).
-- **Culled:** dropped the env-override idea — the loader implementation went another way.
-- **Retained:** design/config.md "secret sourcing" — still unbuilt.
+- **Integrated:** deleted context/config-loading.md — the loader and its package documentation now express it (config/loader).
+- **Add or sharpen:** context/config-validation.md now states itself settled (the validation rules held against the loader).
+- **Culled:** deleted context/env-override.md — the loader implementation went another way.
+- **Retained:** context/secret-sourcing.md — still unbuilt.
 - **Validated:** checkpoint 1, the loader reads a sample file (`go run ./cmd/example`); checkpoint 2, `go test ./...` and the run-and-verify check.
 
 ## Next-focus
@@ -55,9 +55,10 @@ the session also edited.
   spanning member repos records each touched repo's branch state there too; whatever the shape of
   the interrupted work, Next-focus carries enough bootstrap state to resume it cold.
 
-The Disposition speaks the tending ledger of `references/context-engineering.md`: Integrated
-(a decayed note), Promoted, Culled, Retained — and **Cross-repo**, for an edit the session made
-in another repository, such as a member session's edit to an artifact held at the coordinator.
+The Disposition speaks the tending ledger of `references/context-engineering.md`: Integrated,
+Culled, Retained, and **Cross-repo**, for an edit the session made in another repository, such as
+a member session's edit to an artifact held at the coordinator. **Add or sharpen** records a note
+written or changed in place, and an enabled extension may add entries of its own.
 A closeout adds **Validated**: each checkpoint the architect confirmed, with its evidence.
 
 Older reset files may carry a `Session type:` line naming `development`/`context`/`experiment`;
