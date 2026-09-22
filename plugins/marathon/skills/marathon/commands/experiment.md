@@ -64,9 +64,10 @@ stages under `references/staged-execution.md`.
 This session sets the experiment up and ends; the spike itself runs in the experiment's own
 sessions. At the location the architect chooses:
 
-1. Run `init` there as a new project, with the remote settled above. When it serves a workspace, `init`'s founding decisions
-   record that in `.claude/marathon.toml` (`[experiment]`, `mechanics/configuration.md`), and its
-   `context/README.md` names the question and the workspace goal the experiment serves.
+1. Run `init` there as a new project, with the remote settled above. When it serves a
+   workspace, `init`'s founding decisions record that in `.claude/marathon.toml`
+   (`[experiment]`, `mechanics/configuration.md`), and its `context/README.md` names the
+   question and the workspace goal the experiment serves.
 2. Record the workspace repositories the experiment draws on: a committed list of the
    repositories and their remotes, and a gitignored map to their local checkouts. Where the
    coordinator keeps its own convention for this, the experiment follows it. The experiment's
@@ -74,8 +75,8 @@ sessions. At the location the architect chooses:
    published versions, through `go.mod` or the equivalent, never a replace directive.
 3. Write the experiment's first reset file, with the first spike step as its Next-focus.
 4. Create the repository on the settled host and push the setup commit.
-5. In the coordinator, or the project in a standalone case, record the experiment where it
-   catalogs repositories, with its remote.
+5. In the coordinator, or the project in a standalone case, record the experiment and its remote
+   in the catalog it keeps for experiments.
 
 The session then closes as usual. The architect opens a session in the experiment's directory and
 works it with `start`.
@@ -93,8 +94,8 @@ worth referencing has been promoted out of it.
 
 An isolated experiment ends with an ordinary `close` in its own project, whose Disposition makes
 the record self-contained. Graduation is a read, not a write: a `plan` session at the coordinator,
-or in the project it served, reads the closed experiment and does the intake, capturing its findings as notes and adding the
-work the goal now needs. When the result earns a repository of its own, that work includes a
+or in the project it served, reads the closed experiment and does the intake, capturing its
+findings as notes and adding the work the goal now needs. When the result earns a repository of its own, that work includes a
 step that runs `init` in a new sibling directory, rebuilds the result there rather than copying
 the spike, and adds the repository to the coordinator's `order`. The same session preserves
 the experiment: it confirms the final `close` is pushed, archives the remote read-only (on
