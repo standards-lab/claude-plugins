@@ -9,9 +9,9 @@
 - Backlog tasks — assigned to no goal — live under the root `backlog` table
   (`[backlog.<slug>]`).
 - `next`, a root-level list, is the only sequence the file asserts; the tree itself is
-  unordered. Each entry is a dotted path, or an array of dotted paths to tasks or goals that
-  form a wave: safe to run at the same time (marathon's `mechanics/reset-file.md`). The first
-  entry is what comes next.
+  unordered. Each entry is a dotted path to a task or goal, or an array forming a wave whose
+  members run at the same time (marathon's `mechanics/reset-file.md`). A wave member is a dotted
+  path, or a nested array of paths: a lane, run in order. The first entry is what comes next.
 
 The composed key is the identity; renaming a slug updates every reference with it.
 
@@ -45,7 +45,8 @@ dots.
 
 - **Ephemeral** — a finished task is deleted, and a goal whose criteria hold goes with it; the
   session record keeps the disposition. A stale claim is a defect the finding session fixes.
-- **Unordered** — `next` is the only sequence, and a wave's tasks have no order among themselves.
+- **Unordered** — `next` and each lane are the only sequences; a wave's lanes have no order among
+  themselves.
 - **Proximate** — the task in front carries detail; everything else stays a claim, its depth in
   linked context files.
 
@@ -67,7 +68,7 @@ next = []
 # the marathon-roadmap extension; the format is the plugin's references/manifest.md.
 
 next = [
-  ["v1.data.reads", "v1.messaging"],
+  [["v1.data.reads", "v1.data.writes"], "v1.messaging"],
   "backlog.docs-site",
 ]
 
@@ -88,6 +89,11 @@ name = "Reads"
 repos = ["service"]
 summary = "The reads slice: query vocabulary, pagination, and the first domain package."
 proof = "Paginated, filtered, sorted reads over HTTP."
+
+[goals.v1.data.tasks.writes]
+name = "Writes"
+repos = ["service"]
+summary = "Commands over the reads slice's first domain package."
 
 [goals.v1.messaging]
 name = "Messaging"

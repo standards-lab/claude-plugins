@@ -18,8 +18,8 @@ for the running command.
    a workspace the coordinator's.
 3. Route on its Status:
    - `closeout` → a fresh step, named by Next-focus with, in a workspace, its member project. When
-     Next-focus names a wave, the architect names this session's step; route on its own
-     `context/reset/<slug>.md` if one exists. Continue: START, SETTLE.
+     Next-focus names a wave, the architect names this session's lane; route on its record,
+     `context/reset/<lane>.md`, if one exists. Continue: START, SETTLE.
    - `handoff` → resume. Switch to the command the Session line names; the Branch and Project lines
      say where the branch waits. Continue: START, RESUME.
    - Missing → settle a fresh step with the architect.

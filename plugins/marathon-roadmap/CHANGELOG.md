@@ -8,9 +8,10 @@ GitHub releases the tags cut.
 
 ### Changed
 
-- **Waves in `next`.** An entry is a dotted path, or an array of paths to tasks or goals safe to
-  run at the same time; a flat list reads as one-task waves. Within a wave, `on-close` records its
-  edits in the session's own record, and the session folding the wave applies them.
+- **Waves in `next`.** An entry is a dotted path, or an array forming a wave whose members run at
+  the same time; a member is a path, or a nested array run in order (a lane). A flat list reads
+  as before. Within a wave, `on-close` records its edits in the lane's record, and the session
+  folding the wave applies them.
 - **Targets marathon 0.13**, with flat `context/` paths in the examples; the skill is trimmed and
   `on-start` layers in `references/manifest.md` instead of restating it.
 

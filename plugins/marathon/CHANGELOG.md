@@ -27,8 +27,9 @@ GitHub releases the tags cut.
   experiment lives (directory and hosting account), runs `init` there with `[experiment] serves`,
   and catalogs it in the served project. The experiment runs its own sessions in parallel; a
   `plan` session takes in its result and archives its remote. Top-level `experiments/` is gone.
-- **Waves.** A Next-focus may name steps safe to run concurrently. Each wave session keeps its own
-  record at `context/reset/<slug>.md`, and the last to close folds the wave into one commit.
+- **Waves.** A Next-focus may name a wave of lanes that run concurrently, each a single step or a
+  sequence run in order. Each lane keeps its own record at `context/reset/<lane>.md`, and the
+  session that finishes the last lane folds the wave into one commit.
 - **The skill is about a third smaller**, with restated rules and cross-file duplication removed.
 
 ### Migrating

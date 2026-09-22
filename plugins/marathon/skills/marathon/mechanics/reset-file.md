@@ -9,14 +9,17 @@ session in the workspace reads at LOCATE and writes at CONCLUDE.
 
 ## Waves
 
-A closeout's Next-focus may name a **wave**: steps the architect judges safe to run at the same
-time, with no dependency between them and no repository they share, each in its own session.
-While a wave is in flight, each session keeps its own record at `context/reset/<slug>.md`, in the
-same schema, and never writes `context/reset.md`. Changes it would make to other shared files
-there, such as an extension's artifact, go in its record's Disposition instead of being applied.
-The session that closes last, once every other step's closeout record is on the main branch, folds
-the wave in one commit: it applies the recorded changes, rewrites `context/reset.md`, and deletes
-the wave's records.
+A closeout's Next-focus may name a **wave**: **lanes** the architect judges safe to run at the same
+time, each a single step or a sequence of steps run in order, in sessions of their own. Lanes
+share no member repository and no file at the coordinator besides their own records.
+
+While a wave is in flight, each lane keeps its own record at `context/reset/<lane>.md`, named by
+its first step's slug, in the same schema; its Next-focus names the lane's next step. No lane
+writes `context/reset.md`. Changes a lane would make to other shared files there, such as an
+extension's artifact, go in its record's Disposition instead of being applied. The session that
+closes a lane's last step, once every other lane's record shows its lane finished on the main
+branch, folds the wave in one commit: it applies the recorded changes, rewrites
+`context/reset.md`, and deletes the wave's records.
 
 ## Schema
 
