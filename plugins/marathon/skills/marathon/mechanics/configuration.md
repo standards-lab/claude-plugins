@@ -29,9 +29,9 @@ order = [
 [workspace.paths]
 core-lib = "~/code/core-lib"
 
-# Optional: only an isolated experiment that serves a workspace declares this block.
+# Optional: only an experiment declares this block.
 [experiment]
-workspace = "org"  # the name of the coordinator repository this experiment serves
+serves = "org"  # the project, or workspace coordinator, this experiment serves
 ```
 
 ## Project kind
@@ -66,10 +66,9 @@ flows through — a list of layers, lowest first; an array entry is a layer of a
 
 ## Experiment
 
-Only an isolated experiment declares `[experiment]` (`commands/experiment.md`). `workspace` names
-the coordinator repository the experiment serves. The experiment is not a workspace member: it
-keeps its own reset file, and the key records only which workspace reads its results. The goal
-it serves is cited in its `context/README.md`.
+Only an experiment declares `[experiment]` (`commands/experiment.md`). `serves` names the project,
+or the workspace's coordinator, that reads its results. The experiment is never a workspace
+member.
 
 ## Extensions
 

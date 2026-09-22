@@ -27,9 +27,8 @@ What the unit is, and what its check is, follows what the stage produces:
 
 On a **code** project most stages produce source, and a documentation step's stages produce
 prose under the second rule. On a **context** project every stage produces prose or
-configuration. An `experiment` runs in stages the same way: its unit is whatever the spike
-builds next, and its check is the spike's own. A `plan` or `review` session runs in stages of
-context edits under the second rule.
+configuration. A `plan` or `review` session runs in stages of context edits under the second
+rule.
 
 ## The stage list
 
@@ -116,8 +115,7 @@ checkpoint:
   run-and-verify behavior check, with the concrete commands and what to look for.
 - On a **context** project: a read of the whole change for coherence and consistency, and the
   repository's consistency script where one exists.
-- For an `experiment`: the answer to the question the spike was settled to answer, with the
-  evidence that supports it.
+- In an experiment's project, the final step adds the answer to its question, with the evidence.
 
 Do not close on a failure; fix it and validate again. Once the architect confirms the validation,
 `close` opens with the branch review (`commands/close.md`).

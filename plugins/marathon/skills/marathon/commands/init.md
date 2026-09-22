@@ -28,13 +28,9 @@ Read the concept closely, and settle these with the architect rather than assumi
 - **Capability map** — the major capabilities the project will need. Broad, not ordered, and shallow;
   you'll add detail later, when a capability is about to be built.
 - **First step** — the one concrete thing the first session will do.
-- **Workspace served** — only for an isolated experiment (`commands/experiment.md`): whether this
-  project serves a workspace, and which coordinator. A project that answers yes records it under
-  `[experiment]` and names the goal it serves in `context/README.md`.
 - **Remote platform** — which remote the project publishes to, and the command that proposes a change
   there: `gh pr create` for GitHub, `glab mr create` for GitLab, the equivalent for another platform, or
-  none for local-only. This is required; closeout uses it to publish. An isolated experiment
-  always has one, on the host its `experiment` session settled.
+  none for local-only. This is required; closeout uses it to publish.
 
 Don't create anything until the architect approves the plan.
 
@@ -64,9 +60,8 @@ detail up front.
   creates a new branch.
 - `.claude/marathon.toml` — record the project kind (`[project] kind = "code"` or `"context"`) and the
   remote platform with its publish command, in the canonical layout of
-  `mechanics/configuration.md`. If this project is an isolated experiment serving a workspace, add
-  the `[experiment]` table. If this project coordinates a workspace, add the
-  `[workspace]` block too (`role = "coordinator"` and a layered `order`); most projects don't. See
+  `mechanics/configuration.md`. An experiment adds `[experiment]` (`commands/experiment.md`). If
+  this project coordinates a workspace, add the `[workspace]` block too (`role = "coordinator"` and a layered `order`); most projects don't. See
   `references/workspace-coordination.md`. Extensions are not an `init` decision: a repository enables
   one whenever the convention is adopted, by adding the `extensions` key, and the next session
   bootstraps whatever artifact the extension owns (see `references/extensions.md`).
@@ -76,8 +71,7 @@ detail up front.
 - `CLAUDE.md` — keep it short: name the workflow and point to `context/README.md` for
   orientation. The kind lives in `marathon.toml` and the skill formalizes what it means; the
   detail goes in `context/`, not here.
-- Don't create `experiments/` or `docs/` now; an experiment session makes the first when it's
-  needed, and a documentation step of a `start` session establishes the second.
+- Don't create `docs/` now; a documentation step of a `start` session establishes it.
 
 ## 4. Commit the setup
 

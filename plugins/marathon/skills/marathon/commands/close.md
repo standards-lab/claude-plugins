@@ -6,17 +6,15 @@ completed work: review the branch, tidy the notes, record what happened, and pub
 
 `close` assumes the work is validated per `references/staged-execution.md`: every stage
 committed, every checkpoint confirmed, and the validation for the project kind confirmed last. A
-`plan` session has nothing to build. For an `experiment`, validation is the spike's answer to its
-question; decide with the architect what, if anything, the spike earned. A `review` session's
-cleanup is itself the deliverable. A documentation step validates its pages against the current
-code, and where they disagree, the page is what's wrong. Don't close on a failure; fix it first.
+`plan` session has nothing to build, and a `review` session's cleanup is itself the deliverable.
+A documentation step validates its pages against the current code, and where they disagree, the
+page is what's wrong. Don't close on a failure; fix it first.
 
 ## 1. Review the branch
 
 The branch review is the holistic code-quality pass over the whole branch, made once the last
-stage has landed rather than stage by stage. It runs on a `start` or an `experiment` whose branch
-changed code or a deliverable; a `plan` or `review` session, whose branch changed only
-`context/`, skips it.
+stage has landed rather than stage by stage. It runs on a `start` session; the other
+sessions change no code or deliverable and skip it.
 
 1. Prepare the report's location. The report is `.claude/report.md`: the project's own when it
    stands alone, the coordinator's in a workspace. It is never committed, so before anything

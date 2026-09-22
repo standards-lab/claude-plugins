@@ -61,29 +61,9 @@ comes from re-reading the coordinator's `order`.
 
 ## Experiments
 
-In a workspace, every in-tree experiment lives under the coordinator's top-level `experiments/`,
-never inside a member repository. A member repository carries the tooling of a code project: a Go
-workspace file, a CI matrix, format sweeps, module lists. A spike placed inside it sits under all
-of that and either breaks against it or has to be fenced from each piece in turn. The coordinator
-carries no such tooling, so a spike there collides with nothing. The spike depends on the member
-modules it needs as published versions, through its own `go.mod` or the equivalent, never
-through a replace directive to a sibling checkout. A change the spike implies for a member
-repository's code is laid out inside the experiment, and it reaches that repository only by
-promotion at `close`, when the architect accepts the result into the workspace's effort. The
-session's branch is the coordinator's; if the spike's outcome changes a member repository's
-context, that edit is a cross-repo edit on that repository's own branch, recorded under
-**Cross-repo** in the reset disposition. A standalone project keeps its own `experiments/`, as
-`commands/experiment.md` states.
-
-An isolated experiment is the other form, for a spike that needs several sessions, may become a
-repository, or should run in parallel with the workspace's own sessions. It is a standalone
-project outside the workspace tree: not a member, not in `order`, and not mapped through
-`[workspace.paths]`. It keeps its own reset file, so its sessions never pass through the
-coordinator's, and the workspace can run its own session at the same time. It reads the member
-repositories it needs from their local checkouts and never writes them. Its repository is hosted wherever its
-setup settled, not necessarily with the workspace's own repositories. The workspace takes in its
-results by reading the closed experiment in a coordinator `plan` session, which archives the
-experiment's remote and keeps a pointer to it (`commands/experiment.md`).
+An experiment is never part of the workspace. It is a standalone project outside the workspace
+tree, with its own reset file, so it runs in parallel with the workspace's own sessions. The
+coordinator catalogs it and takes in its results (`commands/experiment.md`).
 
 ## Awareness follows the dependency direction
 
