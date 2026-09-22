@@ -51,20 +51,12 @@ Kept outside `context/`:
 
 ### A note states its own settledness
 
-No directory marks a note settled or unsettled, so each note says so in its opening lines: settled
-direction, and what settled it (a session's decision, a build, an experiment's result), or a
+Each note states in its opening lines whether it is settled: settled direction, and what settled
+it (a session's decision, a build, an experiment's result), or a
 concept still open, and what would settle it. A note that describes an interface, a contract, or
 a shape a session just designed states itself provisional. It states itself settled only in a
 later session, once something real, such as a caller, a build, or an experiment, exercised the
 shape and it held. The same rule applies to authoring a skill from a note.
-
-### Repositories on the earlier layout
-
-A repository may still carry the earlier `context/design/` and `context/concepts/`
-subdirectories. Read their notes as flat notes. A note under `concepts/` counts as a concept still
-open unless its own text says otherwise. The layout is migrated by a `review` session, which moves
-each note to `context/` with a settledness line or dispositions it under the operations below.
-Until then, a session writes new notes directly under `context/`.
 
 ## Project documentation
 

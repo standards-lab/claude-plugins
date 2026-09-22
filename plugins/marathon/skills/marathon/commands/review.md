@@ -16,8 +16,7 @@ document — and look for:
 
 - **Tending candidates** — notes due for the operations of `references/context-engineering.md`,
   under that reference's rules: notes the built work or its documentation now expresses, concepts
-  to cull, concepts that have quietly proven out and should state themselves settled, and a
-  repository still on the earlier `design/` and `concepts/` layout, to migrate.
+  to cull, and concepts that have quietly proven out and should state themselves settled.
 - **Orientation** — whether the vision and capability map in `context/README.md` still match where the
   project actually is.
 - **Docs drift** — if the project has a `docs/` directory, pages whose code has moved on
