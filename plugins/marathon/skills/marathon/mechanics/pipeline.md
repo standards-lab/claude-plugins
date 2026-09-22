@@ -1,9 +1,7 @@
 # Session pipeline
 
-Execution spec for every marathon command. The pipeline owns the session mechanics; each command's
-playbook under `commands/` supplies the content of the stages — what orientation reads, what settling
-weighs, what execution produces. Hook firing is specified in `mechanics/hooks.md` and happens only at
-the points named here.
+The session mechanics every marathon command runs; each playbook under `commands/` supplies its
+stages' content. Hooks fire only at the points named here (`mechanics/hooks.md`).
 
 ## Stages
 
@@ -12,104 +10,79 @@ for the running command.
 
 ### 1 · LOCATE
 
-1. Identify the directory kind. A **standalone project** has its own top-level `context/` and no
-   workspace around it. A **workspace** is a directory whose subdirectories are the projects, one
-   of which declares itself coordinator in its `.claude/marathon.toml`
-   (`mechanics/configuration.md`); entry at the workspace root and entry inside a member project
-   are the same case.
-2. Resolve the reset file (`mechanics/reset-file.md`): a standalone project's own
-   `context/reset.md`, or, anywhere in a workspace, the coordinator's — the workspace's only
-   reset; member projects carry none.
-3. Read it and route on Status:
-   - `Status: closeout` → fresh step. The Next-focus names the step and, in a workspace, the
-     member project it runs in. When it names a wave (`mechanics/reset-file.md`), the architect
-     names the session's step; if `context/reset/<slug>.md` exists for it, route on that record
-     instead. Continue: 2 · START, 3 · SETTLE.
-   - `Status: handoff` → resume. The Session line names the command that resumes it; if that is
-     not the running command, switch to it. The Branch line — with the Project line in a
-     workspace — names where the open branch waits. Continue: 2 · START, 3R · RESUME.
-   - File missing → no session has recorded a step here; settle a fresh one with the architect.
+1. Identify the directory kind. A **standalone project** has its own top-level `context/`. A
+   **workspace** is a directory of projects, one declaring itself coordinator in its
+   `.claude/marathon.toml` (`mechanics/configuration.md`); entering at the root or inside a member
+   is the same case.
+2. Resolve the reset file (`mechanics/reset-file.md`): the project's own `context/reset.md`, or in
+   a workspace the coordinator's.
+3. Route on its Status:
+   - `closeout` → a fresh step, named by Next-focus with, in a workspace, its member project. When
+     Next-focus names a wave, the architect names this session's step; route on its own
+     `context/reset/<slug>.md` if one exists. Continue: START, SETTLE.
+   - `handoff` → resume. Switch to the command the Session line names; the Branch and Project lines
+     say where the branch waits. Continue: START, RESUME.
+   - Missing → settle a fresh step with the architect.
 
-One command deviates: `init` applies only when both marks are absent — no `context/` here, no
-sibling declaring a coordinator — and that check is its LOCATE.
+`init` deviates: its LOCATE checks that neither mark exists.
 
 ### 2 · START
 
 1. Fire `on-start`.
-2. Orient: the Next-focus in the reset file, the capability map in the project's
-   `context/README.md`, and the notes in `context/` the work touches. Load only what the session
-   needs.
+2. Orient on the Next-focus, the capability map in `context/README.md`, and the notes the work
+   touches. Load only what the session needs.
 
 ### 3 · SETTLE
 
 1. Enter plan mode.
-2. Work the scope through with the architect, to the depth the command's playbook calls for,
-   weighing what the step proposes against what the project already has
-   (`behavior/planning.md`). On a working session, the settled scope is expressed as the stage
-   list of `references/staged-execution.md`, whatever the project kind. The session may engage
-   the planner profile to design the initial stage list (`behavior/delegation.md`); it states
-   the profile, the model, and why before engaging it, and nothing changes until the architect
-   approves the list. Change nothing yet.
-3. As the discussion ranges wider than the step, note the context tending it implies — ideas to
-   capture as concept notes, notes it rules out, the next focus taking shape. On a **context**
-   project these edits are made in 4 · EXECUTE, after approval — there the change is the context.
-   On a **code** project they wait for 5 · CONCLUDE: EXECUTE produces the staged commits, and the
-   notes record what validation proved, not what a plan intended. A handoff records in-flight
-   direction in the reset Disposition without touching the notes.
-4. On the architect's approval, fire `on-execute`.
-5. Create the branch, named by the slug rule in the command's playbook. A step that spans member
-   repos in a workspace creates a branch in each touched repo, under the same slug.
+2. Work the scope through with the architect to the depth the playbook calls for, weighing it
+   against what the project already has (`behavior/planning.md`). A working session expresses it
+   as the stage list of `references/staged-execution.md`, which the planner profile may draft
+   (`behavior/delegation.md`). Change nothing until the architect approves.
+3. Note the context tending the discussion implies: ideas to capture, notes it rules out, the next
+   focus taking shape. A **context** project makes these edits in EXECUTE; a **code** project
+   waits for CONCLUDE, so the notes record what validation proved. A handoff records them in the
+   Disposition only.
+4. On approval, fire `on-execute`.
+5. Create the branch, named by the playbook's slug rule; a step spanning member repos creates one
+   per touched repo under the same slug.
 
 ### 3R · RESUME
 
-1. Check out the open branch named in the reset file — in each touched repo, for a step that
-   spans several.
+1. Check out the open branch in each touched repo.
 2. Fire `on-execute`.
-3. Read the in-progress state: the stage list, the stage and checkpoint position, and the exact
-   next move the Next-focus records. Continue: 4 · EXECUTE.
+3. Read the stage list, the stage and checkpoint position, and the next move from Next-focus.
+   Continue: EXECUTE.
 
 ### 4 · EXECUTE
 
-1. Do the command's work, per its playbook and the project kind, as the stage loop of
-   `references/staged-execution.md`: each stage commits once its check passes, and the session
-   stops at each checkpoint the stage list places. A re-plan re-enters 3 · SETTLE for the
-   remaining stages without leaving the branch.
-2. Fire `on-commit` immediately before any commit the session makes, in this stage or a later one.
+1. Do the playbook's work as the stage loop of `references/staged-execution.md`: each stage
+   commits once its check passes, and the session stops at each checkpoint. A re-plan re-enters
+   SETTLE without leaving the branch.
+2. Fire `on-commit` before every commit the session makes, here or later.
 
 ### 5 · CONCLUDE
 
-The session ends by one of two exits, each with its own playbook:
+- Unfinished, context filling → `reset` (`commands/reset.md`): tidy the touched notes, fire
+  `on-reset`, write a handoff record, optionally WIP-commit, and leave the branch open.
+- Finished and validated → `close` (`commands/close.md`): review the branch, tidy the notes, agree
+  the next step, fire `on-reset`, write the closeout record, fire `on-close`, commit, and publish.
 
-- Work unfinished and context filling → `reset` (`commands/reset.md`): tidy the touched notes, fire
-  `on-reset`, write the reset file with `Status: handoff`, optionally WIP-commit (`on-commit`),
-  leave the branch open.
-- Work finished and validated → `close` (`commands/close.md`): review the branch, tidy the
-  notes — including the edits noted at SETTLE, now validated — agree the next step, fire
-  `on-reset`, write the reset file with `Status: closeout`, fire `on-close`, commit
-  (`on-commit`), publish with the `[remote]` publish command.
+In a workspace the record is the coordinator's, committed in its repository.
 
-In a workspace, the reset file both exits write is the coordinator's — a commit in the
-coordinator's repository, alongside the session's own.
-
-## Command → pipeline map
+## Commands
 
 | Command | Layering |
 |---------|----------|
 | `plan`, `start`, `experiment` | full pipeline; working sessions |
-| `review` | full pipeline; the on-demand pass, recorded under its own Session value |
-| `init` | LOCATE is the empty checks; SETTLE the founding decisions; EXECUTE the scaffold; CONCLUDE its own setup commit, with the hook constraints of `mechanics/hooks.md` |
-| `reset`, `close` | CONCLUDE invoked directly, ending the current session |
+| `review` | full pipeline; the on-demand pass |
+| `init` | LOCATE checks for no marks; SETTLE the founding decisions; EXECUTE the scaffold; CONCLUDE its setup commit |
+| `reset`, `close` | CONCLUDE, ending the current session |
 
 ## Invariants
 
-- One session, one step. A session never widens past the step settled at SETTLE. A standalone
-  step lives on one branch; a step that spans member repos in a workspace lives on one branch per
-  touched repo, under the step's shared slug.
-- Every session starts and ends at the reset file; the repository, not the conversation, carries
-  continuity.
-- Nothing is created or changed before the architect approves at SETTLE, except by a RESUME picking
-  up an approved plan.
-- A stage commits only once its check passes, and execution stops at every checkpoint the
-  approved stage list places, in every command that executes.
-- On a code project, `context/` asserts only what validated work proved; tending follows
-  validation.
+- One session, one step, on one branch per touched repo.
+- Every session starts and ends at the reset file; the repository carries continuity.
+- Nothing changes before the architect approves at SETTLE, except a RESUME of an approved plan.
+- A stage commits only once its check passes, and execution stops at every checkpoint.
+- On a code project, `context/` asserts only what validated work proved.

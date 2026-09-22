@@ -1,41 +1,26 @@
 # marathon start
 
-Advance the product one concrete step — or resume a step already in progress. `start` takes no
-argument; how it executes the step depends on the project's kind (see
-`mechanics/configuration.md`), not on anything you pass it. For planning that touches only
-`context/`, use `plan`; for a spike, use `experiment`.
+Advance the product one concrete step, or resume one in progress. How the step executes follows
+the project kind (`mechanics/configuration.md`). For planning that touches only `context/`, use
+`plan`; for a spike, use `experiment`.
 
-`start` runs the session pipeline (`mechanics/pipeline.md`). A handoff recorded under Session
-`start` resumes here; the reset file's Next-focus carries the approved stage list and the stage
-and checkpoint position, so pick up the loop from there.
+`start` runs the session pipeline (`mechanics/pipeline.md`). A handoff under Session `start`
+resumes the stage loop from its recorded position.
 
 ## Settle
 
-The scope to settle is the single concrete step to take now, and how far it should go. Work it
-through with the architect in enough depth to come out with a clear picture of what to build —
-planning matters as much as the build; this is where the architectural thinking happens, so give
-it real depth and don't rush to the code. Add detail to the relevant note in `context/` only as far
-as this step needs — no further.
-
-The settled scope is expressed as the stage list (`references/staged-execution.md`), its stages
-grouped under checkpoints, and approved by the architect before the branch is created, on either
-project kind. In a workspace, a step may span member repos: the stage list then groups by
-repository, ordered by the coordinator's `order` map, and the session creates a branch in each
-touched repo under the step's shared slug.
+Settle the single concrete step and how far it goes, in real depth (`behavior/planning.md`). Add
+detail to the note it touches only as far as the step needs. Express the scope as the stage list
+with its checkpoints (`references/staged-execution.md`), approved before the branch is created.
 
 Branch slug: the step.
 
 ## Execute
 
-Run the stage loop of `references/staged-execution.md`: implement a stage, run its check, commit
-it, and continue, stopping at each checkpoint for the architect; then run validation, the final
-checkpoint. What a stage produces follows the project kind:
-
-- **code project**: a compilation unit brought to green with its tests. Context tending,
-  including the edits noted at SETTLE, is closeout work, done after validation.
-- **context project**: the deliverable itself, the skills, prose, or configuration the step
-  calls for, plus any `context/` the change settles. Stay within the one step.
+Run the stage loop, then validation. A **code** project's stages are compilation units brought to
+green with their tests, and context tending waits for `close`. A **context** project's stages are
+the deliverable itself plus any `context/` the change settles.
 
 ## Conclude
 
-`reset` when the context fills before the step is done; `close` when it's finished and validated.
+`reset` when the context fills first; `close` when the step is finished and validated.

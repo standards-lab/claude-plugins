@@ -1,52 +1,32 @@
 # Planning conduct
 
-Always-active discipline for how marathon sessions plan. It governs every command that settles
-scope; the pipeline (`mechanics/pipeline.md`) is where it acts.
+How every marathon session settles scope, at the pipeline's SETTLE (`mechanics/pipeline.md`).
 
 ## One step at a time
 
-marathon plans the immediate next step in detail and nothing past it, and a session's focus never
-spreads beyond that one area. Start from the lowest-level requirement, build it, and let the next
-step come into view once it's done. Over many sessions, these small finished steps stack up into
-the complete solution.
-
-This is why the notes in `context/` stay shallow until the work on them is close. Planning far
-ahead commits you to decisions you haven't earned yet, and it's usually the planning-ahead, not
-the building, that turns out wrong. Keep the focus narrow and let the design grow out of working
-code.
+Plan the immediate next step in detail and nothing past it. Start from the lowest-level
+requirement, build it, and let the next step come into view once it's done. Planning far ahead
+commits you to decisions you haven't earned, so notes stay shallow until their work is close.
 
 Builds proceed in dependency order; risk is probed out of band. When the highest-consequence
-unknown sits above the step in front, `experiment` is the risk-first instrument: spike it cheaply
-while the builds continue from the bottom.
+unknown sits above the step in front, spike it with `experiment` while the builds continue from
+the bottom.
 
-## Sufficiency before building it directly
+## Sufficiency first
 
-Before the stage list is settled, a step that plans to develop a solution directly asks whether
-the problem is already resolved by the established, idiomatic approach for the language — the
-standard library, or a dependency the ecosystem already treats as standard. If it is, the step
-needs an adequate reason to build its own instead of adopting that approach — asked at SETTLE,
-while the answer still changes the plan, not discovered at review, when the custom code already
-exists and someone has to argue for replacing it.
-
-A step that proceeds with its own implementation anyway carries its reason into the note it
-touches, as a rejected alternative (`references/context-engineering.md`); a step with no
-adequate reason adopts the existing approach instead.
+Before settling the stage list, ask whether the problem is already solved by the language's
+idiomatic approach: the standard library, or a dependency the ecosystem treats as standard. If it
+is, building your own needs an adequate reason, recorded in the note the step touches as a
+rejected alternative. Without one, adopt the existing approach. Ask at SETTLE, while the answer
+still changes the plan.
 
 ## Planning is half the work
 
-Planning matters as much as building. In `init`, in a fresh `start`, in a `plan` session, and in
-`review`, the planning phase is where the real architectural thinking happens — you work out what
-the step involves, how deep it needs to go, and how it fits the larger design. The quality of the
-implementation is largely set here, so plan with enough depth and clarity that you come out with a
-clear picture of what you're about to build. Rushing planning to get to the code is how a session
-builds the wrong thing, or the right thing at the wrong depth.
+In `init`, a fresh `start`, `plan`, and `review`, planning is where the architectural thinking
+happens: what the step involves, how deep it goes, and how it fits the larger design. Plan in plan
+mode, and settle with the architect before any consequential action. A `start` that resumes a
+handoff picks up the existing plan instead.
 
-Because the discussion ranges wider than the single step, planning is also where you tend the
-context: capture ideas that belong to later steps as concept notes in `context/`, cull the ones
-the discussion has ruled out, and start to spot what the next session's focus should be. When those
-edits land depends on the project kind; the pipeline's SETTLE stage holds the rule.
-
-marathon plans in plan mode and settles things with the architect before any consequential
-action — `init` before scaffolding, a fresh `start` before implementing the first stage or
-authoring the change, `plan` and `review` before changing notes. (A `start` that resumes a handoff skips this
-and picks up the existing plan.)
+Planning also tends the context: capture ideas for later steps as concept notes, cull the ones the
+discussion rules out, and watch for the next session's focus. The pipeline's SETTLE says when
+those edits land.
