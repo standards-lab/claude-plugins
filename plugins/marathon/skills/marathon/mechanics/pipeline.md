@@ -63,15 +63,15 @@ sibling declaring a coordinator — and that check is its LOCATE.
 1. Check out the open branch named in the reset file — in each touched repo, for a step that
    spans several.
 2. Fire `on-execute`.
-3. Read the in-progress state: the stage list, the stage position, and the exact next move the
-   Next-focus records. Continue: 4 · EXECUTE.
+3. Read the in-progress state: the stage list, the stage and checkpoint position, and the exact
+   next move the Next-focus records. Continue: 4 · EXECUTE.
 
 ### 4 · EXECUTE
 
 1. Do the command's work, per its playbook and the project kind, as the stage loop of
-   `references/staged-execution.md`: each stage is reported with the working tree uncommitted and
-   commits only on the architect's approval. A re-plan re-enters 3 · SETTLE for the remaining
-   stages without leaving the branch.
+   `references/staged-execution.md`: each stage commits once its check passes, and the session
+   stops at each checkpoint the stage list places. A re-plan re-enters 3 · SETTLE for the
+   remaining stages without leaving the branch.
 2. Fire `on-commit` immediately before any commit the session makes, in this stage or a later one.
 
 ### 5 · CONCLUDE
@@ -81,10 +81,10 @@ The session ends by one of two exits, each with its own playbook:
 - Work unfinished and context filling → `reset` (`commands/reset.md`): tidy the touched notes, fire
   `on-reset`, write the reset file with `Status: handoff`, optionally WIP-commit (`on-commit`),
   leave the branch open.
-- Work finished and validated → `close` (`commands/close.md`): tidy the notes — including the
-  edits noted at SETTLE, now validated — agree the next step, fire `on-reset`, write the reset
-  file with `Status: closeout`, fire `on-close`, commit (`on-commit`), publish with the
-  `[remote]` publish command.
+- Work finished and validated → `close` (`commands/close.md`): review the branch, tidy the
+  notes — including the edits noted at SETTLE, now validated — agree the next step, fire
+  `on-reset`, write the reset file with `Status: closeout`, fire `on-close`, commit
+  (`on-commit`), publish with the `[remote]` publish command.
 
 In a workspace, the reset file both exits write is the coordinator's — a commit in the
 coordinator's repository, alongside the session's own.
@@ -107,7 +107,7 @@ coordinator's repository, alongside the session's own.
   continuity.
 - Nothing is created or changed before the architect approves at SETTLE, except by a RESUME picking
   up an approved plan.
-- A stage commits only on the architect's approval. The report precedes the commit, in every
-  command that executes.
+- A stage commits only once its check passes, and execution stops at every checkpoint the
+  approved stage list places, in every command that executes.
 - On a code project, `context/` asserts only what validated work proved; tending follows
   validation.
