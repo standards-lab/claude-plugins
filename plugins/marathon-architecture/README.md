@@ -57,6 +57,6 @@ marathon 0.13 or later.
 
 Only what generalizes: a principle, a definition, a convention. Nothing a reader could infer from
 a repository's source, so a page that restates an implementation is a defect. Pages arrive by
-promotion and only by promotion — a concept note in the repository that owns the knowledge, the
+promotion and only by promotion — an open note in the repository that owns the knowledge, the
 same note once it states itself settled, and a page once the knowledge has generalized past that
 repository.

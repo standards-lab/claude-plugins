@@ -8,7 +8,7 @@
 - A goal's tasks live under its reserved `tasks` table (`[goals.v1.data.tasks.reads]`).
 - Backlog tasks — assigned to no goal — live under the root `backlog` table
   (`[backlog.<slug>]`).
-- `next`, a root-level list, is the only sequence the file asserts; the tree itself is
+- `next`, a root-level list, holds the file's only sequences, with each lane; the tree itself is
   unordered. Each entry is a dotted path to a task or goal, or an array forming a wave whose
   members run at the same time (marathon's `mechanics/reset-file.md`). A wave member is a dotted
   path, or a nested array of paths: a lane, run in order. The first entry is what comes next.

@@ -17,21 +17,25 @@ An experiment earns nothing by default: a spike that works is evidence, not a de
 - **Where it lives**: the local directory, and the account or organization hosting its repository.
   Neither is assumed from the served project; propose the architect's standing convention where
   the served project's context records one. The experiment always has a remote.
+- **`init`'s founding decisions** (`commands/init.md`), with the first spike step as its first
+  step, so `init` runs without a second approval.
+- **The catalog**: the file the served project keeps its experiments or repositories in, or a new
+  one if it keeps none.
 
 Branch slug: the spike.
 
 ## Execute
 
-1. Run `init` at the settled location with the settled remote. `[experiment]` in its
+1. Run `init` at the settled location with the settled decisions. `[experiment]` in its
    `.claude/marathon.toml` names the project it serves (`mechanics/configuration.md`), and its
    `context/README.md` names the question and the goal it serves.
-2. Record the repositories it reads: a committed list with their remotes, and a gitignored map to
-   the local checkouts. It reads them and never writes them; code dependencies are published
-   versions, never a replace directive.
-3. Write its first reset file, with the first spike step as Next-focus, then create the repository
-   and push.
-4. In the served project (the coordinator, in a workspace), add the experiment and its remote to
-   the catalog it keeps for experiments.
+2. Record the repositories it reads in the served project's own convention for that (in the
+   workspace, a committed list with remotes and a gitignored map to local checkouts). It reads
+   them and never writes them; code dependencies are published versions, never a replace
+   directive.
+3. Create the repository on the settled host and push.
+4. Add the experiment and its remote to the settled catalog in the served project (the
+   coordinator, in a workspace).
 
 The architect then works the experiment in its own directory with `start`. Its final step's
 validation is the answer to its question.

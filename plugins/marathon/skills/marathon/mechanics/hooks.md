@@ -10,8 +10,8 @@ Resolve the enabled extension set once, at 2 · START, before the first fire:
 2. In a workspace, also read `[workspace] extensions` from the coordinator's `marathon.toml`.
 3. Union the two lists, preserving order. An installed name is active; report a missing one to the
    architect and continue without it.
-4. Read each active extension's SKILL.md declaration, and report an incompatible version before
-   applying it.
+4. Read each active extension's SKILL.md declaration. On an incompatible version, report it and
+   ask the architect before applying it.
 
 An empty set makes every fire a no-op.
 

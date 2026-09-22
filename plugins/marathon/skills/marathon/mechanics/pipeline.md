@@ -10,7 +10,8 @@ for the running command.
 
 ### 1 · LOCATE
 
-1. Identify the directory kind. A **standalone project** has its own top-level `context/`. A
+1. Identify the directory kind. A **standalone project** has its own top-level `context/` and no
+   sibling declaring itself coordinator. A
    **workspace** is a directory of projects, one declaring itself coordinator in its
    `.claude/marathon.toml` (`mechanics/configuration.md`); entering at the root or inside a member
    is the same case.
@@ -18,8 +19,9 @@ for the running command.
    a workspace the coordinator's.
 3. Route on its Status:
    - `closeout` → a fresh step, named by Next-focus with, in a workspace, its member project. When
-     Next-focus names a wave, the architect names this session's lane; route on its record,
-     `context/reset/<lane>.md`, if one exists. Continue: START, SETTLE.
+     Next-focus names a wave, first fold it if every lane is finished; otherwise the architect
+     names this session's lane, routed on `context/reset/<lane>.md` if one exists. Continue:
+     START, SETTLE.
    - `handoff` → resume. Switch to the command the Session line names; the Branch and Project lines
      say where the branch waits. Continue: START, RESUME.
    - Missing → settle a fresh step with the architect.

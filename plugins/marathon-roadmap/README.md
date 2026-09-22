@@ -42,5 +42,5 @@ The next marathon session bootstraps the manifest if it doesn't exist yet. Requi
 Three primitives, nested like a filesystem: a **goal** is a named outcome made of other goals
 and tasks, closing when its criteria hold; a **task** is one session's requirement; the
 **backlog** holds the tasks assigned to no goal. The manifest is ephemeral — finished work is
-deleted, only what remains stays — and `next` is the only sequence it asserts, as waves of tasks that may run together. References
+deleted, only what remains stays — and `next` holds its only sequences, including waves of lanes that run together. References
 elsewhere cite dotted slug paths: `v1.data.reads`, `backlog.docs-site`.

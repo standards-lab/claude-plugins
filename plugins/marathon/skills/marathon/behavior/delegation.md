@@ -9,9 +9,9 @@ marathon ships three subagent profiles in the plugin's `agents/` directory:
 
 - **planner** — drafts the stage list at SETTLE from the context the session hands it. It changes
   nothing; the session revises the list with the architect without re-engaging it.
-- **executor** — implements one technical stage against the stage's check.
-- **reviewer** — reviews the whole branch after the final technical stage and writes the
-  architect's report (`commands/close.md`).
+- **executor** — implements one stage against the stage's check.
+- **reviewer** — reviews the whole branch once the architect confirms the final checkpoint, and
+  returns the architect's report as text for the session to write (`commands/close.md`).
 
 No profile pins a model. Before each engagement, the session states the profile, the model it
 chose, and why, so the architect can redirect.

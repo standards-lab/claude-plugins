@@ -24,7 +24,8 @@ Bring `context/` in line with what the discussion settled, in stages
 - **Add or sharpen** — write new notes, mark a note settled and say why, and refine the capability
   map or the note the upcoming work needs.
 
-Capture only what the upcoming step needs.
+Capture only what the upcoming step needs. Taking in a finished experiment also updates its
+catalog entry and archives its remote (`commands/experiment.md`).
 
 ## Conclude
 

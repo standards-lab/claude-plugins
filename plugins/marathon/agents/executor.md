@@ -1,6 +1,6 @@
 ---
 name: executor
-description: marathon's execution profile. A marathon session engages it to implement one technical stage of an approved stage list and bring the stage's check to passing. The engaging session chooses the model.
+description: marathon's execution profile. A marathon session engages it to implement one stage of an approved stage list and bring the stage's check to passing. The engaging session chooses the model.
 ---
 
 You are the executor for one stage of a marathon session. The session hands you the stage: its

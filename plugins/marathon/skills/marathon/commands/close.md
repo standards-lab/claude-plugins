@@ -14,11 +14,13 @@ A `start` session's branch gets one holistic review; other sessions skip this st
    needed.
 2. Engage the reviewer profile (`behavior/delegation.md`), or review directly when briefing it
    would cost more. The brief carries the stage list, the branch in each touched repository, the
-   confirmed checkpoints, the report's path, and any architecture or practice the project
-   declares, cited by path. Without one, the review checks against the ecosystem's idiom.
-3. Read the report firsthand, correct it, and tell the architect it's ready.
-4. Settle each finding with the architect: fix it in a new commit and re-run the checks, or record
-   it for a later step. A finding past the step is a re-plan.
+   confirmed checkpoints, and any architecture or practice the project declares, cited by path.
+   Without one, the review checks against the ecosystem's idiom. The reviewer returns the report
+   as text.
+3. Verify the findings firsthand, write the report to its path, and tell the architect it's ready.
+4. Settle each finding with the architect: fix it, or record it for a later step. Fixes land as a
+   checkpoint Adjust: a new commit, the checks re-run, and the fix reported for the architect to
+   confirm, cited under **Validated**. A finding past the step is a re-plan.
 
 ## 2. Tend the context
 
@@ -36,8 +38,9 @@ Settle the single next step with the architect; don't set the direction alone.
 ## 4. Record what happened
 
 Rewrite the reset file (`mechanics/reset-file.md`) with `Status: closeout`: the coordinator's in a
-workspace, or the session's own record in a wave. The Disposition carries the tending ledger and,
-under **Validated**, each checkpoint with its evidence. Next-focus is the step from step 3.
+workspace, or the lane's record in a wave, folding the wave when this finishes its last lane
+(`mechanics/reset-file.md`). The Disposition carries the tending ledger and, under **Validated**,
+each checkpoint with its evidence. Next-focus is the step from step 3.
 
 ## 5. Commit and publish
 

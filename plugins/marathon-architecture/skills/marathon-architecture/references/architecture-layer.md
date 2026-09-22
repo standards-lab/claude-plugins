@@ -25,10 +25,10 @@ README in every directory as its index.
 
 ## How knowledge reaches it
 
-By promotion only. A concept note proves out and states itself settled. If the built work or its
+By promotion only. An open note proves out and states itself settled. If the built work or its
 documentation then expresses it, it decays under marathon's rule; if it has generalized past the
 repository, it becomes a page. In a workspace, a member's `close` or `review` lands it as a
-concept note in the architecture repository, recorded under **Cross-repo**, and that repository
+open note in the architecture repository, recorded under **Cross-repo**, and that repository
 authors the page in a session of its own.
 
 ## Bootstrap index
@@ -42,6 +42,6 @@ The principles, definitions, and conventions that have generalized past this rep
 for a general reader. Nothing a reader could infer from the source belongs here, and a page that
 restates the implementation is a defect.
 
-A page arrives by promotion: a concept note in `context/`, the same note once it states itself
+A page arrives by promotion: an open note in `context/`, the same note once it states itself
 settled, and a page here once the knowledge has generalized past this repository.
 ```

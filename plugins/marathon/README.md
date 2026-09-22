@@ -45,7 +45,7 @@ the next session.
 
 ## Project kinds
 
-A project is declared `code` or `context` at `init`, in `.claude/marathon.toml`:
+A project is declared `code` or `context` at `init`, in `.claude/marathon.toml`.
 
 Both kinds execute in stages. Each stage commits once its check passes, and the architect confirms
 the result at checkpoints the stage list places; `close` reviews the whole branch before it

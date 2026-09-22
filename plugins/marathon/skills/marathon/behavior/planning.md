@@ -27,6 +27,6 @@ happens: what the step involves, how deep it goes, and how it fits the larger de
 mode, and settle with the architect before any consequential action. A `start` that resumes a
 handoff picks up the existing plan instead.
 
-Planning also tends the context: capture ideas for later steps as concept notes, cull the ones the
+Planning also tends the context: capture ideas for later steps as open notes, cull the ones the
 discussion rules out, and watch for the next session's focus. The pipeline's SETTLE says when
 those edits land.
