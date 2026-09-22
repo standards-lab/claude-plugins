@@ -80,9 +80,10 @@ repository, or should run in parallel with the workspace's own sessions. It is a
 project outside the workspace tree: not a member, not in `order`, and not mapped through
 `[workspace.paths]`. It keeps its own reset file, so its sessions never pass through the
 coordinator's, and the workspace can run its own session at the same time. It reads the member
-repositories it needs from their local checkouts and never writes them. The workspace takes in
-its results by reading the closed experiment in a coordinator `plan` session
-(`commands/experiment.md`).
+repositories it needs from their local checkouts and never writes them. Its repository is hosted wherever its
+setup settled, not necessarily with the workspace's own repositories. The workspace takes in its
+results by reading the closed experiment in a coordinator `plan` session, which archives the
+experiment's remote and keeps a pointer to it (`commands/experiment.md`).
 
 ## Awareness follows the dependency direction
 

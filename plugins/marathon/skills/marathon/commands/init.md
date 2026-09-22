@@ -33,7 +33,8 @@ Read the concept closely, and settle these with the architect rather than assumi
   `[experiment]` and names the goal it serves in `context/README.md`.
 - **Remote platform** — which remote the project publishes to, and the command that proposes a change
   there: `gh pr create` for GitHub, `glab mr create` for GitLab, the equivalent for another platform, or
-  none for local-only. This is required; closeout uses it to publish.
+  none for local-only. This is required; closeout uses it to publish. An isolated experiment
+  always has one, on the host its `experiment` session settled.
 
 Don't create anything until the architect approves the plan.
 

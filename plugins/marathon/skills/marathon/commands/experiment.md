@@ -28,6 +28,13 @@ Then settle the experiment's grain with the architect:
   with the workspace's own sessions. It is not a workspace member, so it keeps its own reset
   file and branches, and the coordinator's reset never sees its sessions.
 
+An isolated experiment also settles where it lives: the directory on this machine, and the remote
+account or organization that hosts its repository. Neither is assumed from the project or the
+workspace, since an experiment's repository often belongs somewhere other than the effort's own
+organization. Where the architect keeps a standing convention for this, recorded in the
+coordinator's or project's context, the session proposes it as the default. The experiment needs
+a remote: its repository is the durable record once the experiment ends.
+
 Branch slug: the spike.
 
 ## Execute: in-tree
@@ -57,7 +64,7 @@ stages under `references/staged-execution.md`.
 This session sets the experiment up and ends; the spike itself runs in the experiment's own
 sessions. At the location the architect chooses:
 
-1. Run `init` there as a new project. When it serves a workspace, `init`'s founding decisions
+1. Run `init` there as a new project, with the remote settled above. When it serves a workspace, `init`'s founding decisions
    record that in `.claude/marathon.toml` (`[experiment]`, `mechanics/configuration.md`), and its
    `context/README.md` names the question and the workspace goal the experiment serves.
 2. Record the workspace repositories the experiment draws on: a committed list of the
@@ -66,7 +73,9 @@ sessions. At the location the architect chooses:
    sessions read those checkouts and never write them. Code dependencies on member modules are
    published versions, through `go.mod` or the equivalent, never a replace directive.
 3. Write the experiment's first reset file, with the first spike step as its Next-focus.
-4. In the coordinator, record the experiment where the workspace catalogs its repositories.
+4. Create the repository on the settled host and push the setup commit.
+5. In the coordinator, or the project in a standalone case, record the experiment where it
+   catalogs repositories, with its remote.
 
 The session then closes as usual. The architect opens a session in the experiment's directory and
 works it with `start`.
@@ -83,9 +92,12 @@ outcome — promoted, or retained as record. Stable context never cites `experim
 worth referencing has been promoted out of it.
 
 An isolated experiment ends with an ordinary `close` in its own project, whose Disposition makes
-the record self-contained. Graduation is a read, not a write: a `plan` session at the coordinator
-reads the closed experiment and does the intake, capturing its findings as notes and adding the
+the record self-contained. Graduation is a read, not a write: a `plan` session at the coordinator,
+or in the project it served, reads the closed experiment and does the intake, capturing its findings as notes and adding the
 work the goal now needs. When the result earns a repository of its own, that work includes a
 step that runs `init` in a new sibling directory, rebuilds the result there rather than copying
-the spike, and adds the repository to the coordinator's `order`. The experiment never edits the
-workspace; the workspace reads the experiment.
+the spike, and adds the repository to the coordinator's `order`. The same session preserves
+the experiment: it confirms the final `close` is pushed, archives the remote read-only (on
+GitHub, `gh repo archive`), and keeps the catalog entry as the pointer to it. The experiment's
+tree is never copied into `experiments/`; the archived repository is the record. The experiment
+never edits the workspace; the workspace reads the experiment.
