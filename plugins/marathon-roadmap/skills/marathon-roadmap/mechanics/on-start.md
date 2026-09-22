@@ -2,9 +2,8 @@
 
 Fires as the session begins, before orientation.
 
-1. Resolve the manifest per `mechanics/pipeline.md` and read it. The current wave (the first
-   entry of `next`), which of its tasks are `active`, and the entries the session's focus cites
-   join the session's reset file as orientation input.
+1. Resolve the manifest per `mechanics/pipeline.md` and read it. The first entry of `next` and
+   the entries the session's focus cites join the session's reset file as orientation input.
 2. Layer the conventions into the session:
    - Cite tasks by dotted slug path — `v1.data.reads`, `backlog.docs-site` — everywhere the
      session writes: reset files, concepts, commit and pull-request descriptions.

@@ -62,7 +62,8 @@ together on the single concrete next step. That becomes the Next-focus in step 4
 Rewrite the reset file with `Status: closeout`, filling every field of the schema in
 `mechanics/reset-file.md`. In a workspace that is the coordinator's `context/reset.md` — the
 workspace's only reset, committed in the coordinator's repository; a standalone project rewrites
-its own. The judgment fields are the Disposition — what you integrated, culled, and retained,
+its own. A session in a wave writes its own record instead, and the last one folds the wave
+(`mechanics/reset-file.md`). The judgment fields are the Disposition — what you integrated, culled, and retained,
 and under **Validated**, each checkpoint with its evidence — and the Next-focus, set
 to the step you agreed on in step 3: the handoff the next session reads.
 

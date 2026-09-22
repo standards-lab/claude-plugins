@@ -22,7 +22,9 @@ for the running command.
    reset; member projects carry none.
 3. Read it and route on Status:
    - `Status: closeout` → fresh step. The Next-focus names the step and, in a workspace, the
-     member project it runs in. Continue: 2 · START, 3 · SETTLE.
+     member project it runs in. When it names a wave (`mechanics/reset-file.md`), the architect
+     names the session's step; if `context/reset/<slug>.md` exists for it, route on that record
+     instead. Continue: 2 · START, 3 · SETTLE.
    - `Status: handoff` → resume. The Session line names the command that resumes it; if that is
      not the running command, switch to it. The Branch line — with the Project line in a
      workspace — names where the open branch waits. Continue: 2 · START, 3R · RESUME.

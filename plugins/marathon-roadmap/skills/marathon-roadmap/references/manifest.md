@@ -12,12 +12,10 @@ The three primitives nest like a filesystem:
 - A goal's tasks live under its reserved `tasks` table (`[goals.v1.data.tasks.reads]`).
 - Backlog tasks — assigned to no goal — live under the root `backlog` table
   (`[backlog.<slug>]`).
-- `next`, a root-level list of waves, is the only sequence the file asserts; the tree itself is
-  unordered. A wave is a dotted path, or an array of dotted paths the architect judges safe to
-  run at the same time: no dependency between them and no repository they share. The current
-  wave is the first entry.
-- `active`, an optional root-level list of dotted paths, names the tasks in flight in an
-  experiment's own project, outside the sessions that read this manifest.
+- `next`, a root-level list, is the only sequence the file asserts; the tree itself is
+  unordered. Each entry is a dotted path, or an array of dotted paths to tasks or goals that
+  form a wave: safe to run at the same time (marathon's `mechanics/reset-file.md`). The first
+  entry is what comes next.
 
 The composed key is the identity. Renaming a slug changes the id and is done deliberately,
 updating every reference with it.
@@ -81,11 +79,9 @@ next = []
 # the marathon-roadmap extension; the format is the plugin's references/manifest.md.
 
 next = [
-  ["v1.data.reads", "v1.messaging.experiment"],
+  ["v1.data.reads", "v1.messaging"],
   "backlog.docs-site",
 ]
-
-active = ["v1.messaging.experiment"]
 
 [goals.v1]
 name = "The service at v1.0"
@@ -108,10 +104,6 @@ proof = "Paginated, filtered, sorted reads over HTTP."
 [goals.v1.messaging]
 name = "Messaging"
 summary = "A messaging library and the reactor services it enables."
-
-[goals.v1.messaging.tasks.experiment]
-name = "Messaging experiment"
-summary = "Spike the reactor model in its own experiment project."
 
 [backlog.docs-site]
 name = "The docs site"

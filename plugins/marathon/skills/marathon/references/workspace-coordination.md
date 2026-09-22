@@ -57,7 +57,8 @@ A workspace maintains one reset file, at the coordinator; member projects carry 
 member repos it concerns, and its Next-focus names where the next session continues, so a session
 entered anywhere in the workspace routes through the same anchor. An interrupted cross-repo step
 resumes from that record plus each touched repo's open branch, and the dependency order on resume
-comes from re-reading the coordinator's `order`.
+comes from re-reading the coordinator's `order`. Steps that run concurrently as a wave each keep
+a record of their own until the wave folds (`mechanics/reset-file.md`).
 
 ## Experiments
 

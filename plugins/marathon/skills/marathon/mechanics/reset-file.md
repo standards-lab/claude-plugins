@@ -12,7 +12,20 @@ keeps every older version.
 - A **workspace** maintains exactly one reset file, at the coordinator. Member projects carry
   none: a session anywhere in the workspace reads the coordinator's reset at LOCATE and writes it
   at CONCLUDE — a commit in the coordinator's repository. The record names the member projects it
-  concerns in its **Project** line.
+  concerns in its **Project** line. A wave in flight adds per-session records beside it (below).
+
+## Waves
+
+A closeout's Next-focus may name a **wave**: several steps the architect judges safe to run at the
+same time, with no dependency between them and no repository they share. The architect runs each
+step in its own session. While the wave is in flight, each session keeps its own record,
+`context/reset/<slug>.md` beside the reset file, in the same schema, and never writes
+`context/reset.md`. Changes it would make to other shared files at the same location, such as an
+extension's artifact, go in its record's Disposition instead of being applied.
+
+The session that closes last, once every other step of the wave has a closeout record on the main
+branch, folds the wave in one commit: it applies the recorded changes, rewrites `context/reset.md`
+with the next Next-focus, and deletes the wave's records.
 
 ## Schema
 
