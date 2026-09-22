@@ -44,10 +44,10 @@ sibling declaring a coordinator — and that check is its LOCATE.
 2. Work the scope through with the architect, to the depth the command's playbook calls for,
    weighing what the step proposes against what the project already has
    (`behavior/planning.md`). On a working session, the settled scope is expressed as the stage
-   list of `references/staged-execution.md`, whatever the project kind. A design decision the
-   session judges too consequential to settle alone may go to a declared escalation agent instead
-   (`behavior/delegation.md`); the session states which one and why before engaging it, and
-   nothing changes until the architect approves what comes back. Change nothing yet.
+   list of `references/staged-execution.md`, whatever the project kind. The session may engage
+   the planner profile to design the initial stage list (`behavior/delegation.md`); it states
+   the profile, the model, and why before engaging it, and nothing changes until the architect
+   approves the list. Change nothing yet.
 3. As the discussion ranges wider than the step, note the context tending it implies — ideas to
    capture as concepts, concepts it rules out, the next focus taking shape. On a **context**
    project these edits are made in 4 · EXECUTE, after approval — there the change is the context.
