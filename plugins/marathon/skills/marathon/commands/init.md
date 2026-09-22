@@ -44,6 +44,7 @@ detail up front.
 ```
 <repo>/
 ├── CLAUDE.md                  # short: says the repo uses marathon; points into context/
+├── .gitignore                 # .claude/plans/ and .claude/report.md
 ├── .claude/
 │   ├── settings.json          # plansDirectory; permissions
 │   └── marathon.toml          # project kind; remote platform + publish command
@@ -65,6 +66,8 @@ detail up front.
   one whenever the convention is adopted, by adding the `extensions` key, and the next session
   bootstraps whatever artifact the extension owns (see `references/extensions.md`).
 - `.claude/settings.json` — set `plansDirectory` to `./.claude/plans` and allow `Skill(marathon:marathon)`.
+- `.gitignore` — list `.claude/plans/` and `.claude/report.md`, the branch review's report, which
+  is never committed (`commands/close.md`).
 - `CLAUDE.md` — keep it short: name the workflow and point to `context/README.md` for
   orientation. The kind lives in `marathon.toml` and the skill formalizes what it means; the
   detail goes in `context/`, not here.

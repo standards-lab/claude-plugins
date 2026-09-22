@@ -47,8 +47,9 @@ the next session.
 
 A project is declared `code` or `context` at `init`, in `.claude/marathon.toml`:
 
-Both kinds execute in stages, and the architect reviews each stage, uncommitted, before it commits.
-What a stage is under each kind, and how the step validates, is
+Both kinds execute in stages. Each stage commits once its check passes, and the architect confirms
+the result at checkpoints the stage list places; `close` reviews the whole branch before it
+publishes. What a stage is under each kind, and how the step validates, is
 [`references/staged-execution.md`](skills/marathon/references/staged-execution.md).
 
 ## Workspaces

@@ -29,6 +29,7 @@ keeps every older version.
 - **Promoted:** concepts/config-validation.md → design/ (validation rules settled this session).
 - **Culled:** dropped the env-override idea — the loader implementation went another way.
 - **Retained:** design/config.md "secret sourcing" — still unbuilt.
+- **Validated:** checkpoint 1, the loader reads a sample file (`go run ./cmd/example`); checkpoint 2, `go test ./...` and the run-and-verify check.
 
 ## Next-focus
 Add secret sourcing on top of the validated loader. Start here next session.
@@ -49,13 +50,15 @@ the session also edited.
   names the command that resumes it; the Branch line (and, in a workspace, the Project line)
   names where; Next-focus records the in-progress state and the exact next move, so a fresh
   context can resume without working it out again. A working session records its stage list and
-  position there, for example `Stages: 3/7 · stage 3 implemented, unreviewed · list: …`. A step
+  position there, and its checkpoint position, for example
+  `Stages: 5/9 · checkpoint 1 of 3 confirmed · stage 5 committed · list: …`. A step
   spanning member repos records each touched repo's branch state there too; whatever the shape of
   the interrupted work, Next-focus carries enough bootstrap state to resume it cold.
 
 The Disposition speaks the tending ledger of `references/context-engineering.md`: Integrated
 (a decayed note), Promoted, Culled, Retained — and **Cross-repo**, for an edit the session made
 in another repository, such as a member session's edit to an artifact held at the coordinator.
+A closeout adds **Validated**: each checkpoint the architect confirmed, with its evidence.
 
 Older reset files may carry a `Session type:` line naming `development`/`context`/`experiment`;
 read it as the equivalent working session.

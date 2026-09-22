@@ -24,15 +24,15 @@ Rewrite the reset file with `Status: handoff`, filling every field of the schema
 when standalone. The Disposition records what step 1 integrated, promoted, culled, or retained.
 The judgment field is **Next-focus** — the in-progress state and the exact next move. Be specific:
 name the file you're editing, the decision that's pending, the next thing to do. On a working
-session, Next-focus carries the approved stage list, which stage the pointer is on, and whether
-that stage is implemented-unreviewed or reviewed; after a re-plan it carries the revised list.
-This is what a cold context resumes from.
+session, Next-focus carries the approved stage list, which stage the pointer is on, and which
+checkpoints the architect has confirmed; after a re-plan it carries the revised list. This is
+what a cold context resumes from.
 
 ## 3. Keep the work
 
-A `reset` normally follows an approval, so every finished stage already sits on the branch as its
-own commit and the working tree is clean. If the context fills mid-stage, make a WIP commit so the
-unapproved work isn't lost, and say in Next-focus that the stage awaits review; the resuming
-session reports it before anything else. Leave the branch open and don't publish it, since the
-work isn't finished. A later session will see `Status: handoff`, check out the branch, and keep
-going.
+Every finished stage already sits on the branch as its own commit. If the context fills mid-stage,
+make a WIP commit so the unfinished work isn't lost, and say in Next-focus that the stage's check
+has not passed yet; the resuming session finishes that stage before anything else. A checkpoint
+reported but not yet confirmed is recorded the same way, and the resuming session reports it
+again first. Leave the branch open and don't publish it, since the work isn't finished. A later
+session will see `Status: handoff`, check out the branch, and keep going.

@@ -1,17 +1,39 @@
 # marathon close
 
 Close out a session whose work is finished and validated. It's the same idea as `reset`, but for
-completed work: tidy the notes, record what happened, and publish the work. `close` is the
+completed work: review the branch, tidy the notes, record what happened, and publish the work. `close` is the
 pipeline's CONCLUDE stage for a finished step (`mechanics/pipeline.md`).
 
-`close` assumes the work is validated per `references/staged-execution.md`: every stage approved
-and committed, then the validation for the project kind. A `plan` session has nothing to build.
-For an `experiment`, validation is the spike's answer to its question; decide with the architect
-what, if anything, the spike earned. A `review` session's cleanup is itself the deliverable. A
-documentation step validates its pages against the current code, and where they disagree, the
-page is what's wrong. Don't close on a failure; fix it first.
+`close` assumes the work is validated per `references/staged-execution.md`: every stage
+committed, every checkpoint confirmed, and the validation for the project kind confirmed last. A
+`plan` session has nothing to build. For an `experiment`, validation is the spike's answer to its
+question; decide with the architect what, if anything, the spike earned. A `review` session's
+cleanup is itself the deliverable. A documentation step validates its pages against the current
+code, and where they disagree, the page is what's wrong. Don't close on a failure; fix it first.
 
-## 1. Tend the context
+## 1. Review the branch
+
+The branch review is the holistic code-quality pass over the whole branch, made once the last
+stage has landed rather than stage by stage. It runs on a `start` or an `experiment` whose branch
+changed code or a deliverable; a `plan` or `review` session, whose branch changed only
+`context/`, skips it.
+
+1. Engage the reviewer profile (`behavior/delegation.md`), stating the model and why, or do the
+   review directly when briefing the reviewer would cost more. The brief carries the approved
+   stage list, the branch in each touched repository, the confirmed checkpoints, and any
+   architecture or documented practice the project declares, cited by path. Without a declared
+   one, the review checks the result against the ecosystem's idiomatic practice.
+2. The review writes the report to `.claude/report.md`: the project's own when it stands alone,
+   the coordinator's in a workspace. The report is never committed. If the repository's
+   `.gitignore` doesn't list `.claude/report.md`, add it; that line rides the closeout commit.
+   The report's format is in the reviewer profile, the plugin's `agents/reviewer.md`.
+3. Read the report firsthand, correct anything it gets wrong, and tell the architect it's ready
+   to read.
+4. Settle each finding with the architect: fix it in a new commit on the branch and re-run the
+   affected checks, or record it for a later step. A finding that reaches past the step is a
+   re-plan (`references/staged-execution.md`).
+
+## 2. Tend the context
 
 First establish the scope of written context the step touched, then bring it in line with what
 now exists, with the tending operations of `references/context-engineering.md` — promote, decay,
@@ -30,24 +52,25 @@ The scope follows from where the project sits:
 
 These changes matter, so show the architect and confirm before applying them.
 
-## 2. Agree on the next step
+## 3. Agree on the next step
 
 Talk through what comes next — don't set the direction on your own. What the session turned up
 often changes the priority, and the conversation is usually where the next step comes from. Settle
-together on the single concrete next step. That becomes the Next-focus in step 3.
+together on the single concrete next step. That becomes the Next-focus in step 4.
 
-## 3. Record what happened
+## 4. Record what happened
 
 Rewrite the reset file with `Status: closeout`, filling every field of the schema in
 `mechanics/reset-file.md`. In a workspace that is the coordinator's `context/reset.md` — the
 workspace's only reset, committed in the coordinator's repository; a standalone project rewrites
 its own. The judgment fields are the Disposition — what you integrated, promoted, culled, and
-retained — and the Next-focus, set to the step you agreed on in step 2: the handoff the next
-session reads.
+retained, and under **Validated**, each checkpoint with its evidence — and the Next-focus, set
+to the step you agreed on in step 3: the handoff the next session reads.
 
-## 4. Commit and publish
+## 5. Commit and publish
 
-Stage everything and commit — a step that spanned member repos commits in each touched repo, and
+Delete `.claude/report.md`; the architect has read it, and it holds nothing the repository
+keeps. Then stage everything and commit — a step that spanned member repos commits in each touched repo, and
 in a workspace the coordinator's reset rewrite is its own commit in the coordinator's repository.
 Then publish each branch with the remote platform's command from that repo's
 `.claude/marathon.toml` — `gh pr create`, `glab mr create`, or the project's equivalent — using

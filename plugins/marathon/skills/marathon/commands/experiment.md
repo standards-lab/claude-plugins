@@ -42,8 +42,7 @@ Both project kinds spike the same way, in isolation, treating the result as evid
 
 Stay inside `experiments/`. Don't reach into the real tree or the product; the isolation is what makes
 the spike safe to explore. The directory is tracked like any other, and the spike runs in stages
-under the review gate of `references/staged-execution.md`: each stage is reported with the working
-tree uncommitted and commits on the architect's approval.
+under `references/staged-execution.md`.
 
 ## Conclude: promote deliberately, or don't
 

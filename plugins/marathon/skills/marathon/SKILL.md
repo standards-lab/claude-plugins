@@ -88,8 +88,8 @@ Consulted when their subject is in play:
   organized and maintained: the tiers, promote/decay/cull, assumption annotations, and deciding
   where a note belongs.
 - [`references/staged-execution.md`](./references/staged-execution.md) — how every working
-  session executes: stages per project kind, the stage list, the review gate, the report, review
-  outcomes, re-plan, validation.
+  session executes: stages per project kind, the stage list, checkpoints, the stage log, the
+  checkpoint report and its outcomes, re-plan, validation.
 - [`references/workspace-coordination.md`](./references/workspace-coordination.md) — the design
   behind workspaces: the coordinator, the order map, cross-repo steps, continuity.
 - [`references/extensions.md`](./references/extensions.md) — the extension system: installed vs.
