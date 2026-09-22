@@ -1,22 +1,19 @@
 # The roadmap manifest
 
-`context/roadmap.toml` — the path to the project's or workspace's target end state, holding only
-what remains. One file: at the workspace coordinator when the extension is enabled under
-`[workspace]`, at the project itself when enabled under `[project]`.
+`context/roadmap.toml` holds only what remains on the path to the target end state.
 
 ## Structure
-
-The three primitives nest like a filesystem:
 
 - Root goals sit under `[goals.<slug>]`; child goals nest directly (`[goals.v1.data]`).
 - A goal's tasks live under its reserved `tasks` table (`[goals.v1.data.tasks.reads]`).
 - Backlog tasks — assigned to no goal — live under the root `backlog` table
   (`[backlog.<slug>]`).
-- `next`, a root-level list of dotted paths, is the only sequence the file asserts; the tree
-  itself is unordered.
+- `next`, a root-level list, holds the file's only sequences, with each lane; the tree itself is
+  unordered. Each entry is a dotted path to a task or goal, or an array forming a wave whose
+  members run at the same time (marathon's `mechanics/reset-file.md`). A wave member is a dotted
+  path, or a nested array of paths: a lane, run in order. The first entry is what comes next.
 
-The composed key is the identity. Renaming a slug changes the id and is done deliberately,
-updating every reference with it.
+The composed key is the identity; renaming a slug updates every reference with it.
 
 ## Fields
 
@@ -35,32 +32,27 @@ Task:
 - `proof` (optional) — the observable result that shows it done.
 - `context` (optional) — linked context files carrying the detail.
 
-`context` entries are file paths. In a workspace they are workspace-relative, the first segment
-naming the repository (`go-web-service/context/concepts/data-layer.md`); in a standalone project
-they are repository-relative.
+`context` entries are file paths: workspace-relative in a workspace
+(`go-web-service/context/data-layer.md`), repository-relative otherwise.
 
 ## Dotted citations
 
-Everything outside the manifest — reset files, concepts, commit and pull-request descriptions —
-cites a task or goal by its dotted slug path, omitting the structural `goals` and `tasks`
-segments: `v1.data.reads`, `backlog.docs-site`. Dots, not slashes, so a citation is never
-mistaken for a file path; slugs never contain dots.
+Everything outside the manifest cites a task or goal by its dotted slug path, omitting the
+structural `goals` and `tasks` segments: `v1.data.reads`, `backlog.docs-site`. Slugs never contain
+dots.
 
 ## Lifecycle
 
-The manifest is ephemeral, unordered, and proximate:
-
-- **Ephemeral** — a finished task is deleted, the session record keeping the disposition; a
-  goal whose criteria hold is deleted with it; a stale claim is a defect, fixed by the session
-  that finds it.
-- **Unordered** — `next` is the only sequence; nothing else in the file implies one.
-- **Proximate** — the task in front carries detail; everything else stays at claim resolution,
-  its depth living in the linked context files, settled by its own session's plan mode.
+- **Ephemeral** — a finished task is deleted, and a goal whose criteria hold goes with it; the
+  session record keeps the disposition. A stale claim is a defect the finding session fixes.
+- **Unordered** — `next` and each lane are the only sequences; a wave's lanes have no order among
+  themselves.
+- **Proximate** — the task in front carries detail; everything else stays a claim, its depth in
+  linked context files.
 
 ## Bootstrap
 
-A manifest created at `on-start` opens with this header and an empty `next`; the session
-populates it with the architect when it settles scope:
+A manifest created at `on-start`, populated with the architect when the session settles scope:
 
 ```toml
 # Roadmap — the path to the target end state, holding only what remains. Maintained by
@@ -76,7 +68,7 @@ next = []
 # the marathon-roadmap extension; the format is the plugin's references/manifest.md.
 
 next = [
-  "v1.data.reads",
+  [["v1.data.reads", "v1.data.writes"], "v1.messaging"],
   "backlog.docs-site",
 ]
 
@@ -90,7 +82,7 @@ criteria = [
 [goals.v1.data]
 name = "Data layer"
 summary = "A composed data model over plain SQL with a CQRS-oriented interface."
-context = ["service/context/concepts/data-layer.md"]
+context = ["service/context/data-layer.md"]
 
 [goals.v1.data.tasks.reads]
 name = "Reads"
@@ -98,8 +90,17 @@ repos = ["service"]
 summary = "The reads slice: query vocabulary, pagination, and the first domain package."
 proof = "Paginated, filtered, sorted reads over HTTP."
 
+[goals.v1.data.tasks.writes]
+name = "Writes"
+repos = ["service"]
+summary = "Commands over the reads slice's first domain package."
+
+[goals.v1.messaging]
+name = "Messaging"
+summary = "A messaging library and the reactor services it enables."
+
 [backlog.docs-site]
 name = "The docs site"
 summary = "The documentation site serving the landing zone's content."
-context = ["context/concepts/docs-site.md"]
+context = ["context/docs-site.md"]
 ```

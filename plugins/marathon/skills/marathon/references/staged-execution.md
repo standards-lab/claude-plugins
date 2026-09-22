@@ -1,102 +1,81 @@
 # Staged execution
 
-How every working session executes the step it settled. The agent implements the step in
-stages, and the architect reviews each stage before the next begins. Execution starts only after
-the planning phase: the stage list below is settled and approved at SETTLE, like any other plan,
-before anything changes.
+How every working session executes its settled step: in stages, each committed once its check
+passes, with the architect confirming the result at checkpoints.
 
-## What a stage is
+## Stages
 
-A stage is the smallest change set that leaves one unit of the project consistent on its own. A
-stage includes its tests and its in-source comments, so nothing is left invalidated for later.
-What the unit is, and what its check is, follows what the stage produces:
+A stage is the smallest change set that leaves one unit consistent on its own, including its tests
+and in-source comments.
 
-- A stage that produces **source** has a compilation unit as its unit, the smallest unit the
-  language builds on its own: a package in Go, a crate in Rust, a module in Python. The check is
-  scoped to that unit and runs whatever the repository's own tooling declares over the files the
-  stage touched: the language's build, vet, and test (in Go: `go build`, `go vet`, and `go test`
-  on the package path), and a conventions or lint tool the repository already wires into its own
-  CI or task runner. The session runs the tool and resolves its findings; it never restates what
-  the tool checks. The module as a whole may be red between stages, because the stage sequence is
-  in dependency order and every broken caller is a later stage.
-- A stage that produces **prose or configuration** has as its unit the smallest set of files
-  that must change together to stay consistent: a command playbook and the reference it cites,
-  one design note, or one page of the project's documentation. The check is the repository's
-  own consistency script where one exists, and a read of the touched files for coherence.
+- A stage that produces **source** has a compilation unit as its unit: a package in Go, a crate in
+  Rust, a module in Python. Its check runs the repository's own tooling on that unit: the build,
+  vet, and test (in Go, `go build`, `go vet`, and `go test` on the package path), and any lint or
+  conventions tool the repository wires into its CI or task runner. Run the tool and resolve its
+  findings; never restate what it checks. The module may be red between stages, since every
+  broken caller is a later stage.
+- A stage that produces **prose or configuration** has as its unit the smallest set of files that
+  must change together: a playbook and the reference it cites, one note, one documentation page.
+  Its check is the repository's consistency script where one exists, and a read for coherence.
 
-On a **code** project most stages produce source, and a documentation step's stages produce
-prose under the second rule. On a **context** project every stage produces prose or
-configuration. An `experiment` runs in stages the same way: its unit is whatever the spike
-builds next, and its check is the spike's own. A `plan` or `review` session runs in stages of
-context edits under the second rule.
+`plan` and `review` sessions run in stages of context edits under the second rule.
 
 ## The stage list
 
-The stage list is the SETTLE artifact: written during planning, approved by the architect before
-execution begins. It orders the stages by dependency, lowest first, so a stage that changes an
-exported interface is followed by the stages that consume it. Each entry names the stage's unit,
-the files it touches, and one line on why.
+The stage list is the SETTLE artifact, approved by the architect before anything changes. The
+planner profile may draft it (`behavior/delegation.md`). It orders stages by dependency, lowest
+first, and names each stage's unit, files, and reason. A step spanning member repos has one list,
+grouped by repository in the coordinator's `order`. The list lives in the conversation and, on a
+handoff, in the reset file's Next-focus.
 
-In a workspace, a step that spans member repos has one list: the stages group by repository and
-order across repositories by the coordinator's `order` map, lowest layer first.
+## Checkpoints
 
-The list is the plan's artifact and is not committed anywhere. It lives in the conversation and,
-on a handoff, in the reset file's Next-focus.
+The list groups its stages under checkpoints. A checkpoint is an observable behavior the architect
+can run or watch run, never "the tests are green". The session runs every stage up to a checkpoint
+without stopping, then stops and shows it.
+
+- The final validation is always a checkpoint. Place an earlier one wherever a behavior first
+  becomes observable that later stages build on. A checkpoint after every stage stops at every
+  stage.
+- A library with no runnable surface earns its checkpoint through a consumer exercise written for
+  the purpose, such as an example program or a conformance run.
+- A context project's checkpoint is a walkthrough: one concrete scenario traced through the
+  changed prose, citing where each changed rule applies.
 
 ## Executing a stage
 
-A stage is not complete until the architect has reviewed it. Per-stage review is the point of
-stages: a misstep never spreads across the code base, and the architect never reviews a whole
-session at once. Every stage runs in this order:
+1. **State the delegation call**: the executor profile or the session itself, and why; for the
+   executor, the model too.
+2. **Execute** and run the check until it passes. Read a delegate's work firsthand.
+3. **Commit.** Fire `on-commit`, then commit with the stage's decisions in the message.
+4. **Log** one entry in the conversation: the `diff --stat`, the check result, the delegation
+   call, and prose only for a decision the plan didn't spell out.
+5. **Continue**, or at a checkpoint, stop and report: the stages it covers, how to see the
+   behavior, what the session observed, and what it is least confident of.
 
-1. **State the delegation call.** Before executing, say out loud whether this stage goes to a
-   declared technical agent (`behavior/delegation.md`) or stays with the session, and why — the
-   same way SETTLE already requires stating an escalation before engaging it
-   (`mechanics/pipeline.md` 3 · SETTLE step 2). This turns delegation from a silently skippable
-   option into a decision made every stage, whichever way it goes.
-2. **Execute.** Implement the stage and run its check; fix until the check passes. A stage
-   delegated in step 1 still reports and commits the same way, and the session reads what the
-   agent produced firsthand before reporting it.
-3. **Report, uncommitted.** Stop and report with the working tree uncommitted, so the diff reads
-   cleanly in the architect's tools. Iterate on adjustments until the architect approves. Never
-   run ahead into the next stage.
-4. **Commit on approval.** Fire `on-commit`, then commit with the stage's decision lines in the
-   message. The architect states whether a `reset` follows, to keep the context small.
-5. **Move to the next stage.**
+## Checkpoint outcomes
 
-## The stage report
-
-The report is conversational, not a file: the `diff --stat`, the check result, the delegation
-call from step 1, then prose only on the decisions the plan did not spell out and the parts you
-are least confident of. Code carries the what; the report carries the why. Do not restate what
-the diff shows.
-
-## Review outcomes
-
-- **Approve.** Commit, then move to the next stage.
-- **Adjust.** Edit in place, re-run the check, and re-report; the stage stays uncommitted until
-  the architect approves it. A finding against a stage already committed is fixed in a new commit
-  on the same branch.
-- **Re-plan.** The outcome for findings that reach beyond the current stage: the architect enters
-  plan mode and sends the findings, and the session re-enters SETTLE for stages k..N. Committed
-  stages stay committed unless a finding invalidates them, in which case reverting those commits
-  is the first act of the re-plan. A revised stage list from k onward is approved like the
-  original, and execution resumes at k.
+- **Confirmed** — continue to the next group of stages.
+- **Adjust** — the behavior is wrong within the checkpoint's stages. Fix it forward in a commit
+  naming the checkpoint, re-run the checks, and report again.
+- **Re-plan** — the finding reaches past the checkpoint. The architect enters plan mode, and the
+  session re-enters SETTLE for stages k..N. Committed stages stay unless a finding invalidates
+  them, in which case reverting them is the re-plan's first act.
+- **Interrupt** — the architect breaks in mid-run. The session finishes the stage in flight if its
+  check can pass quickly, or abandons it and restores the tree, then reports as at a checkpoint.
 
 ## Validation
 
-After the last stage is approved, validate the whole step before `close`:
+After the last stage commits, validate the whole step as the final checkpoint:
 
-- On a **code** project: the whole-module build and full test run (in Go: `./...`), then the
-  run-and-verify behavior check, with the concrete commands and what to look for.
-- On a **context** project: a read of the whole change for coherence and consistency, and the
-  repository's consistency script where one exists.
-- For an `experiment`: the answer to the question the spike was settled to answer, with the
-  evidence that supports it.
+- **Code**: the whole-module build and full test run (in Go, `./...`), then the run-and-verify
+  behavior check with its commands and what to look for.
+- **Context**: a read of the whole change for coherence, and the consistency script.
+- **An experiment's final step**: the answer to its question, with the evidence.
 
-Do not close on a failure; fix it and validate again.
+Don't close on a failure. Once the architect confirms, `close` opens with the branch review.
 
 ## Stay within the step
 
-A session covers its settled step and nothing else. No opportunistic refactors, no unrelated
-cleanups; note the temptation as a concept if it is worth keeping, and do not take the detour.
+No opportunistic refactors or unrelated cleanups; note a worthwhile temptation as an open note
+and don't take the detour.

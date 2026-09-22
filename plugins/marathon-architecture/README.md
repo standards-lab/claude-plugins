@@ -4,7 +4,7 @@ A [marathon](../marathon/) extension that adds the architecture layer: the princ
 definitions, and conventions that have generalized past one repository. A standalone project
 keeps the layer as a top-level `architecture/` directory; a workspace keeps it as the one member
 repository the coordinator names. marathon's sessions fill it through the extension hooks — the
-conventions layered in at session start, a generalized design note landed and recorded before the
+conventions layered in at session start, a generalized settled note landed and recorded before the
 session record is written, the landing committed at closeout.
 
 This README is a quick reference. The skill itself is the source of truth for how the extension
@@ -51,11 +51,12 @@ exist, and adopts one that does, unchanged. In a workspace, if
 `.claude/marathon-architecture.toml` doesn't exist yet or names no `repo`, the session settles it
 with the architect and writes the file; the architecture repository is itself a marathon project,
 initialized by `marathon init` as a `context` project — the hook never creates it. Requires
-marathon 0.12 or later.
+marathon 0.13 or later.
 
 ## What the layer holds
 
 Only what generalizes: a principle, a definition, a convention. Nothing a reader could infer from
 a repository's source, so a page that restates an implementation is a defect. Pages arrive by
-promotion and only by promotion — a concept in the repository that owns the knowledge, a design
-note once it settles, and a page once the design has generalized past that repository.
+promotion and only by promotion — an open note in the repository that owns the knowledge, the
+same note once it states itself settled, and a page once the knowledge has generalized past that
+repository.

@@ -2,7 +2,7 @@
 
 A sustainable long-haul development workflow built on context engineering. marathon keeps the
 repository itself the single source of truth: it maintains a top-level `context/` directory —
-promoting notes that prove out, deleting notes the code has caught up to — and drives work as small,
+settling notes that prove out, deleting notes the code has caught up to — and drives work as small,
 branch-based sessions, one finished step at a time.
 
 This README is a quick reference. The skill itself is the source of truth for how marathon behaves;
@@ -29,7 +29,7 @@ Invoke as `marathon <command>` (or `/marathon:marathon <command>`).
 | `init` | One-time setup of marathon on a repository, from a planning concept. |
 | `plan` | Planning/curation session that touches only `context/` — refine concepts, decide the next step. |
 | `start` | Advance the product one concrete step. |
-| `experiment` | Spike an idea in the isolated `experiments/` directory. |
+| `experiment` | Set up a spike as a standalone project of its own. |
 | `reset` | Hand off mid-session so a fresh context can resume the same branch. |
 | `close` | Finish and publish a completed session. |
 | `review` | Audit the notes for drift from the code and clean them up. |
@@ -45,10 +45,11 @@ the next session.
 
 ## Project kinds
 
-A project is declared `code` or `context` at `init`, in `.claude/marathon.toml`:
+A project is declared `code` or `context` at `init`, in `.claude/marathon.toml`.
 
-Both kinds execute in stages, and the architect reviews each stage, uncommitted, before it commits.
-What a stage is under each kind, and how the step validates, is
+Both kinds execute in stages. Each stage commits once its check passes, and the architect confirms
+the result at checkpoints the stage list places; `close` reviews the whole branch before it
+publishes. What a stage is under each kind, and how the step validates, is
 [`references/staged-execution.md`](skills/marathon/references/staged-execution.md).
 
 ## Workspaces
@@ -56,8 +57,8 @@ What a stage is under each kind, and how the step validates, is
 When several marathon projects live as siblings under one directory — a workspace — a session's step
 may span them: one session works the touched repos in the coordinator's declared dependency order,
 each on its own branch under the step's shared slug. The workspace has no context of its own; its
-continuity lives in the single reset file at the coordinator, and every experiment lives in the
-coordinator's `experiments/`. See
+continuity lives in the single reset file at the coordinator. An experiment is a standalone project
+outside the workspace, so it runs in parallel with the workspace's own sessions. See
 [`references/workspace-coordination.md`](./skills/marathon/references/workspace-coordination.md).
 
 ## Extensions

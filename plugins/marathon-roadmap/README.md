@@ -35,12 +35,13 @@ extensions = ["marathon-roadmap"]     # one context/roadmap.toml at the coordina
 ```
 
 The next marathon session bootstraps the manifest if it doesn't exist yet. Requires marathon
-0.12 or later.
+0.13 or later.
 
 ## The manifest
 
 Three primitives, nested like a filesystem: a **goal** is a named outcome made of other goals
 and tasks, closing when its criteria hold; a **task** is one session's requirement; the
 **backlog** holds the tasks assigned to no goal. The manifest is ephemeral — finished work is
-deleted, only what remains stays — and `next` is the only sequence it asserts. References
-elsewhere cite dotted slug paths: `v1.data.reads`, `backlog.docs-site`.
+deleted, only what remains stays — and `next` holds its only sequences, including waves of lanes
+that run together. References elsewhere cite dotted slug paths: `v1.data.reads`,
+`backlog.docs-site`.

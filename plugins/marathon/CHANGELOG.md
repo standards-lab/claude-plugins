@@ -4,6 +4,41 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.13.0
+
+### Changed
+
+- **Checkpoints replace per-stage review.** A stage commits once its check passes and logs its
+  diff stat, check result, and delegation call. The stage list groups stages under checkpoints,
+  observable behaviors the architect runs or watches, with Confirmed, Adjust, Re-plan, and
+  Interrupt as outcomes. A context project's checkpoint is a scenario walkthrough.
+- **`close` opens with a branch review.** The reviewer profile reviews the whole branch against
+  the ecosystem's idiom, or a practice the project declares, and writes a gitignored
+  `.claude/report.md` (overview, per-change changelog, verification) that closeout deletes. The
+  reset's Disposition gains **Validated**, and a handoff records its checkpoint position.
+- **Agent profiles replace the agent catalog.** marathon ships `planner`, `executor`, and
+  `reviewer` profiles in `agents/`, none pinning a model; the session states the profile, model,
+  and reason before each engagement. `[agents]` and `[workspace.agents]` are removed.
+- **`context/` is flat.** `design/` and `concepts/` are gone: every note sits under `context/` and
+  states its settledness in its opening lines. A note is Integrated once the built work or its
+  documentation expresses it, with lasting reasoning moved into the owning repository's docs.
+  The ledger is Integrated, Culled, Retained, Add or sharpen, and Cross-repo; Promote leaves core.
+- **Experiments are standalone projects.** `experiment` settles the question and where the
+  experiment lives (directory and hosting account), runs `init` there with `[experiment] serves`,
+  and catalogs it in the served project. The experiment runs its own sessions in parallel; a
+  `plan` session takes in its result and archives its remote. Top-level `experiments/` is gone.
+- **Waves.** A Next-focus may name a wave of lanes that run concurrently, each a single step or a
+  sequence run in order. Each lane keeps its own record at `context/reset/<lane>.md`, and the
+  session that finishes the last lane folds the wave into one commit.
+- **The skill is about a third smaller**, with restated rules and cross-file duplication removed.
+
+### Migrating
+
+Move each `context/design/` and `context/concepts/` note to `context/` with a settledness line, or
+integrate, cull, or relocate it; move each `experiments/<slug>/` spike to its own repository and
+catalog it; drop `[agents]` and `[workspace.agents]` from `marathon.toml`; and add
+`.claude/report.md` to `.gitignore`.
+
 ## v0.12.0
 
 ### Changed

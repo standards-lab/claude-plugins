@@ -1,43 +1,26 @@
 # Delegation
 
-A session may hand one unit of its own work to another agent instead of doing it directly — a
-stage's implementation, a design decision, a call the session judges too consequential to settle
-alone — and stays the delegation's owner: it decides whether to delegate, reviews what comes
-back, and reports and commits exactly as it would have for work it did itself.
+A session may hand one unit of its work to another agent and stays its owner: it decides whether
+to delegate, reads what comes back firsthand, and reports and commits it as its own.
 
-## Cataloging agents
+## The profiles
 
-A project declares the agents its sessions may delegate to in `.claude/marathon.toml`, under
-`[agents]`: one sub-table per agent, each with a `delegation` field describing, in the project's
-own words, what the agent is for and why. A session reads that catalog and judges which agent,
-if any, fits the work in front of it — never a fixed role lookup, since what an agent is for is
-entirely the project's declaration. A `delegation` field earns its keep only if it carries
-enough for that judgment on its own: what the agent is for, what makes the work warrant it, and
-what it isn't for — a field that states only a unit of grain gives the session nothing to weigh
-delegating against doing the work directly. `mechanics/configuration.md` holds the schema,
-including how a workspace coordinator's declarations layer under a project's own.
+marathon ships three subagent profiles in the plugin's `agents/` directory:
 
-## The grain
+- **planner** — drafts the stage list at SETTLE from the context the session hands it. It changes
+  nothing; the session revises the list with the architect without re-engaging it.
+- **executor** — implements one stage against the stage's check.
+- **reviewer** — reviews the whole branch once the architect confirms the final checkpoint, and
+  returns the architect's report as text for the session to write (`commands/close.md`).
 
-One coherent unit of work: one stage of the approved list, one settled design question, one bug.
-Never a whole session, and never a sub-step inside a unit — a delegate that reaches further than
-the unit it was given is a finding for a re-plan, not a wider delegation.
+No profile pins a model. Before each engagement, the session states the profile, the model it
+chose, and why, so the architect can redirect.
 
-## What a delegate never does
+## Limits
 
-A delegate never commits, never publishes, and never writes the reset file. Engaged at SETTLE,
-it changes nothing and returns a recommendation, the same as any other planning-phase work; plan
-mode's rule holds through the delegation. It drafts, and never finishes, prose the repository
-keeps — commit messages, context notes, documentation.
-
-## What the session owes
-
-The session reads what the delegate produced firsthand — the diff, the check output, the
-reasoning — before it reports or writes anything from it. The stage report is the session's own,
-and the architect reviews the working tree, not a summary of it. Before engaging a delegate for a
-consequential call, the session states which one and why, so the architect can redirect.
-
-## Where none fits
-
-A project that declares no agent, or none whose `delegation` fits the work at hand, changes
-nothing about the pipeline: the session does the work itself.
+- The grain is one unit: one stage list, one stage, one branch review. A delegate that reaches
+  past its unit is a finding for a re-plan.
+- A delegate never commits, publishes, or writes the reset file, and changes nothing at SETTLE.
+  It drafts, and never finishes, prose the repository keeps.
+- Delegation is a choice. The session does the work itself when briefing a delegate would cost
+  more than the work.

@@ -1,8 +1,6 @@
 # Hook execution
 
-Firing spec for marathon's extension hooks. What an extension is, what it declares, and how a
-repository enables one: `references/extensions.md`. Hooks fire only at the pipeline points named in
-`mechanics/pipeline.md`.
+Firing spec for marathon's extension hooks (`references/extensions.md`).
 
 ## Resolution
 
@@ -10,12 +8,10 @@ Resolve the enabled extension set once, at 2 · START, before the first fire:
 
 1. Read `[project] extensions` from the project's `.claude/marathon.toml`.
 2. In a workspace, also read `[workspace] extensions` from the coordinator's `marathon.toml`.
-3. Union the two lists, preserving order. For each name:
-   - skill installed (its skill-listing description contains "marathon extension") → active;
-   - not installed → report the missing plugin to the architect and continue without it.
-4. For each active extension, read its SKILL.md declaration: the artifact it owns, the hook points
-   it acts at, the marathon version it targets. On an incompatible version, report the mismatch and
-   ask before applying.
+3. Union the two lists, preserving order. An installed name is active; report a missing one to the
+   architect and continue without it.
+4. Read each active extension's SKILL.md declaration. On an incompatible version, report it and
+   ask the architect before applying it.
 
 An empty set makes every fire a no-op.
 
@@ -38,13 +34,4 @@ Ordering constraints:
 - `reset` (handoff): never fires `on-close`.
 - `init`: fires `on-start`, `on-execute`, `on-reset`, `on-commit`; never `on-close`.
 
-## Artifact bootstrap
-
-An enabled extension whose artifact does not exist yet: create the artifact at `on-start`, as the
-extension's SKILL.md directs.
-
-## Session-specific moments
-
-Moments beyond the five universal hooks are named `<command>:<moment>` — for example
-`start:stage-committed`, or `close:published` for the point after publish when the change proposal's
-URL is known. None are defined; one is added to this spec when an extension earns it.
+An enabled extension whose artifact doesn't exist yet creates it at `on-start`.

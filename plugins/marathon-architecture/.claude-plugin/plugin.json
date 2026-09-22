@@ -1,7 +1,7 @@
 {
   "name": "marathon-architecture",
-  "description": "Marathon extension adding the architecture layer — the principles, definitions, and conventions that have generalized past one repository — as a standalone project's top-level architecture/ directory or a workspace's designated architecture repository, filled by promotion from design/ through marathon's session hooks",
-  "version": "0.1.0",
+  "description": "Marathon extension adding the architecture layer — the principles, definitions, and conventions that have generalized past one repository — as a standalone project's top-level architecture/ directory or a workspace's designated architecture repository, filled by promotion from settled context/ notes through marathon's session hooks",
+  "version": "0.2.0",
   "license": "Apache-2.0",
   "homepage": "https://github.com/standards-lab/claude-plugins",
   "repository": "https://github.com/standards-lab/claude-plugins",

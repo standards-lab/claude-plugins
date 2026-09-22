@@ -6,40 +6,33 @@ description: >
   the architect is initializing a project from a planning concept; planning, advancing, pausing,
   resuming, or closing out a session; spiking an idea; running one step across several projects
   in a workspace; handing off work because the context window is growing large; or reviewing whether
-  design notes have drifted from the code. Natural triggers include "start a session", "plan the next
+  the notes have drifted from the code. Natural triggers include "start a session", "plan the next
   step", "begin working on this", "hand off / I'm running low on context", "resume where I left off",
   "close out this session", "wrap up and open a PR", "coordinate this across the repos", "review
   drift", "initialize this project", and "set up marathon here". marathon keeps the repository itself
-  the single source of truth: it manages a volatile-vs-stable top-level context/ tree, promotes and
-  decays knowledge deliberately, and drives branch-based sessions. Prefer this skill for any
+  the single source of truth: it manages a flat top-level context/ directory of notes, settles and
+  deletes them deliberately, and drives branch-based sessions. Prefer this skill for any
   structured, multi-session work on a marathon-managed repo, even when the architect doesn't name it
   explicitly.
 ---
 
 # Marathon
 
-Version: 0.12.0
+Version: 0.13.0
 
-marathon is a workflow for long-haul development that stays sustainable. Within a session you work
-fast: plan the next step, build it, close it out. Across the project you go the distance, advancing one
-finished step at a time toward a production-quality version of the original concept.
+marathon is a workflow for long-haul development: each session plans, builds, and closes one
+finished step, and the steps add up to a production-quality version of the original concept. It
+keeps the project's written context in a top-level `context/` directory and maintains it as it
+goes, so a limited context window holds the task rather than stale notes. The repository is the
+source of truth, not an external tracker and not the conversation.
 
-What keeps that sustainable is how marathon handles context. A model's working context is limited, and
-if you let it fill with old plans, answered questions, and documentation the code has outgrown, you lose
-room to work and the old notes start to contradict the code. marathon keeps the project's written
-context in a top-level `context/` directory and maintains it as it goes — promoting notes that prove
-out, deleting notes the code has caught up to. The repository is the source of truth, not an external
-tracker and not the conversation.
-
-Use this skill whenever you're working on a marathon-managed repository (one with a top-level
-`context/` directory, or a workspace of them) and a session is beginning, advancing, pausing,
-resuming, or ending. If a repository doesn't have marathon yet and you want this workflow, start
-with `init`.
+Use this skill on a marathon-managed repository (one with a top-level `context/`, or a workspace
+of them) whenever a session begins, advances, pauses, resumes, or ends. Start a new repository with
+`init`.
 
 ## Behavior
 
-Always active, loaded with this skill: the planning conduct every session settles scope by, and
-the contract for handing one unit of work to another agent.
+Always active: how sessions plan, and how they hand a unit of work to another agent.
 
 @behavior/planning.md
 
@@ -47,20 +40,17 @@ the contract for handing one unit of work to another agent.
 
 ## Mechanics
 
-The execution layer, loaded with this skill: the five-stage session pipeline every command runs —
-locate, start, settle, execute, conclude — with its LOCATE routing and invariants.
+Always active: the session pipeline every command runs.
 
 @mechanics/pipeline.md
 
 Consulted where the pipeline points at them:
 
-- [`mechanics/reset-file.md`](./mechanics/reset-file.md) — the reset file: where it lives
-  (standalone project, or the workspace's single reset at the coordinator), the schema, and the
-  Status semantics.
-- [`mechanics/configuration.md`](./mechanics/configuration.md) — the canonical
-  `.claude/marathon.toml` layout: project kind, remote, workspace declaration, extensions.
-- [`mechanics/hooks.md`](./mechanics/hooks.md) — the extension hook firing spec: resolution of
-  the enabled set, the firing table, per-command ordering constraints.
+- [`mechanics/reset-file.md`](./mechanics/reset-file.md) — the session record: location, waves,
+  schema, and Status.
+- [`mechanics/configuration.md`](./mechanics/configuration.md) — the `.claude/marathon.toml`
+  layout.
+- [`mechanics/hooks.md`](./mechanics/hooks.md) — extension hook resolution and firing.
 
 ## Commands
 
@@ -71,26 +61,21 @@ Route on the first argument; each command's playbook supplies its stages' conten
 | `init` | One-time, to set up marathon on a repo from a planning concept | [`commands/init.md`](./commands/init.md) |
 | `plan` | Refine concepts and settle what the next session should focus on; touches only `context/` | [`commands/plan.md`](./commands/plan.md) |
 | `start` | Advance the product one concrete step | [`commands/start.md`](./commands/start.md) |
-| `experiment` | Spike an idea in the isolated `experiments/` directory | [`commands/experiment.md`](./commands/experiment.md) |
+| `experiment` | Set up a spike as a standalone project of its own | [`commands/experiment.md`](./commands/experiment.md) |
 | `reset` | Hand off mid-session: context is filling but the work isn't done | [`commands/reset.md`](./commands/reset.md) |
 | `close` | The session's work is finished and validated | [`commands/close.md`](./commands/close.md) |
 | `review` | On demand: check the notes against the code and clean them up | [`commands/review.md`](./commands/review.md) |
 
-`plan`, `start`, and `experiment` are the working sessions; `review` is the on-demand
-maintenance pass. All four end through `close` (finished and validated) or `reset` (handing
-off), recorded under their own Session values.
+Every session ends through `close` (finished and validated) or `reset` (handing off).
 
 ## References
 
 Consulted when their subject is in play:
 
-- [`references/context-engineering.md`](./references/context-engineering.md) — how `context/` is
-  organized and maintained: the tiers, promote/decay/cull, assumption annotations, and deciding
-  where a note belongs.
-- [`references/staged-execution.md`](./references/staged-execution.md) — how every working
-  session executes: stages per project kind, the stage list, the review gate, the report, review
-  outcomes, re-plan, validation.
-- [`references/workspace-coordination.md`](./references/workspace-coordination.md) — the design
-  behind workspaces: the coordinator, the order map, cross-repo steps, continuity.
-- [`references/extensions.md`](./references/extensions.md) — the extension system: installed vs.
-  enabled, declarations, the hook points, the source-of-truth rule.
+- [`references/context-engineering.md`](./references/context-engineering.md) — writing and
+  tending the notes in `context/`.
+- [`references/staged-execution.md`](./references/staged-execution.md) — stages, checkpoints,
+  and validation.
+- [`references/workspace-coordination.md`](./references/workspace-coordination.md) — the
+  coordinator, the order map, and cross-repo steps.
+- [`references/extensions.md`](./references/extensions.md) — the extension system.
