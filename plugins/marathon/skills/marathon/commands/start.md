@@ -14,8 +14,8 @@ and checkpoint position, so pick up the loop from there.
 The scope to settle is the single concrete step to take now, and how far it should go. Work it
 through with the architect in enough depth to come out with a clear picture of what to build —
 planning matters as much as the build; this is where the architectural thinking happens, so give
-it real depth and don't rush to the code. Add detail to the relevant `design/` note only as far as
-this step needs — no further.
+it real depth and don't rush to the code. Add detail to the relevant note in `context/` only as far
+as this step needs — no further.
 
 The settled scope is expressed as the stage list (`references/staged-execution.md`), its stages
 grouped under checkpoints, and approved by the architect before the branch is created, on either

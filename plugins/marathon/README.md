@@ -2,7 +2,7 @@
 
 A sustainable long-haul development workflow built on context engineering. marathon keeps the
 repository itself the single source of truth: it maintains a top-level `context/` directory —
-promoting notes that prove out, deleting notes the code has caught up to — and drives work as small,
+settling notes that prove out, deleting notes the code has caught up to — and drives work as small,
 branch-based sessions, one finished step at a time.
 
 This README is a quick reference. The skill itself is the source of truth for how marathon behaves;

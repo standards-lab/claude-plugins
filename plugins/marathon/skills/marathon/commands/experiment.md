@@ -6,7 +6,7 @@ project. Use it when you need to try something to learn whether it holds up — 
 of, an approach you want to feel out — rather than to build the settled next step (that's `start`).
 
 An experiment earns nothing by default. Its results are concepts, not settled design: a spike that
-works is evidence, not a decision. Nothing moves into `design/` — or into the product — without a
+works is evidence, not a decision. Nothing is recorded as settled — or moves into the product — without a
 deliberate promotion at closeout.
 
 `experiment` runs the session pipeline (`mechanics/pipeline.md`). A handoff recorded under Session
@@ -47,7 +47,7 @@ under `references/staged-execution.md`.
 ## Conclude: promote deliberately, or don't
 
 At `close`, decide with the architect what the spike earned. A result that proved out is promoted on
-purpose — captured as a concept in `concepts/`, or teed up as the next `start` — and promotion is what
+purpose — captured as a concept note in `context/`, or teed up as the next `start` — and promotion is what
 moves proven work into its real home. A result that didn't prove out is simply not promoted.
 
 Either way, the spike itself stays under `experiments/<slug>/` and merges with the branch: the

@@ -22,7 +22,7 @@ What the unit is, and what its check is, follows what the stage produces:
   in dependency order and every broken caller is a later stage.
 - A stage that produces **prose or configuration** has as its unit the smallest set of files
   that must change together to stay consistent: a command playbook and the reference it cites,
-  one design note, or one page of the project's documentation. The check is the repository's
+  one note, or one page of the project's documentation. The check is the repository's
   own consistency script where one exists, and a read of the touched files for coherence.
 
 On a **code** project most stages produce source, and a documentation step's stages produce

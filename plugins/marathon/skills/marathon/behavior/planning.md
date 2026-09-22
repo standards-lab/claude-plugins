@@ -28,8 +28,8 @@ needs an adequate reason to build its own instead of adopting that approach — 
 while the answer still changes the plan, not discovered at review, when the custom code already
 exists and someone has to argue for replacing it.
 
-A step that proceeds with its own implementation anyway carries its reason into the design note
-it touches, as a rejected alternative (`references/context-engineering.md`); a step with no
+A step that proceeds with its own implementation anyway carries its reason into the note it
+touches, as a rejected alternative (`references/context-engineering.md`); a step with no
 adequate reason adopts the existing approach instead.
 
 ## Planning is half the work
@@ -42,8 +42,8 @@ clear picture of what you're about to build. Rushing planning to get to the code
 builds the wrong thing, or the right thing at the wrong depth.
 
 Because the discussion ranges wider than the single step, planning is also where you tend the
-context: capture ideas that belong to later steps as concepts in `concepts/`, cull the ones the
-discussion has ruled out, and start to spot what the next session's focus should be. When those
+context: capture ideas that belong to later steps as concept notes in `context/`, cull the ones
+the discussion has ruled out, and start to spot what the next session's focus should be. When those
 edits land depends on the project kind; the pipeline's SETTLE stage holds the rule.
 
 marathon plans in plan mode and settles things with the architect before any consequential

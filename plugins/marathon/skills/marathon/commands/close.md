@@ -1,8 +1,8 @@
 # marathon close
 
 Close out a session whose work is finished and validated. It's the same idea as `reset`, but for
-completed work: review the branch, tidy the notes, record what happened, and publish the work. `close` is the
-pipeline's CONCLUDE stage for a finished step (`mechanics/pipeline.md`).
+completed work: review the branch, tidy the notes, record what happened, and publish the work.
+`close` is the pipeline's CONCLUDE stage for a finished step (`mechanics/pipeline.md`).
 
 `close` assumes the work is validated per `references/staged-execution.md`: every stage
 committed, every checkpoint confirmed, and the validation for the project kind confirmed last. A
@@ -37,8 +37,8 @@ changed code or a deliverable; a `plan` or `review` session, whose branch change
 ## 2. Tend the context
 
 First establish the scope of written context the step touched, then bring it in line with what
-now exists, with the tending operations of `references/context-engineering.md` — promote, decay,
-cull, under that reference's rules. This pass absorbs the edits noted at SETTLE: on a code
+now exists, with the tending operations of `references/context-engineering.md` — integrate, cull,
+retain, under that reference's rules. This pass absorbs the edits noted at SETTLE: on a code
 project they waited here for the validated stages, so the notes record what the work proved, not
 what the plan intended.
 
@@ -64,15 +64,16 @@ together on the single concrete next step. That becomes the Next-focus in step 4
 Rewrite the reset file with `Status: closeout`, filling every field of the schema in
 `mechanics/reset-file.md`. In a workspace that is the coordinator's `context/reset.md` — the
 workspace's only reset, committed in the coordinator's repository; a standalone project rewrites
-its own. The judgment fields are the Disposition — what you integrated, promoted, culled, and
-retained, and under **Validated**, each checkpoint with its evidence — and the Next-focus, set
+its own. The judgment fields are the Disposition — what you integrated, culled, and retained,
+and under **Validated**, each checkpoint with its evidence — and the Next-focus, set
 to the step you agreed on in step 3: the handoff the next session reads.
 
 ## 5. Commit and publish
 
 Delete `.claude/report.md`; the architect has read it, and it holds nothing the repository
-keeps. Then stage everything and commit — a step that spanned member repos commits in each touched repo, and
-in a workspace the coordinator's reset rewrite is its own commit in the coordinator's repository.
+keeps. Then stage everything and commit — a step that spanned member repos commits in each
+touched repo, and in a workspace the coordinator's reset rewrite is its own commit in the
+coordinator's repository.
 Then publish each branch with the remote platform's command from that repo's
 `.claude/marathon.toml` — `gh pr create`, `glab mr create`, or the project's equivalent — using
 the change description from the reset file. If a project declared no remote, stop after its

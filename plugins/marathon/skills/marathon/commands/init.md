@@ -27,8 +27,6 @@ Read the concept closely, and settle these with the architect rather than assumi
   that defines stage boundaries and a validation phase? If there is, it's `code`.
 - **Capability map** — the major capabilities the project will need. Broad, not ordered, and shallow;
   you'll add detail later, when a capability is about to be built.
-- **Settled vs. concept** — which intent is solid enough to start in `design/`, and which is still a
-  concept for `concepts/`. When in doubt, it's a concept.
 - **First step** — the one concrete thing the first session will do.
 - **Remote platform** — which remote the project publishes to, and the command that proposes a change
   there: `gh pr create` for GitHub, `glab mr create` for GitLab, the equivalent for another platform, or
@@ -50,11 +48,13 @@ detail up front.
 │   └── marathon.toml          # project kind; remote platform + publish command
 └── context/
     ├── README.md              # vision + capability map
-    ├── design/                # settled-intent notes (shallow)
-    ├── concepts/              # concepts: unsettled ideas (shallow)
+    ├── <note>.md              # optional: notes, flat, each stating its settledness
     └── reset.md               # Status: closeout; Next-focus = the first step
 ```
 
+- `context/*.md` — a note only where the concept already carries intent the first steps need,
+  settled or still open; each opens with its settledness line
+  (`references/context-engineering.md`). A project may start with none.
 - `context/reset.md` — write it with `Status: closeout`, `Session: init`, a Disposition listing what
   was scaffolded, and the first step as Next-focus, so the first `start` begins from a closeout and
   creates a new branch.

@@ -40,10 +40,9 @@ Bring `context/` in line with what the discussion settled. Show the architect wh
 or delete and get agreement first. The edits run in stages under
 `references/staged-execution.md`.
 
-- **Promote** — move a concept from `concepts/` into `design/` if this session settled it, and say why.
 - **Cull** — drop a concept the discussion ruled out.
-- **Add or sharpen** — write the new concepts and refine the capability map or the design note the
-  upcoming work needs.
+- **Add or sharpen** — write the new notes, mark a note settled if this session settled it and
+  say why, and refine the capability map or the note the upcoming work needs.
 
 Capture only what the upcoming step needs; a note that serves no upcoming work is clutter.
 

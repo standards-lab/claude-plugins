@@ -6,12 +6,12 @@ description: >
   the architect is initializing a project from a planning concept; planning, advancing, pausing,
   resuming, or closing out a session; spiking an idea; running one step across several projects
   in a workspace; handing off work because the context window is growing large; or reviewing whether
-  design notes have drifted from the code. Natural triggers include "start a session", "plan the next
+  the notes have drifted from the code. Natural triggers include "start a session", "plan the next
   step", "begin working on this", "hand off / I'm running low on context", "resume where I left off",
   "close out this session", "wrap up and open a PR", "coordinate this across the repos", "review
   drift", "initialize this project", and "set up marathon here". marathon keeps the repository itself
-  the single source of truth: it manages a volatile-vs-stable top-level context/ tree, promotes and
-  decays knowledge deliberately, and drives branch-based sessions. Prefer this skill for any
+  the single source of truth: it manages a flat top-level context/ directory of notes, settles and
+  deletes them deliberately, and drives branch-based sessions. Prefer this skill for any
   structured, multi-session work on a marathon-managed repo, even when the architect doesn't name it
   explicitly.
 ---
@@ -27,7 +27,7 @@ finished step at a time toward a production-quality version of the original conc
 What keeps that sustainable is how marathon handles context. A model's working context is limited, and
 if you let it fill with old plans, answered questions, and documentation the code has outgrown, you lose
 room to work and the old notes start to contradict the code. marathon keeps the project's written
-context in a top-level `context/` directory and maintains it as it goes — promoting notes that prove
+context in a top-level `context/` directory and maintains it as it goes — settling notes that prove
 out, deleting notes the code has caught up to. The repository is the source of truth, not an external
 tracker and not the conversation.
 
@@ -85,8 +85,8 @@ off), recorded under their own Session values.
 Consulted when their subject is in play:
 
 - [`references/context-engineering.md`](./references/context-engineering.md) — how `context/` is
-  organized and maintained: the tiers, promote/decay/cull, assumption annotations, and deciding
-  where a note belongs.
+  organized and maintained: the flat notes and their settledness, the tending ledger, assumption
+  annotations, and deciding where a note belongs.
 - [`references/staged-execution.md`](./references/staged-execution.md) — how every working
   session executes: stages per project kind, the stage list, checkpoints, the stage log, the
   checkpoint report and its outcomes, re-plan, validation.

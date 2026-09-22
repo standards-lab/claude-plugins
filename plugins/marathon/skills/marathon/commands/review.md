@@ -6,7 +6,7 @@ source of truth. It is the backward-looking counterpart to `plan`: `review` asks
 fallen behind what the project now expresses, where `plan` works out what comes next.
 
 `review` runs the session pipeline (`mechanics/pipeline.md`), recorded under `Session: review`.
-Reviewing means deciding what to delete and what to promote, which matters, so the whole proposal is
+Reviewing means deciding what to delete and what to keep, which matters, so the whole proposal is
 settled with the architect before anything changes.
 
 ## Settle: look for drift
@@ -15,8 +15,9 @@ Read the `context/` notes against the code — or, on a context project, against
 document — and look for:
 
 - **Tending candidates** — notes due for the operations of `references/context-engineering.md`,
-  under that reference's rules: `design/` notes due to decay, concepts to cull, concepts that have
-  quietly proven out and belong in `design/`.
+  under that reference's rules: notes the built work or its documentation now expresses, concepts
+  to cull, concepts that have quietly proven out and should state themselves settled, and a
+  repository still on the earlier `design/` and `concepts/` layout, to migrate.
 - **Orientation** — whether the vision and capability map in `context/README.md` still match where the
   project actually is.
 - **Docs drift** — if the project has a `docs/` directory, pages whose code has moved on
@@ -33,8 +34,8 @@ Branch slug: the review's topic.
 
 ## Execute: apply what's agreed
 
-Apply only what's agreed: delete the decayed notes (recording that you did), cull the dead concepts,
-promote the proven ones, and fix the orientation. The edits run in stages under
+Apply only what's agreed: delete the integrated notes (recording that you did), cull the dead
+concepts, mark the proven ones settled, and fix the orientation. The edits run in stages under
 `references/staged-execution.md`.
 
 End the pass with fewer notes, each one true. Don't invent a home for a note that doesn't have one,

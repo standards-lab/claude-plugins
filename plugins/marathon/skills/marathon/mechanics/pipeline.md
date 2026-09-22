@@ -35,8 +35,8 @@ sibling declaring a coordinator — and that check is its LOCATE.
 
 1. Fire `on-start`.
 2. Orient: the Next-focus in the reset file, the capability map in the project's
-   `context/README.md`, and the `design/` and `concepts/` notes the work touches. Load only what
-   the session needs.
+   `context/README.md`, and the notes in `context/` the work touches. Load only what the session
+   needs.
 
 ### 3 · SETTLE
 
@@ -49,7 +49,7 @@ sibling declaring a coordinator — and that check is its LOCATE.
    the profile, the model, and why before engaging it, and nothing changes until the architect
    approves the list. Change nothing yet.
 3. As the discussion ranges wider than the step, note the context tending it implies — ideas to
-   capture as concepts, concepts it rules out, the next focus taking shape. On a **context**
+   capture as concept notes, notes it rules out, the next focus taking shape. On a **context**
    project these edits are made in 4 · EXECUTE, after approval — there the change is the context.
    On a **code** project they wait for 5 · CONCLUDE: EXECUTE produces the staged commits, and the
    notes record what validation proved, not what a plan intended. A handoff records in-flight
