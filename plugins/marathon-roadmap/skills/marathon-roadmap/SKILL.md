@@ -14,7 +14,7 @@ description: >
 
 # marathon-roadmap
 
-Version: 0.2.0
+Version: 0.2.1
 
 marathon plans one step at a time and keeps notes brief beyond it, so the path itself goes
 unwritten: the outcomes the project is working toward and the tasks that remain. This extension

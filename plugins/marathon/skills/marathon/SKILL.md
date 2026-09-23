@@ -18,7 +18,7 @@ description: >
 
 # Marathon
 
-Version: 0.13.0
+Version: 0.14.0
 
 marathon is a workflow for long-running development. Each session plans, builds, and closes one
 finished step, and the steps add up to a production-quality version of the original concept. The
