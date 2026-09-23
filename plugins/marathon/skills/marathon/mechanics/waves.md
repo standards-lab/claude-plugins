@@ -70,4 +70,6 @@ A wave is folded in one commit once every lane's record reads `Lane finished.` o
 branch. If the other lanes are already merged, the session that finishes the last lane folds the
 wave. Otherwise, the next session whose LOCATE finds every lane finished folds it first. Folding
 applies the changes the lanes recorded in their Dispositions, rewrites `context/reset.md`, and
-deletes the lane records.
+deletes the lane records. No other lane is running by then, so the folding session applies these
+changes in whatever checkout it holds, including files outside `context/` and in other
+repositories.
