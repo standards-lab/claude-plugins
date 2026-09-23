@@ -42,21 +42,6 @@ a git worktree of its own:
 - **The main checkout stays on the default branch** while the wave runs. No lane checks a branch
   out in it.
 
-### Overridable settings
-
-Every host-side setting that can collide between checkouts, such as a Compose file's published
-host ports or host bind paths, reads an environment variable whose default is the current value:
-`"${HTTP_PORT:-8080}:8080"`. The main checkout runs unchanged without a `.env`, and a worktree
-overrides the value in its own gitignored `.env`. Container-internal settings stay fixed.
-
-A lane checks readiness at SETTLE, before the architect approves the stage list. It reads the
-Compose files and similar configuration of each repository it will touch, and each collision-prone
-setting that doesn't read a variable becomes the list's first stage: make the setting
-overridable, with the current value as its default. The fix commits on the lane's branch and
-merges with the lane's change. Lanes share no member repository, so no other lane touches that
-file. A lane never edits a tracked file to isolate its worktree, because the edit would ride into
-its change proposal.
-
 ### Finalizing a worktree
 
 A new worktree holds only tracked files, and its services can collide with the main checkout's.
@@ -70,12 +55,12 @@ So the lane finalizes each worktree right after creating it, before any stage ru
    them, so the lane can change its own without touching the main checkout's.
 2. **Run the repository's setup**, the `[worktree] setup` command in its `.claude/marathon.toml`
    (`mechanics/configuration.md`), from the worktree's root. The setup handles what copying
-   can't, such as seeding a database.
-3. **Isolate services** in a gitignored `.env`, never in a tracked file. Docker Compose names its
-   project after the directory, so a worktree's stack already gets its own containers and
-   volumes, but its published host ports collide with the main checkout's stack. The lane sets
-   `COMPOSE_PROJECT_NAME` and a free value for each overridable host port.
-4. **Verify** with the repository's quick check, such as its build, so a missing file surfaces
+   can't, such as remapping ports or seeding a database. Without a setup command, the lane
+   isolates services itself. Docker Compose names its project after the directory, so a
+   worktree's stack already gets its own containers and volumes, but its published host ports
+   collide with the main checkout's stack. The lane sets `COMPOSE_PROJECT_NAME` and picks free
+   host ports in a gitignored local file, such as `.env`, and never changes tracked files.
+3. **Verify** with the repository's quick check, such as its build, so a missing file surfaces
    now and not partway through a stage.
 
 A worktree that `reset` leaves in place is already finalized, so a resumed lane only enters it.
