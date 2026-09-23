@@ -37,7 +37,7 @@ the recorded changes, rewrites `context/reset.md`, and deletes the wave's record
 
 ## Disposition
 - **Integrated:** deleted context/config-loading.md — the loader's package documentation now expresses it.
-- **Add or sharpen:** context/config-validation.md now states itself settled.
+- **Add or sharpen:** context/config-validation.md now names the rules the loader enforces.
 - **Culled:** deleted context/env-override.md — the loader went another way.
 - **Retained:** context/secret-sourcing.md — still unbuilt.
 - **Validated:** checkpoint 1, the loader reads a sample file (`go run ./cmd/example`); checkpoint 2, `go test ./...` and the run-and-verify check.

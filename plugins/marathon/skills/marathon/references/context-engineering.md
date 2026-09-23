@@ -29,22 +29,24 @@ extension owns (`references/extensions.md`).
 
 - **Check for a home first.** If the fact already has exactly one home outside `context/`, built
   work or settled documentation, write a pointer to it, never a restatement.
-- **State settledness in the opening lines**: settled, and what settled it (a decision, a build,
-  an experiment's result), or still open, and what would settle it. When you can't tell, it's
-  open. A shape a session just designed stays provisional until a later session's caller,
-  build, or experiment exercises it and it holds; the same applies to authoring a skill from it.
 - **Start short.** A note begins as a sentence or two and gains detail only when its work is
   close.
 - **Name the assumptions** it rests on, a line each ("assumes the loader keeps config immutable
   after start"). When a build falsifies one, the notes that named it are the ones to revisit, and
   the Disposition records the falsification.
-- **State current truth, never history.** No amendment notes, dated revision logs, or "replacing
-  the earlier approach". What a session did and why belongs in the reset file's Disposition.
+- **State what is, or what is planned.** Describe what exists in the present tense, and mark
+  planned work as planned. A note carries no settledness line, history, dates, or other transitory
+  detail. The roadmap and the reset file track status: what remains, what a session decided, and
+  what validation proved.
+- **Treat a new shape as provisional.** A shape a session just designed is provisional until a
+  later session's caller, build, or experiment exercises it and it holds, and the Disposition
+  records when it does. The same applies to authoring a skill from it.
 
 ## Project documentation
 
 `docs/` is the project's own guide for a person using or contributing to the repository. It is
-optional, part of the built work rather than of `context/`, and never decays: a page the code has
+optional, part of the built work rather than of `context/`, states only what is true now, and
+never decays: a page the code has
 moved out from under is a defect, fixed in the change that moved the code or in the next
 documentation step, and `review` flags it. A documentation step of a `start` session establishes
 it. The reasoning behind a built capability belongs there, or in the package documentation or
@@ -61,8 +63,7 @@ The Disposition records each operation under its name:
   documentation first. Point to what now expresses it.
 - **Culled** — a note deleted because it is superseded, abandoned, or contradicted by the work.
 - **Retained** — a note deliberately kept, with the reason, such as a home that doesn't exist yet.
-- **Add or sharpen** — a note written or changed in place, including one that now states itself
-  settled.
+- **Add or sharpen** — a note written or changed in place.
 - **Cross-repo** — an edit the session made in another repository.
 
 An enabled extension may add entries of its own; its skill defines them.

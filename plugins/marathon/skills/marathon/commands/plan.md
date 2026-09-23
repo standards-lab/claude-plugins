@@ -21,7 +21,7 @@ Bring `context/` in line with what the discussion settled, in stages
 (`references/staged-execution.md`), after agreeing the changes with the architect:
 
 - **Cull** — drop a concept the discussion ruled out.
-- **Add or sharpen** — write new notes, mark a note settled and say why, and refine the capability
+- **Add or sharpen** — write new notes, sharpen a note to what the discussion decided, and refine the capability
   map or the note the upcoming work needs.
 
 Capture only what the upcoming step needs. Taking in a finished experiment also updates its

@@ -33,7 +33,7 @@ Seed everything shallow, a few sentences each.
 │   └── marathon.toml  # mechanics/configuration.md
 └── context/
     ├── README.md      # vision + capability map
-    ├── <note>.md      # optional: intent the first steps need, each stating its settledness
+    ├── <note>.md      # optional: intent the first steps need
     └── reset.md       # Status: closeout, Session: init, Next-focus = the first step
 ```
 

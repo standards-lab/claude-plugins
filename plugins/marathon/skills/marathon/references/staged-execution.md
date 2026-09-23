@@ -77,5 +77,5 @@ Don't close on a failure. Once the architect confirms, `close` opens with the br
 
 ## Stay within the step
 
-No opportunistic refactors or unrelated cleanups; note a worthwhile temptation as an open note
+No opportunistic refactors or unrelated cleanups; note a worthwhile temptation as a note
 and don't take the detour.

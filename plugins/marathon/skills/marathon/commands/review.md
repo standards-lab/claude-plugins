@@ -7,8 +7,8 @@ deliverable, when they feel stale or before something big. `review` runs the ses
 ## Settle: look for drift
 
 - **Tending candidates** (`references/context-engineering.md`): notes the built work or its
-  documentation now expresses, concepts to cull, and concepts that have proven out and should
-  state themselves settled.
+  documentation now expresses, notes to cull, and notes that describe history or status instead
+  of what is or what is planned.
 - **Orientation**: whether `context/README.md` still matches where the project is.
 - **Docs drift**: `docs/` pages the code has moved out from under, flagged for a documentation
   step.
