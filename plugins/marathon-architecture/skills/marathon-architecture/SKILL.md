@@ -16,7 +16,7 @@ description: >
 
 # marathon-architecture
 
-Version: 0.2.1
+Version: 0.2.2
 
 marathon deletes a note once the built work expresses it. A principle, definition, or convention
 that holds across repositories never reaches that point, because no single repository's code

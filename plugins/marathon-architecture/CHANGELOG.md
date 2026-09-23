@@ -4,6 +4,13 @@ All notable changes to the marathon-architecture plugin are documented here. Ver
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.2.2
+
+### Changed
+
+- **Targets marathon 0.15.** During a wave, a lane's closeout lands no promotion. It records each
+  one in its lane's Disposition, and the session that folds the wave lands and commits them all.
+
 ## v0.2.1
 
 ### Changed

@@ -1,7 +1,7 @@
 {
   "name": "marathon",
   "description": "A long-running development workflow built on context engineering: setup from a planning concept, code and context project kinds, plan, start, experiment, and review sessions, staged execution with architect-confirmed checkpoints, an editor pass and a branch review before close, planner, executor, editor, and reviewer agent profiles, experiments as standalone projects, concurrent waves of lanes in a standalone project or a workspace, with a worktree per lane at the repository that holds the records, standalone or workspace operation with steps that span repositories, handoff and resume, extension hooks, and a flat context/ of notes that state what exists or what is planned",
-  "version": "0.14.1",
+  "version": "0.15.0",
   "license": "Apache-2.0",
   "homepage": "https://github.com/standards-lab/claude-plugins",
   "repository": "https://github.com/standards-lab/claude-plugins",

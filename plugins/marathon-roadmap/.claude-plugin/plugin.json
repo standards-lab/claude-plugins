@@ -1,7 +1,7 @@
 {
   "name": "marathon-roadmap",
   "description": "marathon extension that keeps a roadmap manifest, the goals, tasks, and backlog in context/roadmap.toml, current through marathon's session hooks: conventions loaded at session start, tasks cited by dotted path in the session record, and at closeout the finished task deleted and next advanced",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "license": "Apache-2.0",
   "homepage": "https://github.com/standards-lab/claude-plugins",
   "repository": "https://github.com/standards-lab/claude-plugins",
