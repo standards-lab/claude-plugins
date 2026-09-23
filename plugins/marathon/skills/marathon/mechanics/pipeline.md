@@ -20,11 +20,11 @@ Run the stages in order. When the reset file records a handoff for the running c
    coordinator's in a workspace.
 3. Route on the reset file's Status:
    - `closeout`: start a new step, the one Next-focus names, together with its member project in
-     a workspace. When Next-focus names a wave, fold the wave first if every lane is finished. If
-     a lane is still open, the architect names this session's lane, and the session routes on
-     the lane's record, `context/reset/<lane>.md`, by these same rules, reading it from the
-     checkout that holds the lane's open branch (`mechanics/waves.md`). A lane with no record
-     yet starts its first step. Continue with START, then SETTLE.
+     a workspace. When Next-focus names a wave and every lane is finished, this session's first
+     stage folds the wave (`mechanics/waves.md`). If a lane is still open, the architect names
+     this session's lane, and the session routes on the lane's record, `context/reset/<lane>.md`,
+     by these same rules, reading it where `mechanics/waves.md` says. A lane with no record yet
+     starts its first step. Continue with START, then SETTLE.
    - `handoff`: resume. Switch to the command the Session line names. The Branch and Project lines
      say where the open branch is. Continue with START, then RESUME.
    - No reset file: settle a new step with the architect.
@@ -51,9 +51,9 @@ no sibling declaring itself coordinator.
    handoff records them in its Disposition and makes no edits.
 4. When the architect approves, fire `on-execute`.
 5. Create the branch, named by the playbook's slug rule. A step that spans member repositories
-   creates one branch in each touched repository, all with the same name. A wave's lane that
-   doesn't own the shared repository creates its branch there in a worktree of its own
-   (`mechanics/waves.md`).
+   creates one branch in each touched repository, all with the same name. During a wave, every
+   branch starts from the fetched default branch, and a lane that doesn't own the shared
+   repository creates its branch there in a worktree of its own (`mechanics/waves.md`).
 
 ### 3R · RESUME
 
@@ -82,6 +82,7 @@ no sibling declaring itself coordinator.
   `on-close`, commit, and publish.
 
 In a workspace, the record is the coordinator's and is committed in the coordinator's repository.
+During a wave, the record is the lane's own (`mechanics/waves.md`).
 
 ## How each command uses the pipeline
 

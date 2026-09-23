@@ -12,8 +12,8 @@ A `start` session's branch gets one review of the whole branch. Other sessions s
 1. The report is `.claude/report.md`, in the project's own repository or, in a workspace, the
    coordinator's. Before anything writes it, confirm that repository's `.gitignore` lists it, and
    add the line if it doesn't. A wave's lane with a worktree at the shared repository writes the
-   report in that worktree, so lanes that close together don't overwrite each other's reports. It
-   also confirms that the shared repository's `.gitignore` lists `.claude/worktrees/`
+   report in that worktree, so lanes that close together don't overwrite each other's reports. If
+   the `.gitignore` lacks the line, it records the line in its Disposition instead of adding it
    (`mechanics/waves.md`).
 2. Engage the reviewer profile (`behavior/delegation.md`), or review the branch yourself when
    briefing the reviewer would cost more. The brief gives the stage list, the branch in each
@@ -37,7 +37,8 @@ Bring the written context the step touched in line with what now exists, followi
 - claims about the change in other members' context
 
 Fix a stale claim in another member and record it under **Cross-repo**. Confirm the changes with
-the architect before applying them.
+the architect before applying them. During a wave, a change to a file the lane doesn't own goes in
+its Disposition instead (`mechanics/waves.md`).
 
 ## 3. Agree on the next step
 

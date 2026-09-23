@@ -15,7 +15,8 @@ GitHub releases the tags cut.
 - **A worktree at the shared repository.** The shared repository holds the reset file: the
   project itself, or the coordinator. The lane that owns it works in its main checkout. Every
   other lane changes it only in a worktree of its own, at `.claude/worktrees/<branch>`, created
-  from the default branch with `git worktree add`. The worktree holds only the lane's `context/`
+  with `git worktree add` from the fetched `origin/<default-branch>` once the shared repository
+  gitignores `.claude/worktrees/`. The worktree holds only the lane's `context/`
   changes, meaning its record and its own notes. `reset` keeps the worktree and records its
   path, and `close` removes it after publishing. With no owning lane, the main checkout stays on
   the default branch. LOCATE reads a lane's record from the checkout that holds its open branch.
@@ -31,6 +32,15 @@ GitHub releases the tags cut.
   fold applies them.
 - **A lane's branch report** is written in its worktree, so lanes that close together don't
   collide.
+- **Branches and steps in a wave.** Every branch a lane creates starts from the fetched default
+  branch, and a lane's next step waits until its previous branch has merged.
+- **Folding.** The fold can change files outside `context/` and in other repositories, with one
+  commit in each. The session that finishes the last lane first brings its branch up to date with
+  the default branch. A fold found at LOCATE runs as the session's first stage, after approval.
+- **Shared files during a wave.** Tending the context at close, intake, and extension hooks,
+  including an artifact's creation at `on-start`, record changes outside the lane's own files in
+  its Disposition. A gitignored local map is changed in the main checkout. `context/reset/` is
+  the one subdirectory `context/` holds.
 
 ### Migrating
 

@@ -6,7 +6,8 @@ keeps the earlier versions. The file only gets the next session started. Anythin
 last belongs in the notes.
 
 A standalone project keeps its own reset file. A workspace keeps exactly one, at the coordinator.
-Every session in the workspace reads it at LOCATE and writes it at CONCLUDE.
+Every session in the workspace reads it at LOCATE and writes it at CONCLUDE, except that during a
+wave a session writes its lane's record instead (`mechanics/waves.md`).
 
 ## Schema
 

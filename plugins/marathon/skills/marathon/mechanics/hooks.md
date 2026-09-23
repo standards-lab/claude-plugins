@@ -35,4 +35,6 @@ Order constraints:
 - `reset` writes a handoff and never fires `on-close`.
 - `init` fires `on-start`, `on-execute`, `on-reset`, and `on-commit`, and never `on-close`.
 
-An enabled extension whose artifact doesn't exist yet creates it at `on-start`.
+An enabled extension whose artifact doesn't exist yet creates it at `on-start`. During a wave, a
+hook's change to an extension's artifact, including creating it or fixing a stale entry, goes in
+the lane's Disposition, and the fold applies it (`mechanics/waves.md`).

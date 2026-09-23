@@ -29,31 +29,41 @@ members, never runs as a lane.
 While a wave runs, each lane keeps its own record at `context/reset/<lane>.md` in the shared
 repository, in the reset file's schema (`mechanics/reset-file.md`), named after the slug of the
 lane's first step. The record's Next-focus names the lane's next step, and after the lane's last
-step it reads `Lane finished.` No lane writes `context/reset.md`.
+step it reads `Lane finished.` No lane writes `context/reset.md`. After setup, an experiment
+lane's record names its spikes and then its intake, and the intake finishes the lane. The spikes
+keep their own reset file in the experiment's repository.
 
-At the shared repository, a lane changes only its record and the notes its steps own. It records a
-change to any other file there, such as another lane's note or the experiment catalog, in its
-Disposition instead of applying it. An extension's artifact, such as the roadmap or the
-architecture layer, is shared wherever it lives, so a lane records a change to one in its
-Disposition as well.
+## Shared files
 
-## Checkouts
+Outside what it owns, a lane changes only its own record and the notes its steps own. It records
+a change to any other file in its Disposition instead of applying it. Such files include another
+lane's note, the experiment catalog, and another member's context. An extension's artifact, such
+as the roadmap or the architecture layer, is shared wherever it lives, even inside what the lane
+owns, so a lane records a change to one in its Disposition as well, including a change a hook
+makes (`mechanics/hooks.md`).
+
+## Branches and checkouts
+
+Every branch a lane creates starts from the default branch as the remote has it: fetch first,
+then branch from `origin/<default-branch>`. A lane's next step starts only once its previous
+branch has merged. Until then, the session reports that and stops.
 
 - **The lane that owns the shared repository** works in its main checkout. That is the main lane
   of a standalone project, or a workspace lane that owns the coordinator.
 - **Every other lane** changes the shared repository only in a git worktree of its own, at
   `<shared repository>/.claude/worktrees/<branch>`. The branch has the step's name, the same name
-  as in the repository the lane owns. The shared repository gitignores `.claude/worktrees/`. The
-  worktree holds only the lane's `context/` changes, so it needs no gitignored files or services.
+  as in the repository the lane owns. The worktree holds only the lane's `context/` changes, so it
+  needs no gitignored files or services.
 - **When no lane owns the shared repository,** its main checkout stays on the default branch
   while the wave runs.
 
-A lane creates its worktree at SETTLE with
-`git worktree add .claude/worktrees/<branch> -b <branch> <default-branch>`, so the branch starts
-from the default branch and not from whatever the main checkout holds. The session then enters
-the checkout where its step's work happens through the harness, for a worktree with Claude Code's
-EnterWorktree and a `path`, and reaches any other checkout by path. The session creates the
-worktree itself before entering it, because Claude Code names a branch it creates
+Before creating a worktree, confirm that the shared repository's `.gitignore` on the default
+branch lists `.claude/worktrees/`. If it doesn't, stop. The architect adds the line on the default
+branch before the lane continues. Then create the worktree at SETTLE with
+`git worktree add .claude/worktrees/<branch> -b <branch> origin/<default-branch>`. The session
+then enters the checkout where its step's work happens through the harness, for a worktree with
+Claude Code's EnterWorktree and a `path`, and reaches any other checkout by path. The session
+creates the worktree itself before entering it, because Claude Code names a branch it creates
 `worktree-<name>`.
 
 A gitignored local file at the shared repository, such as a map of local checkouts, is changed in
@@ -64,16 +74,19 @@ would be lost when the worktree is removed.
 
 ## Reading a lane's record
 
-LOCATE reads a lane's record from the checkout that holds the lane's open branch, either its
-worktree or, for the owning lane, the main checkout. A lane with no open branch reads its record
-from the default branch.
+A lane with an open branch has handed off. LOCATE finds that branch's checkout, either a worktree
+that `git worktree list` shows or the owning lane's main checkout, and reads the lane's record
+there. Otherwise, LOCATE fetches and reads the record from `origin/<default-branch>`.
 
 ## Folding
 
-A wave is folded in one commit once every lane's record reads `Lane finished.` on the default
-branch. If the other lanes are already merged, the session that finishes the last lane folds the
-wave. Otherwise, the next session whose LOCATE finds every lane finished folds it first. Folding
+A wave is folded once every lane's record reads `Lane finished.` on the default branch. The fold
 applies the changes the lanes recorded in their Dispositions, rewrites `context/reset.md`, and
-deletes the lane records. No other lane is running by then, so the folding session applies these
-changes in whatever checkout it holds, including files outside `context/` and in other
-repositories.
+deletes the lane records. No other lane is running by then, so the fold can change files outside
+`context/` and in other repositories, with one commit in each repository it touches.
+
+- **The session that finishes the last lane** folds the wave in its closeout if every other lane
+  has already merged. First, it fetches and brings its branch up to date with
+  `origin/<default-branch>`, so it reads every lane's final record and Disposition.
+- **Otherwise, the next session whose LOCATE finds every lane finished** folds the wave. The fold
+  is its first stage, on its own branch, after the architect approves the stage list.

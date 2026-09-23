@@ -13,7 +13,8 @@ Two rules follow:
 
 ## What `context/` holds
 
-The directory is flat, with no subdirectories:
+The directory is flat, with no subdirectories, except `context/reset/`, which holds lane records
+while a wave runs (`mechanics/waves.md`):
 
 - `context/README.md`: stable orientation. A short statement of the vision, and a broad, shallow,
   unordered map of the capabilities the project will need.
