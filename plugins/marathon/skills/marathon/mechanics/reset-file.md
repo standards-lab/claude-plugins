@@ -41,7 +41,8 @@ The Disposition uses the entries defined in `references/context-engineering.md`.
   conversation:
   - the stage list and the position in it, for example
     `Stages: 5/9 · checkpoint 1 of 3 confirmed · stage 5 committed · list: …`
-  - the state of the branch in each touched repository
+  - the state of the branch in each touched repository, and for a wave's lane, the path of its
+    worktree there
   - the exact next move
 
 ## Waves

@@ -13,4 +13,5 @@ continue without the conversation.
 3. **Keep the work.** Finished stages are already committed. If the context fills partway through
    a stage, make a WIP commit and note that the stage's check hasn't passed. The resuming session
    finishes that stage first. Note a checkpoint that was reported but not confirmed, too; the
-   resuming session reports it again first. Leave the branch open and unpublished.
+   resuming session reports it again first. Leave the branch open and unpublished. A wave's lane
+   leaves its worktrees in place, and Next-focus records each one's path beside the branch.
