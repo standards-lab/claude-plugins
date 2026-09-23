@@ -28,7 +28,7 @@ backlog of tasks that belong to no goal.
   at the coordinator serves every member project. Enabled under `[project]`, the project keeps its
   own.
 - **Hooks:** `on-start`, `on-reset`, `on-close`.
-- **Targets:** marathon 0.14.
+- **Targets:** marathon 0.15.
 
 ## Mechanics
 

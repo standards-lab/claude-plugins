@@ -29,7 +29,9 @@ step it reads `Lane finished.` No lane writes `context/reset.md`.
 
 At the shared repository, a lane changes only its record and the notes its steps own. A change to
 any other file there goes in the lane's Disposition instead of being applied. Such files include
-another lane's note, an extension's artifact such as the roadmap, and the experiment catalog.
+another lane's note and the experiment catalog. An extension's artifact, such as the roadmap or
+the architecture layer, is shared wherever it lives, so a lane records its change to one in the
+Disposition as well.
 
 ## Checkouts
 

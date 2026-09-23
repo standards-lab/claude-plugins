@@ -32,7 +32,7 @@ repository it lives in.
   extension's `.claude/marathon-architecture.toml` at the coordinator, and it serves every member
   project's sessions.
 - **Hooks:** `on-start`, `on-reset`, `on-close`.
-- **Targets:** marathon 0.14.
+- **Targets:** marathon 0.15.
 
 ## Mechanics
 

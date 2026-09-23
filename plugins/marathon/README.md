@@ -61,6 +61,14 @@ reset file at the coordinator records its state between sessions. An experiment 
 project outside the workspace, so it runs in parallel with the workspace's sessions. See
 [`references/workspace-coordination.md`](./skills/marathon/references/workspace-coordination.md).
 
+## Waves
+
+A wave runs several lanes at the same time, in a standalone project or a workspace. Each lane owns
+one thing: the standalone project, a workspace member, the coordinator, or an experiment. Every
+lane keeps its record in the repository that holds the reset file. A lane that doesn't own that
+repository changes it only in a git worktree of its own, which holds nothing but the lane's
+`context/` changes. See [`mechanics/waves.md`](./skills/marathon/mechanics/waves.md).
+
 ## Extensions
 
 A separately installed skill can extend marathon by acting at the five hooks every session

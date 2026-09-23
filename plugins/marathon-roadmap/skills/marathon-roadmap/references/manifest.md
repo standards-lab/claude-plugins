@@ -10,7 +10,7 @@
 - Backlog tasks, which belong to no goal, sit under the root `backlog` table (`[backlog.<slug>]`).
 - `next` is a root-level list and holds the file's only sequences. The rest of the tree has no
   order. Each entry of `next` is either a dotted path to a task or goal, or an array that forms a
-  wave, whose members run at the same time (marathon's `mechanics/reset-file.md`). A wave member
+  wave, whose members run at the same time (marathon's `mechanics/waves.md`). A wave member
   is a dotted path, or a nested array of paths: a lane, whose steps run in order. The first entry
   is what comes next.
 
