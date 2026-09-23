@@ -22,7 +22,8 @@ Run the stages in order. When the reset file records a handoff for the running c
    - `closeout`: start a new step, the one Next-focus names, together with its member project in
      a workspace. When Next-focus names a wave, fold the wave first if every lane is finished. If
      a lane is still open, the architect names this session's lane, and the session routes on
-     `context/reset/<lane>.md` if that file exists. Continue with START, then SETTLE.
+     the lane's record, `context/reset/<lane>.md`, if it exists, read from the checkout that holds
+     the lane's open branch (`mechanics/waves.md`). Otherwise, continue with START, then SETTLE.
    - `handoff`: resume. Switch to the command the Session line names. The Branch and Project lines
      say where the open branch is. Continue with START, then RESUME.
    - No reset file: settle a new step with the architect.
@@ -49,13 +50,14 @@ no sibling declaring itself coordinator.
    handoff records them in its Disposition and makes no edits.
 4. When the architect approves, fire `on-execute`.
 5. Create the branch, named by the playbook's slug rule. A step that spans member repositories
-   creates one branch in each touched repository, all with the same name. A wave's lane creates
-   each branch in a worktree of its own and works there (`references/workspace-coordination.md`).
+   creates one branch in each touched repository, all with the same name. A wave's lane that
+   doesn't own the shared repository creates its branch there in a worktree of its own
+   (`mechanics/waves.md`).
 
 ### 3R · RESUME
 
-1. Check out the open branch in each touched repository. A wave's lane enters the worktree that
-   Next-focus records instead.
+1. Check out the open branch in each touched repository. At the shared repository, a wave's lane
+   uses the worktree that Next-focus records instead.
 2. Fire `on-execute`.
 3. Read the stage list, the stage and checkpoint position, and the next move from Next-focus.
    Continue with EXECUTE.
