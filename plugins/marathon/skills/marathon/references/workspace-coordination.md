@@ -23,37 +23,14 @@ higher layer builds against the real change below it. The step has one stage lis
 repository in `order`. It creates a branch in each touched repository, all with the same name,
 and `close` publishes each branch as that repository's own change proposal. The coordinator's
 reset file records the step's state between sessions, and a resumed step reads `order` again.
-
-## Concurrent lanes
-
-The lanes of a wave (`mechanics/reset-file.md`) run at the same time, and every lane commits its
-record to the coordinator. If lanes share one checkout, one lane's new branch can start from
-another lane's branch, and one lane's commit can land on the other's branch. So each lane works in
-a git worktree of its own:
-
-- **Location.** The worktree for a lane's branch is `<repo>/.claude/worktrees/<branch>`, in every
-  repository the lane touches, including the coordinator. Each of those repositories gitignores
-  `.claude/worktrees/`.
-- **Harness first.** The session enters the worktree through the harness's own worktree support,
-  such as Claude Code's EnterWorktree with a `path`, or a session launched from the worktree's
-  directory. Claude Code names a branch it creates `worktree-<name>`, not the step's branch, so
-  the session creates the worktree itself with
-  `git worktree add .claude/worktrees/<branch> -b <branch> <default-branch>` and then enters it.
-- **The main checkout stays on the default branch** while the wave runs. No lane checks a branch
-  out in it.
-- **Gitignored files and services.** A new worktree holds only tracked files. A lane that needs
-  gitignored files, such as local secrets, `mise.local.toml`, or a `go.work`, copies them into
-  its worktree. Docker Compose names its project after the directory, so a worktree's stack gets
-  its own containers and volumes, and it can collide on ports with the main checkout's stack.
-
-A session that runs alone keeps working in the main checkout. A worktree gains it nothing, and the
-setup above still costs it.
+Such a step never runs as a wave's lane, because a lane owns a single repository
+(`mechanics/waves.md`).
 
 ## Experiments
 
 An experiment is a standalone project outside the workspace, with its own reset file, so it runs
 in parallel with the workspace's sessions. The coordinator lists it in a catalog and takes in its
-results (`commands/experiment.md`).
+results (`commands/experiment.md`). A wave can also carry an experiment as one of its lanes.
 
 ## Projects know only what they depend on
 
