@@ -1,27 +1,29 @@
 # Harness testing
 
-Open: the position below is settled; the deep dive waits on observed failure modes and on
-`claude plugin eval` enablement (`v1.harness.testing`).
+This note covers what is worth testing about a workflow skill, and where those tests belong in
+CI. The deeper evaluation is tracked as `v1.harness.testing`. It waits for real failure modes to
+appear, and for `claude plugin eval` to be available in this environment.
 
-What is functionally helpful to test about a living workflow skill, and how it should fit the CI
-pipeline. Deferred from the v0.9.0 session, where a first cut of per-command
-`claude plugin eval` fixtures was authored and then dropped as speculative: the workflow evolves
-through real engagement, and fixtures written ahead of observed failure modes test guesses, not
-regressions.
+## What CI checks
 
-The position on record:
+CI validates what can be checked mechanically: that version numbers agree, that file references
+resolve, and that each marketplace source points to a plugin. `scripts/check.sh` runs these
+checks. They stay cheap, deterministic, and always on.
 
-- CI's job is tangible validation: version numbers aligned and correct, file references
-  resolving, marketplace sources present — what `scripts/check.sh` does today. It stays cheap,
-  deterministic, and always on.
-- Behavioral testing of the skill, if it earns a place, needs its own evaluation:
-  - which failure modes have actually occurred
-  - whether a fixture can catch them cheaply
-  - what the run cost is
-  - whether `claude plugin eval` (early access; not yet enabled for this environment) is the
-    right harness
+## Behavioral testing
+
+Behavioral tests of the skill have no place in CI until an evaluation justifies them. The
+evaluation answers four questions:
+
+- Which failure modes have occurred in real sessions.
+- Whether a test fixture can catch each one cheaply.
+- What a test run costs.
+- Whether `claude plugin eval` is the right tool to run the fixtures.
+
+Fixtures written before any failure has occurred test guesses, not regressions. The workflow
+changes through real use, so the first fixtures come from failures that actually happen.
 
 ## Assumptions
 
-- Assumes real-world regressions will surface concrete failure modes worth fixing in place
-  before any are worth encoding as fixtures.
+- Real sessions surface concrete failure modes, and each one is worth fixing in the skill before
+  any is worth encoding as a fixture.

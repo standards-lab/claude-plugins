@@ -4,6 +4,34 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.14.0
+
+### Changed
+
+- **Notes and documentation state what is true now.** A note describes what exists, in the
+  present tense, or what is planned, marked as planned. It has no settledness line, history,
+  dates, or other detail that only holds for a while. The roadmap and the reset file track status.
+  The rule covers every document outside project tracking, including `docs/` and READMEs, and
+  CHANGELOGs are exempt. It replaces 0.13's rule that a note states its settledness in its
+  opening lines.
+- **The prose is rewritten for clarity.** Every file in the skill, the agent profiles, and the
+  README is rewritten so a reader new to the project can follow it on first read. The rules are
+  unchanged.
+
+### Added
+
+- **The editor profile.** `agents/editor.md` edits the prose a branch changed, once, after the
+  last stage commits and before the final checkpoint. It works to a six-rule standard for concise
+  technical documentation, defers to the ecosystem's API documentation form and to a voice
+  standard the project declares, keeps meaning unchanged, and never commits. The session commits
+  its edits as one stage.
+
+### Migrating
+
+Remove the settledness line from each note in `context/`, and rewrite the note to describe what
+exists or what is planned. Move status to the roadmap or the reset file. Add `.claude/report.md`
+to `.gitignore` in any repository that doesn't list it.
+
 ## v0.13.0
 
 ### Changed

@@ -1,93 +1,81 @@
-# marathon-sitrep: audience-calibrated situation reports
+# marathon-sitrep: situation reports for a chosen audience
 
-Captured 2026-08-27 from a planning session in the reference-architecture workspace. marathon's
-discipline already leaves a complete record of what a period accomplished — the question a
-situation report answers — but reading that record today is manual archaeology. This concept
-proposes the extension that narrates it, and the taxonomy that gives such an extension a place in
-the specification. Open: everything here is candidate direction for a future session on this repository.
+marathon-sitrep is a planned marathon extension, tracked as `v1.harness.sitrep`. The architect
+invokes it with a date range, an audience, and an output format. It produces a situation report:
+an overview of the project or workspace as it stands, followed by an account of what the range
+accomplished, at the depth and in the register the audience needs.
 
-## The gap
+## The problem it solves
 
-The repository-as-source-of-truth principle produces an accomplishment ledger as a byproduct of
-the workflow. The coordinator reset file's git history is a session-by-session record of
-dispositions and focus. The roadmap manifest's history shows each task deleted as it finished
-and each goal closed. Every member repository's log and merged pull requests carry the work
-itself. Nothing reads that ledger back out. An architect who owes a stakeholder an account of the last
-month re-walks the history by hand and calibrates the telling by feel, and the result is bound to
-one audience at one depth.
+marathon already records everything a situation report needs:
 
-There is a second gap underneath the first. `references/extensions.md` defines an extension by
-the hooks it declares: "it declares what happens at the hook points every session fires; marathon
-applies it at those points and otherwise never names it." A capability that layers on top of
-marathon — invoked by the architect, firing at no hook — has no shape in the specification at
-all.
+- The git history of the coordinator's reset file records each session's dispositions and focus.
+- The git history of the roadmap manifest shows each task deleted as it finished and each goal
+  closed.
+- Each member repository's log and merged pull requests hold the work itself.
 
-## Proposal
+Nothing reads that record back out. An architect who owes a stakeholder an account of the last
+month walks the history by hand and adjusts the account to the audience by feel.
 
-`marathon-sitrep`, a user-invocable marathon extension. An invocation names a date range, an
-audience, and an output format; the product is a situation report: an overview of the project or
-workspace as it stands, then a narrative of what the range accomplished, at the depth and in the
-register the audience calls for.
+There is a second problem. `references/extensions.md` defines an extension by the hooks it
+declares. A capability that the architect invokes, and that fires at no hook, has no place in
+that definition.
 
-### The extension taxonomy
+## Two kinds of extension
 
-The concept treats "extension" as the higher-level idea, with two implementation facets:
+This proposal names two kinds of extension:
 
-- An **integration** fires at marathon's hook points and requires registration in
-  `marathon.toml`; the sessions apply it. marathon-roadmap is the existing member.
-- An **enhancement** layers functionality on top of the marathon skill — and potentially its
-  enabled integrations — by reading the specification's own structures. It fires at no hook and
-  the sessions never apply it; the architect invokes it.
+- An **integration** fires at marathon's hook points and is enabled in `marathon.toml`. Sessions
+  apply it. marathon-roadmap is an integration.
+- An **enhancement** adds capability on top of marathon and its enabled integrations by reading
+  the structures marathon defines. It fires at no hook, and the architect invokes it.
 
-A hybrid carries both facets. marathon-sitrep is the first pure enhancement. Building it amends
-`references/extensions.md` to name the taxonomy; that amendment is part of the build session, not
-a prerequisite.
+A hybrid extension has both parts. marathon-sitrep is a pure enhancement. The session that
+builds it adds these two kinds to `references/extensions.md`.
 
-An enhancement navigates by the specification rather than by private knowledge. Coordinator
-resolution and the `[workspace] order` map give it the member repositories. `[remote]` names the
-platform whose merged pull requests it reads. The `extensions` lists in `marathon.toml` tell it
-which integrations are enabled. With marathon-roadmap enabled, the report gains the roadmap
-dimension — tasks and goals closed within the range, and the remaining path the manifest asserts.
+An enhancement finds everything it reads through marathon's own configuration:
 
-### Data sources
+- The coordinator's `[workspace] order` lists the member repositories.
+- `[remote]` names the platform whose merged pull requests it reads.
+- The `extensions` lists name the enabled integrations. When marathon-roadmap is enabled, the
+  report includes the tasks and goals closed in the range and the path that remains.
 
-- Each repository in the order map: `git log` over the range, with merges resolved to pull
+## Data sources
+
+- For each repository in `order`: `git log` over the range, with merges resolved to pull
   requests through the `[remote]` platform.
-- The coordinator: `git log -p context/reset.md`, the session-by-session disposition ledger.
-- The manifest, when present: `git log -p context/roadmap.toml`, the tasks deleted and goals
-  closed within the range.
-- The capability maps (`context/README.md` at the coordinator and members) for the standing
-  overview the narrative opens with.
+- At the coordinator: `git log -p context/reset.md`, the record of each session's dispositions.
+- The roadmap manifest, when present: `git log -p context/roadmap.toml`, for the tasks deleted
+  and goals closed in the range.
+- The capability maps in each `context/README.md`, for the overview the report opens with.
 
-### The owned artifact: `context/sitrep.toml`
+## The audience file
 
-Audiences are the architect's stakeholders, not the agent's guess, so they are repository data.
-The extension owns `context/sitrep.toml`, resolved the way the roadmap manifest is: at the
-coordinator when serving a workspace, at the project itself when standalone. Each
-`[audiences.<slug>]` table carries a name, a description of who the audience is, and calibration
-guidance — depth, register, what this audience cares about and what it should be spared.
-Bootstrapped at first invocation and populated with the architect.
+The architect's stakeholders are the audiences, so the audiences are repository data, not the
+agent's guess. The extension owns `context/sitrep.toml`, resolved the way marathon-roadmap
+resolves its manifest: at the coordinator in a workspace, or in the project itself when it is
+standalone. Each `[audiences.<slug>]` table gives the audience's name, who they are, and how to
+write for them: the depth, the register, what they care about, and what to leave out. The
+extension creates the file on its first run and fills it in with the architect.
 
-### Publication
+## Publication
 
-The publish target is settled in the roadmap's `backlog.marathon-sitrep`: a GitHub Pages dev blog,
-whose scaffold and publish mechanics belong to a dev-blog skill the extension calls rather than
-re-encodes. The extension owns reading the workspace and drafting. The brief, orientation for
-leadership framed per audience, joins the sitrep there as the second entry category.
+Reports are published to a GitHub Pages dev blog, as `v1.harness.sitrep` states. A separate
+dev-blog skill owns the blog's scaffold and publishing, and the extension calls it. The extension
+owns reading the workspace and drafting the report. Leadership briefs are the blog's second kind
+of entry.
 
-### Boundaries
+## Limits
 
-A sitrep run is read-only against every repository. It opens no branch, runs no session
-pipeline, writes no reset file, and never mutates `context/`. The report is a projection of
-repository state in the sense of the source-of-truth rule: it lands only where the invocation
-directs it and feeds nothing back.
+A report run only reads. It opens no branch, runs no session pipeline, writes no reset file, and
+never changes `context/`. The report lands only where the invocation sends it.
 
 ## Open questions
 
-- How an enhancement records its enablement: a `marathon.toml` `extensions` entry like an
-  integration's, or the presence of its owned artifact. The entry keeps one enablement mechanism;
-  the artifact would make the sessions' resolution list carry names they never fire.
-- How an enhancement declares the marathon version it targets, since no session checks it — the
-  invocation itself has to surface a mismatch.
-- Scoping a run: whole workspace by default, with a single member project as a narrowing
-  argument, or the reverse.
+- How an enhancement records that it is enabled: an entry in the `extensions` list, like an
+  integration, or the presence of the file it owns. An entry keeps one way to enable extensions,
+  but sessions would then resolve names they never fire.
+- How an enhancement declares the marathon version it targets. No session checks it, so the
+  invocation has to report a mismatch itself.
+- The default scope of a run: the whole workspace, narrowed to one member by an argument, or the
+  reverse.

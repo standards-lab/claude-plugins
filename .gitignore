@@ -11,3 +11,6 @@ Thumbs.db
 
 # Marathon session plan files.
 .claude/plans/
+
+# The branch review's report, read by the architect and deleted at closeout.
+.claude/report.md

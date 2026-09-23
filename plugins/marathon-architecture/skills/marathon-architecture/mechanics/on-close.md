@@ -1,5 +1,6 @@
 # on-close
 
-- A page landed in this repository's `architecture/` rides the closeout commit.
-- A concept landed in the workspace's architecture repository commits there, on a branch under the
-  step's slug, and publishes with the session's other branches, recorded under **Cross-repo**.
+- A page landed in this repository's `architecture/` directory is part of the closeout commit.
+- A note landed in the workspace's architecture repository is committed there, on a branch named
+  with the step's slug. It is published with the session's other branches and recorded under
+  **Cross-repo**.

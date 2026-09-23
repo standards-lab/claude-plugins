@@ -1,41 +1,47 @@
 # marathon-references: the references catalog as an extension
 
-Captured 2026-08-31 during the workspace-sweep session, after establishing that the references
-system is a workspace convention with no marathon footprint. This concept proposes evaluating
-its promotion to a marathon extension, alongside `marathon-sitrep.md`. Open: everything here is
-candidate direction for a future session on this repository.
+marathon-references is a proposed marathon extension, tracked as `v1.harness.references`. It
+would own the references catalog that this workspace keeps at its coordinator as a convention of
+its own.
 
-## The gap
+## The catalog today
 
-The reference-architecture workspace maintains a references system at its coordinator:
-`references.toml` (portable identity — one key per repository, mapping to its canonical remote),
-`references.local.toml` (gitignored, the same keys mapping to local checkouts on this machine),
-and `references.md` (the described catalog: effort repositories, external references, prior
-R&D). The convention is defined solely by the workspace's own design note
-(`standards-lab/context/design/repo-references.md`); the marathon skill never mentions it.
+The workspace coordinator keeps three files:
 
-The shape is general. Any marathon workspace draws on repositories beyond its members — prior
-R&D to salvage from, external illustrations, sibling efforts — and wants portable identity plus
-a per-machine location map so the workspace reconstructs anywhere. That is the same
-schema-driven-artifact shape the roadmap manifest already has.
+- `references.toml` maps one key per repository to that repository's canonical remote.
+- `references.local.toml` is gitignored and maps the same keys to local checkouts on one machine.
+- `references.md` describes what each repository is: the repositories the effort builds, external
+  references, and prior work.
+
+The contract between the files is stated in the header of `standards-lab/references.toml`.
+marathon itself never mentions the catalog.
+
+## Why it generalizes
+
+Any marathon workspace draws on repositories beyond its members: prior work to reuse, external
+examples, and related efforts. Each one needs a portable identity plus a map of where it is
+checked out on this machine, so the workspace can be rebuilt anywhere. The roadmap manifest has
+the same shape: a file with a schema, owned by an extension.
 
 ## Proposal
 
-`marathon-references`, an extension owning the three-file references artifact, resolved the way
-the roadmap manifest is: at the coordinator for a workspace, at the project itself standalone.
-The extension codifies the file contract — the key join, the never-duplicate-locations rule,
-committed/gitignored split — and stays non-prescriptive about what a workspace catalogs.
+The extension owns the three files and resolves them the way marathon-roadmap resolves its
+manifest: at the coordinator in a workspace, or in the project itself when it is standalone. It
+enforces the file contract: keys join the files, a location is never duplicated between the two
+TOML files, and the local file stays gitignored. It prescribes nothing about what a workspace
+catalogs.
 
 ## Open questions
 
-- Facet: integration, enhancement, or hybrid (the taxonomy in `marathon-sitrep.md`).
-  The catalog may need no hooks at all — sessions read it for orientation but never advance it —
-  which would make it a pure artifact convention; whether the extension contract even has a
-  shape for that is the interesting question.
-- Whether `on-start` should layer a convention in (cite catalog keys in prose the way roadmap
-  tasks are cited by dotted path), or nothing fires and the artifact is consulted on demand.
-- Artifact location: the workspace keeps the files at the coordinator's repository root; an
-  extension would have to either adopt that or standardize `context/`, and the migration story
-  for the existing workspace follows from that choice.
-- Whether `references.md` stays hand-authored or becomes a projection of the TOML plus described
-  entries — the source-of-truth rule pulls toward one authored home.
+- Which kind of extension it is: one that fires at hooks, one the architect invokes, or both (see
+  the taxonomy in `marathon-sitrep.md`). Sessions read the catalog but never advance it, so it
+  may need no hooks at all. Whether the extension contract supports a pure file convention is
+  the main question.
+- Whether `on-start` adds a convention, such as citing catalog keys in prose the way roadmap
+  tasks are cited by dotted path, or whether nothing fires and sessions read the catalog when
+  they need it.
+- Where the files live. The workspace keeps them at the coordinator's repository root. An
+  extension either adopts that location or standardizes on `context/`, and moving the existing
+  workspace follows from that choice.
+- Whether `references.md` stays hand-written or is generated from the TOML plus the descriptions.
+  One authored home for each fact argues for generating it.
