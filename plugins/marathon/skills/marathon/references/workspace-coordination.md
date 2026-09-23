@@ -49,23 +49,22 @@ So the lane finalizes each worktree right after creating it, before any stage ru
 
 1. **Copy the gitignored files the repository needs** from the main checkout, such as local
    secrets, `mise.local.toml`, or a `go.work`. The repository lists them in `.worktreeinclude` at
-   its root, in `.gitignore` syntax, which is Claude Code's own convention. The lane copies only
-   files that match and are gitignored. Without `.worktreeinclude`, the lane judges what the
-   repository needs from its README and build configuration. Copy the files rather than link
-   them, so the lane can change its own without touching the main checkout's.
+   its root, in `.gitignore` syntax, which is Claude Code's own convention. Only files that
+   match and are gitignored are copied. Without the file, the lane judges what the repository
+   needs from its README and build configuration. Copy the files rather than link them, so the
+   lane can change its own without touching the main checkout's.
 2. **Run the repository's setup**, the `[worktree] setup` command in its `.claude/marathon.toml`
    (`mechanics/configuration.md`), from the worktree's root. The setup handles what copying
    can't, such as remapping ports or seeding a database. Without a setup command, the lane
    isolates services itself. Docker Compose names its project after the directory, so a
    worktree's stack already gets its own containers and volumes, but its published host ports
-   collide with the main checkout's stack. The lane sets `COMPOSE_PROJECT_NAME` and picks free
-   host ports in a gitignored local file, such as `.env`, and never changes tracked files.
+   collide with the main checkout's stack. The lane sets `COMPOSE_PROJECT_NAME` and free host
+   ports in a gitignored local file, such as `.env`, and never changes tracked files.
 3. **Verify** with the repository's quick check, such as its build, so a missing file surfaces
    now and not partway through a stage.
 
-A worktree that `reset` leaves in place is already finalized, so a resumed lane only enters it.
-At `close`, the lane stops the worktree's services and removes their volumes, then removes the
-worktree.
+A worktree kept at `reset` is already finalized, and a resumed lane only enters it. At `close`,
+the lane stops the worktree's services and removes their volumes, then removes the worktree.
 
 A session that runs alone keeps working in the main checkout. A worktree gains it nothing, and the
 setup above still costs it.
