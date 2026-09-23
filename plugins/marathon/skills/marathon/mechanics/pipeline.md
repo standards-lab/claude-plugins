@@ -20,9 +20,11 @@ Run the stages in order. When the reset file records a handoff for the running c
    coordinator's in a workspace.
 3. Route on the reset file's Status:
    - `closeout`: start a new step, the one Next-focus names, together with its member project in
-     a workspace. When Next-focus names a wave, fold the wave first if every lane is finished. If
-     a lane is still open, the architect names this session's lane, and the session routes on
-     `context/reset/<lane>.md` if that file exists. Continue with START, then SETTLE.
+     a workspace. When Next-focus names a wave and every lane is finished, this session's first
+     stage folds the wave (`mechanics/waves.md`). If a lane is still open, the architect names
+     this session's lane, and the session routes on the lane's record, `context/reset/<lane>.md`,
+     by these same rules, reading it where `mechanics/waves.md` says. A lane with no record yet
+     starts its first step. Continue with START, then SETTLE.
    - `handoff`: resume. Switch to the command the Session line names. The Branch and Project lines
      say where the open branch is. Continue with START, then RESUME.
    - No reset file: settle a new step with the architect.
@@ -49,11 +51,14 @@ no sibling declaring itself coordinator.
    handoff records them in its Disposition and makes no edits.
 4. When the architect approves, fire `on-execute`.
 5. Create the branch, named by the playbook's slug rule. A step that spans member repositories
-   creates one branch in each touched repository, all with the same name.
+   creates one branch in each touched repository, all with the same name. During a wave, every
+   branch starts from the fetched default branch, and a lane that doesn't own the shared
+   repository creates its branch there in a worktree of its own (`mechanics/waves.md`).
 
 ### 3R · RESUME
 
-1. Check out the open branch in each touched repository.
+1. Check out the open branch in each touched repository. At the shared repository, a wave's lane
+   uses the worktree that Next-focus records instead.
 2. Fire `on-execute`.
 3. Read the stage list, the stage and checkpoint position, and the next move from Next-focus.
    Continue with EXECUTE.
@@ -63,7 +68,9 @@ no sibling declaring itself coordinator.
 1. Do the playbook's work as the stage loop in `references/staged-execution.md`. Each stage
    commits once its check passes, and the session stops at each checkpoint. A re-plan returns to
    SETTLE on the same branch.
-2. Fire `on-commit` before every commit the session makes, in this stage or later.
+2. Before every commit the session makes, in this stage or later, confirm that the checkout is on
+   the session's branch, then fire `on-commit`. If the checkout is on a branch the session didn't
+   create or resume, stop and report to the architect rather than commit.
 
 ### 5 · CONCLUDE
 
@@ -75,6 +82,7 @@ no sibling declaring itself coordinator.
   `on-close`, commit, and publish.
 
 In a workspace, the record is the coordinator's and is committed in the coordinator's repository.
+During a wave, the record is the lane's own (`mechanics/waves.md`).
 
 ## How each command uses the pipeline
 

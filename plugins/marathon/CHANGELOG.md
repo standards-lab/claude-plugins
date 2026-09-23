@@ -4,6 +4,51 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.15.0
+
+### Added
+
+- **Waves in a standalone project.** A standalone project can run a wave: its main lane plus
+  experiment lanes, with lane records and folding as in a workspace. `mechanics/waves.md` is the
+  one home for waves in both project kinds, and folding moves there from
+  `mechanics/reset-file.md`.
+- **A worktree at the shared repository.** The shared repository holds the reset file: the
+  project itself, or the coordinator. The lane that owns it works in its main checkout. Every
+  other lane changes it only in a worktree of its own, at `.claude/worktrees/<branch>`, created
+  with `git worktree add` from the fetched `origin/<default-branch>` once the shared repository
+  gitignores `.claude/worktrees/`. The worktree holds only the lane's `context/`
+  changes, meaning its record and its own notes. `reset` keeps the worktree and records its
+  path, and `close` removes it after publishing. With no owning lane, the main checkout stays on
+  the default branch. LOCATE reads a lane's record from the checkout that holds its open branch.
+- **The branch check before every commit.** Every commit a session makes first confirms that the
+  checkout is on the session's branch, and the session stops and reports if it isn't.
+
+### Changed
+
+- **A lane owns exactly one thing**: the standalone project, a workspace member, the coordinator,
+  or an experiment. A step that spans several members never runs as a lane.
+- **Extension artifacts wait for the fold.** An extension's artifact is shared wherever it lives,
+  so a lane records its changes to one, and its experiment catalog entry, in its Disposition. The
+  fold applies them.
+- **A lane's branch report** is written in its worktree, so lanes that close together don't
+  collide.
+- **Branches and steps in a wave.** Every branch a lane creates starts from the fetched default
+  branch, and a lane's next step waits until its previous branch has merged.
+- **Folding.** The fold can change files outside `context/` and in other repositories, with one
+  commit in each. The session that finishes the last lane first brings its branch up to date with
+  the default branch. A fold found at LOCATE runs as the session's first stage, after approval.
+- **Shared files during a wave.** Tending the context at close, intake, and extension hooks,
+  including an artifact's creation at `on-start`, record changes outside the lane's own files in
+  its Disposition. A gitignored local map is changed in the main checkout. `context/reset/` is
+  the one subdirectory `context/` holds.
+
+### Migrating
+
+Add `.claude/worktrees/` to `.gitignore` in each repository that holds a reset file. Split any
+planned lane that spans several workspace members into lanes of one member each, or run the step
+outside a wave. Update marathon-roadmap and marathon-architecture to 0.2.2, which target marathon
+0.15.
+
 ## v0.14.0
 
 ### Changed

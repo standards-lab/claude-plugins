@@ -11,3 +11,5 @@
    it. Record **Integrated** for a member's note once a page replaces it, and **Cross-repo** for
    anything written in the architecture repository.
 3. At a handoff, promote nothing. Name the candidate in the Disposition for the closeout.
+4. During a wave (marathon's `mechanics/waves.md`), a lane's closeout lands nothing. It records
+   each promotion in its lane's Disposition, and the session that folds the wave lands them all.

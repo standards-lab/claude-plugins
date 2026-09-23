@@ -6,7 +6,8 @@ keeps the earlier versions. The file only gets the next session started. Anythin
 last belongs in the notes.
 
 A standalone project keeps its own reset file. A workspace keeps exactly one, at the coordinator.
-Every session in the workspace reads it at LOCATE and writes it at CONCLUDE.
+Every session in the workspace reads it at LOCATE and writes it at CONCLUDE, except that during a
+wave a session writes its lane's record instead (`mechanics/waves.md`).
 
 ## Schema
 
@@ -41,23 +42,10 @@ The Disposition uses the entries defined in `references/context-engineering.md`.
   conversation:
   - the stage list and the position in it, for example
     `Stages: 5/9 · checkpoint 1 of 3 confirmed · stage 5 committed · list: …`
-  - the state of the branch in each touched repository
+  - the state of the branch in each touched repository, and the path of a wave lane's worktree
   - the exact next move
 
 ## Waves
 
-In a workspace, a closeout's Next-focus may name a **wave**: a set of **lanes** the architect
-judges safe to run at the same time, each in sessions of its own. A lane is a single step, or a
-sequence of steps run in order. Lanes share no member repository, and no file at the coordinator
-other than their own records.
-
-While a wave is running, each lane keeps its own record at `context/reset/<lane>.md`, in the same
-schema, named after the slug of the lane's first step. The record's Next-focus names the lane's
-next step, and after the lane's last step it reads `Lane finished.` No lane writes
-`context/reset.md`. A change a lane would make to any other shared file at the coordinator, such
-as an extension's artifact, goes in the lane's Disposition instead of being applied.
-
-A wave is folded in one commit once every lane's record reads `Lane finished.` on the main branch.
-If the other lanes are already merged, the session that finishes the last lane folds the wave.
-Otherwise, the next session whose LOCATE finds every lane finished folds it first. Folding applies
-the changes the lanes recorded, rewrites `context/reset.md`, and deletes the lane records.
+During a wave, each lane keeps its own record in this schema at `context/reset/<lane>.md`, and no
+lane writes `context/reset.md` (`mechanics/waves.md`).

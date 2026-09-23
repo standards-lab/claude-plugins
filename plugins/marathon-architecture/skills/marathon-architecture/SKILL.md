@@ -16,7 +16,7 @@ description: >
 
 # marathon-architecture
 
-Version: 0.2.1
+Version: 0.2.2
 
 marathon deletes a note once the built work expresses it. A principle, definition, or convention
 that holds across repositories never reaches that point, because no single repository's code
@@ -32,7 +32,7 @@ repository it lives in.
   extension's `.claude/marathon-architecture.toml` at the coordinator, and it serves every member
   project's sessions.
 - **Hooks:** `on-start`, `on-reset`, `on-close`.
-- **Targets:** marathon 0.14.
+- **Targets:** marathon 0.15.
 
 ## Mechanics
 

@@ -14,7 +14,7 @@ description: >
 
 # marathon-roadmap
 
-Version: 0.2.1
+Version: 0.2.2
 
 marathon plans one step at a time and keeps notes brief beyond it, so the path itself goes
 unwritten: the outcomes the project is working toward and the tasks that remain. This extension
@@ -28,7 +28,7 @@ backlog of tasks that belong to no goal.
   at the coordinator serves every member project. Enabled under `[project]`, the project keeps its
   own.
 - **Hooks:** `on-start`, `on-reset`, `on-close`.
-- **Targets:** marathon 0.14.
+- **Targets:** marathon 0.15.
 
 ## Mechanics
 

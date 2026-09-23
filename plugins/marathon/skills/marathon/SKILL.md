@@ -18,7 +18,7 @@ description: >
 
 # Marathon
 
-Version: 0.14.0
+Version: 0.15.0
 
 marathon is a workflow for long-running development. Each session plans, builds, and closes one
 finished step, and the steps add up to a production-quality version of the original concept. The
@@ -47,7 +47,9 @@ The session pipeline applies to every command:
 The pipeline refers to these files where it needs them:
 
 - [`mechanics/reset-file.md`](./mechanics/reset-file.md): the session record, where it lives, its
-  schema, its Status values, and waves.
+  schema, and its Status values.
+- [`mechanics/waves.md`](./mechanics/waves.md): lanes that run at the same time, their records,
+  their checkouts and worktrees, and folding.
 - [`mechanics/configuration.md`](./mechanics/configuration.md): the layout of
   `.claude/marathon.toml`.
 - [`mechanics/hooks.md`](./mechanics/hooks.md): how extension hooks resolve and fire.
