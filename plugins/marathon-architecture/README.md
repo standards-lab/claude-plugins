@@ -28,15 +28,15 @@ Installing makes the extension available. A repository enables it in `.claude/ma
 extensions = ["marathon-architecture"]   # a top-level architecture/ directory in this repository
 ```
 
-A workspace coordinator enables it for every member project, which share one layer:
+A workspace coordinator enables it for every member project, and the members share one layer:
 
 ```toml
 [workspace]
 extensions = ["marathon-architecture"]
 ```
 
-The coordinator also keeps a second file next to it. The extension owns that file, and marathon
-never reads or writes it:
+The coordinator also keeps a second file next to `marathon.toml`. The extension owns that file,
+and marathon never reads or writes it:
 
 ```toml
 # .claude/marathon-architecture.toml
@@ -55,8 +55,8 @@ creates it. Requires marathon 0.14 or later.
 
 ## What the layer holds
 
-Only knowledge that applies beyond one repository: a principle, a definition, or a convention.
-Nothing a reader could learn from a repository's source, so a page that restates an
-implementation is a defect. Pages arrive only by promotion: a note in the repository that owns the
-knowledge, proven by validated work, becomes a page once the knowledge applies beyond that
-repository.
+The layer holds only knowledge that applies beyond one repository: a principle, a definition, or a
+convention. It holds nothing a reader could learn from a repository's source, so a page that
+restates an implementation is a defect. Pages arrive only by promotion: a note in the repository
+that owns the knowledge, proven by validated work, becomes a page once the knowledge applies
+beyond that repository.

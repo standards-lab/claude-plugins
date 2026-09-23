@@ -2,8 +2,8 @@
 
 A workflow for long-running development built on context engineering. marathon treats the
 repository as the only source of truth. It keeps a top-level `context/` directory of notes,
-deletes each note once the code expresses it, and runs the work as small sessions, each one
-finished step on its own branch.
+deletes each note once the code expresses it, and runs the work as small sessions, each of which
+finishes one step on its own branch.
 
 This README is a quick reference. The skill's files under [`skills/marathon/`](./skills/marathon/)
 define how marathon behaves: `SKILL.md`, the `commands/` playbooks, the `mechanics/` specifications,

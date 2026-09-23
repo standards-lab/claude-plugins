@@ -4,14 +4,13 @@ All notable changes to the marathon-architecture plugin are documented here. Ver
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
-
 ## v0.2.1
 
 ### Changed
 
-- **Targets marathon 0.14.** A note is promoted once the work it describes is built and
-  validated, which a closeout's **Validated** entry records, and the knowledge applies beyond its
-  repository. Notes no longer state that they are settled.
+- **Targets marathon 0.14.** A note is promoted once two things hold: the work it describes is
+  built and validated, as a closeout's **Validated** entry records, and its knowledge applies
+  beyond its repository. Notes no longer state that they are settled.
 - **The prose is rewritten for clarity**, with the rules unchanged.
 
 ## v0.2.0

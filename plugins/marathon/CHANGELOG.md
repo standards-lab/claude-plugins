@@ -4,7 +4,6 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
-
 ## v0.14.0
 
 ### Changed

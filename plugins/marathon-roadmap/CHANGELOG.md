@@ -4,7 +4,6 @@ All notable changes to the marathon-roadmap plugin are documented here. Versions
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
-
 ## v0.2.1
 
 ### Changed

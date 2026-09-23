@@ -5,8 +5,8 @@ its stages. Extension hooks fire only at the points this file names (`mechanics/
 
 ## Stages
 
-Run the stages in order. When the reset file records a handoff for the running command, `3R ·
-RESUME` replaces `3 · SETTLE`.
+Run the stages in order. When the reset file records a handoff for the running command,
+`3R · RESUME` replaces `3 · SETTLE`.
 
 ### 1 · LOCATE
 

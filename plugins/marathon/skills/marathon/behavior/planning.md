@@ -1,6 +1,6 @@
 # Planning
 
-How every marathon session decides its scope, at the pipeline's SETTLE stage
+These rules govern how every marathon session decides its scope, at the pipeline's SETTLE stage
 (`mechanics/pipeline.md`).
 
 ## Plan one step at a time
@@ -21,7 +21,7 @@ good reason, recorded as a rejected alternative in the note the step touches. Wi
 reason, adopt the existing solution. Ask this at SETTLE, while the answer can still change the
 plan.
 
-## Planning is half the work
+## What planning covers
 
 In `init`, a new `start`, `plan`, and `review`, planning is where the architectural thinking
 happens: what the step involves, how deep it goes, and how it fits the larger design. Plan in

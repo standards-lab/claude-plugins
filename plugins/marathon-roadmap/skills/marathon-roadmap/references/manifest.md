@@ -28,7 +28,7 @@ A goal has these fields:
 A task has these fields:
 
 - `name`: the requirement, as a title.
-- `summary`: one session's worth of work: what it is.
+- `summary`: what the task is, sized to one session's work.
 - `repos` (optional): the repositories it touches.
 - `proof` (optional): the observable result that shows it is done.
 - `context` (optional): the context files that carry the detail.
@@ -48,12 +48,12 @@ and `tasks` segments: `v1.data.reads`, `backlog.docs-site`. Slugs never contain 
   that finds it fixes it.
 - **No order outside `next`**: `next` and each lane are the only sequences. The lanes of a wave
   have no order among themselves.
-- **Detail only at the front**: the task at the front of `next` carries detail. Every
-  other entry stays a short statement, with its detail in the linked context files.
+- **Detail only at the front**: the task at the front of `next` carries detail. Every other
+  entry stays a short statement, with its detail in the linked context files.
 
 ## Starting file
 
-The manifest `on-start` creates, which the architect fills in when the session settles its scope:
+`on-start` creates this manifest, and the architect fills it in when the session settles its scope:
 
 ```toml
 # Roadmap: what remains on the path to the target end state. Maintained by the marathon-roadmap

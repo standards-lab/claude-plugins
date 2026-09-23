@@ -26,7 +26,7 @@ Installing makes the extension available. A repository enables it in `.claude/ma
 extensions = ["marathon-roadmap"]     # this project keeps its own context/roadmap.toml
 ```
 
-A workspace coordinator enables it for every member project, which share one manifest:
+A workspace coordinator enables it for every member project, and the members share one manifest:
 
 ```toml
 [workspace]
@@ -44,6 +44,6 @@ The manifest has three kinds of entry, nested like directories:
 - A **task** is one session's work.
 - The **backlog** holds the tasks that belong to no goal.
 
-The manifest holds only what remains: finished work is deleted. `next` holds its only sequences,
-including waves of lanes that run at the same time. Everything else cites an entry by its dotted
-path, such as `v1.data.reads` or `backlog.docs-site`.
+The manifest holds only what remains: finished work is deleted. `next` is the only entry that
+holds a sequence, including waves of lanes that run at the same time. Everything else cites an
+entry by its dotted path, such as `v1.data.reads` or `backlog.docs-site`.

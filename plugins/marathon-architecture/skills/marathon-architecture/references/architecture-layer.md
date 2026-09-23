@@ -23,17 +23,17 @@ is the architecture, with a README in every directory as its index.
 - Only what is true now, like every note: no changelog, no revision log, and no record of who
   promoted a page.
 - No project documentation. `docs/` is one repository's guide, written by a documentation step.
-  marathon's rule that notes go stale never applies to the layer, which changes only when a
-  principle changes.
+  marathon's rule that deletes a note once the built work expresses it never applies to the
+  layer, which changes only when a principle changes.
 
 ## How knowledge reaches it
 
-Only by promotion. A note is proven once the work it describes is built and validated, which a
-closeout's **Validated** entry records. If the built work or its documentation then expresses the
-note, the note is deleted under marathon's rule. If the note applies beyond its repository, it
-becomes a page. In a workspace, a member's `close` or `review` lands the note in the architecture
-repository, recorded under **Cross-repo**, and that repository writes the page in a session of
-its own.
+Knowledge reaches the layer only by promotion. A note is proven once the work it describes is
+built and validated, which a closeout's **Validated** entry records. If the built work or its
+documentation then expresses the note, the note is deleted under marathon's rule. If the note
+applies beyond its repository, it becomes a page. In a workspace, a member's `close` or `review`
+lands the note in the architecture repository, recorded under **Cross-repo**, and that repository
+writes the page in a session of its own.
 
 ## Starting index
 
