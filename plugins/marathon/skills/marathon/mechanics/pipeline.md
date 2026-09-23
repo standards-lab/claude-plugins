@@ -50,8 +50,7 @@ no sibling declaring itself coordinator.
 4. When the architect approves, fire `on-execute`.
 5. Create the branch, named by the playbook's slug rule. A step that spans member repositories
    creates one branch in each touched repository, all with the same name. A wave's lane creates
-   each branch in a worktree of its own, finalizes the worktree, and works there
-   (`references/workspace-coordination.md`).
+   each branch in a worktree of its own and works there (`references/workspace-coordination.md`).
 
 ### 3R · RESUME
 
