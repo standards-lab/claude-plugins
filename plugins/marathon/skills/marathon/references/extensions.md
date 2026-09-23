@@ -1,19 +1,19 @@
 # Extensions
 
-An extension layers a convention into marathon's sessions, such as a roadmap manifest the
-sessions keep current. It is a skill in its own plugin that declares what it does at the hook
-points every session fires (`mechanics/hooks.md`); marathon otherwise never names it.
+An extension adds a convention to marathon's sessions, such as a roadmap manifest the sessions
+keep current. An extension is a skill in its own plugin. It declares what it does at the hooks
+every session fires (`mechanics/hooks.md`), and marathon never refers to it otherwise.
 
 ## Installed and enabled
 
-An extension acts only when both hold:
+An extension acts only when it is both:
 
-- **Installed** — its skill resolves in the harness, at user or project scope.
-- **Enabled** — the repository lists it in `.claude/marathon.toml`, so enablement travels with a
-  clone.
+- **Installed**: its skill is available in the harness, at user or project scope.
+- **Enabled**: the repository lists it in `.claude/marathon.toml`, so every clone has the same
+  setting.
 
-An installed extension nothing enables stays inert. An enabled one whose skill is missing is
-reported to the architect, naming the plugin to install.
+An installed extension that no repository enables does nothing. When an enabled extension's skill
+is missing, tell the architect, and name the plugin to install.
 
 ```toml
 [project]
@@ -23,19 +23,19 @@ extensions = ["<extension>"]   # this project
 extensions = ["<extension>"]   # coordinator only: every project in the workspace
 ```
 
-Removing the entry disables it; whether its artifact stays is the architect's call.
+Removing the entry disables the extension. The architect decides whether its files stay.
 
 ## What an extension declares
 
-- Its skill-listing description contains "marathon extension".
-- Its SKILL.md names the artifact it owns, if any, the hook points it acts at, and the marathon
-  version it targets. On an incompatible version, report the mismatch rather than guess.
-- It bootstraps its artifact in the first session after it is enabled.
-- It never adds a key to `marathon.toml` beyond the `extensions` list. Configuration of its own
-  lives in a file it owns, which core never reads.
+- Its skill description contains "marathon extension".
+- Its SKILL.md names the artifact it owns, if any, the hooks it acts at, and the marathon version
+  it targets. When the version is incompatible, report the mismatch instead of guessing.
+- It creates its artifact in the first session after it is enabled.
+- It adds no key to `marathon.toml` other than its entry in the `extensions` list. Its own
+  configuration lives in a file it owns, which marathon never reads.
 
 ## Source of truth
 
-The repository is the source of truth. An extension may maintain its artifact inside the
-repository; anything it projects outside, onto a tracker or another platform, is a read-only
-mirror that never feeds back into core's files or decisions.
+The repository is the source of truth. An extension may keep its artifact in the repository.
+Anything it copies outside the repository, such as to an issue tracker or another platform, is a
+read-only mirror that never feeds back into marathon's files or decisions.

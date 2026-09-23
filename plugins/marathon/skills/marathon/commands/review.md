@@ -1,29 +1,29 @@
 # marathon review
 
-An on-demand check of the `context/` notes against the code, or on a context project against the
-deliverable, when they feel stale or before something big. `review` runs the session pipeline
-(`mechanics/pipeline.md`), recorded under `Session: review`.
+An on-demand check of the `context/` notes against the code, or against the deliverable on a
+context project. Run it when the notes seem stale or before a large change. `review` runs the
+session pipeline (`mechanics/pipeline.md`) and is recorded under `Session: review`.
 
 ## Settle: look for drift
 
-- **Tending candidates** (`references/context-engineering.md`): notes the built work or its
-  documentation now expresses, notes to cull, and notes that describe history or status instead
-  of what is or what is planned.
-- **Orientation**: whether `context/README.md` still matches where the project is.
-- **Docs drift**: `docs/` pages the code has moved out from under, flagged for a documentation
+- **Notes to tend** (`references/context-engineering.md`): notes the built work or its
+  documentation now covers, notes to cull, and notes that describe history or status instead of
+  what exists or what is planned.
+- **Orientation**: whether `context/README.md` still describes the project as it is.
+- **Documentation drift**: `docs/` pages the code has made wrong, flagged for a documentation
   step.
-- **Coordinator conventions**: in a workspace, the conventions the coordinator keeps for members,
-  checked against this repository (`references/workspace-coordination.md`).
+- **Coordinator conventions**: in a workspace, whether this repository follows the conventions
+  the coordinator keeps for its members (`references/workspace-coordination.md`).
 
-Settle the whole proposal with the architect before changing anything.
+Agree the whole proposal with the architect before changing anything.
 
 Branch slug: the review's topic.
 
 ## Execute
 
-Apply only what's agreed, in stages (`references/staged-execution.md`). End with fewer notes, each
-one true.
+Apply only what was agreed, in stages (`references/staged-execution.md`). The session ends with
+fewer notes, each of them true.
 
 ## Conclude
 
-Close with `close`.
+End with `close`.

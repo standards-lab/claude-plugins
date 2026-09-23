@@ -1,29 +1,12 @@
 # The reset file
 
-`context/reset.md` is the session record and the pointer to the next step: written at the end of
-one session, read at the start of the next, and rewritten each time; git keeps older versions. It
-bootstraps the next session and nothing more; durable detail belongs in the notes.
+`context/reset.md` records the last session and names the next step. A session writes it at its
+end, and the next session reads it at its start. Each session rewrites the whole file, and git
+keeps the earlier versions. The file only gets the next session started. Anything that needs to
+last belongs in the notes.
 
-A standalone project keeps its own. A workspace keeps exactly one, at the coordinator, which every
-session in the workspace reads at LOCATE and writes at CONCLUDE.
-
-## Waves
-
-In a workspace, a closeout's Next-focus may name a **wave**: **lanes** the architect judges safe
-to run at the same time, each a single step or a sequence of steps run in order, in sessions of
-their own. Lanes share no member repository and no file at the coordinator besides their own
-records.
-
-While a wave is in flight, each lane keeps its own record at `context/reset/<lane>.md`, named by
-its first step's slug, in the same schema. Its Next-focus names the lane's next step, and after
-the lane's last step it reads `Lane finished.` No lane writes `context/reset.md`. Changes a lane
-would make to other shared files there, such as an extension's artifact, go in its record's
-Disposition instead of being applied.
-
-A wave is folded in one commit once every lane's record reads `Lane finished.` on the main branch:
-the session that finishes the last lane folds it when the others are already merged, and
-otherwise the next session whose LOCATE finds every lane finished folds it first. Folding applies
-the recorded changes, rewrites `context/reset.md`, and deletes the wave's records.
+A standalone project keeps its own reset file. A workspace keeps exactly one, at the coordinator.
+Every session in the workspace reads it at LOCATE and writes it at CONCLUDE.
 
 ## Schema
 
@@ -33,27 +16,48 @@ the recorded changes, rewrites `context/reset.md`, and deletes the wave's record
 - **Status:** closeout            # handoff | closeout
 - **Session:** start              # init | plan | start | experiment | review
 - **Project:** core-lib           # workspace only: the member repos the step touched
-- **Branch:** wire-config-loader  # one slug, shared across touched repos
+- **Branch:** wire-config-loader  # one name, shared by every touched repo
 
 ## Disposition
-- **Integrated:** deleted context/config-loading.md — the loader's package documentation now expresses it.
+- **Integrated:** deleted context/config-loading.md; the loader's package documentation now covers it.
 - **Add or sharpen:** context/config-validation.md now names the rules the loader enforces.
-- **Culled:** deleted context/env-override.md — the loader went another way.
-- **Retained:** context/secret-sourcing.md — still unbuilt.
+- **Culled:** deleted context/env-override.md; the loader took a different approach.
+- **Retained:** context/secret-sourcing.md; not built yet.
 - **Validated:** checkpoint 1, the loader reads a sample file (`go run ./cmd/example`); checkpoint 2, `go test ./...` and the run-and-verify check.
 
 ## Next-focus
 Add secret sourcing on top of the validated loader.
 ```
 
-The Disposition uses the ledger of `references/context-engineering.md`, plus **Validated** at a
-closeout. In a workspace, Next-focus also names the member project the next session runs in.
+The Disposition uses the entries defined in `references/context-engineering.md`. A closeout adds
+**Validated**. In a workspace, Next-focus also names the member project the next session runs in.
 
 ## Status
 
-- **closeout** — the session finished and published; the next session starts a fresh step from
-  Next-focus on a new branch.
-- **handoff** — the session stopped mid-work with its branch open. The Session line names the
-  command that resumes it, and Next-focus carries enough to resume cold: the stage list and
-  position (`Stages: 5/9 · checkpoint 1 of 3 confirmed · stage 5 committed · list: …`), each
-  touched repo's branch state, and the exact next move.
+- **closeout**: the session finished and published. The next session starts the step Next-focus
+  names, on a new branch.
+- **handoff**: the session stopped partway through, with its branch open. The Session line names
+  the command that resumes it. Next-focus holds everything needed to resume without the
+  conversation:
+  - the stage list and the position in it, for example
+    `Stages: 5/9 · checkpoint 1 of 3 confirmed · stage 5 committed · list: …`
+  - the state of the branch in each touched repository
+  - the exact next move
+
+## Waves
+
+In a workspace, a closeout's Next-focus may name a **wave**: a set of **lanes** the architect
+judges safe to run at the same time, each in sessions of its own. A lane is a single step, or a
+sequence of steps run in order. Lanes share no member repository, and no file at the coordinator
+other than their own records.
+
+While a wave is running, each lane keeps its own record at `context/reset/<lane>.md`, in the same
+schema, named after the slug of the lane's first step. The record's Next-focus names the lane's
+next step, and after the lane's last step it reads `Lane finished.` No lane writes
+`context/reset.md`. A change a lane would make to any other shared file at the coordinator, such
+as an extension's artifact, goes in the lane's Disposition instead of being applied.
+
+A wave is folded in one commit once every lane's record reads `Lane finished.` on the main branch.
+If the other lanes are already merged, the session that finishes the last lane folds the wave.
+Otherwise, the next session whose LOCATE finds every lane finished folds it first. Folding applies
+the changes the lanes recorded, rewrites `context/reset.md`, and deletes the lane records.
