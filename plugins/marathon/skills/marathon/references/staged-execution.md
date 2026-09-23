@@ -48,7 +48,8 @@ stopping, then stops and shows the checkpoint.
 1. **State the delegation decision**: the executor profile or the session itself, and why. For
    the executor, state the model too.
 2. **Do the work** and run the check until it passes. Read a delegate's work yourself.
-3. **Commit.** Fire `on-commit`, then commit, with the stage's decisions in the message.
+3. **Commit.** Confirm the branch and fire `on-commit` (`mechanics/pipeline.md`, 4 · EXECUTE),
+   then commit, with the stage's decisions in the message.
 4. **Log** one entry in the conversation: the `diff --stat`, the check's result, the delegation
    decision. Add prose only for a decision the plan didn't cover.
 5. **Continue**, or at a checkpoint, stop and report: the stages it covers, how to see the
