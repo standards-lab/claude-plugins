@@ -25,7 +25,9 @@ decided, in stages (`references/staged-execution.md`):
   the capability map or the note the upcoming work needs.
 
 Capture only what the upcoming step needs. Taking in a finished experiment also updates its
-catalog entry and archives its remote (`commands/experiment.md`).
+catalog entry and archives its remote (`commands/experiment.md`). During a wave, a lane changes
+only its record and its own notes, and records any other change in its Disposition
+(`mechanics/waves.md`).
 
 ## Conclude
 

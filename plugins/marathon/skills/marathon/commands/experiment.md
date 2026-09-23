@@ -33,10 +33,12 @@ Branch slug: the spike.
 2. Record the repositories the experiment reads, using the served project's own convention. In a
    workspace, that is a committed list of remotes plus a gitignored map to local checkouts. The
    experiment reads those repositories and never writes to them. Its code dependencies are
-   published versions, never a replace directive.
+   published versions, never a replace directive. A gitignored map is changed in the served
+   project's main checkout, even during a wave (`mechanics/waves.md`).
 3. Create the repository on the settled host and push.
 4. Add the experiment and its remote to the catalog in the served project (the coordinator, in a
-   workspace).
+   workspace). When the experiment is a wave's lane, record the catalog entry in the lane's
+   Disposition instead, and the wave's fold applies it.
 
 The architect then works on the experiment in its own directory with `start`. The validation of
 its final step is the answer to its question.
