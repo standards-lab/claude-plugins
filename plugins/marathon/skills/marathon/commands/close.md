@@ -12,8 +12,8 @@ A `start` session's branch gets one review of the whole branch. Other sessions s
 1. The report is `.claude/report.md`, in the project's own repository or, in a workspace, the
    coordinator's. Before anything writes it, confirm that repository's `.gitignore` lists it, and
    add the line if it doesn't. A wave's lane with a worktree at the shared repository writes the
-   report in that worktree, so lanes that close together don't overwrite each other's, and also
-   confirms that the shared repository's `.gitignore` lists `.claude/worktrees/`
+   report in that worktree, so lanes that close together don't overwrite each other's reports. It
+   also confirms that the shared repository's `.gitignore` lists `.claude/worktrees/`
    (`mechanics/waves.md`).
 2. Engage the reviewer profile (`behavior/delegation.md`), or review the branch yourself when
    briefing the reviewer would cost more. The brief gives the stage list, the branch in each
@@ -47,13 +47,14 @@ Settle the one next step with the architect. Don't set the direction alone.
 
 Rewrite the reset file (`mechanics/reset-file.md`) with `Status: closeout`: the project's own
 record, or the coordinator's in a workspace. During a wave, write the lane's record instead; when
-this session finishes the last lane, fold the wave (`mechanics/waves.md`). The Disposition lists each note operation and,
-under **Validated**, each checkpoint with its evidence. Next-focus is the step agreed in step 3.
+this session finishes the last lane, fold the wave (`mechanics/waves.md`). The Disposition lists
+each note operation and, under **Validated**, each checkpoint with its evidence. Next-focus is
+the step agreed in step 3.
 
 ## 5. Commit and publish
 
 Delete `.claude/report.md`. Commit in each touched repository, with the coordinator's record as a
 commit of its own there. Then publish each branch with its repository's `[remote] publish`
 command, using the change description from the record. A project with no remote stops after the
-commit. A wave's lane with a worktree at the shared repository then leaves it and removes it with
-`git worktree remove` (`mechanics/waves.md`).
+commit. A wave's lane with a worktree at the shared repository then leaves the worktree and
+removes it with `git worktree remove` (`mechanics/waves.md`).

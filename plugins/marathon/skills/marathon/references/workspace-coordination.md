@@ -23,14 +23,14 @@ higher layer builds against the real change below it. The step has one stage lis
 repository in `order`. It creates a branch in each touched repository, all with the same name,
 and `close` publishes each branch as that repository's own change proposal. The coordinator's
 reset file records the step's state between sessions, and a resumed step reads `order` again.
-Such a step never runs as a wave's lane, because a lane owns a single repository
+Such a step never runs as a wave's lane, because a lane owns a single member
 (`mechanics/waves.md`).
 
 ## Experiments
 
 An experiment is a standalone project outside the workspace, with its own reset file, so it runs
 in parallel with the workspace's sessions. The coordinator lists it in a catalog and takes in its
-results (`commands/experiment.md`). A wave can also carry an experiment as one of its lanes.
+results (`commands/experiment.md`). An experiment can also run as one of a wave's lanes.
 
 ## Projects know only what they depend on
 

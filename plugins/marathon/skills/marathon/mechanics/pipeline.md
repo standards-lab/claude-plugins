@@ -22,8 +22,9 @@ Run the stages in order. When the reset file records a handoff for the running c
    - `closeout`: start a new step, the one Next-focus names, together with its member project in
      a workspace. When Next-focus names a wave, fold the wave first if every lane is finished. If
      a lane is still open, the architect names this session's lane, and the session routes on
-     the lane's record, `context/reset/<lane>.md`, if it exists, read from the checkout that holds
-     the lane's open branch (`mechanics/waves.md`). Otherwise, continue with START, then SETTLE.
+     the lane's record, `context/reset/<lane>.md`, by these same rules, reading it from the
+     checkout that holds the lane's open branch (`mechanics/waves.md`). A lane with no record
+     yet starts its first step. Continue with START, then SETTLE.
    - `handoff`: resume. Switch to the command the Session line names. The Branch and Project lines
      say where the open branch is. Continue with START, then RESUME.
    - No reset file: settle a new step with the architect.

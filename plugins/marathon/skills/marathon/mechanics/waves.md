@@ -12,13 +12,17 @@ lanes share.
 
 Each lane owns exactly one of these:
 
-- **The standalone project**, for its one main lane.
+- **The standalone project**, for its one main lane. A standalone project's other lanes are
+  experiments.
 - **A workspace member**, or the coordinator itself.
 - **An experiment** (`commands/experiment.md`). Its setup and intake steps run at the shared
   repository, and its spikes run in its own repository.
 
-No two lanes own the same thing, and a step that spans repositories never runs as a lane. A lane
-does its step's work in the repository it owns, where no other lane works.
+No two lanes own the same thing. A lane does its step's work in what it owns, where no other
+lane works, and changes the shared repository only under the rules below. An experiment lane owns
+the experiment's repository, and its setup and intake at the shared repository follow the same
+rules. A step that spans several repositories that lanes could own, such as two workspace
+members, never runs as a lane.
 
 ## Lane records
 
@@ -27,10 +31,10 @@ repository, in the reset file's schema (`mechanics/reset-file.md`), named after 
 lane's first step. The record's Next-focus names the lane's next step, and after the lane's last
 step it reads `Lane finished.` No lane writes `context/reset.md`.
 
-At the shared repository, a lane changes only its record and the notes its steps own. A change to
-any other file there goes in the lane's Disposition instead of being applied. Such files include
-another lane's note and the experiment catalog. An extension's artifact, such as the roadmap or
-the architecture layer, is shared wherever it lives, so a lane records its change to one in the
+At the shared repository, a lane changes only its record and the notes its steps own. It records a
+change to any other file there, such as another lane's note or the experiment catalog, in its
+Disposition instead of applying it. An extension's artifact, such as the roadmap or the
+architecture layer, is shared wherever it lives, so a lane records a change to one in its
 Disposition as well.
 
 ## Checkouts
@@ -46,11 +50,11 @@ Disposition as well.
 
 A lane creates its worktree at SETTLE with
 `git worktree add .claude/worktrees/<branch> -b <branch> <default-branch>`, so the branch starts
-from the default branch and not from whatever the main checkout holds. The session enters,
-through the harness, the checkout where its step's work happens, such as Claude Code's
-EnterWorktree with a `path` for a worktree. It reaches any other checkout by path. Claude Code
-names a branch it creates `worktree-<name>`, so the session creates the worktree itself and then
-enters it.
+from the default branch and not from whatever the main checkout holds. The session then enters
+the checkout where its step's work happens through the harness, for a worktree with Claude Code's
+EnterWorktree and a `path`, and reaches any other checkout by path. The session creates the
+worktree itself before entering it, because Claude Code names a branch it creates
+`worktree-<name>`.
 
 A gitignored local file at the shared repository, such as a map of local checkouts, is changed in
 the main checkout. It isn't versioned, so the change moves no branch, and a worktree's copy

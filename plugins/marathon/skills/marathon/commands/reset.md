@@ -7,7 +7,7 @@ continue without the conversation.
 1. **Tidy the notes you touched**, following `references/context-engineering.md`, with a quick
    confirmation from the architect.
 2. **Write the record** (`mechanics/reset-file.md`) with `Status: handoff`: the project's own
-   record, or the coordinator's in a workspace, or the lane's own record during a wave. Next-focus
+   record, the coordinator's in a workspace, or the lane's own record during a wave. Next-focus
    gives the state of the work and the exact next move: the file being edited, any pending
    decision, the approved stage list, the stage and checkpoint position, and the revised list
    after a re-plan.
