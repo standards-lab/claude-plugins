@@ -53,5 +53,6 @@ under **Validated**, each checkpoint with its evidence. Next-focus is the step a
 Delete `.claude/report.md`. Commit in each touched repository, with the coordinator's record as a
 commit of its own there. Then publish each branch with its repository's `[remote] publish`
 command, using the change description from the record. A project with no remote stops after the
-commit. A wave's lane then leaves its worktrees and removes them with `git worktree remove`
+commit. A wave's lane then tears down each worktree: it stops the worktree's services and
+removes their volumes, leaves the worktree, and removes it with `git worktree remove`
 (`references/workspace-coordination.md`).

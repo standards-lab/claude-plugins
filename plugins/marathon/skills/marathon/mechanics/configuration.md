@@ -14,6 +14,11 @@ kind = "code"        # production source with a build-and-test loop
 platform = "github"  # the platform the project publishes to
 publish  = "gh pr create"
 
+# Optional: the command that finalizes a wave lane's worktree of this repository, run from the
+# worktree's root after the files .worktreeinclude lists are copied.
+[worktree]
+setup = "scripts/worktree-setup.sh"
+
 # Optional: only a workspace coordinator declares this table.
 [workspace]
 role  = "coordinator"
@@ -41,6 +46,9 @@ serves = "org"  # the project, or workspace coordinator, this experiment serves
   context, such as prose, configuration, or skills, which the agent writes directly and which has
   no tests. A context project can still version and release what it ships.
 - **`[remote]`**: the platform, and the command `close` runs to publish a branch.
+- **`[worktree] setup`**: the command that finalizes a wave lane's worktree of this repository,
+  such as remapping ports. It runs after the files `.worktreeinclude` lists are copied in
+  (`references/workspace-coordination.md`).
 - **`[workspace]`**: for the coordinator only. `order` lists layers, lowest first, and an array
   entry is a layer of peers. `[workspace.paths]` gives the location of a key that isn't a sibling
   directory (`references/workspace-coordination.md`).
