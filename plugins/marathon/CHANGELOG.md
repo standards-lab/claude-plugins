@@ -4,6 +4,29 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.14.1
+
+### Added
+
+- **A worktree per wave lane.** The lanes of a wave all commit to the coordinator, so each lane
+  works in a git worktree of its own, at `<repo>/.claude/worktrees/<branch>`, in every repository
+  it touches. The main checkout stays on the default branch while the wave runs. A lane creates
+  the worktree with `git worktree add` and enters it through the harness, then finalizes it:
+  copies the gitignored files `.worktreeinclude` lists, runs the repository's optional
+  `[worktree] setup` command or isolates its Compose ports itself, and runs a quick check.
+  `reset` keeps the worktree and records its path; `close` stops its services, removes their
+  volumes, and removes the worktree. A session running alone keeps the main checkout.
+- **The branch check before every commit.** Every commit a session makes first confirms that
+  the checkout is on the session's branch, and the session stops and reports if it isn't.
+- **`[worktree] setup`** in `.claude/marathon.toml`: the command that finalizes a lane's
+  worktree of the repository, such as remapping ports.
+
+### Migrating
+
+Add `.claude/worktrees/` to `.gitignore` in every workspace repository. Add a `.worktreeinclude`
+listing the gitignored files a worktree needs, and a `[worktree] setup` command to any repository
+whose Compose ports can't be remapped from a gitignored `.env`.
+
 ## v0.14.0
 
 ### Changed

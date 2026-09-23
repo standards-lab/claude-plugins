@@ -10,8 +10,7 @@ repository is developed with marathon, so the workflow runs against its own sour
 - **marathon**: the long-haul development workflow. Each session plans, builds, and closes one
   step, in stages that commit once their check passes and stop at checkpoints the architect
   confirms. It runs on a standalone repository or across a workspace of repositories, and it
-  ships planner, executor, editor, and reviewer subagent profiles. Planned: a worktree per
-  concurrent session. See `git-worktrees.md`.
+  ships planner, executor, editor, and reviewer subagent profiles.
 - **marathon-roadmap**: an extension that keeps `context/roadmap.toml` current through marathon's
   session hooks. The manifest holds the goals, tasks, backlog, and `next` sequence.
 - **marathon-architecture**: an extension that keeps the architecture layer, the principles and
