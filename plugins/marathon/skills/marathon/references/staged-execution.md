@@ -73,6 +73,10 @@ After the last stage commits, validate the whole step as the final checkpoint:
 - **Context**: a read of the whole change for coherence, and the consistency script.
 - **An experiment's final step**: the answer to its question, with the evidence.
 
+When the branch changed prose, the editor pass comes first. Engage the editor profile
+(`behavior/delegation.md`), or edit directly when briefing it would cost more, and commit its
+edits as one stage before the rest of validation runs.
+
 Don't close on a failure. Once the architect confirms, `close` opens with the branch review.
 
 ## Stay within the step
