@@ -9,7 +9,7 @@ workflow; start from `context/README.md`.
 
 Each plugin's design and behavior is expressed in its own files under `plugins/<name>/` — that is the
 source of truth, and `scripts/check.sh` verifies that every pointer inside them resolves. `context/`
-holds the repository's vision, concepts, and session record, not a restatement of how the plugins
+holds the repository's vision and notes for planned work, not a restatement of how the plugins
 work.
 
 ## Repository specifics

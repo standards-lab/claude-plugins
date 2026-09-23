@@ -1,39 +1,36 @@
 # claude-plugins
 
-The Standards Lab organization's Claude Code plugin marketplace. This is the harness level of the
-organization's reference architecture: the agentic infrastructure that codifies the organization's
-development processes, so the same processes are applied consistently across every project. `marathon`
-ships first as v0; the set grows over time. It is managed with marathon itself, so the workflow is
-exercised against its own source.
+claude-plugins is the Standards Lab organization's Claude Code plugin marketplace. It is the
+harness level of the organization's reference architecture: plugins that codify the
+organization's development processes, so every project applies them the same way. The
+repository is developed with marathon, so the workflow runs against its own source.
 
 ## Capability map
 
-Broad and shallow; detail is added when a capability is about to be built.
-
-- **marathon** — the sustainable long-haul development workflow, built on context engineering. The
-  substance of the repository today: it distinguishes code from context projects, executes each
-  step in stages that commit on their check and stop at architect-confirmed checkpoints, and
-  closes with a review of the whole branch. It runs on a standalone repository or in a workspace,
-  where one session can carry a step across several member projects and concurrent lanes run as
-  a wave. It ships planner, executor, and reviewer agent profiles, keeps a flat `context/` of
-  notes, and runs experiments as standalone projects outside the project they serve.
-- **marathon-roadmap** — the first marathon extension: the roadmap manifest convention
-  (`context/roadmap.toml` — goals, tasks, backlog, and a `next` sequence of steps and waves) kept
-  current through marathon's session hooks.
-- **marathon-architecture** — a marathon extension: the architecture layer for principles and
-  conventions that outgrow a single repository, filled by promotion from settled notes through
-  marathon's session hooks.
-- **marathon-sitrep** (candidate) — audience-calibrated situation reports over a date range, read
-  from the workspace's git history, session record, and roadmap deltas; the first enhancement-facet
-  extension. Note: `marathon-sitrep.md`.
-- **marketplace host** — the marketplace manifest and the per-plugin, independent versioning and release of
-  each hosted plugin.
-- **further plugins** (candidate) — the set grows as processes prove worth codifying: diagram
-  generation, dev-blog infrastructure, and skills aligned to the organization's architecture.
+- **marathon**: the long-haul development workflow. Each session plans, builds, and closes one
+  step, in stages that commit once their check passes and stop at checkpoints the architect
+  confirms. It runs on a standalone repository or across a workspace of repositories, and it
+  ships planner, executor, editor, and reviewer subagent profiles.
+- **marathon-roadmap**: an extension that keeps `context/roadmap.toml` current through marathon's
+  session hooks. The manifest holds the goals, tasks, backlog, and `next` sequence.
+- **marathon-architecture**: an extension that keeps the architecture layer, the principles and
+  conventions that apply beyond one repository, filled by promotion from validated notes.
+- **marathon-sitrep** (planned): situation reports over a date range for a chosen audience. See
+  `marathon-sitrep.md`.
+- **marathon-extraction** (planned): carries patterns a consumer proves back to the blueprint.
+  See `marathon-extraction.md`.
+- **marathon-references** (proposed): the references catalog as an extension. See
+  `marathon-references-extension.md`.
+- **Harness testing**: CI checks the repository's consistency, and behavioral tests wait for real
+  failure modes. See `harness-testing.md`.
+- **Marketplace host**: the marketplace manifest, with each plugin versioned and released on its
+  own.
+- **Further plugins** (planned): the set grows as processes prove worth codifying, such as
+  diagram generation, dev-blog infrastructure, and skills for the organization's architecture.
 
 ## How this repository works
 
-- **Plugin design lives in the skill files**, not in `context/`; `scripts/check.sh` verifies that
-  every pointer inside them resolves.
-- Candidates in flight are notes directly under `context/`. The session record is the workspace's single reset file
-  at the coordinator (standards-lab); this repository keeps no `reset.md` of its own.
+- Each plugin's design lives in its own files under `plugins/<name>/`, not in `context/`.
+  `scripts/check.sh` verifies that every pointer inside them resolves.
+- Notes for planned work sit directly under `context/`. The session record is the workspace's
+  reset file at the coordinator (standards-lab), so this repository keeps no `reset.md`.
