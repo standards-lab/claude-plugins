@@ -13,19 +13,24 @@ GitHub releases the tags cut.
   it touches. The main checkout stays on the default branch while the wave runs. A lane creates
   the worktree with `git worktree add` and enters it through the harness, then finalizes it:
   copies the gitignored files `.worktreeinclude` lists, runs the repository's optional
-  `[worktree] setup` command or isolates its Compose ports itself, and runs a quick check.
+  `[worktree] setup` command, sets its Compose project name and host ports in a gitignored
+  `.env`, and runs a quick check.
   `reset` keeps the worktree and records its path; `close` stops its services, removes their
   volumes, and removes the worktree. A session running alone keeps the main checkout.
 - **The branch check before every commit.** Every commit a session makes first confirms that
   the checkout is on the session's branch, and the session stops and reports if it isn't.
+- **Overridable host settings.** Every host-side setting that can collide between checkouts,
+  such as a published Compose port, reads an environment variable whose default is the current
+  value. A lane checks this at SETTLE and adds a stage to fix any setting that doesn't, so it
+  never isolates its worktree by editing a tracked file.
 - **`[worktree] setup`** in `.claude/marathon.toml`: the command that finalizes a lane's
-  worktree of the repository, such as remapping ports.
+  worktree of the repository, such as seeding a database.
 
 ### Migrating
 
 Add `.claude/worktrees/` to `.gitignore` in every workspace repository. Add a `.worktreeinclude`
-listing the gitignored files a worktree needs, and a `[worktree] setup` command to any repository
-whose Compose ports can't be remapped from a gitignored `.env`.
+listing the gitignored files a worktree needs. Rewrite each published Compose host port and host
+bind path as `${VAR:-<current value>}`.
 
 ## v0.14.0
 

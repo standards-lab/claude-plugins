@@ -42,7 +42,9 @@ no sibling declaring itself coordinator.
 2. Work through the scope with the architect to the depth the playbook asks for, and weigh it
    against what the project already has (`behavior/planning.md`). A working session expresses
    the scope as a stage list (`references/staged-execution.md`), which the planner profile may
-   draft (`behavior/delegation.md`). Change nothing until the architect approves.
+   draft (`behavior/delegation.md`). A wave's lane checks its repositories' readiness for a
+   worktree and adds a stage for any setting it can't override
+   (`references/workspace-coordination.md`). Change nothing until the architect approves.
 3. Note the context edits the discussion implies: ideas to capture, notes it rules out, and the
    next focus as it takes shape. A **context** project makes these edits during EXECUTE. A
    **code** project waits until CONCLUDE, so the notes record only what validation proved. A
