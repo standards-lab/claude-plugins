@@ -26,7 +26,8 @@ Apply what the rounds decided, in one commit per kind of change:
 - **Notes**: write a note a coming goal needs, sharpen one, or delete one the discussion ruled
   out (`references/context-engineering.md`).
 - **Goal records**: for a goal homed at the coordinator, create or update its record, such as
-  the brief for its next task. Fire `on-record` first.
+  the brief for its next task, or check a task that `plan` itself completes, such as an intake.
+  When that task is the goal's last, sync it (`mechanics/goals.md`). Fire `on-record` first.
 - **Intake**: update the experiment's catalog entry and archive its remote
   (`commands/experiment.md`).
 

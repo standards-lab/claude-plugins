@@ -75,7 +75,8 @@ names. When the context fills, run `reset` on your own (`commands/reset.md`).
 ### 5 · BRIEF
 
 1. Write the session brief (`references/briefs.md`) to `.claude/brief.md` in the home
-   repository's checkout, and set State to `brief ready`.
+   repository's checkout, and set State to `brief ready`. If that repository's `.gitignore`
+   doesn't list `.claude/brief.md`, add the line on the task's branch first.
 2. Show it, and wait for the architect. **[touch 2]**
    - **Accept**: continue with SHIP.
    - **Redirect**: treat the redirect as gaps, return to BUILD, and brief again. A redirect that
