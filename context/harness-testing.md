@@ -1,29 +1,54 @@
 # Harness testing
 
-This note covers what is worth testing about a workflow skill, and where those tests belong in
-CI. The deeper evaluation is tracked as `v1.harness.testing`. It waits for real failure modes to
-appear, and for `claude plugin eval` to be available in this environment.
+This note covers how the plugins in this repository are tested. Plugin evals are their automated
+checks, the first of the three quality layers in `marathon-factory.md`. The work is tracked as
+`factory.evals`.
 
-## What CI checks
+## Per push: consistency
 
-CI validates what can be checked mechanically: that version numbers agree, that file references
-resolve, and that each marketplace source points to a plugin. `scripts/check.sh` runs these
-checks. They stay cheap, deterministic, and always on.
+`scripts/check.sh` runs in CI on every push. It checks that:
 
-## Behavioral testing
+- the version numbers agree
+- the `@` pointers and `./` links resolve
+- each marketplace source points to a plugin
 
-Behavioral tests of the skill have no place in CI until an evaluation justifies them. The
-evaluation answers four questions:
+It stays cheap, deterministic and always on.
 
-- Which failure modes have occurred in real sessions.
-- Whether a test fixture can catch each one cheaply.
-- What a test run costs.
-- Whether `claude plugin eval` is the right tool to run the fixtures.
+## Per release: plugin evals
 
-Fixtures written before any failure has occurred test guesses, not regressions. The workflow
-changes through real use, so the first fixtures come from failures that actually happen.
+`claude plugin eval` runs a plugin against a suite of cases and scores each one. Each case is a
+realistic prompt plus one or more graders. It is available in this environment.
+
+- **Layout.** Each plugin keeps its suite in `plugins/<name>/evals/`, one directory per case, with
+  `prompt.md`, `graders/`, and a `case.yaml` and scaffold script when the case needs a fixture
+  repository. `results/` is gitignored.
+- **Cases come from failures.** A case is added when a real session fails in a way the plugin
+  should prevent. The retro sends that failure here (`marathon-factory.md`, "The retro"). A case
+  written before any failure would test a guess, not a regression.
+- **Graders are deterministic where possible.** `tool_used`, `tool_order`, `regex` and
+  `file_exists` cost nothing and read the same way every run. An `llm` grader judges only short
+  output, with its rubric written as concrete PASS and FAIL conditions. Each case grades both
+  the result and the steps that produced it.
+- **The release gate.** The release script runs `scripts/check.sh` and then
+  `claude plugin eval --threshold 1.0`. A plugin doesn't release while a case fails. Evals
+  don't run on every push, because each run costs model calls.
+
+## The seed suite
+
+The seed suite covers the contract `factory.pipeline` introduces:
+
+- **implementer-no-standards:** the implementer never reads `STANDARDS.md` (`tool_used Read`,
+  `input_match STANDARDS`, `min 0`, `max 0`).
+- **reviewer-commits:** the standards-reviewer commits its fixes (`tool_used Bash`,
+  `input_match git commit`).
+- **brief-shape:** the session brief has Summary, Core changes, Evidence and Merge danger
+  (`regex`).
+- **plan-round-format:** plan-round questions are numbered, each with a recommendation
+  (`regex`).
 
 ## Assumptions
 
-- Real sessions surface concrete failure modes, and each one is worth fixing in the skill before
-  any is worth encoding as a fixture.
+- Fixture repositories made by a scaffold script are enough to exercise a whole task without
+  network access.
+- The no-plugin baseline means little for a workflow plugin. Cases run with `--ablation none`
+  unless they test whether a skill fires.
