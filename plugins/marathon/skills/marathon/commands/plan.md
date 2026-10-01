@@ -27,6 +27,10 @@ Apply what the rounds decided, in one commit per kind of change:
   out (`references/context-engineering.md`).
 - **Catalog and configuration**: the workspace's repository catalog, `order`, and
   `marathon.toml`.
+- **Goal setup**: for an active goal with no `root` yet, run `init` in each repository the rounds
+  decided (`commands/init.md`), add them to `order` and the repository catalog, set the goal's
+  `root` and `repos`, and create the goal record in the root with the tasks the rounds settled
+  checked. Until then the goal locks nothing, and `start` on it stops and asks for this `plan`.
 - **A next brief**: when an active goal's root is on its default branch with no task in
   progress, write the approved brief for its next task into the goal record there, as a direct
   commit, firing `on-record` first. The next `start` presents it for approval without new rounds.

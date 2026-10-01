@@ -29,7 +29,8 @@ this file names (`mechanics/hooks.md`).
 2. Read the manifest (`references/manifest.md`): the project's own `context/roadmap.toml`, or the
    coordinator's. First pull the coordinator's default branch. Resolve every repository name the
    goal uses through `order`, `[workspace.paths]`, or a spike task's `path`.
-3. Find the goal: the one the architect names, which must be in `active`. With none named, print
+3. Find the goal: the one the architect names, which must be in `active` and have a `root`; one
+   without a `root` is set up by `plan` first (`commands/plan.md`). With none named, print
    the status digest (`commands/status.md`) and ask. A goal that isn't active is staged by `plan`
    first (`mechanics/goals.md`).
 4. Find where the goal stands, in this order:

@@ -30,7 +30,9 @@ Three verbs move goals:
 
 - **stage**: put a goal in `active`, from `planned`, `backlog`, or as a new goal. Staging
   requires a `root` among the goal's `repos`, `repos` that cover every repository its tasks
-  touch other than the coordinator, and a free lock.
+  touch other than the coordinator, and a free lock. A goal whose repositories don't exist yet
+  is staged without them, and its first session is a `plan` that sets it up
+  (`commands/plan.md`).
 - **sync**: carry a finished goal's context into the workspace, then delete the goal
 - **pivot**: edit any of the three arrays, at any time, as the architect decides
 
