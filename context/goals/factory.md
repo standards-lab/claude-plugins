@@ -8,7 +8,8 @@
 
 1. [x] pipeline
 2. [x] goals
-3. [ ] evals
+3. [ ] experiments
+4. [ ] evals
 
 ## Decisions
 
@@ -18,6 +19,8 @@
 - goals: a goal's record lives in its `root`, one of the repositories it locks; the coordinator
   changes only through `plan` and sync, and sync deletes last.
 - goals: experiments are goals under `experiment`, with spikes as tasks and the intake last.
+- experiments: runs before evals, as the first `start factory` under 0.16. Spikes become sub-goals,
+  and the new `intake` command takes in a finished experiment.
 - evals: runs under the reinstalled 0.16. Defects its cases expose ship as 0.16.x patches, and the
   eval gate starts with the next release.
 - The workspace alignment once planned as `factory.alignment` is spread over `quality.checks`,
