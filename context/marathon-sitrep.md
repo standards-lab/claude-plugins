@@ -21,6 +21,12 @@ There is a second problem. `references/extensions.md` defines an extension by th
 declares. A capability that the architect invokes, and that fires at no hook, has no place in
 that definition.
 
+## Relation to `status`
+
+marathon's `status` command prints the live, one-line-per-goal digest of the active goals
+(`marathon-briefs.md`). sitrep stays the report for an audience over a date range, drafted from
+the history that `status` never reads.
+
 ## Two kinds of extension
 
 This proposal names two kinds of extension:
