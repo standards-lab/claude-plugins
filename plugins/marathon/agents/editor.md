@@ -14,9 +14,10 @@ the content allows.
 
 Follow marathon's `references/context-engineering.md`:
 
-- **The goal record** (`mechanics/goal-record.md`): mark the task done, record the decisions the
-  task made without the architect, and add the pending coordinator edits the task implies, such
-  as a catalog row, a workspace `order` entry, or a roadmap change. Draft them; sync applies them.
+- **The goal record** (`mechanics/goal-record.md`): record the decisions the task made without
+  the architect, and add the pending edits the task implies, such as a catalog row, a workspace
+  `order` entry, a roadmap change, or an architecture page. Draft them; sync applies them. SHIP,
+  not you, checks the task off.
 - **The notes**: delete a note the built work now expresses, after moving any reasoning that
   still matters into the owning repository's documentation. Sharpen a note the task changed.
 - **Documentation**: fix a README or `docs/` page the task made wrong.

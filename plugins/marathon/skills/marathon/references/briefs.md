@@ -51,8 +51,8 @@ Door          two-way | one-way (why)
 
 The session brief is the architect's view of the finished task, and the body of its pull request.
 The diff is already committed when the architect reads it and isn't visible in the terminal, so
-Core changes carries the code that matters. The session writes it to `.claude/brief.md`, which
-the repository gitignores.
+Core changes carries the code that matters. The session writes it to `.claude/briefs/<goal>.md` in the
+goal's root, which gitignores `.claude/briefs/`.
 
 ```
 ## v1.ai.experiment · task 3/5 · harness-adapters

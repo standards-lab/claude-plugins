@@ -75,4 +75,4 @@ on the goal resumes BUILD from there without asking the architect.
 
 Make no opportunistic refactors or unrelated cleanups. When a change outside the task looks
 worthwhile, record it as a note, or as a roadmap change under the goal record's pending
-coordinator edits, and leave it.
+edits, and leave it.

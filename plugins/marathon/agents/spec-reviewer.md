@@ -11,7 +11,7 @@ in a separate context.
 
 ## What you check
 
-Read the diff against the default branch (`git diff main...HEAD`), then run the behavior: the
+Read the diff against the default branch (`git diff <default>...HEAD`), then run the behavior: the
 check, and whatever exercises each numbered behavior at its test seam, such as a command, an
 example program, or a walkthrough of changed prose on a context project. Report:
 

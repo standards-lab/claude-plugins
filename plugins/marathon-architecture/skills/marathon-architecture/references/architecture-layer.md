@@ -32,7 +32,7 @@ can enforce goes in the check, not in `STANDARDS.md` and not in a page.
 
 A page arrives only from validated code. When the same principle is expressed in more than one
 repository's merged code, `retro` proposes it as a finding, and the architect's tick makes it a
-task: in a workspace, a task of a goal homed in the architecture repository; when standalone, a
+task: in a workspace, a task of a goal that locks the architecture repository; when standalone, a
 task in the project. That task writes the page and adds the pointer to each `STANDARDS.md` that
 should follow it.
 

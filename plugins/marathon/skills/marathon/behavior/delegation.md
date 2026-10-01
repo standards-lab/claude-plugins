@@ -30,7 +30,7 @@ a fresh context.
   delegate that reaches beyond its unit reports back, and the session decides whether to escalate
   (`references/build.md`).
 - Only the implementer and the standards-reviewer commit, and each first confirms the checkout is
-  on the task's branch. No delegate publishes, merges, or writes the goal record's state; the
-  editor drafts the record's content and the session commits it.
+  on the task's branch. No delegate publishes, merges, or writes the goal record's State or Tasks;
+  the editor drafts the record's Decisions and Pending edits, and the session commits them.
 - The session does a unit itself when briefing a delegate would cost more than the work, such as a
   one-line fix. It never implements and reviews the same work itself.

@@ -34,8 +34,9 @@ Order constraints:
 - `reset` fires `on-record` and never `on-ship`.
 - `plan`, `experiment`, and `retro` fire `on-start`, and `on-record` before any commit that
   writes a goal record.
+- A sync fires `on-record` before it reads the record's pending edits.
 - `init` fires `on-start` only.
 
-An enabled extension whose artifact doesn't exist yet creates it at `on-start`. A hook's change
-to an artifact in another repository goes in the goal record's pending coordinator edits when
-that repository is the coordinator, and is otherwise committed on the task's branch there.
+An enabled extension whose artifact doesn't exist yet creates it at `on-start`. During a task, a
+hook's change to an artifact in another repository goes in the goal record's pending edits, and
+sync applies it.

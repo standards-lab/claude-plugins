@@ -9,7 +9,7 @@ PLAN   architect ⇄ planner, in rounds → task brief + slices     ✔ approve 
 BUILD  per slice: implementer → check; then standards-reviewer,
        spec-reviewer (gaps → implementer), editor
 BRIEF  session brief                                             ✔ accept / redirect [touch 2]
-SHIP   update the goal record (sync if last task) → publish (body = brief) → merge
+SHIP   commit the goal record → publish (body = brief) → merge → sync if last task
 ```
 
 Each playbook under `commands/` says which stages it runs. Extension hooks fire only at the points
@@ -25,21 +25,25 @@ this file names (`mechanics/hooks.md`).
    - A **workspace** is a directory of projects, one of which declares itself coordinator in its
      `.claude/marathon.toml` (`mechanics/configuration.md`). Starting at the workspace root and
      starting inside a member are the same case.
-2. Read the manifest (`references/manifest.md`): the project's own `context/roadmap.toml`, the
-   coordinator's, or for an experiment, that of the project its `[experiment] serves` names. First
-   pull the default branch of the repository that holds the manifest.
+   - An **experiment's spike** names the coordinator's path in `[experiment] serves`.
+2. Read the manifest (`references/manifest.md`): the project's own `context/roadmap.toml`, or the
+   coordinator's. First pull the coordinator's default branch. Resolve every repository name the
+   goal uses through `order`, `[workspace.paths]`, or a spike task's `path`.
 3. Find the goal: the one the architect names, which must be in `active`. With none named, print
    the status digest (`commands/status.md`) and ask. A goal that isn't active is staged by `plan`
    first (`mechanics/goals.md`).
-4. Read the goal record (`mechanics/goal-record.md`) from its home's working tree, and route on
-   its State:
-   - no record, or `idle`: the next unchecked task. Continue with START, then PLAN.
-   - `planning`: continue the open plan round. START, then PLAN.
-   - `building` or `handoff`: resume. START, then RESUME.
-   - `brief ready`: START, then BRIEF.
-5. Check the lock: every repository the task touches is on its default branch with a clean
-   working tree, apart from this goal's own uncommitted record, or on the task's branch. Anything else means another session holds it: stop and
-   report.
+4. Find where the goal stands, in this order:
+   - A plan file under `.claude/plans/` whose title names the goal holds an open plan round:
+     continue it. START, then PLAN.
+   - Otherwise read the goal record (`mechanics/goal-record.md`) from the root's working tree. If
+     the root is on its default branch and a local branch named for the next unchecked task
+     exists, read the record from that branch instead. Route on its State:
+     - no record, or `idle`: the next unchecked task. START, then PLAN.
+     - `building` or `handoff`: resume. START, then RESUME.
+     - `brief ready`: START, then BRIEF.
+5. Check the lock: every repository the task touches, other than the coordinator, is on its
+   default branch with a clean working tree, or on the task's branch. Anything else means another
+   session holds it: stop and report.
 
 ### 2 · START
 
@@ -49,17 +53,19 @@ this file names (`mechanics/hooks.md`).
 
 ### 3 · PLAN
 
-1. Enter plan mode and set State to `planning` in the goal record's working tree. A record in a
-   member home stays uncommitted until step 5's branch carries it.
+1. Enter plan mode. The plan file holds the session's planning state: title it with the goal and
+   task, and keep each round, its answers, and the drafted brief in it.
 2. Run plan rounds with the architect (`behavior/planning.md`, `references/briefs.md`). The
    planner profile finds the facts and drafts each round, then the task brief and its slices
-   (`behavior/delegation.md`).
+   (`behavior/delegation.md`). When the record already holds an approved brief for this task,
+   skip the rounds.
 3. Present the task brief for approval. Nothing changes until the architect approves. **[touch 1]**
 4. On approval, fire `on-build`.
 5. Create the task's branch, named by the task's slug, from the fetched default branch in each
-   repository the task touches, except the coordinator, which takes direct commits.
-6. Write the brief into the goal record, creating the record if it doesn't exist, and set State to
-   `building`.
+   repository the task touches. The coordinator gets no branch.
+6. Log the plan into the goal record, creating the record if it doesn't exist: the brief under
+   Task brief, and one line per settled question under Decisions. Set State to `building`, then
+   delete the plan file.
 
 ### 3R · RESUME
 
@@ -71,13 +77,14 @@ this file names (`mechanics/hooks.md`).
 ### 4 · BUILD
 
 Run the build loop in `references/build.md` without stopping. Escalate only for what that file
-names. When the context fills, run `reset` on your own (`commands/reset.md`).
+names. A change the task owes the coordinator goes in the record's pending edits, never into the
+coordinator during BUILD. When the context fills, run `reset` on your own (`commands/reset.md`).
 
 ### 5 · BRIEF
 
-1. Write the session brief (`references/briefs.md`) to `.claude/brief.md` in the home
-   repository's checkout, and set State to `brief ready`. If that repository's `.gitignore`
-   doesn't list `.claude/brief.md`, add the line on the task's branch first.
+1. Write the session brief (`references/briefs.md`) to `.claude/briefs/<goal>.md` in the root's
+   checkout, and set State to `brief ready`. If the root's `.gitignore` doesn't list
+   `.claude/briefs/`, add the line on the task's branch first.
 2. Show it, and wait for the architect. **[touch 2]**
    - **Accept**: continue with SHIP.
    - **Redirect**: treat the redirect as gaps, return to BUILD, and brief again. A redirect that
@@ -87,22 +94,22 @@ names. When the context fills, run `reset` on your own (`commands/reset.md`).
 
 1. Fire `on-ship`.
 2. Update the goal record: check the task, add its decisions, set State to `idle` and Task to
-   none, and clear Progress. When this is the goal's last task, sync instead
-   (`mechanics/goals.md`, "Sync").
-3. Fire `on-record`, then commit the record where it lives (`mechanics/goal-record.md`).
+   none, and clear Progress.
+3. Fire `on-record`, then commit the record on the task's branch.
 4. Publish each touched repository's branch with its `[remote] publish` command, lowest layer
-   first, using `.claude/brief.md` as the body (for GitHub, `--body-file`).
+   first, using the brief file as the body (for GitHub, `--body-file`).
 5. Merge each one with its `[remote] merge` command, lowest layer first, once its checks pass.
-   Without a merge command, stop here and tell the architect the pull requests are open.
+   Without a merge command, or when a check fails, set State to `handoff` with the next move
+   ("merge" or the failing check), commit it on the branch, tell the architect, and stop.
 6. Switch each repository back to its default branch, pull, and delete the local task branch.
-   Delete `.claude/brief.md`. A last task finishes its sync at the coordinator now.
+   Delete the brief file.
+7. When this was the goal's last task, sync (`mechanics/goals.md`, "Sync").
 
 ## Committing
 
 Before every commit, any agent confirms the checkout is on the task's branch, on the
-coordinator's default branch for a coordinator commit, or on the `retro-<topic>` branch of a
-`retro`. A checkout on any other branch means the
-session stops and reports.
+coordinator's or root's default branch for a `plan` edit or a sync, or on the `retro-<topic>`
+branch of a `retro`. A checkout on any other branch means the session stops and reports.
 
 ## How each command uses the pipeline
 
@@ -124,4 +131,5 @@ session stops and reports.
 - Nothing changes before the architect approves the task brief, except a RESUME of an approved
   one.
 - Nothing is published before the architect accepts the session brief.
+- The coordinator changes only through `plan` and sync.
 - On a code project, notes state only what validated work proved.

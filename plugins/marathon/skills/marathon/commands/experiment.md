@@ -1,8 +1,10 @@
 # marathon experiment
 
 Spike an idea before committing to it, when you need to learn whether a design or an approach
-works. A spike is a goal homed in a repository of its own, outside the project or workspace it
-serves, so it runs beside the served project's goals. The `experiment` session only sets it up.
+works. Experiments are goals under `experiment`, named for the topic they investigate:
+`experiment.ai` settles what `v1.ai` is built from. Each spike is a task of its experiment goal,
+named for the spike's repository, which lives outside the project or workspace it serves. The
+experiment's last task is the intake. The `experiment` session sets up one spike.
 
 An experiment decides nothing on its own: a spike that works is evidence, not a decision.
 
@@ -15,40 +17,40 @@ Settle in plan rounds:
 - **The question** the spike answers, and the decision its answer changes. If the decision is the
   same either way, don't run the experiment.
 - **The evidence**: a numbered list of what the spike must show to answer the question.
-- **Where it lives**: the local directory, and the account or organization that hosts its
-  repository. Assume neither from the served project. Propose the architect's standing convention
-  when the served project's context records one. An experiment always has a remote.
-- **`init`'s founding decisions** (`commands/init.md`).
-- **The catalog**: the file where the served project lists its experiments or repositories, or a
-  new one if it has none.
-- **The goal**: its slug, its tasks (the spike's path, one task per session), and the task of the
-  served goal that will take in the result.
+- **The experiment goal**: an existing `experiment.<topic>` the spike joins, or a new one with an
+  `intake` task last.
+- **Where it lives**: the local directory and the remote. Propose the workspace's convention when
+  the coordinator's `[workspace.experiments]` declares one (`mechanics/configuration.md`);
+  otherwise assume neither from the served project. An experiment always has a remote.
+- **`init`'s founding decisions** (`commands/init.md`), with the spike's path as its first steps.
 
 ## Setup
 
-1. Run `init` at the settled location with the settled decisions. Its `[experiment]` table names
-   the project it serves (`mechanics/configuration.md`), and its `context/README.md` states the
-   question, the evidence list, and the goal it serves.
-2. Record the repositories the experiment reads, using the served project's own convention. In a
+1. Run `init` at the settled location with the settled decisions. Its `[experiment] serves`
+   holds the coordinator's path (`mechanics/configuration.md`), and its `context/README.md`
+   states the question, the evidence list, and the experiment goal.
+2. Record the repositories the spike reads, using the served project's own convention. In a
    workspace, that is a committed list of remotes plus a gitignored map to local checkouts, both
-   in the coordinator. The experiment reads those repositories and never writes to them. Its code
+   in the coordinator. The spike reads those repositories and never writes to them. Its code
    dependencies are published versions, never a replace directive.
 3. Create the repository on the settled host and push.
-4. At the served project, in direct commits: add the spike's goal to the manifest with `home` and
-   `repos` set to the spike's repository, stage it into `active`, and add the experiment to the
-   catalog.
+4. At the coordinator, in one direct commit: add the spike as a task of its experiment goal, with
+   its `remote` and `path` (`references/manifest.md`), add its repository to the goal's `repos`,
+   and stage the goal into `active` if it isn't already. A new goal's `root` is its first spike.
 
-The architect then runs the spike with `start <goal>`, from either directory. Each task's session
-brief narrates the evidence it produced. The last task's validation is the answer to the
-question, with the evidence. The goal record carries the answer as a pending coordinator edit
-to the served goal's intake task, which sync applies.
+The architect then runs the spike with `start experiment.<topic>`. Each task's session brief
+narrates the evidence it produced, and the spike task's last brief gives the answer to its
+question, with the evidence.
 
 ## Intake
 
-A `plan` session in the served project takes in the result as a spike intake
-(`references/briefs.md`), decides with the architect what the project takes from it, and records
-that as notes and roadmap work. A result that deserves its own repository gets a task that runs
-`init` in a new sibling directory and rebuilds the result there, instead of copying the spike. The
-same session confirms the experiment is pushed, archives its remote as read-only
-(`gh repo archive` on GitHub), and keeps the catalog entry as the pointer to it. The experiment
-never edits the served project.
+The experiment's last task is its intake, a `start` session led by the spike intake round
+(`references/briefs.md`, "Spike intake"). It decides with the architect what the served goal takes
+from each answer, and records the decisions in the goal record: notes and roadmap work for the
+coordinator, such as the served goal's tasks, as pending edits. A result that deserves its own
+repository becomes a task of the served goal that runs `init` in a new sibling directory and
+rebuilds the result there, instead of copying the spike.
+
+The intake's sync applies those edits, moves each spike into the workspace's repository catalog
+as archived, and archives the spikes' remotes (`mechanics/goals.md`, "Sync"). The spikes never
+edit the served project.

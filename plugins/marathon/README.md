@@ -29,7 +29,7 @@ Run a command as `marathon <command>` or `/marathon:marathon <command>`.
 | `init` | Sets up marathon on a repository, once, from a planning concept. |
 | `plan` | Stages, reorders, or drops goals, sharpens notes, and takes in spikes, in direct commits. |
 | `start <goal>` | Runs the goal's next task: plan, build, brief, ship, and sync on the last task. |
-| `experiment` | Sets up a spike as a goal homed in its own repository. |
+| `experiment` | Sets up a spike as a task of an `experiment.<topic>` goal. |
 | `status` | Prints one line per active goal, with what needs the architect first. |
 | `retro` | Turns comments on past work into checks, standards, skill changes, or notes. |
 | `reset` | Hands off a task partway; runs on its own when the context fills. |
@@ -52,9 +52,9 @@ scope beyond the task. See [`mechanics/pipeline.md`](./skills/marathon/mechanics
 The roadmap manifest, `context/roadmap.toml`, holds goals (outcomes) and their tasks (one
 session's work each). Every goal is `active`, `planned`, or `backlog`. Active goals run side by
 side, and each locks the repositories it touches, so no two share one and no worktrees are needed.
-A goal's record, `context/goals/<goal>.md` in its home repository, holds its tasks, the current
-brief, progress, decisions, and the edits it owes the coordinator, which sync applies when its
-last task ships. See [`mechanics/goals.md`](./skills/marathon/mechanics/goals.md).
+A goal's record, `context/goals/<goal>.md` in its root repository, holds its tasks, the current
+brief, progress, decisions, and the edits it owes other repositories, which sync applies when its
+last task ships. The coordinator changes only through `plan` and sync. See [`mechanics/goals.md`](./skills/marathon/mechanics/goals.md).
 
 ## Project kinds
 

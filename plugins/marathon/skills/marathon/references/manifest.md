@@ -12,6 +12,9 @@ and no timestamps.
   (`[goals.v1.data]`). A backlog goal is an ordinary goal table.
 - A goal's tasks sit under its reserved `tasks` table (`[goals.v1.data.tasks.reads]`). The goal
   record orders them.
+- An experiment is a goal under the reserved root goal `experiment`, named for the topic it
+  investigates (`[goals.experiment.ai]`). Each of its spikes is a task named for the spike's
+  repository, and its last task is the intake (`commands/experiment.md`).
 
 An entry's full key is its identity. Renaming a slug means updating every reference to it.
 
@@ -21,8 +24,10 @@ A goal has these fields:
 
 - `name`: the outcome, as a title.
 - `summary`: what it means for this outcome to hold.
-- `home` (optional): the repository that holds its goal record.
-- `repos` (optional): the repositories it locks while active.
+- `repos` (optional): the repositories it locks while active. An active goal's `repos` cover
+  every repository its tasks touch, other than the coordinator.
+- `root` (optional): the repository, one of `repos`, that holds the goal record and receives the
+  context the goal syncs. Every active goal has one.
 - `criteria` (optional): the statements that close the goal once they all hold.
 - `context` (optional): the files that carry the detail.
 
@@ -34,9 +39,13 @@ A task has these fields:
 - `proof` (optional): the observable result that shows it is done.
 - `context` (optional): the files that carry the detail.
 
-`home` and `repos` default to the nearest ancestor's values. With none to inherit, `home` is the
-coordinator (or the project, when standalone), and `repos` is empty: the goal touches only the
-coordinator's `context/`.
+A spike task under an experiment goal adds:
+
+- `remote`: the spike repository's remote.
+- `path`: the spike's local project directory.
+
+`root` and `repos` default to the nearest ancestor's values. A goal with no `repos` touches only
+the coordinator's `context/`, so only `plan` works on it and it has no record.
 
 `context` entries are file paths: relative to the workspace in a workspace
 (`go-web-service/context/data-layer.md`), and relative to the repository otherwise.
@@ -44,14 +53,15 @@ coordinator's `context/`.
 ## Citing entries
 
 Everything outside the manifest cites a goal or task by its dotted path, leaving out the `goals`
-and `tasks` segments: `v1.data.reads`, `docs-site`. Slugs never contain dots.
+and `tasks` segments: `v1.data.reads`, `experiment.ai.spike-harness-driver`, `docs-site`. Slugs
+never contain dots.
 
 ## Lifecycle
 
 - **Only what remains**: sync deletes a finished goal's table with everything under it. A task's
   table stays until then, and the goal record shows its progress. A stale entry is a defect, and
-  the session that finds it fixes it, or records it under the goal record's pending coordinator
-  edits when the manifest is in another repository.
+  the session that finds it fixes it, or records it under the goal record's pending edits when
+  the manifest is in another repository.
 - **Detail only at the front**: an active goal's next task carries detail. Every other entry stays
   a short statement, with its detail in the linked files.
 
@@ -75,7 +85,7 @@ backlog = []
 # Roadmap: what remains on the path to the target end state. The format is marathon's
 # references/manifest.md.
 
-active = ["v1.data", "spike-cache"]
+active = ["v1.data", "experiment.cache"]
 planned = ["v1.messaging"]
 backlog = ["docs-site"]
 
@@ -86,6 +96,7 @@ criteria = ["Every capability goal beneath this one is closed."]
 
 [goals.v1.data]
 name = "Data layer"
+root = "service"
 repos = ["service"]
 summary = "A composed data model over plain SQL with a CQRS-oriented interface."
 context = ["service/context/data-layer.md"]
@@ -104,15 +115,30 @@ name = "Messaging"
 repos = ["messaging-lib", "service"]
 summary = "A messaging library and the reactor services it enables."
 
-[goals.spike-cache]
+[goals.experiment]
+name = "Experiments"
+summary = "The spikes that settle what a goal is built from."
+
+[goals.experiment.cache]
 name = "Does a read-through cache pay for itself?"
-home = "spike-cache"
+root = "spike-cache"
 repos = ["spike-cache"]
-summary = "A spike answering whether the reads need a cache before v1."
+summary = "Whether the reads need a cache before v1."
+
+[goals.experiment.cache.tasks.spike-cache]
+name = "spike-cache"
+remote = "https://github.com/example/spike-cache.git"
+path = "~/experiments/spike-cache"
+summary = "Runs its path to the answer."
+
+[goals.experiment.cache.tasks.intake]
+name = "The cache intake"
+summary = "Decides what v1.data takes from the answer, as pending edits."
 
 [goals.docs-site]
 name = "The docs site"
 summary = "The documentation site that serves the project's published pages."
 ```
 
-`v1.messaging` stays planned while `v1.data` holds `service`.
+`v1.messaging` stays planned while `v1.data` holds `service`, and it gains its `root` when it is
+staged.

@@ -14,7 +14,7 @@ Two rules follow:
 ## What `context/` holds
 
 The directory is flat, with no subdirectories, except `context/goals/`, which holds the records
-of the goals homed in this repository (`mechanics/goal-record.md`):
+of the goals rooted in this repository (`mechanics/goal-record.md`):
 
 - `context/README.md`: stable orientation. A short statement of the vision, and a broad, shallow,
   unordered map of the capabilities the project will need.

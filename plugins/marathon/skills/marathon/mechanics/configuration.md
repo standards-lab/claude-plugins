@@ -34,9 +34,14 @@ order = [
 [workspace.paths]
 core-lib = "~/code/core-lib"
 
+# Optional: the hosting convention `experiment` proposes for a new spike.
+[workspace.experiments]
+path   = "~/experiments/spike-<slug>"
+remote = "https://github.com/<owner>/spike-<slug>.git"
+
 # Optional: only an experiment declares this table.
 [experiment]
-serves = "org"  # the project, or workspace coordinator, this experiment serves
+serves = "~/code/org"  # the path of the coordinator, or project, whose roadmap holds the spike
 ```
 
 ## Keys
@@ -53,8 +58,9 @@ serves = "org"  # the project, or workspace coordinator, this experiment serves
   entry is a layer of peers. `exclusive` lists groups of repositories that at most one active goal
   may touch at a time, narrowing the repository lock (`mechanics/goals.md`). `[workspace.paths]`
   gives the location of a key that isn't a sibling directory
-  (`references/workspace-coordination.md`).
-- **`[experiment]`**: for an experiment only. `serves` names the project, or the workspace's
-  coordinator, whose roadmap holds the spike's goal (`commands/experiment.md`).
+  (`references/workspace-coordination.md`). `[workspace.experiments]` gives the local path and
+  remote a new spike takes, with `<slug>` replaced (`commands/experiment.md`).
+- **`[experiment]`**: for a spike only. `serves` is the path of the coordinator, or the
+  standalone project, whose roadmap holds the spike's experiment goal (`commands/experiment.md`).
 - **`extensions`**: the enabled extensions, by skill name. Under `[project]`, they apply to this
   repository. Under `[workspace]`, they apply to every member (`references/extensions.md`).

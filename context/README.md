@@ -13,11 +13,8 @@ repository is developed with marathon, so the workflow runs against its own sour
   between. See `marathon-factory.md` for the pipeline and profiles, `marathon-goals.md` for goals
   as the unit of parallel work, `marathon-briefs.md` for what the architect reads, and
   `marathon-commands.md` for the command set.
-- **marathon-roadmap**: the extension that keeps `context/roadmap.toml` current. It folds into
-  marathon core in `factory.goals` (`marathon-goals.md`).
-- **marathon-architecture**: the extension that keeps the architecture layer. It shrinks to the
-  pointers each repository's `STANDARDS.md` follows, which only the standards-reviewer reads
-  (`marathon-factory.md`).
+- **marathon-architecture**: the extension that finds the architecture layer each repository's
+  `STANDARDS.md` points to, so the standards-reviewer can apply it.
 - **marathon-sitrep** (planned): situation reports over a date range for a chosen audience. See
   `marathon-sitrep.md`.
 - **marathon-extraction** (planned): carries patterns a consumer proves back to the blueprint.
@@ -36,5 +33,6 @@ repository is developed with marathon, so the workflow runs against its own sour
 
 - Each plugin's design lives in its own files under `plugins/<name>/`, not in `context/`.
   `scripts/check.sh` verifies that every pointer inside them resolves.
-- Notes for planned work sit directly under `context/`. The session record is the workspace's
-  reset file at the coordinator (standards-lab), so this repository keeps no `reset.md`.
+- Notes for planned work sit directly under `context/`. The `factory` goal is rooted here, so its
+  record is `context/goals/factory.md`; the workspace roadmap is at the coordinator
+  (standards-lab).

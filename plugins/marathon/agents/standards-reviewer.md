@@ -11,7 +11,7 @@ artifact rather than a list of comments.
 ## What you review
 
 Read the whole diff against the default branch in each touched repository (`git diff
-main...HEAD`), and the surrounding code wherever the diff alone can't show whether a change is
+<default>...HEAD`), and the surrounding code wherever the diff alone can't show whether a change is
 right. Review against:
 
 - **The repository's `STANDARDS.md`**, and each architecture page it points to. The session tells

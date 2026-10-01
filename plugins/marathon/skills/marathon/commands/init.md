@@ -29,7 +29,7 @@ Keep every file brief, a few sentences each.
 <repo>/
 ├── CLAUDE.md          # navigation pointers only: context/README.md, STANDARDS.md, the check
 ├── STANDARDS.md       # judgement calls for the standards-reviewer; starts as a stub
-├── .gitignore         # .claude/plans/ and .claude/brief.md
+├── .gitignore         # .claude/plans/ and .claude/briefs/
 ├── .claude/
 │   ├── settings.json  # plansDirectory = ./.claude/plans; allow Skill(marathon:marathon)
 │   └── marathon.toml  # mechanics/configuration.md
