@@ -1,9 +1,10 @@
 # marathon
 
-A workflow for long-running development built on context engineering. marathon treats the
-repository as the only source of truth. It keeps a top-level `context/` directory of notes,
-deletes each note once the code expresses it, and runs the work as small sessions, each of which
-finishes one step on its own branch.
+A workflow for long-running development, run as a software factory. marathon treats the
+repository as the only source of truth: a top-level `context/` directory of notes, a roadmap
+manifest of goals and tasks, and one record per active goal. Each session takes one task from an
+approved plan to merged work. The architect approves the task brief and accepts the session brief;
+subagents implement, review, and keep the context current in between.
 
 This README is a quick reference. The skill's files under [`skills/marathon/`](./skills/marathon/)
 define how marathon behaves: `SKILL.md`, the `commands/` playbooks, the `mechanics/` specifications,
@@ -16,7 +17,7 @@ claude plugin marketplace add standards-lab/claude-plugins
 claude plugin install marathon@standards-lab
 ```
 
-Then run `marathon init` in a repository to set it up, or `marathon start` in a repository that
+Then run `marathon init` in a repository to set it up, or `marathon status` in a repository that
 already has a top-level `context/` directory.
 
 ## Commands
@@ -26,49 +27,56 @@ Run a command as `marathon <command>` or `/marathon:marathon <command>`.
 | Command | What it does |
 |---------|--------------|
 | `init` | Sets up marathon on a repository, once, from a planning concept. |
-| `plan` | Runs a planning session that changes only `context/`: refines notes and decides the next step. |
-| `start` | Advances the product one concrete step. |
-| `experiment` | Sets up a spike as a standalone project. |
-| `reset` | Hands off partway through a step, so a new session can resume the same branch. |
-| `close` | Finishes and publishes a completed session. |
-| `review` | Checks the notes for drift from the code and cleans them up. |
+| `plan` | Stages, reorders, or drops goals, sharpens notes, and takes in spikes, in direct commits. |
+| `start <goal>` | Runs the goal's next task: plan, build, brief, ship, and sync on the last task. |
+| `experiment` | Sets up a spike as a goal homed in its own repository. |
+| `status` | Prints one line per active goal, with what needs the architect first. |
+| `retro` | Turns comments on past work into checks, standards, skill changes, or notes. |
+| `reset` | Hands off a task partway; runs on its own when the context fills. |
 
-## Sessions
+## The pipeline
 
-A session does one step, on one branch. A working session (`plan`, `start`, or `experiment`)
-begins by reading the reset file: a standalone project's `context/reset.md`, or in a workspace
-the one reset file at the coordinator. A `closeout` status means the session plans a new step in
-plan mode. A `handoff` status means it resumes the open branch. The session ends with `close`,
-which publishes finished work, or `reset`, which hands off unfinished work. Both rewrite the reset
-file, and its Next-focus tells the next session where to begin.
+```
+PLAN   plan rounds → task brief + slices          ✔ approve           [touch 1]
+BUILD  implementer per slice → check; standards-reviewer; spec-reviewer; editor
+BRIEF  session brief                              ✔ accept / redirect [touch 2]
+SHIP   pull request (body = brief) → merge → goal record; sync on the last task
+```
+
+BUILD stops for the architect only for a one-way door, a decision the brief doesn't cover, or
+scope beyond the task. See [`mechanics/pipeline.md`](./skills/marathon/mechanics/pipeline.md) and
+[`references/build.md`](./skills/marathon/references/build.md).
+
+## Goals
+
+The roadmap manifest, `context/roadmap.toml`, holds goals (outcomes) and their tasks (one
+session's work each). Every goal is `active`, `planned`, or `backlog`. Active goals run side by
+side, and each locks the repositories it touches, so no two share one and no worktrees are needed.
+A goal's record, `context/goals/<goal>.md` in its home repository, holds its tasks, the current
+brief, progress, decisions, and the edits it owes the coordinator, which sync applies when its
+last task ships. See [`mechanics/goals.md`](./skills/marathon/mechanics/goals.md).
 
 ## Project kinds
 
-`init` declares a project `code` or `context` in `.claude/marathon.toml`.
-
-Both kinds work in stages. Each stage commits once its check passes, and the architect confirms
-the results at the checkpoints the stage list defines. When the branch changed prose, an editor
-pass runs before the final checkpoint. `close` reviews the whole branch before publishing.
-[`references/staged-execution.md`](skills/marathon/references/staged-execution.md) defines a
-stage for each kind and how a step is validated.
+`init` declares a project `code` or `context` in `.claude/marathon.toml`, along with its one
+deterministic `check` command. On a code project a slice adds behavior with its tests; on a
+context project a slice is the deliverable prose, checked by the consistency script and a read.
 
 ## Workspaces
 
-A workspace is a directory of marathon projects that sit side by side. A step may change several
-of them. One session works through the touched repositories in the coordinator's dependency
-order, each on its own branch with the same name. The workspace has no context of its own. The
-reset file at the coordinator records its state between sessions. An experiment is a standalone
-project outside the workspace, so it runs in parallel with the workspace's sessions. See
+A workspace is a directory of marathon projects that sit side by side. One of them, the
+coordinator, holds the roadmap and the dependency order. A task may change several members; it
+runs lowest layer first, each on a branch with the same name, and ships one pull request per
+repository. The coordinator takes only short, direct commits. See
 [`references/workspace-coordination.md`](./skills/marathon/references/workspace-coordination.md).
 
 ## Extensions
 
-A separately installed skill can extend marathon by acting at the five hooks every session
-fires. A repository enables an extension in `.claude/marathon.toml`, for itself under `[project]`,
-or for a whole workspace under the coordinator's `[workspace]`. The repository stays the source
-of truth, and anything an extension copies elsewhere is a read-only mirror. See
-[`references/extensions.md`](./skills/marathon/references/extensions.md) for the system and
-[`mechanics/hooks.md`](./skills/marathon/mechanics/hooks.md) for when each hook fires.
+A separately installed skill can extend marathon by acting at the hooks every session fires. A
+repository enables an extension in `.claude/marathon.toml`, for itself under `[project]`, or for
+a whole workspace under the coordinator's `[workspace]`. See
+[`references/extensions.md`](./skills/marathon/references/extensions.md) and
+[`mechanics/hooks.md`](./skills/marathon/mechanics/hooks.md).
 
 ## Releases
 

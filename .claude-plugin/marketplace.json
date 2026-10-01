@@ -10,7 +10,7 @@
     {
       "name": "marathon",
       "source": "./plugins/marathon",
-      "description": "A long-running development workflow built on context engineering"
+      "description": "A long-running development workflow run as a software factory: goals and tasks, two architect touchpoints per task, and subagents in between"
     },
     {
       "name": "marathon-architecture",

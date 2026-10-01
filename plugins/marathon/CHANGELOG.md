@@ -4,6 +4,66 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.16.0
+
+marathon becomes a software factory. The architect engages twice per task, approving the task brief
+and accepting the session brief, and subagents make the work good in between. Goals and tasks
+replace waves, lanes, and folds, and the roadmap moves into core. This release breaks 0.15
+repositories; see Migrating below.
+
+### Added
+
+- **The PLAN, BUILD, BRIEF, SHIP pipeline** (`mechanics/pipeline.md`). PLAN runs plan rounds to an
+  approved task brief and slices. BUILD runs without stopping, escalating only for a one-way door,
+  a decision the brief doesn't cover, or scope beyond the task. BRIEF shows the session brief.
+  SHIP publishes it as the pull request's body and merges.
+- **Goals in core** (`mechanics/goals.md`, `references/manifest.md`). The manifest's root holds
+  `active`, `planned`, and `backlog`; goals carry `home` and `repos`, inherited from ancestors.
+  An active goal locks its repositories, so goals run side by side on main checkouts. The
+  coordinator is never locked and takes only direct commits. Sync closes a goal out when its last
+  task ships.
+- **Goal records** (`mechanics/goal-record.md`): `context/goals/<goal>.md` in the goal's home,
+  holding State, tasks, the current brief, progress, handoff, decisions, and pending coordinator
+  edits.
+- **Briefs** (`references/briefs.md`): plan round, task brief, session brief, status digest, retro,
+  and spike intake.
+- **The build loop** (`references/build.md`): checks first, slices, implementer per slice, then the
+  standards-reviewer, the spec-reviewer, and the editor.
+- **Profiles**: `implementer` (formerly `executor`), loading only the slice brief and the check;
+  `standards-reviewer` and `spec-reviewer` (formerly `reviewer`), in separate contexts, the first
+  committing fixes and sweeping for tests that lie.
+- **Commands**: `status` prints the digest; `retro` routes findings to a check, a standard, a skill,
+  or a note, and absorbs the drift pass.
+- **Configuration**: `[project] check`, `[remote] merge`, and `[workspace] exclusive`.
+- **`init`** writes `roadmap.toml`, a `STANDARDS.md` stub, and a pointers-only `CLAUDE.md`.
+
+### Changed
+
+- **`start`** runs one task end to end, including what `close` did, and syncs a goal's last task.
+- **`plan`** stages and pivots goals and takes in spikes in direct coordinator commits.
+- **`reset`** writes the handoff into the goal record and runs on its own when the context fills.
+- **`experiment`** stages a spike as a goal homed in its own repository.
+- **Hooks**: `on-start`, `on-build` (formerly `on-execute`), `on-ship` (formerly `on-close`), and
+  `on-record` (formerly `on-reset`).
+- **Delegation**: profiles inherit the session's model, and the session announces none.
+
+### Removed
+
+- `close` and `review`, the reset file (`mechanics/reset-file.md`), waves, lanes, folds, and
+  worktrees (`mechanics/waves.md`), stages and checkpoints (`references/staged-execution.md`),
+  `.claude/report.md`, delegation statements, and the `on-commit` hook.
+- The marathon-roadmap extension, now part of core.
+
+### Migrating from 0.15
+
+1. Disable and uninstall marathon-roadmap; remove it from every `extensions` list.
+2. In `roadmap.toml`, replace `next` with `active` and `planned`, and turn each `[backlog.x]` table
+   into `[goals.x]` listed in `backlog`. Give active goals `home` and `repos`.
+3. Turn `context/reset.md` and each lane record into goal records, then delete them.
+4. Add `check` and `merge` to each repository's `marathon.toml`, and gitignore `.claude/brief.md`
+   in place of `.claude/report.md`.
+5. Update marathon-architecture to 0.3.0.
+
 ## v0.15.0
 
 ### Added
