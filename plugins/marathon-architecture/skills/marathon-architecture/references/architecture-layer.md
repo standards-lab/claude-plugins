@@ -1,9 +1,8 @@
 # The architecture layer
 
 The architecture layer holds the principles, definitions, and conventions that apply beyond one
-repository, written for a general reader and relied on from outside the project. A validated note
-moves here when the built work can't express it, because the knowledge isn't about the built
-work.
+repository, written for a general reader. Its readers are the standards-reviewer, through each
+repository's `STANDARDS.md`, and the people who build on the architecture.
 
 ## Where it lives
 
@@ -14,26 +13,28 @@ is the architecture, with a README in every directory as its index.
 
 ## What belongs in it
 
-- Only knowledge that applies beyond one repository. Nothing a reader could learn from a
-  repository's source. A page that restates an implementation is a defect: reduce it to its
-  principle or remove it.
-- A repository links the principles it follows from its README, and states next to each link any
-  convention of its own that narrows the principle. It never restates the page. The layer may
-  list the repositories that implement it, one line and a link each.
-- Only what is true now, like every note: no changelog, no revision log, and no record of who
-  promoted a page.
-- No project documentation. `docs/` is one repository's guide, written by a documentation step.
-  marathon's rule that deletes a note once the built work expresses it never applies to the
-  layer, which changes only when a principle changes.
+- Only knowledge that applies beyond one repository, and that code expresses or a check enforces
+  somewhere. Nothing a reader could learn from a repository's source: a page that restates an
+  implementation is a defect, reduced to its principle or removed. A principle no code follows
+  yet is speculation, and stays a note until code proves it.
+- Only what is true now: no changelog, no revision log, and no record of who wrote a page.
+- No project documentation. `docs/` is one repository's guide.
 
-## How knowledge reaches it
+## How a repository points to it
 
-Knowledge reaches the layer only by promotion. A note is proven once the work it describes is
-built and validated, which a closeout's **Validated** entry records. If the built work or its
-documentation then expresses the note, the note is deleted under marathon's rule. If the note
-applies beyond its repository, it becomes a page. In a workspace, a member's `close` or `review`
-lands the note in the architecture repository, recorded under **Cross-repo**, and that repository
-writes the page in a session of its own.
+A repository's `STANDARDS.md` holds its judgement calls, one line each, and points to the layer's
+pages that apply, by path: `architecture/principles/<page>.md` in a workspace, relative to the
+workspace, or relative to the repository when standalone. A pointer may narrow the page with a
+convention of the repository's own, stated beside it; it never restates the page. A rule a check
+can enforce goes in the check, not in `STANDARDS.md` and not in a page.
+
+## How a page arrives
+
+A page arrives only from validated code. When the same principle is expressed in more than one
+repository's merged code, `retro` proposes it as a finding, and the architect's tick makes it a
+task: in a workspace, a task of a goal homed in the architecture repository; when standalone, a
+task in the project. That task writes the page and adds the pointer to each `STANDARDS.md` that
+should follow it.
 
 ## Starting index
 
@@ -46,6 +47,6 @@ The principles, definitions, and conventions that apply beyond this repository, 
 general reader. Nothing a reader could learn from the source belongs here, and a page that
 restates the implementation is a defect.
 
-A page arrives by promotion: a note in `context/`, proven by validated work, becomes a page here
-once the knowledge applies beyond this repository.
+A page arrives from validated code, once the same principle holds in more than one place.
+`STANDARDS.md` points to the pages that apply.
 ```

@@ -15,7 +15,7 @@
     {
       "name": "marathon-architecture",
       "source": "./plugins/marathon-architecture",
-      "description": "marathon extension: an architecture layer for the principles and conventions that apply beyond one repository, filled by promoting validated context/ notes"
+      "description": "marathon extension: an architecture layer for the principles and conventions that apply beyond one repository, which each repository's STANDARDS.md points to"
     }
   ]
 }

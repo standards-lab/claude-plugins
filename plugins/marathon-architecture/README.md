@@ -3,9 +3,9 @@
 A [marathon](../marathon/) extension that adds the architecture layer: the principles,
 definitions, and conventions that apply beyond one repository. A standalone project keeps the
 layer in a top-level `architecture/` directory. A workspace keeps it in one member repository,
-named at the coordinator. marathon's sessions fill the layer through the extension hooks: the
-session loads the layer's rules at start, lands and records a note that applies beyond its
-repository before writing the session record, and commits the landed note at closeout.
+named at the coordinator. Each repository's `STANDARDS.md` points to the pages that apply to it,
+and marathon's standards-reviewer applies them. The extension finds the layer at the start of
+every session so those pointers resolve.
 
 This README is a quick reference. The skill's files under
 [`skills/marathon-architecture/`](./skills/marathon-architecture/) define how the extension
@@ -51,12 +51,13 @@ doesn't exist, and adopts it unchanged if it does. In a workspace, if
 `.claude/marathon-architecture.toml` doesn't exist or has no `repo` key, the session agrees the
 layer's repository with the architect and writes the file. The architecture repository is a
 marathon project of its own, set up with `marathon init` as a `context` project; the hook never
-creates it. Requires marathon 0.14 or later.
+creates it. Requires marathon 0.16 or later.
 
 ## What the layer holds
 
 The layer holds only knowledge that applies beyond one repository: a principle, a definition, or a
-convention. It holds nothing a reader could learn from a repository's source, so a page that
-restates an implementation is a defect. Pages arrive only by promotion: a note in the repository
-that owns the knowledge, proven by validated work, becomes a page once the knowledge applies
-beyond that repository.
+convention, and only one that code expresses or a check enforces somewhere. It holds nothing a
+reader could learn from a repository's source, so a page that restates an implementation is a
+defect. A page arrives from validated code: when the same principle holds in more than one
+repository's merged code, `retro` proposes it, and a task writes the page and the `STANDARDS.md`
+pointers to it.
