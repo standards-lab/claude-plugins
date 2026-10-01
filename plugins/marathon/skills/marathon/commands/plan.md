@@ -1,10 +1,9 @@
 # marathon plan
 
-Shape the path rather than build on it: stage, reorder, or drop goals; write or sharpen the notes a
-coming goal needs; write the next task's brief ahead of its `start`; or work out a design the
-roadmap doesn't hold yet. `plan` is the coordinator's planning and administrative channel: its
-changes are short, direct commits on the coordinator's default branch, and it stays short.
-Planning a single task in full happens inside `start`.
+`plan` defines goals and makes them ready to run: it creates goals and their tasks, sets up their
+repositories and records, stages and orders them, and writes their notes and next briefs. `start`
+runs a ready task. `plan` is also the coordinator's planning and administrative channel: its
+changes there are short, direct commits on the default branch, and it stays short.
 
 `plan` runs LOCATE and START (`mechanics/pipeline.md`); the goal is optional.
 
@@ -27,10 +26,12 @@ Apply what the rounds decided, in one commit per kind of change:
   out (`references/context-engineering.md`).
 - **Catalog and configuration**: the workspace's repository catalog, `order`, and
   `marathon.toml`.
-- **Goal setup**: for an active goal with no `root` yet, run `init` in each repository the rounds
-  decided (`commands/init.md`), add them to `order` and the repository catalog, set the goal's
-  `root` and `repos`, and create the goal record in the root with the tasks the rounds settled
-  checked. Until then the goal locks nothing, and `start` on it stops and asks for this `plan`.
+- **Goal setup**: for an active goal whose repositories, `root`, record, or tasks aren't set up
+  yet, create what is missing: run `init` in each new repository the rounds decided
+  (`commands/init.md`), add it to `order`, the repository catalog, and the goal's `repos` (and
+  `root`, when there is none), write the tasks into the manifest, and create or extend the goal
+  record in the root, with the tasks the rounds settled checked. A goal with no `root` locks
+  nothing, and `start` on it stops and asks for this `plan`.
 - **A next brief**: when an active goal's root is on its default branch with no task in
   progress, write the approved brief for its next task into the goal record there, as a direct
   commit, firing `on-record` first. The next `start` presents it for approval without new rounds.

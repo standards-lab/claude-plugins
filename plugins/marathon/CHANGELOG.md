@@ -46,7 +46,8 @@ repositories; see Migrating below.
 ### Changed
 
 - **`start`** runs one task end to end, including what `close` did, and syncs a goal's last task.
-- **`plan`** stages and pivots goals and takes in spikes in direct coordinator commits.
+- **`plan`** defines goals and makes them ready to run: it creates goals and tasks, sets up their
+  repositories and records, stages and orders them, and writes notes and next briefs.
 - **`reset`** writes the handoff into the goal record and runs on its own when the context fills.
 - **`experiment`** adds a spike as a task of an `experiment.<topic>` goal.
 - **Hooks**: `on-start`, `on-build` (formerly `on-execute`), `on-ship` (formerly `on-close`), and

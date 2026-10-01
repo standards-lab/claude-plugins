@@ -27,7 +27,7 @@ Run a command as `marathon <command>` or `/marathon:marathon <command>`.
 | Command | What it does |
 |---------|--------------|
 | `init` | Sets up marathon on a repository, once, from a planning concept. |
-| `plan` | Stages, reorders, or drops goals, sharpens notes, and takes in spikes, in direct commits. |
+| `plan` | Defines goals and makes them ready: creates goals and tasks, sets up repositories and records, stages and orders them. |
 | `start <goal>` | Runs the goal's next task: plan, build, brief, ship, and sync on the last task. |
 | `experiment` | Sets up a spike as a task of an `experiment.<topic>` goal. |
 | `status` | Prints one line per active goal, with what needs the architect first. |
