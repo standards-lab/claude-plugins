@@ -1,35 +1,36 @@
 # marathon plan
 
-A planning session that changes only `context/`. It refines notes, works out a design, reshapes
-the capability map, or decides what the next `start` focuses on. It changes no product, which is
-the difference from `start`. `review` looks back for drift, and `plan` looks forward.
+Shape the path rather than build on it: stage, reorder, or drop goals; write or sharpen the notes a
+coming goal needs; take in a finished spike; or work out a design the roadmap doesn't hold yet.
+`plan` changes only the coordinator (or a standalone project's) `context/`, in short, direct
+commits on its default branch, and stays short. Planning a single task happens inside `start`.
 
-`plan` runs the session pipeline (`mechanics/pipeline.md`). A handoff under Session `plan`
-resumes here.
+`plan` runs LOCATE and START (`mechanics/pipeline.md`); the goal is optional.
 
-## Settle
+## Rounds
 
-Work through the topic with the architect in real depth, adding detail only as far as the
-upcoming work needs. When choosing the next focus, look for the questions whose answers would
-change what the project does next, not only the areas with the most unknowns.
+Enter plan mode and run plan rounds with the architect (`references/briefs.md`, "Plan round").
+The planner finds the facts. Look for the questions whose answers would change what the
+workspace does next, not only the areas with the most unknowns. A spike intake leads with the
+spike's result (`references/briefs.md`, "Spike intake").
 
-Branch slug: the topic.
+Nothing changes until the architect approves the outcome.
 
-## Execute
+## Edits
 
-After agreeing the changes with the architect, bring `context/` in line with what the discussion
-decided, in stages (`references/staged-execution.md`):
+Apply what the rounds decided, in one commit per kind of change:
 
-- **Cull**: delete a note the discussion ruled out.
-- **Add or sharpen**: write new notes, sharpen a note to what the discussion decided, and refine
-  the capability map or the note the upcoming work needs.
+- **Roadmap**: stage a goal into `active` once its lock is free, pivot any of the three arrays,
+  add or delete goals and tasks, and sharpen the next task's entry (`mechanics/goals.md`,
+  `references/manifest.md`).
+- **Notes**: write a note a coming goal needs, sharpen one, or delete one the discussion ruled
+  out (`references/context-engineering.md`).
+- **Goal records**: for a goal homed at the coordinator, create or update its record, such as
+  the brief for its next task. Fire `on-record` first.
+- **Intake**: update the experiment's catalog entry and archive its remote
+  (`commands/experiment.md`).
 
-Capture only what the upcoming step needs. Taking in a finished experiment also updates its
-catalog entry and archives its remote (`commands/experiment.md`). During a wave, a lane changes
-only its record and its own notes, and records any other change in its Disposition
-(`mechanics/waves.md`).
+A change the rounds decide for a member repository is recorded in that goal's record, or as a task,
+and lands with that goal's next `start`.
 
-## Conclude
-
-End with `close`, which records the dispositions and sets Next-focus to the step this planning
-prepared.
+Pull before each commit, and push after it.

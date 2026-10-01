@@ -25,8 +25,9 @@ this file names (`mechanics/hooks.md`).
    - A **workspace** is a directory of projects, one of which declares itself coordinator in its
      `.claude/marathon.toml` (`mechanics/configuration.md`). Starting at the workspace root and
      starting inside a member are the same case.
-2. Read the manifest (`references/manifest.md`): the project's own `context/roadmap.toml`, or the
-   coordinator's. Pull the coordinator's default branch first.
+2. Read the manifest (`references/manifest.md`): the project's own `context/roadmap.toml`, the
+   coordinator's, or for an experiment, that of the project its `[experiment] serves` names. Pull
+   the manifest's default branch first.
 3. Find the goal: the one the architect names, which must be in `active`. With none named, print
    the status digest (`commands/status.md`) and ask. A goal that isn't active is staged by `plan`
    first (`mechanics/goals.md`).

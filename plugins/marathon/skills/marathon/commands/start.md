@@ -1,30 +1,38 @@
 # marathon start
 
-Advance the product one concrete step, or resume a step in progress. How the step runs depends
-on the project kind (`mechanics/configuration.md`). For planning that changes only `context/`,
-use `plan`. For a spike, use `experiment`.
+Run one task of an active goal: plan it if it has no approved brief, build it, brief the
+architect, and ship it. When the task is the goal's last, the same session syncs the goal.
+`start` runs the full pipeline (`mechanics/pipeline.md`); the argument after `start` names the
+goal, as in `start v1.ai.experiment`.
 
-`start` runs the session pipeline (`mechanics/pipeline.md`). A handoff under Session `start`
-resumes the stage loop at its recorded position.
+## Plan
 
-## Settle
+LOCATE routes to PLAN when the goal record has no approved brief for its current task. Plan the
+task in rounds to an approved brief and slice list (`behavior/planning.md`,
+`references/briefs.md`). Add detail to the notes the task touches only as far as the brief needs.
 
-Settle the one concrete step and how far it goes, in real depth (`behavior/planning.md`). Add
-detail to the note the step touches only as far as the step needs. Express the scope as a stage
-list with its checkpoints (`references/staged-execution.md`). The architect approves the list
-before the branch is created.
+Branch slug: the task.
 
-Branch slug: the step.
+## Build
 
-## Execute
+Run the build loop (`references/build.md`) without stopping:
 
-Run the stage loop, then validation:
+- On a **code** project, each slice adds behavior through the test seam, with the check passing.
+- On a **context** project, each slice is the deliverable itself, with the consistency script
+  passing and the prose read for coherence.
 
-- On a **code** project, each stage is a compilation unit brought to passing with its tests.
-  Context edits wait for `close`.
-- On a **context** project, the stages are the deliverable itself, plus any `context/` edits the
-  change settles.
+The editor keeps the goal record, the notes, and the documentation current as part of the loop, so
+the brief describes a finished state.
 
-## Conclude
+## Brief
 
-Run `reset` if the context fills first. Run `close` when the step is finished and validated.
+Write and show the session brief. Accepting it authorizes publishing and merging; a redirect
+returns to BUILD, or to PLAN when it changes the brief's behaviors.
+
+## Ship
+
+Publish with the brief as the pull request's body, merge, and update the goal record
+(`mechanics/pipeline.md`, 6 · SHIP). On the goal's last task, sync (`mechanics/goals.md`).
+
+If the context fills before BRIEF, `reset` runs on its own and the next `start` on the goal
+resumes.
