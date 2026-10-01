@@ -5,14 +5,17 @@ every session reads it.
 
 ```toml
 [project]
-kind = "code"        # production source with a build-and-test loop
-# kind = "context"   # the whole repository is context, which the agent writes directly
+kind  = "code"         # production source with a build-and-test loop
+# kind = "context"     # the whole repository is context, which the agent writes directly
+check = "mise run check"
 # Optional: marathon extensions enabled for this project, by skill name.
 # extensions = ["<extension>"]
 
 [remote]
-platform = "github"  # the platform the project publishes to
+platform = "github"    # the platform the project publishes to
 publish  = "gh pr create"
+# Optional: without it, SHIP stops at the open pull request.
+merge    = "gh pr checks --watch && gh pr merge --merge --delete-branch"
 
 # Optional: only a workspace coordinator declares this table.
 [workspace]
@@ -22,6 +25,8 @@ order = [
   ["service-a", "service-b"],
   "gateway",
 ]
+# Optional: groups of repositories at most one active goal may touch at a time.
+# exclusive = [["core-lib", "service-a", "service-b", "gateway"]]
 # Optional: marathon extensions enabled for every project in the workspace.
 # extensions = ["<extension>"]
 
@@ -37,14 +42,19 @@ serves = "org"  # the project, or workspace coordinator, this experiment serves
 ## Keys
 
 - **`[project] kind`**: `code` when the repository holds production source with a build-and-test
-  loop, which defines stage boundaries and validation. `context` when the repository is itself
-  context, such as prose, configuration, or skills, which the agent writes directly and which has
-  no tests. A context project can still version and release what it ships.
-- **`[remote]`**: the platform, and the command `close` runs to publish a branch.
+  loop. `context` when the repository is itself context, such as prose, configuration, or skills,
+  which the agent writes directly and which has no tests. A context project can still version and
+  release what it ships.
+- **`[project] check`**: the repository's one deterministic check, which every slice and review
+  runs (`references/build.md`). A context project names its consistency script, if it has one.
+- **`[remote]`**: the platform, the command SHIP runs to publish a branch, and optionally the
+  command it runs to merge the published branch once its checks pass.
 - **`[workspace]`**: for the coordinator only. `order` lists layers, lowest first, and an array
-  entry is a layer of peers. `[workspace.paths]` gives the location of a key that isn't a sibling
-  directory (`references/workspace-coordination.md`).
+  entry is a layer of peers. `exclusive` lists groups of repositories that at most one active goal
+  may touch at a time, narrowing the repository lock (`mechanics/goals.md`). `[workspace.paths]`
+  gives the location of a key that isn't a sibling directory
+  (`references/workspace-coordination.md`).
 - **`[experiment]`**: for an experiment only. `serves` names the project, or the workspace's
-  coordinator, that reads the experiment's results (`commands/experiment.md`).
+  coordinator, whose roadmap holds the spike's goal (`commands/experiment.md`).
 - **`extensions`**: the enabled extensions, by skill name. Under `[project]`, they apply to this
   repository. Under `[workspace]`, they apply to every member (`references/extensions.md`).

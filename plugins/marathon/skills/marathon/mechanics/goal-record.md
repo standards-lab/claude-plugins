@@ -20,7 +20,7 @@ The goal's first PLAN creates the record, and sync deletes it (`mechanics/goals.
 
 ## Tasks
 
-1. [x] harness-driver — #12
+1. [x] harness-driver
 2. [ ] harness-adapters
 3. [ ] local-subagents
 4. [ ] intake
@@ -56,8 +56,8 @@ escalation awaiting an answer)
   - `brief ready`: BUILD is done and the session brief waits on the architect.
   - `building`: a session is in BUILD.
   - `handoff`: a session stopped partway; the next `start` resumes from Handoff.
-- **Tasks** lists the goal's tasks in the order they run, checked once each one merges, with its
-  pull request. The manifest keeps a task's table until its goal syncs, so the record is where
+- **Tasks** lists the goal's tasks in the order they run, each checked by the SHIP that merges
+  it. The manifest keeps a task's table until its goal syncs, so the record is where
   progress shows. A goal with sub-goals lists only its own tasks.
 - **Task brief** is the current task's approved brief. The next task's brief replaces it.
 - **Progress** records the build loop's position (`references/build.md`).
