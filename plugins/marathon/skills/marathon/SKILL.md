@@ -46,10 +46,10 @@ The session pipeline applies to every command:
 
 The pipeline refers to these files where it needs them:
 
-- [`mechanics/reset-file.md`](./mechanics/reset-file.md): the session record, where it lives, its
-  schema, and its Status values.
-- [`mechanics/waves.md`](./mechanics/waves.md): lanes that run at the same time, their records,
-  their checkouts and worktrees, and folding.
+- [`mechanics/goals.md`](./mechanics/goals.md): goals and tasks, the active, planned, and backlog
+  states, the repository lock, and sync.
+- [`mechanics/goal-record.md`](./mechanics/goal-record.md): the goal record, where it lives, its
+  schema, and its State values.
 - [`mechanics/configuration.md`](./mechanics/configuration.md): the layout of
   `.claude/marathon.toml`.
 - [`mechanics/hooks.md`](./mechanics/hooks.md): how extension hooks resolve and fire.
@@ -83,4 +83,6 @@ Read each reference when its subject comes up:
 - [`references/briefs.md`](./references/briefs.md): every format the architect reads.
 - [`references/workspace-coordination.md`](./references/workspace-coordination.md): the
   coordinator, the dependency order, and steps that span repositories.
+- [`references/manifest.md`](./references/manifest.md): the `roadmap.toml` format. Read it before
+  editing or creating the manifest.
 - [`references/extensions.md`](./references/extensions.md): the extension system.
