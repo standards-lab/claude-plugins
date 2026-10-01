@@ -4,7 +4,9 @@ A workflow for long-running development, run as a software factory. marathon tre
 repository as the only source of truth: a top-level `context/` directory of notes, a roadmap
 manifest of goals and tasks, and one record per active goal. Each session takes one task from an
 approved plan to merged work. The architect approves the task brief and accepts the session brief;
-subagents implement, review, and keep the context current in between.
+subagents implement, review, and keep the context current in between. The pipeline is inspired by
+Matt Pocock's talk "Fixing the PR Bottleneck" and his skills repository
+(`github.com/mattpocock/skills`).
 
 This README is a quick reference. The skill's files under [`skills/marathon/`](./skills/marathon/)
 define how marathon behaves: `SKILL.md`, the `commands/` playbooks, the `mechanics/` specifications,

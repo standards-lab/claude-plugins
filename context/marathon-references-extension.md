@@ -25,7 +25,7 @@ the same shape: a file with a schema, owned by an extension.
 
 ## Proposal
 
-The extension owns the three files and resolves them the way marathon-roadmap resolves its
+The extension owns the three files and resolves them the way marathon resolves its roadmap
 manifest: at the coordinator in a workspace, or in the project itself when it is standalone. It
 enforces the file contract: keys join the files, a location is never duplicated between the two
 TOML files, and the local file stays gitignored. It prescribes nothing about what a workspace
