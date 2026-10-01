@@ -78,8 +78,9 @@ Read each reference when its subject comes up:
 
 - [`references/context-engineering.md`](./references/context-engineering.md): writing and
   maintaining the notes in `context/`.
-- [`references/staged-execution.md`](./references/staged-execution.md): stages, checkpoints,
-  and validation.
+- [`references/build.md`](./references/build.md): checks, slices, the build loop, escalation,
+  and handoff.
+- [`references/briefs.md`](./references/briefs.md): every format the architect reads.
 - [`references/workspace-coordination.md`](./references/workspace-coordination.md): the
   coordinator, the dependency order, and steps that span repositories.
 - [`references/extensions.md`](./references/extensions.md): the extension system.
