@@ -1,14 +1,13 @@
-# marathon briefs: what the architect reads
+# Briefs
 
-This note defines every output marathon produces for the architect. Each one is read in the
-terminal, fits on about one screen, and leads with what needs a decision. Agents look up facts
-themselves and never ask the architect for them. Decisions belong to the architect. The
-pipeline that produces these formats is `marathon-factory.md`.
+These are the formats marathon writes for the architect. Each one is read in the terminal, fits on
+about one screen, and leads with what needs a decision. Agents look up facts themselves and never
+ask the architect for them; the architect makes the decisions.
 
 ## Plan round
 
-A plan session asks its questions in rounds. Each round holds every question whose prerequisites
-are already settled. The architect answers inline, all at once.
+PLAN asks its questions in rounds. A round holds every question whose prerequisites are already
+settled, and the architect answers them all at once, inline.
 
 ```
 PLAN ROUND 2 · v1.ai · task harness-adapters
@@ -27,15 +26,16 @@ reply: "1 ok, 2 yes but ..."
 ```
 
 - Number every question.
-- Give every question a `rec:`, and a `changes:` saying what the answer changes.
-- Cite facts with their source under `facts found:`.
-- The rounds end when no open question remains. An escalation during BUILD uses the same format.
+- Give every question a `rec:`, and a `changes:` line saying what the answer changes.
+- Cite each fact with its source under `facts found:`.
+- The rounds end when no question remains open. A BUILD escalation uses the same format, headed
+  `ESCALATION` (`references/build.md`).
 
 ## Task brief
 
-The brief is what the architect approves, and it becomes the contract for BUILD. It describes
-behavior, not procedure. It names no file paths, so it stays valid while other goals change the
-code.
+The task brief is what the architect approves at PLAN, and it is BUILD's contract. It describes
+behavior, not procedure, and names no file paths, so it stays valid while other goals change the
+code. The goal record keeps it (`mechanics/goal-record.md`).
 
 ```
 ## Task brief · v1.ai.experiment · harness-adapters
@@ -49,9 +49,10 @@ Door          two-way | one-way (why)
 
 ## Session brief
 
-The session brief is the architect's view of the finished task, and the PR body. The diff is
-already committed by the time the architect reads it, and isn't visible in the terminal, so Core
-changes carries the code that matters.
+The session brief is the architect's view of the finished task, and the body of its pull request.
+The diff is already committed when the architect reads it and isn't visible in the terminal, so
+Core changes carries the code that matters. The session writes it to `.claude/briefs/<goal>.md` in the
+goal's root, which gitignores `.claude/briefs/`.
 
 ```
 ## v1.ai.experiment · task 3/5 · harness-adapters
@@ -75,7 +76,7 @@ changes carries the code that matters.
 
 ### Decided without you
   1. Kept stdin JSONL over SSE (simpler, spike)
-  2. Reviewer: 4 fixes, 2 tautological tests cut
+  2. Standards-reviewer: 4 fixes, 2 tautological tests cut
 
 ### Merge danger
   two-way door · blast radius: spike repo only
@@ -84,30 +85,36 @@ changes carries the code that matters.
   (none)
 ```
 
-- **Summary** is the smallest visual that makes the change clear: CLI usage, a tree, or pseudocode.
-- **Core changes** lists 1–5 entries. Each gives a short excerpt or a before-and-after
+- **Summary** is the smallest visual that makes the change clear: CLI usage, a tree, or
+  pseudocode.
+- **Core changes** lists one to five entries. Each gives a short excerpt or a before-and-after
   signature, and one line on why.
 - **Evidence** comes from commands the architect can rerun.
+- **Decided without you** lists the decisions the brief didn't cover and what the reviewers
+  changed.
 - **Merge danger** names the door type and the blast radius. A one-way door gets the close read.
 - **Needs you** reads "(none)" when nothing remains.
 
 ## Status digest
 
-`status` prints one line per active goal. Items that need the architect sort first and carry a
-`!`. The digest reads only the roadmap's `active` array and the goal records.
+`status` prints one line per active goal: the goal, its tasks done out of its total, its state,
+and the repositories it locks. Goals that need the architect sort first and carry a `!`.
 
 ```
 ── STATUS · 2026-10-01 ──
 ! v1.ai.experiment  1/4  brief ready  spike-harness-driver
   factory           1/3  building     claude-plugins
-  v1.messaging      1/1  intake next  standards-lab
+  v1.messaging      0/1  idle         spike-messaging, go-core, go-web-service
 ```
+
+The state is the goal record's State line (`mechanics/goal-record.md`). A goal with no record
+yet shows `no record`.
 
 ## Retro
 
-`retro` reviews a session, a goal, or a date range. Its findings are grouped by the layer that
-should catch them next time (`marathon-factory.md`, "The retro"), one line each with a proposed
-change. The architect ticks the findings to apply.
+`retro` reviews a task, a goal, or a date range. It groups its findings by the layer that should
+catch them next time, one line each with a proposed change, and the architect ticks the ones to
+apply.
 
 ```
 RETRO · goal v1.storage · 2026-09-14..09-24
@@ -121,12 +128,9 @@ context
   [ ] 4. cull blobfs-composition.md — expressed in blobfs/docs
 ```
 
-The retro includes the context-drift pass that `review` ran in 0.15. It covers notes the code
-now expresses or contradicts.
-
 ## Spike intake
 
-Spike intake takes in a finished spike. It uses the plan-round form, led by the spike's result:
+A spike intake is a plan round led by the spike's result:
 
 ```
 INTAKE · spike-messaging → v1.messaging

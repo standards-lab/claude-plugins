@@ -2,9 +2,7 @@
 
 | marathon hook | What this extension does | Instructions |
 |---------------|--------------------------|--------------|
-| `on-start` | Loads the rules, and creates or adopts the layer | `mechanics/on-start.md` |
-| `on-reset` | Lands a note that applies beyond its repository, and records it | `mechanics/on-reset.md` |
-| `on-close` | Commits the landed note | `mechanics/on-close.md` |
+| `on-start` | Finds the layer, creates or adopts it, and gives the session its location | `mechanics/on-start.md` |
 
 ## Finding the layer
 

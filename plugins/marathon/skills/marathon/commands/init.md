@@ -1,9 +1,8 @@
 # marathon init
 
-Set up marathon on a repository, once, from a planning concept. `init` runs the session pipeline
-(`mechanics/pipeline.md`) with two differences: its LOCATE checks that marathon isn't set up (no
-`context/` here and no sibling declaring itself coordinator), and its CONCLUDE is the setup
-commit. Settle every decision in plan mode before creating any file.
+Set up marathon on a repository, once, from a planning concept. `init` first checks that marathon
+isn't set up: no `context/` here and no sibling declaring itself coordinator. Settle every decision
+in plan mode, in plan rounds, before creating any file.
 
 ## 1. Find the concept
 
@@ -13,12 +12,14 @@ one you write together. It gives the vision and the scope. The structure comes o
 ## 2. Settle the founding decisions
 
 - **Vision**: one paragraph on what the project is for.
-- **Project kind**: `code` if a build-and-test loop defines the stage boundaries and validation,
-  otherwise `context` (skills, prose, configuration).
+- **Project kind**: `code` if a build-and-test loop defines the slices and validation, otherwise
+  `context` (skills, prose, configuration).
+- **The check**: the one deterministic command that runs the build, tests, and lint, or the
+  consistency script of a context project (`references/build.md`).
 - **Capability map**: the project's major capabilities, broad, shallow, and unordered.
-- **First step**: the one concrete thing the first session will do.
-- **Remote**: the platform and its publish command (`gh pr create`, `glab mr create`), or none for
-  a local-only project.
+- **The first goal**: the one outcome the first sessions work toward, and its first task.
+- **Remote**: the platform, its publish command (`gh pr create`, `glab mr create`), and its merge
+  command, or none for a local-only project.
 
 ## 3. Create the structure
 
@@ -26,22 +27,27 @@ Keep every file brief, a few sentences each.
 
 ```
 <repo>/
-├── CLAUDE.md          # names the workflow; points to context/README.md
-├── .gitignore         # .claude/plans/ and .claude/report.md
+├── CLAUDE.md          # navigation pointers only: context/README.md, STANDARDS.md, the check
+├── STANDARDS.md       # judgement calls for the standards-reviewer; starts as a stub
+├── .gitignore         # .claude/plans/ and .claude/briefs/
 ├── .claude/
 │   ├── settings.json  # plansDirectory = ./.claude/plans; allow Skill(marathon:marathon)
 │   └── marathon.toml  # mechanics/configuration.md
 └── context/
     ├── README.md      # vision and capability map
-    ├── <note>.md      # optional: what the first steps need to know
-    └── reset.md       # Status: closeout, Session: init, Next-focus: the first step
+    ├── roadmap.toml   # active = [the first goal]; references/manifest.md
+    └── <note>.md      # optional: what the first goal needs to know
 ```
 
-`marathon.toml` records the project kind and the remote. An experiment adds an `[experiment]`
-table (`commands/experiment.md`), and a coordinator adds a `[workspace]` table
-(`references/workspace-coordination.md`). Extensions are enabled later, when the project adopts
-them (`references/extensions.md`). Don't create `docs/`. A documentation step creates it.
+A member of a workspace has no `roadmap.toml`; its goals live in the coordinator's. An experiment
+adds an `[experiment]` table (`commands/experiment.md`), and a coordinator adds a `[workspace]`
+table (`references/workspace-coordination.md`). Extensions are enabled later, when the project
+adopts them (`references/extensions.md`). Don't create `docs/`; a task that documents creates it.
+
+The `STANDARDS.md` stub says what the file is for: judgement calls the check can't enforce, each
+one line, with pointers to the architecture pages that apply. It never restates what the check
+enforces.
 
 ## 4. Commit the setup
 
-Commit everything. The architect starts the real work with `plan` or `start`.
+Fire `on-start`, then commit everything. The architect runs the first goal with `start <goal>`.

@@ -4,6 +4,24 @@ All notable changes to the marathon-architecture plugin are documented here. Ver
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.3.0
+
+### Changed
+
+- **Targets marathon 0.16.** The extension declares only `on-start`, which finds the layer,
+  creates or adopts it, and gives the session its location for the standards-reviewer and
+  `retro`.
+- **Repositories point to the layer from `STANDARDS.md`.** A repository's `STANDARDS.md` lists
+  the pages that apply to it; only the standards-reviewer reads them.
+- **A page arrives only from validated code.** When the same principle is expressed in more than
+  one repository's merged code, `retro` proposes it and the architect's tick makes it a task. A
+  principle no code follows stays a note.
+
+### Removed
+
+- **Promotion through the hooks.** `on-reset` and `on-close`, and promoting a validated
+  `context/` note at closeout, are gone, along with the **Promoted** disposition.
+
 ## v0.2.2
 
 ### Changed

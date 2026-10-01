@@ -1,28 +1,36 @@
 # Delegation
 
-A session may hand one unit of its work to another agent. The session still owns the work: it
-decides whether to delegate, reads the result firsthand, and reports and commits it as its own.
+A session orchestrates a task: it hands each unit of work to a subagent and holds only pointers to
+the results, meaning the goal record, the task brief, and the commits. It still owns the work. It
+reads each delegate's account, decides what follows, and reports the task as its own.
 
 ## The profiles
 
-marathon ships four subagent profiles in the plugin's `agents/` directory:
+marathon ships five subagent profiles in the plugin's `agents/` directory. Each engagement starts
+a fresh context.
 
-- **planner**: drafts the stage list at SETTLE from the context the session provides. It changes
-  nothing, and the session revises the list with the architect without engaging it again.
-- **executor**: implements one stage and brings the stage's check to passing.
-- **editor**: edits the prose a branch changed, once, after the last stage commits and before the
-  final checkpoint. It edits files in place and never changes their meaning.
-- **reviewer**: reviews the whole branch after the architect confirms the final checkpoint, and
-  returns the architect's report as text for the session to write (`commands/close.md`).
+| Profile | Stage | Loads | Does |
+|---|---|---|---|
+| **planner** | PLAN | the goal record, notes, roadmap, code | Finds the facts, drafts the round's questions, then the task brief and slices; changes nothing |
+| **implementer** | BUILD | the slice brief and the check command only | Makes one slice work with the check passing, and commits it |
+| **standards-reviewer** | BUILD | `STANDARDS.md`, the architecture pages it points to, the diff | Applies the standards, sweeps for tests that lie, and commits its fixes |
+| **spec-reviewer** | BUILD | the task brief, the diff, the running behavior | Returns where the work is missing, wrong, or out of scope; changes nothing |
+| **editor** | BUILD | the goal record, notes, READMEs and docs, the diff | Keeps the context current and edits the changed prose; never commits |
 
-No profile sets a model. Before each engagement, the session states the profile, the model it
-chose, and why, so the architect can redirect it.
+- **The implementer never loads standards or architecture.** Implementing fills a context window
+  with exploring, editing, and debugging. Review is a lighter load, so the conventions go there.
+- **The reviewers stay apart.** Standards and spec run in separate contexts, so work that follows
+  every convention but builds the wrong thing can't pass on its conventions.
+- **No profile pins a model.** Every profile inherits the session's model, and the session doesn't
+  announce one.
 
 ## Limits
 
-- A delegate takes one unit: one stage list, one stage, one branch edit, or one branch review. A
-  delegate that goes beyond its unit has found something that needs a re-plan.
-- A delegate never commits, publishes, or writes the reset file, and it changes nothing at
-  SETTLE. The session reads any prose a delegate writes before the repository keeps it.
-- Delegation is optional. The session does the work itself when briefing a delegate would cost
-  more than the work.
+- A delegate takes one unit: one plan round or brief, one slice, one review, or one edit pass. A
+  delegate that reaches beyond its unit reports back, and the session decides whether to escalate
+  (`references/build.md`).
+- Only the implementer and the standards-reviewer commit, and each first confirms the checkout is
+  on the task's branch. No delegate publishes, merges, or writes the goal record's State or Tasks;
+  the editor drafts the record's Decisions and Pending edits, and the session commits them.
+- The session does a unit itself when briefing a delegate would cost more than the work, such as a
+  one-line fix. It never implements and reviews the same work itself.

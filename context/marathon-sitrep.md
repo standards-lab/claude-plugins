@@ -9,9 +9,10 @@ accomplished, at the depth and in the register the audience needs.
 
 marathon already records everything a situation report needs:
 
-- The git history of the coordinator's reset file records each session's dispositions and focus.
-- The git history of the roadmap manifest shows each task deleted as it finished and each goal
-  closed.
+- The merged pull requests carry each task's session brief as their body.
+- The git history of each goal record shows its tasks, decisions, and pending edits as they
+  changed, and the record's deletion marks the goal's sync.
+- The git history of the roadmap manifest shows each goal staged, pivoted, and synced.
 - Each member repository's log and merged pull requests hold the work itself.
 
 Nothing reads that record back out. An architect who owes a stakeholder an account of the last
@@ -24,7 +25,7 @@ that definition.
 ## Relation to `status`
 
 marathon's `status` command prints the live, one-line-per-goal digest of the active goals
-(`marathon-briefs.md`). sitrep stays the report for an audience over a date range, drafted from
+(marathon's `references/briefs.md`). sitrep stays the report for an audience over a date range, drafted from
 the history that `status` never reads.
 
 ## Two kinds of extension
@@ -32,7 +33,7 @@ the history that `status` never reads.
 This proposal names two kinds of extension:
 
 - An **integration** fires at marathon's hook points and is enabled in `marathon.toml`. Sessions
-  apply it. marathon-roadmap is an integration.
+  apply it. marathon-architecture is an integration.
 - An **enhancement** adds capability on top of marathon and its enabled integrations by reading
   the structures marathon defines. It fires at no hook, and the architect invokes it.
 
@@ -43,14 +44,15 @@ An enhancement finds everything it reads through marathon's own configuration:
 
 - The coordinator's `[workspace] order` lists the member repositories.
 - `[remote]` names the platform whose merged pull requests it reads.
-- The `extensions` lists name the enabled integrations. When marathon-roadmap is enabled, the
-  report includes the tasks and goals closed in the range and the path that remains.
+- The `extensions` lists name the enabled integrations. The roadmap manifest, part of marathon
+  core, gives the goals synced in the range and the path that remains.
 
 ## Data sources
 
 - For each repository in `order`: `git log` over the range, with merges resolved to pull
   requests through the `[remote]` platform.
-- At the coordinator: `git log -p context/reset.md`, the record of each session's dispositions.
+- In each goal's root: `git log -p context/goals/`, the record of each goal's tasks and
+  decisions.
 - The roadmap manifest, when present: `git log -p context/roadmap.toml`, for the tasks deleted
   and goals closed in the range.
 - The capability maps in each `context/README.md`, for the overview the report opens with.
@@ -58,8 +60,8 @@ An enhancement finds everything it reads through marathon's own configuration:
 ## The audience file
 
 The architect's stakeholders are the audiences, so the audiences are repository data, not the
-agent's guess. The extension owns `context/sitrep.toml`, resolved the way marathon-roadmap
-resolves its manifest: at the coordinator in a workspace, or in the project itself when it is
+agent's guess. The extension owns `context/sitrep.toml`, resolved the way marathon resolves
+its roadmap manifest: at the coordinator in a workspace, or in the project itself when it is
 standalone. Each `[audiences.<slug>]` table gives the audience's name, who they are, and how to
 write for them: the depth, the register, what they care about, and what to leave out. The
 extension creates the file on its first run and fills it in with the architect.
@@ -73,7 +75,7 @@ of entry.
 
 ## Limits
 
-A report run only reads. It opens no branch, runs no session pipeline, writes no reset file, and
+A report run only reads. It opens no branch, runs no session pipeline, writes no goal record, and
 never changes `context/`. The report lands only where the invocation sends it.
 
 ## Open questions

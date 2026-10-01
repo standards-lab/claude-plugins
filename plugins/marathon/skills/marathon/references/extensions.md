@@ -1,8 +1,9 @@
 # Extensions
 
-An extension adds a convention to marathon's sessions, such as a roadmap manifest the sessions
-keep current. An extension is a skill in its own plugin. It declares what it does at the hooks
-every session fires (`mechanics/hooks.md`), and marathon never refers to it otherwise.
+An extension adds a convention to marathon's sessions, such as an architecture layer that a
+repository's standards point to. An extension is a skill in its own plugin. It declares what it
+does at the hooks every session fires (`mechanics/hooks.md`), and marathon never refers to it
+otherwise.
 
 ## Installed and enabled
 

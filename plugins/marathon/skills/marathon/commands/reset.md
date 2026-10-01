@@ -1,19 +1,16 @@
 # marathon reset
 
-Hand off partway through a step, when the context is filling but the step isn't done, so a new
-session can resume the same step on the same branch. Record enough that the new session can
-continue without the conversation.
+Hand off partway through a task, so the next `start` on the goal resumes it without the
+conversation or the architect. The orchestrating session runs `reset` on its own when its context
+fills before BRIEF; the architect can also ask for it.
 
-1. **Tidy the notes you touched**, following `references/context-engineering.md`, with a quick
-   confirmation from the architect.
-2. **Write the record** (`mechanics/reset-file.md`) with `Status: handoff`: the project's own
-   record, the coordinator's in a workspace, or the lane's own record during a wave. Next-focus
-   gives the state of the work and the exact next move: the file being edited, any pending
-   decision, the approved stage list, the stage and checkpoint position, and the revised list
-   after a re-plan.
-3. **Keep the work.** Finished stages are already committed. If the context fills partway through
-   a stage, make a WIP commit and note that the stage's check hasn't passed. The resuming session
-   finishes that stage first. Note a checkpoint that was reported but not confirmed, too; the
-   resuming session reports it again first. Leave the branch open and unpublished. A wave's lane
-   leaves its worktree at the shared repository in place, and Next-focus records its path beside
-   the branch (`mechanics/waves.md`).
+1. **Keep the work.** Finished slices and review fixes are already committed. If a slice is partway
+   done, make a WIP commit on the task's branch and note that its check hasn't passed.
+2. **Write the handoff** into the goal record (`mechanics/goal-record.md`): set State to
+   `handoff`, bring Progress up to date, and write Handoff with the exact next move, the WIP
+   slice, and any escalation still waiting on the architect.
+3. **Commit the record.** Fire `on-record`, then commit it on the task's branch in the root.
+4. **Leave the branches open** and unpublished, and stop. The next `start` on the goal resumes at
+   3R · RESUME (`mechanics/pipeline.md`).
+
+A session that stops during PLAN needs no reset: the plan file keeps the open round.

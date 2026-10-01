@@ -4,6 +4,84 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.16.0
+
+marathon becomes a software factory. The architect engages twice per task, approving the task brief
+and accepting the session brief, and subagents make the work good in between. Goals and tasks
+replace waves, lanes, and folds, and the roadmap moves into core. This release breaks 0.15
+repositories; see Migrating below.
+
+### Added
+
+- **The PLAN, BUILD, BRIEF, SHIP pipeline** (`mechanics/pipeline.md`). PLAN runs plan rounds to an
+  approved task brief and slices. BUILD runs without stopping, escalating only for a one-way door,
+  a decision the brief doesn't cover, or scope beyond the task. BRIEF shows the session brief.
+  SHIP publishes it as the pull request's body and merges.
+- **Goals in core** (`mechanics/goals.md`, `references/manifest.md`). The manifest's root holds
+  `active`, `planned`, and `backlog`; goals carry `root` and `repos`, inherited from ancestors.
+  An active goal locks its repositories, so goals run side by side on main checkouts. The
+  coordinator is never locked and changes only through `plan` and sync. Sync carries a finished
+  goal's pending edits into the coordinator and other repositories, and deletes last.
+- **Experiments as goals.** An experiment is a goal under `experiment` (`experiment.ai`), its
+  spikes are tasks with `remote` and `path`, and its last task is the intake. Sync archives the
+  spikes into the workspace's repository catalog.
+- **Goal records** (`mechanics/goal-record.md`): `context/goals/<goal>.md` in the goal's root,
+  one of the repositories it locks, holding State, tasks, the current brief, progress, handoff,
+  decisions, and pending edits. An open plan round lives in the plan file and is logged into the
+  record on approval.
+- **Briefs** (`references/briefs.md`): plan round, task brief, session brief, status digest, retro,
+  and spike intake.
+- **The build loop** (`references/build.md`): checks first, slices, implementer per slice, then the
+  standards-reviewer, the spec-reviewer, and the editor.
+- **Profiles**: `implementer` (formerly `executor`), loading only the slice brief and the check;
+  `standards-reviewer` and `spec-reviewer` (formerly `reviewer`), in separate contexts, the first
+  committing fixes and sweeping for tests that lie.
+- **Commands**: `status` prints the digest; `retro` routes findings to a check, a standard, a skill,
+  or a note, and absorbs the drift pass.
+- **Configuration**: `[project] check`, `[remote] merge`, `[workspace] exclusive`, and
+  `[workspace.experiments]`; `[experiment] serves` takes the coordinator's path.
+- **Session briefs** at `.claude/briefs/<goal>.md`, one per goal.
+- **`init`** writes `roadmap.toml`, a `STANDARDS.md` stub, and a pointers-only `CLAUDE.md`.
+
+### Changed
+
+- **`start`** runs one task end to end, including what `close` did, and syncs a goal's last task.
+- **`plan`** defines goals and makes them ready to run: it creates goals and tasks, sets up their
+  repositories and records, stages and orders them, and writes notes and next briefs.
+- **`reset`** writes the handoff into the goal record and runs on its own when the context fills.
+- **`experiment`** adds a spike as a task of an `experiment.<topic>` goal.
+- **Hooks**: `on-start`, `on-build` (formerly `on-execute`), `on-ship` (formerly `on-close`), and
+  `on-record` (formerly `on-reset`).
+- **Delegation**: profiles inherit the session's model, and the session announces none.
+
+### Removed
+
+- `close` and `review`, the reset file (`mechanics/reset-file.md`), waves, lanes, folds, and
+  worktrees (`mechanics/waves.md`), stages and checkpoints (`references/staged-execution.md`),
+  `.claude/report.md`, delegation statements, and the `on-commit` hook.
+- The marathon-roadmap extension, now part of core.
+
+### Migrating from 0.15
+
+1. Let any session already running under 0.15 finish there; 0.16 applies only to new sessions.
+2. Disable and uninstall marathon-roadmap; remove it from every `extensions` list. A third-party
+   extension renames `on-execute` to `on-build`, `on-close` to `on-ship`, and `on-reset` to
+   `on-record`, and drops `on-commit`.
+3. In `roadmap.toml`, replace `next` with `active` and `planned`: a task path or a wave member maps
+   to its goal's path. Turn each `[backlog.x]` table into `[goals.x]` listed in `backlog`, and
+   rewrite `backlog.x` citations in notes as `x`. Give each goal you stage a `root` and `repos`
+   that cover its tasks.
+4. Move experiments into `experiment.<topic>` goals, each spike a task with `remote` and `path`
+   and an `intake` task last. Move archived spikes into the repository catalog, and point each
+   spike's `[experiment] serves` at the coordinator's path.
+5. Turn `context/reset.md`, each lane record, and each spike's own reset file into the progress of
+   the goal records in each goal's root, then delete them.
+6. Add `check` and `merge` to each repository's `marathon.toml`. In `.gitignore`, replace
+   `.claude/report.md` with `.claude/briefs/` and drop `.claude/worktrees/`; run
+   `git worktree remove` on any worktree left over.
+7. Optionally add a `STANDARDS.md` and reduce `CLAUDE.md` to navigation pointers.
+8. Update marathon-architecture to 0.3.0.
+
 ## v0.15.0
 
 ### Added

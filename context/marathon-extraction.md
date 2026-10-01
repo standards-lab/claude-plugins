@@ -30,9 +30,10 @@ it: a note or a documentation page names the pattern, and a later session builds
 The extension has three parts:
 
 - **Capture, on the consumer side.** The consumer enables it in its `marathon.toml`. It owns
-  `context/extraction.toml`, a ledger of the patterns the consumer nominates. At `on-close`, the
-  closing session compares the step's changes with the want-list (below) and with any nomination
-  markers, and drafts ledger entries. The architect accepts or rejects each one during the close.
+  `context/extraction.toml`, a ledger of the patterns the consumer nominates. At `on-ship`, the
+  shipping session compares the task's changes with the want-list (below) and with any nomination
+  markers, and drafts ledger entries. The architect accepts or rejects each one in the session
+  brief.
 - **Package, on the consumer side.** The architect invokes it. It renders the accepted entries
   into a bundle: one self-contained markdown file with the entries and a manifest of the sources
   they came from. The bundle is what crosses the boundary by hand. Package refuses an entry that
@@ -95,9 +96,9 @@ generated.
 ### Nomination markers
 
 The cheapest signal is a marker comment in the consumer's code, such as `// extract:`, placed
-on a helper an SDK should own, a reworked middleware, or a forked template element. `on-close`
+on a helper an SDK should own, a reworked middleware, or a forked template element. `on-ship`
 collects the markers and drafts entries from them. Without markers, the session nominates from
-the step's diff against the want-list, which is noisier and gives the architect more to review.
+the task's diff against the want-list, which is noisier and gives the architect more to review.
 
 ### Tooling
 
@@ -111,7 +112,7 @@ only the judgment of what is general and where it belongs.
 go-web-service is already a consumer. `v1.data.evaluation` needs a record of the data layer
 before it can decide what moves into the libraries. Running capture on a ledger at the
 coordinator, with a workspace member as the origin and nothing crossing a boundary, tests the
-ledger and the `on-close` nomination before any bundle exists. Package, private origins, adding
+ledger and the `on-ship` nomination before any bundle exists. Package, private origins, adding
 references, and intake are built when a bundle first needs to cross.
 
 ## Open questions

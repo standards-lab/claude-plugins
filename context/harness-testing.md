@@ -1,8 +1,8 @@
 # Harness testing
 
 This note covers how the plugins in this repository are tested. Plugin evals are their automated
-checks, the first of the three quality layers in `marathon-factory.md`. The work is tracked as
-`factory.evals`.
+checks, the first of the three quality layers in marathon's `references/build.md`. The work is
+tracked as `factory.evals`.
 
 ## Per push: consistency
 
@@ -23,7 +23,7 @@ realistic prompt plus one or more graders. It is available in this environment.
   `prompt.md`, `graders/`, and a `case.yaml` and scaffold script when the case needs a fixture
   repository. `results/` is gitignored.
 - **Cases come from failures.** A case is added when a real session fails in a way the plugin
-  should prevent. The retro sends that failure here (`marathon-factory.md`, "The retro"). A case
+  should prevent. `retro` sends that failure here (marathon's `commands/retro.md`). A case
   written before any failure would test a guess, not a regression.
 - **Graders are deterministic where possible.** `tool_used`, `tool_order`, `regex` and
   `file_exists` cost nothing and read the same way every run. An `llm` grader judges only short
@@ -35,7 +35,7 @@ realistic prompt plus one or more graders. It is available in this environment.
 
 ## The seed suite
 
-The seed suite covers the contract `factory.pipeline` introduces:
+The seed suite covers the contract marathon 0.16 introduces:
 
 - **implementer-no-standards:** the implementer never reads `STANDARDS.md` (`tool_used Read`,
   `input_match STANDARDS`, `min 0`, `max 0`).
