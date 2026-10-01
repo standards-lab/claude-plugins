@@ -13,11 +13,6 @@
       "description": "A long-running development workflow built on context engineering"
     },
     {
-      "name": "marathon-roadmap",
-      "source": "./plugins/marathon-roadmap",
-      "description": "marathon extension: a roadmap manifest of goals, tasks, and a backlog, sequenced in waves, that the sessions keep current"
-    },
-    {
       "name": "marathon-architecture",
       "source": "./plugins/marathon-architecture",
       "description": "marathon extension: an architecture layer for the principles and conventions that apply beyond one repository, filled by promoting validated context/ notes"

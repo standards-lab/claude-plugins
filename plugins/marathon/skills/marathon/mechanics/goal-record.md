@@ -2,9 +2,10 @@
 
 `context/goals/<goal>.md` is a goal's session record, named by the goal's dotted path (for
 example, `context/goals/v1.ai.experiment.md`). It lives in the goal's `home` repository, and
-every session on the goal reads it at LOCATE and updates it as it works. Each active goal
-keeps its own, so goals running at the same time never write the same file. Anything that must outlast the goal belongs in the notes, the documentation, or the
-pending coordinator edits that sync applies.
+every session on the goal reads it at LOCATE and updates it as it works. Each active goal keeps
+its own, so goals running at the same time never write the same file. Anything that must outlast
+the goal belongs in the notes, the documentation, or the pending coordinator edits that sync
+applies.
 
 The goal's first PLAN creates the record, and sync deletes it (`mechanics/goals.md`).
 
