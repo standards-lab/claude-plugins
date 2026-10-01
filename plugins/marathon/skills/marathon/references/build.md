@@ -1,8 +1,7 @@
 # Build
 
 BUILD turns an approved task brief into committed, reviewed work without stopping for the
-architect. The session orchestrates: it engages one profile per unit (`behavior/delegation.md`)
-and holds only pointers to the goal record, the brief, and the commits.
+architect. The session engages one subagent profile per unit of work (`behavior/delegation.md`).
 
 ## Checks come first
 
@@ -18,8 +17,9 @@ goes to one-way doors.
   architecture pages that apply. Only the standards-reviewer reads it. `CLAUDE.md` holds
   navigation pointers only.
 - **Tests can lie.** A green check proves nothing when a test is tautological,
-  structure-sensitive, or unable to fail. The standards-reviewer sweeps for all three. The design
-  cure is deep modules: small interfaces over large implementations, tested only at their seams.
+  structure-sensitive, or unable to fail. The standards-reviewer sweeps for all three. Deep
+  modules prevent such tests by design: small interfaces over large implementations, tested only
+  at their seams.
 
 ## Slices
 
@@ -74,4 +74,5 @@ on the goal resumes BUILD from there without asking the architect.
 ## Stay within the task
 
 Make no opportunistic refactors or unrelated cleanups. When a change outside the task looks
-worthwhile, record it as a note, or as a pending roadmap edit in the goal record, and leave it.
+worthwhile, record it as a note, or as a roadmap change under the goal record's pending
+coordinator edits, and leave it.

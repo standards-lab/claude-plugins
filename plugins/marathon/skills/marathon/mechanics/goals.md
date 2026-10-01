@@ -4,11 +4,12 @@ Goals and tasks are marathon's whole vocabulary for work, including work that ru
 time. The roadmap manifest, `context/roadmap.toml`, holds them (`references/manifest.md`); a
 standalone project keeps its own, and a workspace keeps one at the coordinator.
 
-## One primitive
+## Goals and tasks
 
-- **A goal is like a directory.** It holds sub-goals and tasks, and names an outcome.
-- **A task is like a file.** It is a leaf of a goal, sized to one session's work.
-- **Any goal, at any depth, is a unit of parallel work.** Its goal record is the single
+- **A goal** names an outcome and holds sub-goals and tasks, as a directory holds directories and
+  files.
+- **A task** is a leaf of a goal, sized to one session's work.
+- **Any goal, at any depth, can run in parallel with other goals.** Its goal record is the single
   reference point across its sessions (`mechanics/goal-record.md`).
 
 ## Three states
@@ -19,13 +20,14 @@ Every goal the manifest lists is in exactly one of three root arrays of dotted p
 - **`planned`**: the long-term order, top first.
 - **`backlog`**: goals with no place in the order yet.
 
-A goal that isn't listed is a container whose sub-goals are listed, such as `v1` above
-`v1.ai.experiment`. A goal and one of its ancestors are never both listed.
+A goal that isn't listed is a container whose sub-goals are listed, such as `v1` when
+`v1.ai.experiment` is listed. A goal and one of its ancestors are never both listed.
 
 Three verbs move goals:
 
-- **stage**: move a goal from `planned` (or `backlog`) to `active`, once its lock is free
-- **sync**: close a finished goal out into the workspace
+- **stage**: put a goal in `active`, from `planned`, `backlog`, or as a new goal, once its lock
+  is free
+- **sync**: apply a finished goal's pending coordinator edits and delete it from the manifest
 - **pivot**: edit any of the three arrays, at any time, as the architect decides
 
 `plan` stages and pivots. The session that ships a goal's last task syncs it.

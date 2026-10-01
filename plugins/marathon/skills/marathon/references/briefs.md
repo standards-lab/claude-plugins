@@ -76,7 +76,7 @@ the repository gitignores.
 
 ### Decided without you
   1. Kept stdin JSONL over SSE (simpler, spike)
-  2. Reviewer: 4 fixes, 2 tautological tests cut
+  2. Standards-reviewer: 4 fixes, 2 tautological tests cut
 
 ### Merge danger
   two-way door · blast radius: spike repo only

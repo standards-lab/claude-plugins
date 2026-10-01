@@ -40,7 +40,8 @@ Settle in plan rounds:
 
 The architect then runs the spike with `start <goal>`, from either directory. Each task's session
 brief narrates the evidence it produced. The last task's validation is the answer to the
-question, with the evidence, and its sync records the answer in the served goal's intake task.
+question, with the evidence. The goal record carries the answer as a pending coordinator edit
+to the served goal's intake task, which sync applies.
 
 ## Intake
 

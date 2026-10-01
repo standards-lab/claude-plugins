@@ -40,7 +40,7 @@ Run a command as `marathon <command>` or `/marathon:marathon <command>`.
 PLAN   plan rounds → task brief + slices          ✔ approve           [touch 1]
 BUILD  implementer per slice → check; standards-reviewer; spec-reviewer; editor
 BRIEF  session brief                              ✔ accept / redirect [touch 2]
-SHIP   pull request (body = brief) → merge → goal record; sync on the last task
+SHIP   goal record (sync on the last task) → pull request (body = brief) → merge
 ```
 
 BUILD stops for the architect only for a one-way door, a decision the brief doesn't cover, or

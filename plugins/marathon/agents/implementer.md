@@ -14,7 +14,7 @@ check passing.
 2. Implement the slice completely: the change, its tests at the test seam, and its in-source
    comments. Follow the conventions of the surrounding code.
 3. Run the check command until it passes. Fix what it finds; never restate what it checks.
-4. Confirm that each repository's checkout is on the slice's branch, then commit the slice, with
+4. Confirm that each repository's checkout is on the task's branch, then commit the slice, with
    its decisions in the message. If a checkout is on any other branch, stop and report it.
 5. Return a short account: the commits, the check's result, and any decision the brief didn't
    cover, with your reason for it.

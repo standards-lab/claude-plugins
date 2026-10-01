@@ -1,8 +1,8 @@
 # Context engineering
 
-As well as moving the work forward, marathon keeps the project's written context small and
-accurate. Notes about finished work, decided questions, or documentation the code has outgrown
-take context-window space away from the task, and stale notes start to contradict the code.
+marathon keeps the project's written context small and accurate. Notes about finished work,
+decided questions, or documentation the code has outgrown take context-window space away from the
+task, and stale notes start to contradict the code.
 
 Two rules follow:
 
@@ -49,10 +49,10 @@ The source, the optional `docs/` directory, and any files an enabled extension o
 
 `docs/` is the project's guide for people who use or contribute to the repository. It is
 optional, and it belongs to the built work, not to `context/`. A page that the code has made
-wrong is a defect. The change that made it wrong fixes it, or the next documentation step does,
-and `retro` flags it. A documentation step of a `start` session creates `docs/`. The reasoning
+wrong is a defect. The change that made it wrong fixes it, or a later task does, and `retro`
+flags it. The first task that documents the repository creates `docs/`. The reasoning
 behind a built capability belongs in `docs/`, the package documentation, or the README, written by
-the step that builds the capability. Knowledge that applies beyond the repository isn't project
+the task that builds the capability. Knowledge that applies beyond the repository isn't project
 documentation, so it stays a note.
 
 ## Tending the notes

@@ -9,7 +9,7 @@ PLAN   architect ⇄ planner, in rounds → task brief + slices     ✔ approve 
 BUILD  per slice: implementer → check; then standards-reviewer,
        spec-reviewer (gaps → implementer), editor
 BRIEF  session brief                                             ✔ accept / redirect [touch 2]
-SHIP   publish (body = brief) → merge → update the goal record; sync if last task
+SHIP   update the goal record (sync if last task) → publish (body = brief) → merge
 ```
 
 Each playbook under `commands/` says which stages it runs. Extension hooks fire only at the points
@@ -26,8 +26,8 @@ this file names (`mechanics/hooks.md`).
      `.claude/marathon.toml` (`mechanics/configuration.md`). Starting at the workspace root and
      starting inside a member are the same case.
 2. Read the manifest (`references/manifest.md`): the project's own `context/roadmap.toml`, the
-   coordinator's, or for an experiment, that of the project its `[experiment] serves` names. Pull
-   the manifest's default branch first.
+   coordinator's, or for an experiment, that of the project its `[experiment] serves` names. First
+   pull the default branch of the repository that holds the manifest.
 3. Find the goal: the one the architect names, which must be in `active`. With none named, print
    the status digest (`commands/status.md`) and ask. A goal that isn't active is staged by `plan`
    first (`mechanics/goals.md`).
@@ -38,7 +38,7 @@ this file names (`mechanics/hooks.md`).
    - `building` or `handoff`: resume. START, then RESUME.
    - `brief ready`: START, then BRIEF.
 5. Check the lock: every repository the task touches is on its default branch with a clean
-   working tree, or on the task's branch. Anything else means another session holds it: stop and
+   working tree, apart from this goal's own uncommitted record, or on the task's branch. Anything else means another session holds it: stop and
    report.
 
 ### 2 · START
@@ -49,7 +49,8 @@ this file names (`mechanics/hooks.md`).
 
 ### 3 · PLAN
 
-1. Enter plan mode and set State to `planning`.
+1. Enter plan mode and set State to `planning` in the goal record's working tree. A record in a
+   member home stays uncommitted until step 5's branch carries it.
 2. Run plan rounds with the architect (`behavior/planning.md`, `references/briefs.md`). The
    planner profile finds the facts and drafts each round, then the task brief and its slices
    (`behavior/delegation.md`).
@@ -98,8 +99,9 @@ names. When the context fills, run `reset` on your own (`commands/reset.md`).
 
 ## Committing
 
-Before every commit, any agent confirms the checkout is on the task's branch, or on the
-coordinator's default branch for a coordinator commit. A checkout on any other branch means the
+Before every commit, any agent confirms the checkout is on the task's branch, on the
+coordinator's default branch for a coordinator commit, or on the `retro-<topic>` branch of a
+`retro`. A checkout on any other branch means the
 session stops and reports.
 
 ## How each command uses the pipeline

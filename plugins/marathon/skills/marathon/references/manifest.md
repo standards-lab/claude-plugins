@@ -57,7 +57,8 @@ and `tasks` segments: `v1.data.reads`, `docs-site`. Slugs never contain dots.
 
 ## Starting file
 
-`init` creates this manifest, and the architect fills it in at the first `plan`:
+`init` creates this manifest with the first goal it settles in `active`; with none settled, it
+starts empty:
 
 ```toml
 # Roadmap: what remains on the path to the target end state. The format is marathon's

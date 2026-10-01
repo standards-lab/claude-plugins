@@ -31,8 +31,8 @@ returns to BUILD, or to PLAN when it changes the brief's behaviors.
 
 ## Ship
 
-Publish with the brief as the pull request's body, merge, and update the goal record
-(`mechanics/pipeline.md`, 6 · SHIP). On the goal's last task, sync (`mechanics/goals.md`).
+Update and commit the goal record, then publish with the brief as the pull request's body and
+merge (`mechanics/pipeline.md`, 6 · SHIP). On the goal's last task, sync (`mechanics/goals.md`).
 
 If the context fills before BRIEF, `reset` runs on its own and the next `start` on the goal
 resumes.
