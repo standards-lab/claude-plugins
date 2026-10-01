@@ -21,6 +21,9 @@
 - goals: experiments are goals under `experiment`, with spikes as tasks and the intake last.
 - experiments: runs before evals, as the first `start factory` under 0.16. Spikes become sub-goals,
   and the new `intake` command takes in a finished experiment.
+- experiments: every session starts on a branch and lands through a pull request, including
+  `plan`, `experiment`, `intake`, and sync; only small administrative context updates commit
+  straight to the default branch. This replaces 0.16.0's direct coordinator commits.
 - evals: runs under the reinstalled 0.16. Defects its cases expose ship as 0.16.x patches, and the
   eval gate starts with the next release.
 - The workspace alignment once planned as `factory.alignment` is spread over `quality.checks`,
