@@ -84,7 +84,7 @@ this file names (`mechanics/hooks.md`).
 
 1. Check out the task's branch in each touched repository that hasn't merged it, or, resuming a
    sync, the `sync-<goal>` branch in each repository that hasn't merged it.
-2. Fire `on-build`.
+2. Fire `on-build`, unless the session resumes only a sync, which builds nothing.
 3. Read the brief, Progress, and Handoff from the goal record. Finish any WIP slice first, then
    continue BUILD from the recorded position. Two next moves resume past BUILD instead:
    - "tag <names>" resumes the release at SHIP ("Releasing"), one repository at a time: at step
@@ -161,8 +161,10 @@ version releases:
 
 The release always ends at the planned version. It stops for the architect only for a decision
 the brief doesn't cover, as an escalation (`references/build.md`). When the context fills, set
-State to `handoff` with the next move "tag <names>", naming the tags not yet released, commit it
-on the root's default branch as bookkeeping, and stop; the next `start` resumes the release.
+State to `handoff` with the next move "tag <names>", naming the tags not yet released, and commit
+it where the root stands: on the root's task branch while that branch hasn't merged, since its
+record still lands with the merge, or on the root's default branch as bookkeeping once it has.
+Then stop; the next `start` resumes the release.
 
 ## Branches and pull requests
 
@@ -193,7 +195,7 @@ and configuration follow the same rule as a coordinator's.
 
 Only goal-record bookkeeping commits straight to the root's default branch: the header lines
 (State, Task, Branch) between tasks, State `handoff` with its Handoff section for a release's
-"tag <names>" and for a stuck sync's "merge `sync-<goal>`, then delete the record", the approved
+"tag <names>" once the root's task branch has merged ("Releasing") and for a stuck sync's "merge `sync-<goal>`, then delete the record", the approved
 next brief `plan` writes, and deleting the record once its sync pull request merges
 (`mechanics/goal-record.md`). Everything else, including the manifest and its arrays, the notes,
 the repository catalog, the configuration, and `retro`'s coordinator findings, goes through a

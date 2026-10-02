@@ -22,7 +22,9 @@ by the new `intake` command. 0.16.0 experiments need migrating; see Migrating be
   `Release` line naming the exact tags it releases, which makes its Door one-way; the session
   brief's Merge danger repeats them, so accepting it authorizes tagging. SHIP merges and tags one
   repository at a time, lowest layer first, never while the default branch is red, and fixes
-  forward on `<slug>-fix` until the planned version releases. A released tag is never re-cut.
+  forward on `<slug>-fix` until the planned version releases. A released tag is never re-cut. A
+  release whose context fills hands off with "tag <names>", committed on the root's task branch
+  until it merges and on the default branch after.
 - **`[remote] ci`**: an optional command that waits for the default branch's CI run on the merge
   commit before any tag is pushed.
 - **The answer section** (`references/briefs.md`): a spike's last task gives its answer, and its
@@ -45,7 +47,8 @@ by the new `intake` command. 0.16.0 experiments need migrating; see Migrating be
   experiment cites. It creates no repository and stages no spike.
 - **`plan experiment.<topic>.<spike>`** stages a spike and sets it up ("Spike setup" in
   `commands/plan.md`): evidence list, founding decisions, path as tasks, repository and remote,
-  read-only references, and record. A spike session starts from the coordinator or the workspace,
+  read-only references, and record. A spike always starts in a new repository; an existing
+  project it builds on is only a read-only reference. A spike session starts from the coordinator or the workspace,
   and LOCATE finds the spike's repository through its `path`.
 - **Every session lands through a branch and a pull request** in each repository it changes: the
   task's slug, `plan-<goal>`, `experiment-<topic>`, `intake-<topic>`, `sync-<goal>`, and
@@ -104,6 +107,15 @@ The recipes, by the experiment's state:
    `experiment.<topic>.<spike>` that keeps its `remote` and `path`, with the spike's repository
    as `root` and `repos` and a summary of its question; list it in `planned`. `intake` stays the
    experiment's only task. Each spike is set up later by `plan experiment.<topic>.<spike>`.
+   A spike always starts in a new repository (`commands/plan.md`, "Spike setup"), so a spike
+   task that names an existing project becomes a sub-goal for a new spike repository instead.
+   `experiment.ai`'s `personal-agents` becomes `experiment.ai.spike-local-agents`, at the
+   `[workspace.experiments]` path `~/experiments/spike-local-agents` with the remote
+   `https://github.com/JaimeStill/spike-local-agents.git`. Its summary names
+   `~/code/personal-agents` as a read-only reference, recorded when `plan` sets the spike up.
+   Nothing is written to or archived from `personal-agents`. The migration also adds an open
+   question to `experiment.ai`'s `intake` task entry, for the intake to decide: whether
+   `personal-agents`' contents and the spike's findings move into a fresh workspace repository.
 
 `experiment.ai` takes recipes 3 and 2 in its one pull request, in that order: convert the planned
 spikes to sub-goals first, then land `spike-harness-driver`'s answer section and stage the next

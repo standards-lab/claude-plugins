@@ -86,6 +86,6 @@ appear while a task is planned or in progress, and Handoff only while State is `
 
 The root is a repository the goal locks, so the record changes on the task's branch and merges
 with the task's pull request. Only bookkeeping commits it straight to the root's default branch:
-the header lines between tasks, State `handoff` with its Handoff for an unfinished release or a
-stuck sync, the next brief `plan` writes, and deleting the record once its sync pull request merges
+the header lines between tasks, State `handoff` with its Handoff for an unfinished release whose
+root has merged or a stuck sync, the next brief `plan` writes, and deleting the record once its sync pull request merges
 (`mechanics/pipeline.md`, "Branches and pull requests").
