@@ -1,7 +1,7 @@
 {
   "name": "marathon",
-  "description": "A long-running development workflow run as a software factory: goals and tasks in a roadmap manifest, with active, planned, and backlog states and a repository lock so goals run side by side; one goal record per active goal; a plan, build, brief, and ship pipeline in which the architect approves the task brief and accepts the session brief; planner, implementer, standards-reviewer, spec-reviewer, and editor agent profiles; checks first; init, plan, start, experiment, status, retro, and reset commands; spikes as goals homed in their own repositories; extension hooks; and a flat context/ of notes that state what exists or what is planned",
-  "version": "0.16.0",
+  "description": "A long-running development workflow run as a software factory: goals and tasks in a roadmap manifest, with active, planned, and backlog states and a repository lock so goals run side by side; one goal record per active goal; a plan, build, brief, and ship pipeline in which the architect approves the task brief and accepts the session brief; every session landing through a pull request, and release tags cut at ship once main is green; planner, implementer, standards-reviewer, spec-reviewer, and editor agent profiles; checks first; init, plan, start, experiment, intake, status, retro, and reset commands; experiments whose spikes are sub-goals homed in their own repositories, run in parallel, and taken in by intake; extension hooks; and a flat context/ of notes that state what exists or what is planned",
+  "version": "0.16.1",
   "license": "Apache-2.0",
   "homepage": "https://github.com/standards-lab/claude-plugins",
   "repository": "https://github.com/standards-lab/claude-plugins",

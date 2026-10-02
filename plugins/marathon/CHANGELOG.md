@@ -4,6 +4,92 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.16.1
+
+Spikes become goals of their own, every session lands through a pull request, and releases are
+tagged inside the pipeline. An experiment's spikes run in parallel and their answers are taken in
+by the new `intake` command. 0.16.0 experiments need migrating; see Migrating below.
+
+### Added
+
+- **`intake`** (`commands/intake.md`): `marathon intake experiment.<topic>` takes in a finished
+  experiment once no spike sub-goal remains. In plan rounds led by the spikes' answers it decides
+  what each served goal builds, then one `intake-<topic>` coordinator pull request writes those
+  tasks, folds the answer sections into the served goals' notes, removes the experiment, and
+  updates the repository catalog; the named spike remotes are archived after it merges. The plan
+  file holds its state, and it writes no goal record.
+- **Release tagging at SHIP** (`mechanics/pipeline.md`, "Releasing"). A task brief may carry a
+  `Release` line naming the exact tags it releases, which makes its Door one-way; the session
+  brief's Merge danger repeats them, so accepting it authorizes tagging. SHIP merges and tags one
+  repository at a time, lowest layer first, never while the default branch is red, and fixes
+  forward on `<slug>-fix` until the planned version releases. A released tag is never re-cut.
+- **`[remote] ci`**: an optional command that waits for the default branch's CI run on the merge
+  commit before any tag is pushed.
+- **The answer section** (`references/briefs.md`): a spike's last task gives its answer, and its
+  sync lands an answer section (question, one-line answer, numbered evidence with where each item
+  is proven, links to the spike README's "The answer" and its remote) in the note the experiment
+  cites.
+- **The Sync section** of a last task's session brief: the pending edits per repository and the
+  goal proposed to stage next. Accepting the brief authorizes the sync and stages that goal when
+  staging's checks pass; otherwise it reads "proposed, not staged: <reason>".
+
+### Changed
+
+- **A spike is a sub-goal**, `experiment.<topic>.<spike>`, carrying `remote` and `path`, with its
+  own repository as `root` and `repos` and its path steps as tasks. Spikes of one experiment can
+  be active at once, each locking only its own repository. The experiment goal is never listed in
+  `active`, `planned`, or `backlog`, keeps no goal record, and holds only its `intake` task;
+  `start` on it refuses and points to `intake`.
+- **`experiment`** runs once per topic: in one `experiment-<topic>` pull request it creates the
+  experiment goal, its `intake` task, and its planned spike sub-goals, and the note the
+  experiment cites. It creates no repository and stages no spike.
+- **`plan experiment.<topic>.<spike>`** stages a spike and sets it up ("Spike setup" in
+  `commands/plan.md`): evidence list, founding decisions, path as tasks, repository and remote,
+  read-only references, and record. A spike session starts from the coordinator or the workspace,
+  and LOCATE finds the spike's repository through its `path`.
+- **Every session lands through a branch and a pull request** in each repository it changes: the
+  task's slug, `plan-<goal>`, `experiment-<topic>`, `intake-<topic>`, `sync-<goal>`, and
+  `retro-<topic>` (`mechanics/pipeline.md`, "Branches and pull requests"). A project with no
+  `[remote] publish` merges locally. Only goal-record bookkeeping commits straight to the default
+  branch. The coordinator changes only through `plan`, `experiment`, `intake`, `retro`, and sync,
+  and LOCATE treats a coordinator on a session branch as held.
+- **Sync** of a spike stages the next planned spike of its experiment when staging's checks pass,
+  and no longer archives spike remotes; `intake` does.
+
+### Removed
+
+- `[experiment] serves`, from configuration, `init`, and LOCATE.
+- Spikes as tasks of an experiment goal, and the spike intake brief, replaced by the intake round.
+
+### Migrating from 0.16.0
+
+Install 0.16.1 first. Each recipe runs as a `plan` session at the coordinator, landing through
+its pull request; a change in a spike's repository lands through a pull request there.
+
+1. **A finished experiment whose spike is done and whose intake is next** (for example,
+   `experiment.messaging` with `spike-messaging`). The experiment goal keeps only its `intake`
+   task: remove the spike tasks, and remove the experiment from `active`, `planned`, and
+   `backlog`. Turn the spike's 0.15 closeout, its `context/reset.md` and its README's "The
+   answer", into its answer section in the note the experiment cites
+   (`references/briefs.md`, "Answer section"). In a pull request in the spike's repository,
+   delete `[experiment] serves` and `context/reset.md`. Then run
+   `marathon intake experiment.<topic>`.
+2. **A spike that is done and awaiting sync** (for example, `experiment.ai`'s
+   `spike-harness-driver`). Sync it under the new rules, leaving no sub-goal behind: its closeout
+   becomes its answer section in the note the experiment cites, a pull request in the spike's
+   repository deletes `[experiment] serves` and `context/reset.md`, and the next planned spike is
+   staged.
+3. **Spikes still planned** (for example, `experiment.ai`'s `spike-local-subagents` and
+   `personal-agents`). Turn each spike task into a planned sub-goal
+   `experiment.<topic>.<spike>` that keeps its `remote` and `path`, with the spike's repository
+   as `root` and `repos` and a summary of its question; list it in `planned`. `intake` stays the
+   experiment's only task. Each spike is set up later by `plan experiment.<topic>.<spike>`.
+
+In every case, experiment goals leave `active`, `planned`, and `backlog`, and their spike
+sub-goals are listed instead. In the same pull request, update any repository catalog line that
+describes a spike as a task of an experiment goal. Each repository may add `[remote] ci` to its
+`marathon.toml`. `.claude/briefs/` stays in `.gitignore`.
+
 ## v0.16.0
 
 marathon becomes a software factory. The architect engages twice per task, approving the task brief
