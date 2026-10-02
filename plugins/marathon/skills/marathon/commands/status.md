@@ -1,7 +1,8 @@
 # marathon status
 
 Print the status digest: one line per active goal, with the goals that need the architect first
-(`references/briefs.md`, "Status digest"). `status` changes nothing and fires no hook.
+(`references/briefs.md`, "Status digest"). Each active spike sub-goal is a line of its own; an
+experiment goal is never active, so it has none. `status` changes nothing and fires no hook.
 
 1. Read `active` from the manifest (`references/manifest.md`): a standalone project's own, or the
    coordinator's.

@@ -12,8 +12,9 @@ standalone project keeps its own, and a workspace keeps one at the coordinator.
 - **Any goal, at any depth, can run in parallel with other goals.** Its goal record, in its root
   repository, is the single reference point across its sessions (`mechanics/goal-record.md`).
 - **An experiment** is a goal under `experiment` that settles what another goal is built from:
-  `experiment.ai` investigates, and `v1.ai` builds. Its tasks are its spikes and a final intake
-  (`commands/experiment.md`).
+  `experiment.ai` investigates, and `v1.ai` builds. Each spike is a sub-goal,
+  `experiment.<topic>.<spike>`, with its own repository and its path steps as tasks. The
+  experiment itself holds only its `intake` task (`commands/experiment.md`).
 
 ## Three states
 
@@ -25,6 +26,9 @@ Every goal the manifest lists is in exactly one of three root arrays of dotted p
 
 A goal that isn't listed is a container whose sub-goals are listed, such as `v1` when `v1.data` is
 listed. A goal and one of its ancestors are never both active.
+
+An experiment goal is never listed. Its spike sub-goals are listed and staged on their own, and
+several spikes of one experiment can be active at once, each locking only its own repository.
 
 Three verbs move goals:
 
@@ -64,11 +68,12 @@ anything is deleted:
 3. Apply each pending edit for another repository on a branch there, published and merged as
    SHIP does, when no active goal locks that repository. When one does, add the edit as a task of
    the locking goal in step 2's commit instead.
-4. Delete the goal record from the root, as a direct commit on its default branch. For an
-   experiment, archive the spikes' remotes; step 2 has already moved each spike into the
-   workspace's repository catalog as archived.
+4. Delete the goal record from the root, as a direct commit on its default branch.
 5. The lock is released. Tell the architect which `planned` goal could be staged next; staging it
    is a `plan` decision.
+
+A spike sub-goal syncs the same way. Its experiment stays until its intake, which takes in the
+spikes' answers and archives their remotes (`commands/experiment.md`).
 
 If a merge can't happen, because there is no `[remote] merge` command or a check fails, nothing is
 synced and the record stays: set State to `handoff` with the next move "merge, then sync", and

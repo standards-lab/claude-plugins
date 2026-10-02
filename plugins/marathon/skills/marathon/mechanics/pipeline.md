@@ -25,10 +25,12 @@ this file names (`mechanics/hooks.md`).
    - A **workspace** is a directory of projects, one of which declares itself coordinator in its
      `.claude/marathon.toml` (`mechanics/configuration.md`). Starting at the workspace root and
      starting inside a member are the same case.
-   - An **experiment's spike** names the coordinator's path in `[experiment] serves`.
+   - A **spike** session starts from the coordinator or the workspace, or from the root of the
+     standalone project whose roadmap holds the spike's experiment, never from the spike's own
+     repository.
 2. Read the manifest (`references/manifest.md`): the project's own `context/roadmap.toml`, or the
    coordinator's. First pull the coordinator's default branch. Resolve every repository name the
-   goal uses through `order`, `[workspace.paths]`, or a spike task's `path`.
+   goal uses through `order`, `[workspace.paths]`, or a spike sub-goal's `path`.
 3. Find the goal: the one the architect names, which must be in `active` and have a `root`; one
    without a `root` is set up by `plan` first (`commands/plan.md`). With none named, print
    the status digest (`commands/status.md`) and ask. A goal that isn't active is staged by `plan`

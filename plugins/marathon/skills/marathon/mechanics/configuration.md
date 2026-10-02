@@ -38,10 +38,6 @@ core-lib = "~/code/core-lib"
 [workspace.experiments]
 path   = "~/experiments/spike-<slug>"
 remote = "https://github.com/<owner>/spike-<slug>.git"
-
-# Optional: only an experiment declares this table.
-[experiment]
-serves = "~/code/org"  # the path of the coordinator, or project, whose roadmap holds the spike
 ```
 
 ## Keys
@@ -60,7 +56,5 @@ serves = "~/code/org"  # the path of the coordinator, or project, whose roadmap 
   gives the location of a key that isn't a sibling directory
   (`references/workspace-coordination.md`). `[workspace.experiments]` gives the local path and
   remote a new spike takes, with `<slug>` replaced (`commands/experiment.md`).
-- **`[experiment]`**: for a spike only. `serves` is the path of the coordinator, or the
-  standalone project, whose roadmap holds the spike's experiment goal (`commands/experiment.md`).
 - **`extensions`**: the enabled extensions, by skill name. Under `[project]`, they apply to this
   repository. Under `[workspace]`, they apply to every member (`references/extensions.md`).

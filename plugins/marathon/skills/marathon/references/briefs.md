@@ -38,7 +38,7 @@ behavior, not procedure, and names no file paths, so it stays valid while other 
 code. The goal record keeps it (`mechanics/goal-record.md`).
 
 ```
-## Task brief · v1.ai.experiment · harness-adapters
+## Task brief · experiment.ai.spike-harness-driver · harness-adapters
 Problem       what is missing and why it matters now
 Behaviors     numbered, each testable
 Test seams    the interfaces the tests exercise (ideally one)
@@ -55,7 +55,7 @@ Core changes carries the code that matters. The session writes it to `.claude/br
 goal's root, which gitignores `.claude/briefs/`.
 
 ```
-## v1.ai.experiment · task 3/5 · harness-adapters
+## experiment.ai.spike-harness-driver · task 3/5 · harness-adapters
 
 ### Summary
   clutch run --harness=<pi|claude|opencode>
@@ -102,9 +102,10 @@ and the repositories it locks. Goals that need the architect sort first and carr
 
 ```
 ── STATUS · 2026-10-01 ──
-! v1.ai.experiment  1/4  brief ready  spike-harness-driver
-  factory           1/3  building     claude-plugins
-  v1.messaging      0/1  idle         spike-messaging, go-core, go-web-service
+! experiment.ai.spike-harness-driver    2/3  brief ready  spike-harness-driver
+  experiment.ai.spike-local-subagents  1/3  building     spike-local-subagents
+  factory                              1/3  building     claude-plugins
+  v1.messaging                         0/1  idle         go-messaging, go-core, go-web-service
 ```
 
 The state is the goal record's State line (`mechanics/goal-record.md`). A goal with no record

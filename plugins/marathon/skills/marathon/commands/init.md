@@ -39,10 +39,10 @@ Keep every file brief, a few sentences each.
     └── <note>.md      # optional: what the first goal needs to know
 ```
 
-A member of a workspace has no `roadmap.toml`; its goals live in the coordinator's. An experiment
-adds an `[experiment]` table (`commands/experiment.md`), and a coordinator adds a `[workspace]`
-table (`references/workspace-coordination.md`). Extensions are enabled later, when the project
-adopts them (`references/extensions.md`). Don't create `docs/`; a task that documents creates it.
+A member of a workspace has no `roadmap.toml`; its goals live in the coordinator's, and so do a
+spike's. A coordinator adds a `[workspace]` table (`references/workspace-coordination.md`).
+Extensions are enabled later, when the project adopts them (`references/extensions.md`). Don't
+create `docs/`; a task that documents creates it.
 
 The `STANDARDS.md` stub says what the file is for: judgement calls the check can't enforce, each
 one line, with pointers to the architecture pages that apply. It never restates what the check

@@ -3,7 +3,7 @@
 Run one task of an active goal: plan it if it has no approved brief, build it, brief the
 architect, and ship it. When the task is the goal's last, the same session syncs the goal.
 `start` runs the full pipeline (`mechanics/pipeline.md`); the argument after `start` names the
-goal, as in `start v1.ai.experiment`.
+goal, as in `start v1.data`.
 
 ## Plan
 

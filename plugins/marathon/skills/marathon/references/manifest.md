@@ -13,8 +13,10 @@ and no timestamps.
 - A goal's tasks sit under its reserved `tasks` table (`[goals.v1.data.tasks.reads]`). The goal
   record orders them.
 - An experiment is a goal under the reserved root goal `experiment`, named for the topic it
-  investigates (`[goals.experiment.ai]`). Each of its spikes is a task named for the spike's
-  repository, and its last task is the intake (`commands/experiment.md`).
+  investigates (`[goals.experiment.ai]`). It is a container that holds only its `intake` task.
+  Each of its spikes is a sub-goal named for the spike's repository
+  (`[goals.experiment.ai.spike-harness-driver]`), and the spike's path steps are its tasks
+  (`commands/experiment.md`).
 
 An entry's full key is its identity. Renaming a slug means updating every reference to it.
 
@@ -39,10 +41,12 @@ A task has these fields:
 - `proof` (optional): the observable result that shows it is done.
 - `context` (optional): the files that carry the detail.
 
-A spike task under an experiment goal adds:
+A spike sub-goal adds:
 
 - `remote`: the spike repository's remote.
 - `path`: the spike's local project directory.
+
+A spike's `root` and `repos` are its own repository, and nothing else.
 
 `root` and `repos` default to the nearest ancestor's values. A goal with no `repos` touches only
 the coordinator's `context/`, so only `plan` works on it and it has no record.
@@ -85,7 +89,7 @@ backlog = []
 # Roadmap: what remains on the path to the target end state. The format is marathon's
 # references/manifest.md.
 
-active = ["v1.data", "experiment.cache"]
+active = ["v1.data", "experiment.cache.spike-cache-redis", "experiment.cache.spike-cache-local"]
 planned = ["v1.messaging"]
 backlog = ["docs-site"]
 
@@ -121,19 +125,39 @@ summary = "The spikes that settle what a goal is built from."
 
 [goals.experiment.cache]
 name = "Does a read-through cache pay for itself?"
-root = "spike-cache"
-repos = ["spike-cache"]
 summary = "Whether the reads need a cache before v1."
-
-[goals.experiment.cache.tasks.spike-cache]
-name = "spike-cache"
-remote = "https://github.com/example/spike-cache.git"
-path = "~/experiments/spike-cache"
-summary = "Runs its path to the answer."
 
 [goals.experiment.cache.tasks.intake]
 name = "The cache intake"
-summary = "Decides what v1.data takes from the answer, as pending edits."
+summary = "Decides what v1.data takes from the spikes' answers."
+
+[goals.experiment.cache.spike-cache-redis]
+name = "A shared Redis cache"
+root = "spike-cache-redis"
+repos = ["spike-cache-redis"]
+remote = "https://github.com/example/spike-cache-redis.git"
+path = "~/experiments/spike-cache-redis"
+summary = "Whether a shared cache cuts read latency enough to pay for its operation."
+
+[goals.experiment.cache.spike-cache-redis.tasks.baseline]
+name = "Baseline"
+summary = "Measures the reads without a cache."
+
+[goals.experiment.cache.spike-cache-redis.tasks.cache]
+name = "Read-through cache"
+summary = "Adds the cache and measures the reads again."
+
+[goals.experiment.cache.spike-cache-local]
+name = "An in-process cache"
+root = "spike-cache-local"
+repos = ["spike-cache-local"]
+remote = "https://github.com/example/spike-cache-local.git"
+path = "~/experiments/spike-cache-local"
+summary = "Whether an in-process cache is enough without shared infrastructure."
+
+[goals.experiment.cache.spike-cache-local.tasks.cache]
+name = "In-process cache"
+summary = "Adds the cache and measures the reads against the same baseline."
 
 [goals.docs-site]
 name = "The docs site"
@@ -141,4 +165,5 @@ summary = "The documentation site that serves the project's published pages."
 ```
 
 `v1.messaging` stays planned while `v1.data` holds `service`, and it gains its `root` when it is
-staged.
+staged. Both spikes of `experiment.cache` are active at once, each locking only its own
+repository, while `experiment.cache` itself is never listed.

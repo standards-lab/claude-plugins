@@ -1,10 +1,12 @@
 # The goal record
 
 `context/goals/<goal>.md` is a goal's session record, named by the goal's dotted path (for
-example, `context/goals/experiment.ai.md`). It lives in the goal's `root` repository, and every
-session on the goal reads it at LOCATE and updates it as it works. Each active goal keeps its own,
-so goals running at the same time never write the same file. Anything that must outlast the goal
-belongs in the notes, the documentation, or the pending edits that sync applies.
+example, `context/goals/experiment.ai.spike-local-subagents.md`). It lives in the goal's `root`
+repository, and every session on the goal reads it at LOCATE and updates it as it works. Each
+active goal keeps its own, so goals running at the same time never write the same file. An
+experiment goal keeps none; each of its spike sub-goals keeps its own in the spike's repository.
+Anything that must outlast the goal belongs in the notes, the documentation, or the pending edits
+that sync applies.
 
 The goal's first approved brief creates the record, and sync deletes it last
 (`mechanics/goals.md`).
@@ -12,20 +14,19 @@ The goal's first approved brief creates the record, and sync deletes it last
 ## Schema
 
 ```markdown
-# goal · experiment.ai
+# goal · experiment.ai.spike-local-subagents
 
-- **State:** building                # idle | building | brief ready | handoff
-- **Task:** spike-local-subagents    # the current task, or none between tasks
-- **Branch:** spike-local-subagents  # the task's branch, one name in every repository it touches
+- **State:** building    # idle | building | brief ready | handoff
+- **Task:** transport    # the current task, or none between tasks
+- **Branch:** transport  # the task's branch, one name in every repository it touches
 
 ## Tasks
 
-1. [x] spike-harness-driver
-2. [ ] spike-local-subagents
-3. [ ] personal-agents
-4. [ ] intake
+1. [x] harness
+2. [ ] transport
+3. [ ] fan-out
 
-## Task brief · spike-local-subagents
+## Task brief · transport
 
 (the approved brief, in the form of references/briefs.md, "Task brief")
 
@@ -39,7 +40,7 @@ slices 2/3 committed · standards — · spec — · editor —
 
 ## Decisions
 
-- spike-local-subagents: kept stdin JSONL over SSE — simpler, and the spike needs one transport.
+- transport: kept stdin JSONL over SSE — simpler, and the spike needs one transport.
 
 ## Pending edits
 
