@@ -49,10 +49,11 @@ syncs it, and stages the goal its session brief proposes when staging's checks p
   repository, so each goal works on the main checkout of its own repositories, with no worktrees.
   Staging a goal whose `repos` overlap an active goal's waits, or pivots the other goal out.
 - **The coordinator is never locked by a goal.** It is the one shared repository, and it changes
-  only two ways: `plan`'s planning and administrative edits, and syncs, each on its own session
-  branch and pull request (`mechanics/pipeline.md`, "Branches and pull requests"). While a session
-  branch is checked out there, the coordinator is held until it merges. No goal's record lives
-  there, and a task's changes to it wait in its goal record's pending edits.
+  only through sessions: `plan`'s planning and administrative edits, `experiment`, `intake`,
+  `retro`'s findings, and syncs, each on its own session branch and pull request
+  (`mechanics/pipeline.md`, "Branches and pull requests"). While a session branch is checked out
+  there, the coordinator is held until it merges. No goal's record lives there, and a task's
+  changes to it wait in its goal record's pending edits.
 - **A workspace can narrow the lock.** `[workspace] exclusive` in the coordinator's
   `marathon.toml` lists groups of repositories that at most one active goal may touch at a time
   (`mechanics/configuration.md`).
@@ -84,7 +85,7 @@ A spike sub-goal syncs the same way. Its last task's session brief gives the spi
 its pending edits carry the spike's answer section for the note its experiment cites
 (`references/briefs.md`, "Answer section"), which step 2 lands. The goal its Sync section
 proposes is the next planned spike of the same experiment. The experiment stays until its intake,
-which takes in the spikes' answers and archives their remotes (`commands/experiment.md`).
+which takes in the spikes' answers and archives their remotes (`commands/intake.md`).
 
 If the task's merge can't happen, because there is no `[remote] merge` command or a check fails,
 nothing is synced and the record stays: set State to `handoff` with the next move "merge, then

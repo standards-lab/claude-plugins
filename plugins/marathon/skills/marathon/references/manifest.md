@@ -126,6 +126,7 @@ summary = "The spikes that settle what a goal is built from."
 [goals.experiment.cache]
 name = "Does a read-through cache pay for itself?"
 summary = "Whether the reads need a cache before v1."
+context = ["org/context/cache.md"]
 
 [goals.experiment.cache.tasks.intake]
 name = "The cache intake"
@@ -166,4 +167,5 @@ summary = "The documentation site that serves the project's published pages."
 
 `v1.messaging` stays planned while `v1.data` holds `service`, and it gains its `root` when it is
 staged. Both spikes of `experiment.cache` are active at once, each locking only its own
-repository, while `experiment.cache` itself is never listed.
+repository, while `experiment.cache` itself is never listed. It cites `org/context/cache.md`, a
+note in the coordinator, `org`, where each spike's sync lands its answer section.

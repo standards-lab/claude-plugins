@@ -141,7 +141,8 @@ in the spike's README, and adds this section to its goal record's pending edits.
   or a running demo. An item proven only by tests says so.
 - **The links** point to the spike README's "The answer" and to the spike's remote.
 
-`marathon intake` later folds each answer section into the served goals' notes and removes it.
+`marathon intake` later folds each answer section into the served goals' notes and removes it
+(`commands/intake.md`).
 
 ## Status digest
 
@@ -177,17 +178,38 @@ context
   [ ] 4. cull blobfs-composition.md — expressed in blobfs/docs
 ```
 
-## Spike intake
+## Intake round
 
-A spike intake is a plan round led by the spike's result:
+`intake` runs plan rounds led by the spikes' answers (`commands/intake.md`). The header names the
+experiment and the goals it serves, then summarizes each spike's answer section: its question,
+its one-line answer, and its evidence. The numbered questions follow, in the plan round's form.
 
 ```
-INTAKE · spike-messaging → v1.messaging
-question  one broker-agnostic event + reactor contract on JetStream and in-memory?
-answer    yes — 8/8 evidence (README "The answer")
-evidence  2, 3 by tests only; 7 waits on go-storage
+INTAKE ROUND 2 · experiment.ai → v1.ai, v1.agents
+spike-harness-driver
+  question  one driver interface over Pi, Claude Code, and OpenCode?
+  answer    yes; stdin/stdout JSONL carries all three
+  evidence  3 items; item 3 by tests only
+spike-local-subagents
+  question  do local models hold a subagent's tool loop?
+  answer    no; tool calls drift past 20 turns
+  evidence  4 items; item 2 waits on a larger model
 
-1. Does go-core take reactor and event?
-   rec: yes, as lifecycle components
-   changes: go-core minor release before go-messaging
+1. Does v1.ai build on the driver interface?
+   rec: yes, as its first task, harness-driver
+   changes: adds a task to v1.ai; folds the answer into context/ai.md
+2. Does v1.agents keep local subagents?
+   rec: no; cloud models only until a larger local model is tested
+   changes: drops v1.agents' local-subagents task
+3. Archive spike-local-subagents?
+   rec: yes; keep spike-harness-driver open as v1.ai's reference
+   changes: one remote archived after the merge
+
+reply: "1 ok, 2 ok, 3 yes but ..."
 ```
+
+- The first round names the served goals, which the header lists from then on, and
+  consolidates the spikes' answer sections.
+- Each spike's summary comes from its answer section, with any evidence proven only by tests,
+  or still waiting, called out.
+- Every question has a `rec:` and a `changes:` line, as in a plan round.

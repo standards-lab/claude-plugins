@@ -32,8 +32,8 @@ Order constraints:
 
 - SHIP fires `on-ship`, then `on-record`, then publishes.
 - `reset` fires `on-record` and never `on-ship`.
-- `plan`, `experiment`, and `retro` fire `on-start`, and `on-record` before any commit that
-  writes a goal record.
+- `plan`, `experiment`, `intake`, and `retro` fire `on-start`. `plan` and `retro` also fire
+  `on-record` before any commit that writes a goal record; `experiment` and `intake` write none.
 - A sync fires `on-record` before it reads the record's pending edits.
 - `init` fires `on-start` only.
 

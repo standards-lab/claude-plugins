@@ -6,8 +6,8 @@ architect, and ship it. When the task is the goal's last, the same session syncs
 goal, as in `start v1.data`.
 
 On a spike, `start experiment.<topic>.<spike>` runs the spike's tasks, its path steps, one per
-session. An experiment goal has only its intake, which `marathon intake` runs: `start` on
-`experiment.<topic>` refuses and points there.
+session. An experiment goal has only its intake, which `marathon intake` runs
+(`commands/intake.md`): `start` on `experiment.<topic>` refuses and points there.
 
 ## Plan
 

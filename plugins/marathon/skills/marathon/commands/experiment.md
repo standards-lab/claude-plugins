@@ -32,7 +32,7 @@ Settle in plan rounds:
 At the coordinator, in one commit on an `experiment-<topic>` branch:
 
 - Add `experiment.<topic>` with its `intake` task, which `marathon intake` runs once no spike
-  remains. The experiment goal is never listed in the arrays.
+  remains (`commands/intake.md`). The experiment goal is never listed in the arrays.
 - Add each spike as a sub-goal with its `root` and `repos` set to its repository, its `remote`
   and `path`, and a summary of its question and the decision it changes
   (`references/manifest.md`). Append the spikes to `planned` in the settled order.

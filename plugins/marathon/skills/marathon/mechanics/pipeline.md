@@ -36,7 +36,7 @@ this file names (`mechanics/hooks.md`).
    without a `root` is set up by `plan` first (`commands/plan.md`). With none named, print the
    status digest (`commands/status.md`) and ask. A goal that isn't active is staged by `plan`
    first (`mechanics/goals.md`), except an experiment goal, `experiment.<topic>`, which is never
-   staged: refuse, and point to `marathon intake`.
+   staged: only `intake` runs on it (`commands/intake.md`), and `start` refuses and points there.
 4. Find where the goal stands, in this order:
    - A plan file under `.claude/plans/` whose title names the goal holds an open plan round:
      continue it. START, then PLAN.
@@ -160,6 +160,7 @@ and reports.
 | `start` | The full pipeline for one task |
 | `plan` | LOCATE and START, then plan rounds that end in a `plan-<goal>` pull request in each changed repository (`commands/plan.md`) |
 | `experiment` | `plan`'s stages, creating the experiment goal and its planned spikes in an `experiment-<topic>` pull request (`commands/experiment.md`) |
+| `intake` | LOCATE and START, then intake rounds that end in an `intake-<topic>` pull request, then archive the spike remotes (`commands/intake.md`) |
 | `retro` | LOCATE and START, then the retro (`commands/retro.md`) |
 | `status` | Reads only; no stage changes anything (`commands/status.md`) |
 | `reset` | Writes the handoff during BUILD (`commands/reset.md`) |
@@ -173,6 +174,7 @@ and reports.
 - Nothing changes before the architect approves the task brief, except a RESUME of an approved
   one.
 - Nothing is published before the architect accepts the session brief.
-- The coordinator changes only through `plan` and sync, each through its own pull request.
+- The coordinator changes only through `plan`, `experiment`, `intake`, `retro`, and sync, each
+  through its own pull request.
 - Every change lands through a session's pull request, except goal-record bookkeeping.
 - On a code project, notes state only what validated work proved.
