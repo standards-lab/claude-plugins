@@ -71,8 +71,8 @@ appear while a task is planned or in progress, and Handoff only while State is `
 - **Progress** records the build loop's position (`references/build.md`).
 - **Handoff** gives the exact next move while State is `handoff`: the BUILD position `reset`
   wrote (`commands/reset.md`); "merge", or the failing check, when SHIP can't merge; "tag
-  <names>" when the context fills during a release, naming the tags not yet released
-  (`mechanics/pipeline.md`, "Releasing"); "merge, then sync" or "tag <names>, then sync" on the
+  <names>" when the context fills during a release, naming the tags not yet released and each
+  repository's position (`mechanics/pipeline.md`, "Releasing"); "merge, then sync" or "tag <names>, then sync" on the
   goal's last task; or "merge `sync-<goal>`, then delete the record" when a sync pull request
   can't merge (`mechanics/goals.md`, "Sync").
 - **Decisions** logs what each plan round settled and what each task decided without the
@@ -87,5 +87,6 @@ appear while a task is planned or in progress, and Handoff only while State is `
 The root is a repository the goal locks, so the record changes on the task's branch and merges
 with the task's pull request. Only bookkeeping commits it straight to the root's default branch:
 the header lines between tasks, State `handoff` with its Handoff for an unfinished release whose
-root has merged or a stuck sync, the next brief `plan` writes, and deleting the record once its sync pull request merges
+root has merged or a stuck sync, the return to `idle` once a resumed release finishes, the next
+brief `plan` writes, and deleting the record once its sync pull request merges
 (`mechanics/pipeline.md`, "Branches and pull requests").

@@ -15,4 +15,4 @@ fills before BRIEF; the architect can also ask for it.
 
 A session that stops during PLAN needs no reset: the plan file keeps the open round. One whose
 context fills while SHIP releases hands off the same way, with the next move "tag <names>"
-naming the tags not yet released, committed where `mechanics/pipeline.md` ("Releasing") says.
+naming the tags not yet released and each repository's position, committed where `mechanics/pipeline.md` ("Releasing") says.
