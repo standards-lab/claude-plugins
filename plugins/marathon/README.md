@@ -67,8 +67,8 @@ sync. See [`mechanics/goals.md`](./skills/marathon/mechanics/goals.md).
 ## Experiments
 
 An experiment, `experiment.<topic>`, spikes an idea before a goal commits to it. Each spike is a
-sub-goal, `experiment.<topic>.<spike>`, homed in its own repository and set up by `plan`; spikes of
-one experiment can run at once. A spike's sync lands its answer in the note the experiment cites
+sub-goal, `experiment.<topic>.<spike>`, that `plan` sets up in a new repository of its own; spikes
+of one experiment can run at once. A spike's sync lands its answer in the note the experiment cites
 and proposes the next planned spike to stage. Once every spike has synced, `intake` decides what
 the served goals build. See [`commands/experiment.md`](./skills/marathon/commands/experiment.md)
 and [`commands/intake.md`](./skills/marathon/commands/intake.md).

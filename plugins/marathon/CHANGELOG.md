@@ -24,7 +24,8 @@ by the new `intake` command. 0.16.0 experiments need migrating; see Migrating be
   repository at a time, lowest layer first, never while the default branch is red, and fixes
   forward on `<slug>-fix` until the planned version releases. A released tag is never re-cut. A
   release whose context fills hands off with "tag <names>", committed on the root's task branch
-  until it merges and on the default branch after.
+  until it merges and on the default branch after; the next `start` resumes each repository from
+  the position the handoff records.
 - **`[remote] ci`**: an optional command that waits for the default branch's CI run on the merge
   commit before any tag is pushed.
 - **The answer section** (`references/briefs.md`): a spike's last task gives its answer, and its
@@ -48,8 +49,8 @@ by the new `intake` command. 0.16.0 experiments need migrating; see Migrating be
 - **`plan experiment.<topic>.<spike>`** stages a spike and sets it up ("Spike setup" in
   `commands/plan.md`): evidence list, founding decisions, path as tasks, repository and remote,
   read-only references, and record. A spike always starts in a new repository; an existing
-  project it builds on is only a read-only reference. A spike session starts from the coordinator or the workspace,
-  and LOCATE finds the spike's repository through its `path`.
+  project it builds on is only a read-only reference. A spike session starts from the
+  coordinator or the workspace, and LOCATE finds the spike's repository through its `path`.
 - **Every session lands through a branch and a pull request** in each repository it changes: the
   task's slug, `plan-<goal>`, `experiment-<topic>`, `intake-<topic>`, `sync-<goal>`, and
   `retro-<topic>` (`mechanics/pipeline.md`, "Branches and pull requests"). A project with no
@@ -59,6 +60,8 @@ by the new `intake` command. 0.16.0 experiments need migrating; see Migrating be
   own.
 - **Sync** of a spike stages the next planned spike of its experiment when staging's checks pass,
   and no longer archives spike remotes; `intake` does.
+- **`on-build`** no longer fires when a session resumes only a sync or a release; a release fires
+  it whenever it opens or resumes a `<slug>-fix` branch (`mechanics/hooks.md`).
 
 ### Removed
 
