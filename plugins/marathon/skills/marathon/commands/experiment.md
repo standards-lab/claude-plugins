@@ -2,55 +2,49 @@
 
 Spike an idea before committing to it, when you need to learn whether a design or an approach
 works. Experiments are goals under `experiment`, named for the topic they investigate:
-`experiment.ai` settles what `v1.ai` is built from. Each spike is a task of its experiment goal,
-named for the spike's repository, which lives outside the project or workspace it serves. The
-experiment's last task is the intake. The `experiment` session sets up one spike.
+`experiment.ai` settles what `v1.ai` is built from. Each spike is a sub-goal,
+`experiment.<topic>.<spike>`, named for the spike's repository, which lives outside the project or
+workspace it serves (`mechanics/goals.md`).
 
 An experiment decides nothing on its own: a spike that works is evidence, not a decision.
 
-`experiment` runs `plan`'s stages (`commands/plan.md`), plus the setup below.
+`experiment` runs once per topic. It creates the experiment goal, its `intake` task, and its
+planned spikes. When `experiment.<topic>` already exists, stop: a later spike is added with
+`plan`. `experiment` runs `plan`'s stages (`commands/plan.md`), with the rounds and edits below.
 
 ## Rounds
 
 Settle in plan rounds:
 
-- **The question** the spike answers, and the decision its answer changes. If the decision is the
-  same either way, don't run the experiment.
-- **The evidence**: a numbered list of what the spike must show to answer the question.
-- **The experiment goal**: an existing `experiment.<topic>` the spike joins, or a new one with an
-  `intake` task last.
-- **Where it lives**: the local directory and the remote. Propose the workspace's convention when
-  the coordinator's `[workspace.experiments]` declares one (`mechanics/configuration.md`);
-  otherwise assume neither from the served project. An experiment always has a remote.
-- **`init`'s founding decisions** (`commands/init.md`), with the spike's path as its first steps.
+- **The topic**: the experiment's slug, name, and summary, and the note it cites in its
+  `context`, where the spikes' answers land.
+- **The spikes**, in the order they run. For each spike:
+  - **The question** it answers, and the decision its answer changes. If the decision is the same
+    either way, don't plan the spike.
+  - **Its slug**, which names its repository.
+  - **Where it lives**: the local `path` and the `remote`. Propose the coordinator's
+    `[workspace.experiments]` convention, with `<slug>` replaced, when it declares one
+    (`mechanics/configuration.md`); otherwise assume neither from the served project. A spike
+    always has a remote.
 
-## Setup
+## Edits
 
-1. Run `init` at the settled location with the settled decisions. Its `[experiment] serves`
-   holds the coordinator's path (`mechanics/configuration.md`), and its `context/README.md`
-   states the question, the evidence list, and the experiment goal.
-2. Record the repositories the spike reads, using the served project's own convention. In a
-   workspace, that is a committed list of remotes plus a gitignored map to local checkouts, both
-   in the coordinator. The spike reads those repositories and never writes to them. Its code
-   dependencies are published versions, never a replace directive.
-3. Create the repository on the settled host and push.
-4. At the coordinator, in one direct commit: add the spike as a task of its experiment goal, with
-   its `remote` and `path` (`references/manifest.md`), add its repository to the goal's `repos`,
-   and stage the goal into `active` if it isn't already. A new goal's `root` is its first spike.
+At the coordinator, in one commit on an `experiment-<topic>` branch:
 
-The architect then runs the spike with `start experiment.<topic>`. Each task's session brief
-narrates the evidence it produced, and the spike task's last brief gives the answer to its
-question, with the evidence.
+- Add `experiment.<topic>` with its `intake` task, which `marathon intake` runs once no spike
+  remains (`commands/intake.md`). The experiment goal is never listed in the arrays.
+- Create the note the experiment cites, or extend it when it exists, with an
+  `## Answers · experiment.<topic>` heading under which the spikes' answer sections land
+  (`references/briefs.md`, "Answer section").
+- Add each spike as a sub-goal with its `root` and `repos` set to its repository, its `remote`
+  and `path`, and a summary of its question and the decision it changes
+  (`references/manifest.md`). Append the spikes to `planned` in the settled order.
 
-## Intake
+`experiment` creates no repository and stages no spike. Publish and merge the branch with the
+approved round outcome as its body (`mechanics/pipeline.md`, "Branches and pull requests").
 
-The experiment's last task is its intake, a `start` session led by the spike intake round
-(`references/briefs.md`, "Spike intake"). It decides with the architect what the served goal takes
-from each answer, and records the decisions in the goal record: notes and roadmap work for the
-coordinator, such as the served goal's tasks, as pending edits. A result that deserves its own
-repository becomes a task of the served goal that runs `init` in a new sibling directory and
-rebuilds the result there, instead of copying the spike.
-
-The intake's sync applies those edits, moves each spike into the workspace's repository catalog
-as archived, and archives the spikes' remotes (`mechanics/goals.md`, "Sync"). The spikes never
-edit the served project.
+The architect then sets up each spike with `plan experiment.<topic>.<spike>`, which creates its
+repository (`commands/plan.md`, "Spike setup"), and runs it with `start`. The spike's last task's
+session brief gives its answer, and its sync lands an answer section in the note the experiment
+cites and proposes the next planned spike to stage (`references/briefs.md`, "Answer section";
+`mechanics/goals.md`, "Sync").

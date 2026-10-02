@@ -37,8 +37,10 @@ proposed change, and let the architect tick the ones to apply.
 
 ## Apply
 
-- A ticked finding in the coordinator is a direct commit there, as in `plan`.
-- A ticked finding in a repository no active goal locks is applied on a branch named
-  `retro-<topic>`, then published and merged as SHIP does, with the ticked findings as its body.
+Each repository the ticked findings change gets a `retro-<topic>` branch, published and merged with
+the ticked findings as its body (`mechanics/pipeline.md`, "Branches and pull requests"):
+
+- A ticked finding in the coordinator is applied on the coordinator's branch.
+- A ticked finding in a repository no active goal locks is applied on that repository's branch.
 - A ticked finding in a repository another active goal locks becomes a task of that goal in the
-  roadmap, as a direct coordinator commit.
+  roadmap, on the coordinator's branch.

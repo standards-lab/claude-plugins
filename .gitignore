@@ -13,4 +13,4 @@ Thumbs.db
 .claude/plans/
 
 # The session brief: the architect's view of a finished task and its pull request's body.
-.claude/brief.md
+.claude/briefs/

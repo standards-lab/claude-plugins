@@ -1,31 +1,32 @@
 # The goal record
 
 `context/goals/<goal>.md` is a goal's session record, named by the goal's dotted path (for
-example, `context/goals/experiment.ai.md`). It lives in the goal's `root` repository, and every
-session on the goal reads it at LOCATE and updates it as it works. Each active goal keeps its own,
-so goals running at the same time never write the same file. Anything that must outlast the goal
-belongs in the notes, the documentation, or the pending edits that sync applies.
+example, `context/goals/experiment.ai.spike-local-subagents.md`). It lives in the goal's `root`
+repository, and every session on the goal reads it at LOCATE and updates it as it works. Each
+active goal keeps its own, so goals running at the same time never write the same file. An
+experiment goal keeps none; each of its spike sub-goals keeps its own in the spike's repository.
+Anything that must outlast the goal belongs in the notes, the documentation, or the pending edits
+that sync applies.
 
-The goal's first approved brief creates the record, and sync deletes it last
-(`mechanics/goals.md`).
+The goal's first approved brief creates the record, and sync deletes it last, once its sync pull
+request merges (`mechanics/goals.md`).
 
 ## Schema
 
 ```markdown
-# goal · experiment.ai
+# goal · experiment.ai.spike-local-subagents
 
-- **State:** building                # idle | building | brief ready | handoff
-- **Task:** spike-local-subagents    # the current task, or none between tasks
-- **Branch:** spike-local-subagents  # the task's branch, one name in every repository it touches
+- **State:** building    # idle | building | brief ready | handoff
+- **Task:** transport    # the current task, or none between tasks
+- **Branch:** transport  # the task's branch, one name in every repository it touches
 
 ## Tasks
 
-1. [x] spike-harness-driver
-2. [ ] spike-local-subagents
-3. [ ] personal-agents
-4. [ ] intake
+1. [x] harness
+2. [ ] transport
+3. [ ] fan-out
 
-## Task brief · spike-local-subagents
+## Task brief · transport
 
 (the approved brief, in the form of references/briefs.md, "Task brief")
 
@@ -39,7 +40,7 @@ slices 2/3 committed · standards — · spec — · editor —
 
 ## Decisions
 
-- spike-local-subagents: kept stdin JSONL over SSE — simpler, and the spike needs one transport.
+- transport: kept stdin JSONL over SSE — simpler, and the spike needs one transport.
 
 ## Pending edits
 
@@ -64,9 +65,16 @@ appear while a task is planned or in progress, and Handoff only while State is `
   PLAN).
 - **Tasks** lists the goal's tasks in the order they run, each checked by the SHIP that merges
   it. The manifest keeps a task's table until its goal syncs, so the record is where progress
-  shows. A goal with sub-goals lists only its own tasks.
+  shows. A goal with sub-goals lists only its own tasks. A task the manifest gains while the goal
+  is active, such as one `intake` writes, joins Tasks at the goal's next `plan` or `start`.
 - **Task brief** is the current task's approved brief. The next task's brief replaces it.
 - **Progress** records the build loop's position (`references/build.md`).
+- **Handoff** gives the exact next move while State is `handoff`: the BUILD position `reset`
+  wrote (`commands/reset.md`); "merge", or the failing check, when SHIP can't merge; "tag
+  <names>" when the context fills during a release, naming the tags not yet released and each
+  repository's position (`mechanics/pipeline.md`, "Releasing"); "merge, then sync" or "tag <names>, then sync" on the
+  goal's last task; or "merge `sync-<goal>`, then delete the record" when a sync pull request
+  can't merge (`mechanics/goals.md`, "Sync").
 - **Decisions** logs what each plan round settled and what each task decided without the
   architect, one line each, so a later task doesn't decide it again. It also records rejected
   alternatives (`behavior/planning.md`).
@@ -77,5 +85,8 @@ appear while a task is planned or in progress, and Handoff only while State is `
 ## Where it is committed
 
 The root is a repository the goal locks, so the record changes on the task's branch and merges
-with the task's pull request. Between tasks, `plan` may write the next brief into it as a direct
-commit on the root's default branch, and sync deletes it the same way.
+with the task's pull request. Only bookkeeping commits it straight to the root's default branch:
+the header lines between tasks, State `handoff` with its Handoff for an unfinished release whose
+root has merged or a stuck sync, the return to `idle` once a resumed release finishes, the next
+brief `plan` writes, and deleting the record once its sync pull request merges
+(`mechanics/pipeline.md`, "Branches and pull requests").

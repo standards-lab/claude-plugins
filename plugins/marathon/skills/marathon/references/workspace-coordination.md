@@ -14,7 +14,7 @@ organization-context project, declares itself coordinator with a `[workspace]` t
 The coordinator's `order` lists **layers**, lowest dependency first. An array entry is a layer of
 peers with no dependencies between them. Each key is the name of a sibling directory, or a
 location given in `[workspace.paths]`. Every repository name a goal uses, in `root` and `repos`,
-resolves the same way, or through a spike task's `path`. Ask the architect about a name that
+resolves the same way, or through a spike sub-goal's `path`. Ask the architect about a name that
 resolves through none of them. When no project declares itself coordinator, list the sibling
 projects and ask.
 
@@ -23,8 +23,9 @@ projects and ask.
 Each active goal locks the repositories in its `repos`, so goals that run at the same time never
 share a member repository, and each works on the main checkout of its own
 (`mechanics/goals.md`). Each goal's record lives in its root, one of the repositories it locks.
-The coordinator is the one shared repository, and it changes only through `plan`'s planning and
-administrative edits and through syncs, as short, direct commits on its default branch.
+The coordinator is the one shared repository, and it changes only through the sessions
+`mechanics/goals.md` lists, each landing through its own branch and pull request
+(`mechanics/pipeline.md`, "Branches and pull requests").
 
 ## Tasks that span repositories
 
@@ -35,10 +36,12 @@ one as that repository's own pull request, lowest layer first.
 
 ## Experiments
 
-An experiment goal's spikes are repositories outside the workspace, each listed in the roadmap with
-its remote and local path, so the experiment runs beside the workspace's goals. Its intake task
-decides what the served goal takes from the result, and its sync moves the spikes into the
-workspace's repository catalog as archived (`commands/experiment.md`).
+An experiment's spikes are sub-goals, each listed in the roadmap with the remote and local path
+of its own repository outside the workspace. Each spike locks only that repository, so spikes run
+beside each other and beside the workspace's goals. A spike session starts from the
+coordinator or the workspace, and LOCATE finds the spike's repository through its `path`
+(`mechanics/pipeline.md`). The experiment's intake decides what the served goals take from the
+answers and archives the spikes (`commands/intake.md`).
 
 ## Projects know only what they depend on
 

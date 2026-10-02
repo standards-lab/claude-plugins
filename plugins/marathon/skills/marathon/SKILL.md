@@ -1,6 +1,6 @@
 ---
 name: marathon
-argument-hint: "[init | plan | start | experiment | status | retro | reset] [goal]"
+argument-hint: "[init | plan | start | experiment | intake | status | retro | reset] [goal]"
 description: >
   A workflow for long-running development run as a software factory. The architect engages twice
   per task, approving the task brief and accepting the session brief, while subagents implement,
@@ -10,7 +10,7 @@ description: >
   planning concept; plans, stages, or reorders goals; starts, resumes, or ships a task; spikes an
   idea; asks what is running; reviews past work; or hands off because the context window is
   filling. Typical requests include "start factory", "what's the status", "plan the next goal",
-  "take in the spike", "resume where I left off", "run a retro", "hand off", "initialize this
+  "take in the experiment", "resume where I left off", "run a retro", "hand off", "initialize this
   project", and "set up marathon here". marathon treats the repository as the only source of
   truth: a flat context/ of notes, a roadmap manifest, and one goal record per active goal. Prefer
   this skill for any structured, multi-session work on a marathon repository, even when the
@@ -19,7 +19,7 @@ description: >
 
 # Marathon
 
-Version: 0.16.0
+Version: 0.16.1
 
 marathon is a workflow for long-running development. Each session takes one task of an active goal
 from an approved plan to merged work, and the tasks add up to a production-quality version of the
@@ -66,7 +66,8 @@ pipeline's stages.
 | `init` | Once, to set up marathon on a repository from a planning concept | [`commands/init.md`](./commands/init.md) |
 | `plan` | To define goals and make them ready: create goals and tasks, set up their repositories and records, stage, order, and write notes and next briefs | [`commands/plan.md`](./commands/plan.md) |
 | `start` | To run one task of an active goal: plan, build, brief, ship, and sync on the last task | [`commands/start.md`](./commands/start.md) |
-| `experiment` | To set up a spike as a task of an `experiment.<topic>` goal | [`commands/experiment.md`](./commands/experiment.md) |
+| `experiment` | Once per topic, to create an `experiment.<topic>` goal, its `intake` task, and its planned spikes; `plan` sets up each spike | [`commands/experiment.md`](./commands/experiment.md) |
+| `intake` | Once per experiment, after every spike has synced: to decide what the served goals build from the answers, close the experiment, and archive its spikes | [`commands/intake.md`](./commands/intake.md) |
 | `status` | To print one line per active goal, with what needs the architect first | [`commands/status.md`](./commands/status.md) |
 | `retro` | To turn comments on past work into checks, standards, skill changes, or notes | [`commands/retro.md`](./commands/retro.md) |
 | `reset` | To hand off a task partway; runs on its own when the context fills | [`commands/reset.md`](./commands/reset.md) |

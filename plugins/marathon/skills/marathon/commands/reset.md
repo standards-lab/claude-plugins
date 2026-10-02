@@ -13,4 +13,6 @@ fills before BRIEF; the architect can also ask for it.
 4. **Leave the branches open** and unpublished, and stop. The next `start` on the goal resumes at
    3R · RESUME (`mechanics/pipeline.md`).
 
-A session that stops during PLAN needs no reset: the plan file keeps the open round.
+A session that stops during PLAN needs no reset: the plan file keeps the open round. One whose
+context fills while SHIP releases hands off the same way, with the next move "tag <names>"
+naming the tags not yet released and each repository's position, committed where `mechanics/pipeline.md` ("Releasing") says.

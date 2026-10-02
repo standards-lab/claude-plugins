@@ -4,6 +4,129 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.16.1
+
+Spikes become goals of their own, every session lands through a pull request, and releases are
+tagged inside the pipeline. An experiment's spikes run in parallel and their answers are taken in
+by the new `intake` command. 0.16.0 experiments need migrating; see Migrating below.
+
+### Added
+
+- **`intake`** (`commands/intake.md`): `marathon intake experiment.<topic>` takes in a finished
+  experiment once no spike sub-goal remains. In plan rounds led by the spikes' answers it decides
+  what each served goal builds, then one `intake-<topic>` coordinator pull request writes those
+  tasks, folds the answer sections into the served goals' notes, removes the experiment, and
+  updates the repository catalog; the named spike remotes are archived after it merges. The plan
+  file holds its state, and it writes no goal record.
+- **Release tagging at SHIP** (`mechanics/pipeline.md`, "Releasing"). A task brief may carry a
+  `Release` line naming the exact tags it releases, which makes its Door one-way; the session
+  brief's Merge danger repeats them, so accepting it authorizes tagging. SHIP merges and tags one
+  repository at a time, lowest layer first, never while the default branch is red, and fixes
+  forward on `<slug>-fix` until the planned version releases. A released tag is never re-cut. A
+  release whose context fills hands off with "tag <names>", committed on the root's task branch
+  until it merges and on the default branch after; the next `start` resumes each repository from
+  the position the handoff records.
+- **`[remote] ci`**: an optional command that waits for the default branch's CI run on the merge
+  commit before any tag is pushed.
+- **The answer section** (`references/briefs.md`): a spike's last task gives its answer, and its
+  sync lands an answer section (question, one-line answer, numbered evidence with where each item
+  is proven, links to where the spike states its answer and to its remote) in the note the
+  experiment cites, under the heading `experiment` writes there.
+- **The Sync section** of a last task's session brief: the pending edits per repository and the
+  goal proposed to stage next. Accepting the brief authorizes the sync and stages that goal when
+  staging's checks pass; otherwise it reads "proposed, not staged: <reason>".
+
+### Changed
+
+- **A spike is a sub-goal**, `experiment.<topic>.<spike>`, carrying `remote` and `path`, with its
+  own repository as `root` and `repos` and its path steps as tasks. Spikes of one experiment can
+  be active at once, each locking only its own repository. The experiment goal is never listed in
+  `active`, `planned`, or `backlog`, keeps no goal record, and holds only its `intake` task;
+  `start` on it refuses and points to `intake`.
+- **`experiment`** runs once per topic: in one `experiment-<topic>` pull request it creates the
+  experiment goal, its `intake` task, and its planned spike sub-goals, and the note the
+  experiment cites. It creates no repository and stages no spike.
+- **`plan experiment.<topic>.<spike>`** stages a spike and sets it up ("Spike setup" in
+  `commands/plan.md`): evidence list, founding decisions, path as tasks, repository and remote,
+  read-only references, and record. A spike always starts in a new repository; an existing
+  project it builds on is only a read-only reference. A spike session starts from the
+  coordinator or the workspace, and LOCATE finds the spike's repository through its `path`.
+- **Every session lands through a branch and a pull request** in each repository it changes: the
+  task's slug, `plan-<goal>`, `experiment-<topic>`, `intake-<topic>`, `sync-<goal>`, and
+  `retro-<topic>` (`mechanics/pipeline.md`, "Branches and pull requests"). A project with no
+  `[remote] publish` merges locally. Only goal-record bookkeeping commits straight to the default
+  branch. The coordinator changes only through `plan`, `experiment`, `intake`, `retro`, and sync,
+  and LOCATE treats a coordinator on another session's branch as held; a session resumes on its
+  own.
+- **Sync** of a spike stages the next planned spike of its experiment when staging's checks pass,
+  and no longer archives spike remotes; `intake` does.
+- **`on-build`** no longer fires when a session resumes only a sync or a release; a release fires
+  it whenever it opens or resumes a `<slug>-fix` branch (`mechanics/hooks.md`).
+
+### Removed
+
+- `[experiment] serves`, from configuration, `init`, and LOCATE.
+- Spikes as tasks of an experiment goal, and the spike intake brief, replaced by the intake round.
+
+### Migrating from 0.16.0
+
+Install 0.16.1 first. Migrate each experiment in one `plan` session at the coordinator, landing
+as one `plan-<experiment>` coordinator pull request whose body is the approved round outcome. No
+session brief or goal record is involved: a 0.15 spike has none. Its rounds settle what the
+recipes below leave open.
+
+In every case:
+
+- The experiment goal keeps only its `intake` task. Remove its spike tasks, its `root` and
+  `repos` (an experiment goal is a container and has neither; `experiment.ai` has
+  `spike-harness-driver` as `root` and all three spikes' repositories as `repos`,
+  `experiment.messaging` has `spike-messaging` as both), and the experiment itself from
+  `active`, `planned`, and `backlog`. Its spike sub-goals are listed instead.
+- A finished spike's 0.15 closeout, its `context/reset.md` and where the spike states its answer
+  (`spike-harness-driver`'s `context/findings.md`, `spike-messaging`'s `context/README.md`),
+  becomes its answer section (`references/briefs.md`, "Answer section"). The section lands in
+  the note the experiment cites, under an `## Answers · experiment.<topic>` heading added when
+  the note has none. When the experiment cites several notes, as `experiment.ai` cites
+  `ai-strategy.md` and `ai-hosting.md`, the plan round chooses the one that receives it.
+- A finished spike's repository changes through a pull request on a `plan-<experiment>` branch
+  there: it deletes `[experiment] serves` and `context/reset.md`. Neither spike's
+  `marathon.toml` has `[remote] merge`, so the same pull request adds
+  `merge = "gh pr checks --watch && gh pr merge --merge --delete-branch"` under `[remote]`;
+  without it, the session stops for a manual merge.
+- Update any repository catalog line that describes a spike as a task of an experiment goal.
+
+The recipes, by the experiment's state:
+
+1. **A finished experiment whose spike is done and whose intake is next** (for example,
+   `experiment.messaging` with `spike-messaging`). Apply the steps above: the spike's answer
+   section lands, its repository's pull request merges, and no sub-goal remains. Then run
+   `marathon intake experiment.<topic>`.
+2. **A spike that is done and awaiting sync** (for example, `experiment.ai`'s
+   `spike-harness-driver`). Sync it under the new rules, leaving no sub-goal behind: its answer
+   section lands, its repository's pull request merges, and the next planned spike is staged
+   into `active`.
+3. **Spikes still planned** (for example, `experiment.ai`'s `spike-local-subagents` and
+   `personal-agents`). Turn each spike task into a planned sub-goal
+   `experiment.<topic>.<spike>` that keeps its `remote` and `path`, with the spike's repository
+   as `root` and `repos` and a summary of its question; list it in `planned`. `intake` stays the
+   experiment's only task. Each spike is set up later by `plan experiment.<topic>.<spike>`.
+   A spike always starts in a new repository (`commands/plan.md`, "Spike setup"), so a spike
+   task that names an existing project becomes a sub-goal for a new spike repository instead.
+   `experiment.ai`'s `personal-agents` becomes `experiment.ai.spike-model-hosting`, at the
+   `[workspace.experiments]` path `~/experiments/spike-model-hosting` with the remote
+   `https://github.com/JaimeStill/spike-model-hosting.git`. Its summary names
+   `~/code/personal-agents` as a read-only reference, recorded when `plan` sets the spike up.
+   Nothing is written to or archived from `personal-agents`. The migration also adds an open
+   question to `experiment.ai`'s `intake` task entry, for the intake to decide: whether
+   `personal-agents`' contents and the spike's findings move into a fresh workspace repository.
+
+`experiment.ai` takes recipes 3 and 2 in its one pull request, in that order: convert the planned
+spikes to sub-goals first, then land `spike-harness-driver`'s answer section and stage the next
+planned spike.
+
+Each repository may add `[remote] ci` to its `marathon.toml`. `.claude/briefs/` stays in
+`.gitignore`.
+
 ## v0.16.0
 
 marathon becomes a software factory. The architect engages twice per task, approving the task brief
