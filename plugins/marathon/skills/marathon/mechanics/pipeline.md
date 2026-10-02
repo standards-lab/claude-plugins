@@ -85,7 +85,8 @@ this file names (`mechanics/hooks.md`).
 1. Check out the task's branch in each touched repository that hasn't merged it, any
    `<slug>-fix` branch a release left unmerged ("Releasing"), or, resuming a sync, the
    `sync-<goal>` branch in each repository that hasn't merged it.
-2. Fire `on-build`, unless the session resumes only a sync or a release's tags with no `<slug>-fix` branch open, which build nothing.
+2. Fire `on-build`, unless the session resumes only a sync or a release. A release fires it
+   whenever it opens or resumes a `<slug>-fix` branch ("Releasing").
 3. Read the brief, Progress, and Handoff from the goal record. Finish any WIP slice first, then
    continue BUILD from the recorded position. Two next moves resume past BUILD instead:
    - "tag <names>" resumes the release at SHIP ("Releasing"), one repository at a time, from the
@@ -157,7 +158,8 @@ version releases:
 
 - **A red default branch** after the merge, or a version that doesn't match, is fixed on a
   `<slug>-fix` branch from the default branch, published and merged like the task's branch,
-  with `[remote] ci` run again on its merge commit. Then tag.
+  with `[remote] ci` run again on its merge commit. Then tag. Opening or resuming a fix branch
+  fires `on-build` first.
 - **A failed release**, a release workflow that fails after the tag is pushed, is fixed the
   same way. Then delete the tag on the remote and locally, and create and push it again at the
   same version on the fix's merge commit.
