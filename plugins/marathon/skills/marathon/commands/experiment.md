@@ -41,4 +41,7 @@ At the coordinator, in one commit on an `experiment-<topic>` branch:
 approved round outcome as its body (`mechanics/pipeline.md`, "Branches and pull requests").
 
 The architect then sets up each spike with `plan experiment.<topic>.<spike>`, which creates its
-repository (`commands/plan.md`, "Goal setup"), and runs it with `start`.
+repository (`commands/plan.md`, "Goal setup"), and runs it with `start`. The spike's last task's
+session brief gives its answer, and its sync lands an answer section in the note the experiment
+cites and stages the next planned spike (`references/briefs.md`, "Answer section";
+`mechanics/goals.md`, "Sync").

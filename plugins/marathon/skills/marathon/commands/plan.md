@@ -42,9 +42,9 @@ commit per kind of change:
 
 ## Spike setup
 
-`plan experiment.<topic>.<spike>` stages the spike and sets it up through Goal setup. Its
-repository doesn't exist yet, so it is staged without it (`mechanics/goals.md`). The rounds also
-settle:
+`plan experiment.<topic>.<spike>` stages the spike, unless the previous spike's sync already
+staged it, and sets it up through Goal setup. Its repository doesn't exist yet, so it is staged
+without it (`mechanics/goals.md`). The rounds also settle:
 
 - **The evidence**: a numbered list of what the spike must show to answer its question.
 - **`init`'s founding decisions** (`commands/init.md`).

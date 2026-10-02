@@ -41,7 +41,7 @@ Three verbs move goals:
 - **pivot**: edit any of the three arrays, at any time, as the architect decides
 
 `plan` stages and pivots, through its pull request. The session that ships a goal's last task
-syncs it.
+syncs it, and stages the goal its session brief proposes when staging's checks pass.
 
 ## The repository lock
 
@@ -66,7 +66,10 @@ anything is deleted:
 2. Apply the pending edits for the coordinator in one commit on a `sync-<goal>` branch there: the
    notes, the catalog, the workspace `order`, and the manifest, removing the goal from `active`
    and deleting its table with everything under it. Delete any ancestor goal whose criteria now
-   hold, and any ancestor left empty.
+   hold, and any ancestor left empty. When the session brief's Sync section reads "staged on
+   accept", stage that goal in the same commit (`references/briefs.md`, "Session brief"),
+   checking staging's requirements again; if one no longer holds, leave the goal where it is and
+   give the architect the reason.
 3. Apply each pending edit for another repository on a `sync-<goal>` branch there, when no active
    goal locks that repository. When one does, add the edit as a task of the locking goal in step
    2's commit instead.
@@ -74,11 +77,14 @@ anything is deleted:
    last task's session brief as its body (`mechanics/pipeline.md`, "Branches and pull requests").
 5. Once every sync pull request merges, delete the goal record from the root, as a direct commit
    on its default branch.
-6. The lock is released. Tell the architect which `planned` goal could be staged next; staging it
-   is a `plan` decision.
+6. The lock is released, and the staged goal is ready for its next session. A goal the Sync
+   section only proposed waits for a `plan` to stage it.
 
-A spike sub-goal syncs the same way. Its experiment stays until its intake, which takes in the
-spikes' answers and archives their remotes (`commands/experiment.md`).
+A spike sub-goal syncs the same way. Its last task's session brief gives the spike's answer, and
+its pending edits carry the spike's answer section for the note its experiment cites
+(`references/briefs.md`, "Answer section"), which step 2 lands. The goal its Sync section
+proposes is the next planned spike of the same experiment. The experiment stays until its intake,
+which takes in the spikes' answers and archives their remotes (`commands/experiment.md`).
 
 If the task's merge can't happen, because there is no `[remote] merge` command or a check fails,
 nothing is synced and the record stays: set State to `handoff` with the next move "merge, then

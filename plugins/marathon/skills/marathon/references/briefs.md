@@ -94,6 +94,54 @@ goal's root, which gitignores `.claude/briefs/`.
   changed.
 - **Merge danger** names the door type and the blast radius. A one-way door gets the close read.
 - **Needs you** reads "(none)" when nothing remains.
+- **Sync** appears only on the goal's last task, after Needs you. It lists the pending edits the
+  sync will apply, per repository, and the goal proposed to stage next: for a spike, the next
+  planned spike of its experiment; otherwise the top of `planned`. Accepting the brief
+  authorizes the sync, and stages that goal when staging's checks pass (`mechanics/goals.md`),
+  counting this goal's lock as released. When a check fails, the line reads "proposed, not
+  staged: <reason>", and nothing is staged; a later `plan` stages it.
+
+```
+### Sync
+  coordinator   context/ai.md: answer section for spike-harness-driver
+                roadmap.toml: remove experiment.ai.spike-harness-driver
+  architecture  standards/harnesses.md: name the driver interface
+  next          experiment.ai.spike-local-subagents · staged on accept
+```
+
+On a spike's last task, the brief gives the spike's answer: Summary states the question and the
+one-line answer, Evidence carries the numbered evidence, and Sync lists the answer section among
+the coordinator's edits.
+
+## Answer section
+
+A spike's answer section is the coordinator edit its sync lands in the note its experiment cites
+in `context`, one section per spike. The spike's last task writes the answer under "The answer"
+in the spike's README, and adds this section to its goal record's pending edits.
+
+```markdown
+## Answer · experiment.ai.spike-harness-driver
+
+**Question:** Can one driver interface run Pi, Claude Code, and OpenCode sessions?
+
+**Answer:** Yes; stdin/stdout JSONL carries all three.
+
+1. One `Session` interface drives all three harnesses. Proven by a running demo:
+   `clutch demo adapters`.
+2. Sessions survive a restart. Proven by the validate task `resume-sessions`.
+3. OpenCode's tool calls round-trip. Proven only by tests: `adapters/opencode`.
+
+[The answer](https://github.com/example/spike-harness-driver#the-answer) ·
+[spike-harness-driver](https://github.com/example/spike-harness-driver)
+```
+
+- **The question** is the spike's, as its sub-goal states it.
+- **The answer** is one line.
+- **The evidence** is numbered, and each item names where it is proven: a test, a validate task,
+  or a running demo. An item proven only by tests says so.
+- **The links** point to the spike README's "The answer" and to the spike's remote.
+
+`marathon intake` later folds each answer section into the served goals' notes and removes it.
 
 ## Status digest
 

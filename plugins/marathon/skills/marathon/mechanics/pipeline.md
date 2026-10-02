@@ -33,9 +33,10 @@ this file names (`mechanics/hooks.md`).
    Resolve every repository name the
    goal uses through `order`, `[workspace.paths]`, or a spike sub-goal's `path`.
 3. Find the goal: the one the architect names, which must be in `active` and have a `root`; one
-   without a `root` is set up by `plan` first (`commands/plan.md`). With none named, print
-   the status digest (`commands/status.md`) and ask. A goal that isn't active is staged by `plan`
-   first (`mechanics/goals.md`).
+   without a `root` is set up by `plan` first (`commands/plan.md`). With none named, print the
+   status digest (`commands/status.md`) and ask. A goal that isn't active is staged by `plan`
+   first (`mechanics/goals.md`), except an experiment goal, `experiment.<topic>`, which is never
+   staged: refuse, and point to `marathon intake`.
 4. Find where the goal stands, in this order:
    - A plan file under `.claude/plans/` whose title names the goal holds an open plan round:
      continue it. START, then PLAN.
@@ -88,10 +89,12 @@ coordinator during BUILD. When the context fills, run `reset` on your own (`comm
 ### 5 · BRIEF
 
 1. Write the session brief (`references/briefs.md`) to `.claude/briefs/<goal>.md` in the root's
-   checkout, and set State to `brief ready`. If the root's `.gitignore` doesn't list
+   checkout, and set State to `brief ready`. On the goal's last task, the brief has a Sync
+   section. If the root's `.gitignore` doesn't list
    `.claude/briefs/`, add the line on the task's branch first.
 2. Show it, and wait for the architect. **[touch 2]**
-   - **Accept**: continue with SHIP.
+   - **Accept**: continue with SHIP. On the goal's last task, accepting also authorizes the sync
+     and the staging its Sync section shows.
    - **Redirect**: treat the redirect as gaps, return to BUILD, and brief again. A redirect that
      changes the brief's behaviors returns to PLAN on the same branch.
 
@@ -109,7 +112,8 @@ coordinator during BUILD. When the context fills, run `reset` on your own (`comm
    ("merge" or the failing check), commit it on the branch, tell the architect, and stop.
 6. Switch each repository back to its default branch, pull, and delete the local task branch.
    Delete the brief file.
-7. When this was the goal's last task, sync (`mechanics/goals.md`, "Sync").
+7. When this was the goal's last task, sync, staging the goal the Sync section stages on accept
+   (`mechanics/goals.md`, "Sync").
 
 ## Branches and pull requests
 

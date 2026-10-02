@@ -5,6 +5,10 @@ architect, and ship it. When the task is the goal's last, the same session syncs
 `start` runs the full pipeline (`mechanics/pipeline.md`); the argument after `start` names the
 goal, as in `start v1.data`.
 
+On a spike, `start experiment.<topic>.<spike>` runs the spike's tasks, its path steps, one per
+session. An experiment goal has only its intake, which `marathon intake` runs: `start` on
+`experiment.<topic>` refuses and points there.
+
 ## Plan
 
 LOCATE routes to PLAN when the goal record has no approved brief for its current task. Plan the
@@ -28,6 +32,11 @@ the brief describes a finished state.
 
 Write and show the session brief. Accepting it authorizes publishing and merging; a redirect
 returns to BUILD, or to PLAN when it changes the brief's behaviors.
+
+On the goal's last task, the brief has a Sync section: the pending edits the sync applies and the
+goal proposed to stage next. Accepting it also authorizes the sync, and stages that goal when
+staging's checks pass (`references/briefs.md`, "Session brief"). A spike's last brief gives its
+answer, and its sync lands the answer section (`references/briefs.md`, "Answer section").
 
 ## Ship
 
