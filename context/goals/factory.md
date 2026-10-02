@@ -1,107 +1,15 @@
 # goal · factory
 
-- **State:** brief ready
-- **Task:** experiments
-- **Branch:** experiments
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
 1. [x] pipeline
 2. [x] goals
-3. [ ] experiments
+3. [x] experiments
 4. [ ] evals
-
-## Task brief · experiments
-
-```
-Problem   In 0.16.0 a spike is a task, but a spike spans many sessions, so spikes can't run
-          on their own or in parallel, and nothing consolidates their answers. Coordinator
-          edits skip review through direct commits, and releases are tagged by hand outside
-          the pipeline. marathon 0.16.1 fixes all three before evals and the experiment
-          migrations depend on them.
-
-Behaviors
-  1. A spike is a sub-goal experiment.<topic>.<spike> carrying `remote` and `path`, with its
-     own repository as `root` and `repos`, and its path steps as tasks. The experiment goal
-     is never listed in the arrays and holds only its `intake` task.
-  2. Spikes of one experiment can be active at once; each locks only its own repository.
-  3. `marathon experiment` runs once per topic: it creates the experiment goal, its intake
-     task, and planned spike sub-goals (remote/path from [workspace.experiments], plus a
-     summary of each spike's question and the decision it changes).
-  4. `plan experiment.<topic>.<spike>` sets the spike up through plan's Goal setup: evidence
-     list, founding decisions, path as tasks, repository and remote, read-only references,
-     record. `[experiment] serves` is removed: spike sessions start from the coordinator or
-     workspace, and the manifest's `path` locates the spike.
-  5. `start` on a spike runs its tasks; the last task's brief gives the answer, and its sync
-     lands an answer section in the experiment's cited note (question; one-line answer;
-     numbered evidence, each with where it is proven; links to the spike README's "The
-     answer" and its remote) and stages the next planned spike. `start` on an experiment
-     goal refuses and points to `intake`.
-  6. `marathon intake <experiment>` runs only when no spike sub-goal remains: it consolidates
-     the answer sections, decides with the architect in rounds what each served goal builds,
-     writes those tasks and removes the experiment in one intake-<topic> coordinator PR, then
-     archives the named spike remotes, skipping any already archived. The plan file holds
-     its state; there is no record.
-  7. A last task's session brief has a Sync section: the pending edits and the goal proposed
-     to stage next. Accepting the brief authorizes the sync and stages that goal when
-     staging's checks pass, `exclusive` included; otherwise it reads "proposed, not staged:
-     <reason>".
-  8. Every session lands through a branch and a PR: plan-<goal>, experiment-<topic>,
-     intake-<topic>, sync-<goal>, retro-<topic>, and task branches; a project with no remote
-     merges locally. Only goal-record bookkeeping (header lines, a next brief, deleting a
-     record after its sync PR merges) commits straight to the default branch. LOCATE treats
-     a coordinator on a session branch as held.
-  9. When the task brief has a `Release` line (exact tags, in each repository's own naming),
-     SHIP runs per repository, lowest layer first: merge → `[remote] ci` passes on main's
-     merge commit (when set) → each tag, annotated "<artifact> <version>" on that commit,
-     pushed alone after checking its version matches the artifact's. A tag is never pushed
-     while main is red. Failures are fixed forward in the same session until the planned
-     version releases: a red main is fixed on <slug>-fix through PR → merge → ci; a failed
-     release is fixed the same way, then its tag is deleted and re-pushed at the same
-     version. A successfully released tag is never re-cut. ESCALATE only for decisions the
-     brief doesn't cover; `handoff` with next move "tag <names>" only when the context fills.
-  10. A planned release makes the task brief's Door one-way, and the session brief's Merge
-      danger names the tags.
-  11. The plugin ships as 0.16.1: version consistent in all three places; `intake` in the
-      skill, README, and plugin description; a CHANGELOG Migrating section with one recipe
-      per state, run as standards-lab `plan` sessions through PRs:
-      - experiment.messaging (spike done, intake next): keeps only its intake task;
-        spike-messaging's closeout becomes its answer section; drop `serves` and reset.md;
-        leaves the arrays → ready for `intake`.
-      - experiment.ai, spike-harness-driver (done, awaiting sync): sync under the new
-        rules with no lasting sub-goal: closeout → answer section, drop `serves`, stage
-        the next planned spike.
-      - experiment.ai, planned spikes (spike-local-subagents, personal-agents): become
-        planned sub-goals with remote/path kept; each set up later by `plan`; intake stays
-        the experiment's only task.
-
-Test seams  scripts/check.sh (versions, links, marketplace), plus a spec-reviewer
-            walk-through of the skill against five scenarios: new experiment with two
-            parallel spikes; a spike's sync; an intake; a released last task across two
-            repositories, including a red main and a failed release; the three migration
-            recipes against the current standards-lab roadmap.
-
-Slices
-  1. Spike sub-goal shape: manifest, goals, goal record, configuration (serves removed),
-     LOCATE, status (behaviors 1, 2, part of 4).
-  2. PR landing for every session: commit rules, admin exception, lock (8).
-  3. `experiment` creates, `plan <spike>` sets up (3, 4).
-  4. Spike sync, answer section, Sync section with stage-on-accept (5, 7).
-  5. `intake` command: playbook, command table, hooks, intake round (6).
-  6. Release at SHIP: Release line, `[remote] ci`, tag step, fix-forward loop, Door (9, 10).
-  7. Release 0.16.1: versions, CHANGELOG with Migrating, README, descriptions (11).
-
-Out of scope  Running the migrations (follow-on standards-lab plan sessions). Evals (task
-              4). marathon-architecture changes. Setting `[remote] ci` in other
-              repositories. The architecture repository's release-and-ci.md.
-
-Door     one-way: marathon/v0.16.1 is published; every other change is two-way.
-Release  marathon/v0.16.1
-```
-
-## Progress
-
-slices 7/7 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
