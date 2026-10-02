@@ -61,7 +61,9 @@ Goal setup then runs with these steps:
    workspace, that is a committed list of remotes plus a gitignored map to local checkouts, both
    in the coordinator. The spike reads those repositories and never writes to them. Its code
    dependencies are published versions, never a replace directive.
-3. Create the repository at the sub-goal's `remote` and push.
+3. Create the repository at the sub-goal's `remote` and push `init`'s commit, which creates its
+   default branch. It is the one commit that can't land through a pull request, since there is
+   no branch yet to merge into (`mechanics/pipeline.md`, "Branches and pull requests").
 4. Write the path as the sub-goal's tasks and create the goal record in the spike's repository.
    The spike stays out of `order` and the repository catalog: LOCATE finds it through its `path`
    (`mechanics/pipeline.md`).

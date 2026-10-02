@@ -65,7 +65,8 @@ appear while a task is planned or in progress, and Handoff only while State is `
   PLAN).
 - **Tasks** lists the goal's tasks in the order they run, each checked by the SHIP that merges
   it. The manifest keeps a task's table until its goal syncs, so the record is where progress
-  shows. A goal with sub-goals lists only its own tasks.
+  shows. A goal with sub-goals lists only its own tasks. A task the manifest gains while the goal
+  is active, such as one `intake` writes, joins Tasks at the goal's next `plan` or `start`.
 - **Task brief** is the current task's approved brief. The next task's brief replaces it.
 - **Progress** records the build loop's position (`references/build.md`).
 - **Handoff** gives the exact next move while State is `handoff`: the BUILD position `reset`
@@ -85,5 +86,6 @@ appear while a task is planned or in progress, and Handoff only while State is `
 
 The root is a repository the goal locks, so the record changes on the task's branch and merges
 with the task's pull request. Only bookkeeping commits it straight to the root's default branch:
-the header lines between tasks, the next brief `plan` writes, and deleting the record once its
-sync pull request merges (`mechanics/pipeline.md`, "Branches and pull requests").
+the header lines between tasks, State `handoff` with its Handoff for an unfinished release or a
+stuck sync, the next brief `plan` writes, and deleting the record once its sync pull request merges
+(`mechanics/pipeline.md`, "Branches and pull requests").

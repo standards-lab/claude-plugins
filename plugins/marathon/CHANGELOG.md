@@ -27,8 +27,8 @@ by the new `intake` command. 0.16.0 experiments need migrating; see Migrating be
   commit before any tag is pushed.
 - **The answer section** (`references/briefs.md`): a spike's last task gives its answer, and its
   sync lands an answer section (question, one-line answer, numbered evidence with where each item
-  is proven, links to the spike README's "The answer" and its remote) in the note the experiment
-  cites.
+  is proven, links to where the spike states its answer and to its remote) in the note the
+  experiment cites, under the heading `experiment` writes there.
 - **The Sync section** of a last task's session brief: the pending edits per repository and the
   goal proposed to stage next. Accepting the brief authorizes the sync and stages that goal when
   staging's checks pass; otherwise it reads "proposed, not staged: <reason>".
@@ -52,7 +52,8 @@ by the new `intake` command. 0.16.0 experiments need migrating; see Migrating be
   `retro-<topic>` (`mechanics/pipeline.md`, "Branches and pull requests"). A project with no
   `[remote] publish` merges locally. Only goal-record bookkeeping commits straight to the default
   branch. The coordinator changes only through `plan`, `experiment`, `intake`, `retro`, and sync,
-  and LOCATE treats a coordinator on a session branch as held.
+  and LOCATE treats a coordinator on another session's branch as held; a session resumes on its
+  own.
 - **Sync** of a spike stages the next planned spike of its experiment when staging's checks pass,
   and no longer archives spike remotes; `intake` does.
 
@@ -63,32 +64,53 @@ by the new `intake` command. 0.16.0 experiments need migrating; see Migrating be
 
 ### Migrating from 0.16.0
 
-Install 0.16.1 first. Each recipe runs as a `plan` session at the coordinator, landing through
-its pull request; a change in a spike's repository lands through a pull request there.
+Install 0.16.1 first. Migrate each experiment in one `plan` session at the coordinator, landing
+as one `plan-<experiment>` coordinator pull request whose body is the approved round outcome. No
+session brief or goal record is involved: a 0.15 spike has none. Its rounds settle what the
+recipes below leave open.
+
+In every case:
+
+- The experiment goal keeps only its `intake` task. Remove its spike tasks, its `root` and
+  `repos` (an experiment goal is a container and has neither; `experiment.ai` has
+  `spike-harness-driver` as `root` and all three spikes' repositories as `repos`,
+  `experiment.messaging` has `spike-messaging` as both), and the experiment itself from
+  `active`, `planned`, and `backlog`. Its spike sub-goals are listed instead.
+- A finished spike's 0.15 closeout, its `context/reset.md` and where the spike states its answer
+  (`spike-harness-driver`'s `context/findings.md`, `spike-messaging`'s `context/README.md`),
+  becomes its answer section (`references/briefs.md`, "Answer section"). The section lands in
+  the note the experiment cites, under an `## Answers · experiment.<topic>` heading added when
+  the note has none. When the experiment cites several notes, as `experiment.ai` cites
+  `ai-strategy.md` and `ai-hosting.md`, the plan round chooses the one that receives it.
+- A finished spike's repository changes through a pull request on a `plan-<experiment>` branch
+  there: it deletes `[experiment] serves` and `context/reset.md`. Neither spike's
+  `marathon.toml` has `[remote] merge`, so the same pull request adds
+  `merge = "gh pr checks --watch && gh pr merge --merge --delete-branch"` under `[remote]`;
+  without it, the session stops for a manual merge.
+- Update any repository catalog line that describes a spike as a task of an experiment goal.
+
+The recipes, by the experiment's state:
 
 1. **A finished experiment whose spike is done and whose intake is next** (for example,
-   `experiment.messaging` with `spike-messaging`). The experiment goal keeps only its `intake`
-   task: remove the spike tasks, and remove the experiment from `active`, `planned`, and
-   `backlog`. Turn the spike's 0.15 closeout, its `context/reset.md` and its README's "The
-   answer", into its answer section in the note the experiment cites
-   (`references/briefs.md`, "Answer section"). In a pull request in the spike's repository,
-   delete `[experiment] serves` and `context/reset.md`. Then run
+   `experiment.messaging` with `spike-messaging`). Apply the steps above: the spike's answer
+   section lands, its repository's pull request merges, and no sub-goal remains. Then run
    `marathon intake experiment.<topic>`.
 2. **A spike that is done and awaiting sync** (for example, `experiment.ai`'s
-   `spike-harness-driver`). Sync it under the new rules, leaving no sub-goal behind: its closeout
-   becomes its answer section in the note the experiment cites, a pull request in the spike's
-   repository deletes `[experiment] serves` and `context/reset.md`, and the next planned spike is
-   staged.
+   `spike-harness-driver`). Sync it under the new rules, leaving no sub-goal behind: its answer
+   section lands, its repository's pull request merges, and the next planned spike is staged
+   into `active`.
 3. **Spikes still planned** (for example, `experiment.ai`'s `spike-local-subagents` and
    `personal-agents`). Turn each spike task into a planned sub-goal
    `experiment.<topic>.<spike>` that keeps its `remote` and `path`, with the spike's repository
    as `root` and `repos` and a summary of its question; list it in `planned`. `intake` stays the
    experiment's only task. Each spike is set up later by `plan experiment.<topic>.<spike>`.
 
-In every case, experiment goals leave `active`, `planned`, and `backlog`, and their spike
-sub-goals are listed instead. In the same pull request, update any repository catalog line that
-describes a spike as a task of an experiment goal. Each repository may add `[remote] ci` to its
-`marathon.toml`. `.claude/briefs/` stays in `.gitignore`.
+`experiment.ai` takes recipes 3 and 2 in its one pull request, in that order: convert the planned
+spikes to sub-goals first, then land `spike-harness-driver`'s answer section and stage the next
+planned spike.
+
+Each repository may add `[remote] ci` to its `marathon.toml`. `.claude/briefs/` stays in
+`.gitignore`.
 
 ## v0.16.0
 

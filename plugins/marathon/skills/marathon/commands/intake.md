@@ -21,7 +21,8 @@ The plan file holds the intake's whole state: titled with the experiment, it kee
 the approved outcome, and how far the edits and the archiving have gone. A broken intake resumes
 from it. LOCATE finds a plan file under `.claude/plans/` whose title names the experiment, and
 the intake continues from the first step not yet done: the open round, the `intake-<topic>`
-branch, its merge, or the remotes still to archive.
+branch, its merge, or the remotes still to archive. A coordinator left on `intake-<topic>` is the
+intake's own branch, and it resumes there (`mechanics/pipeline.md`, 1 · LOCATE).
 
 ## Rounds
 
@@ -44,9 +45,9 @@ Nothing changes until the architect approves the outcome.
 
 At the coordinator, in one commit on an `intake-<topic>` branch:
 
-- Write the decided tasks into each served goal (`references/manifest.md`). An active served goal
-  whose record exists takes them into its record through `plan`'s Goal setup
-  (`commands/plan.md`).
+- Write the decided tasks into each served goal (`references/manifest.md`). The intake edits
+  only the manifest's tasks and never another goal's record: an active served goal takes them
+  into its record at its next `plan` or `start` (`mechanics/goal-record.md`, "Fields").
 - Fold each answer section into the served goals' notes at the coordinator, creating a note a
   served goal then cites in its `context` when it has none there, and remove the answer section
   from the experiment's note. Sharpen or delete that note as the round decided

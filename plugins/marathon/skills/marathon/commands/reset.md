@@ -15,5 +15,5 @@ fills before BRIEF; the architect can also ask for it.
 
 A session that stops during PLAN needs no reset: the plan file keeps the open round. One whose
 context fills while SHIP releases hands off the same way, with the next move "tag <names>"
-naming the tags not yet released, committed on the root's default branch since the task's
-branch has merged (`mechanics/pipeline.md`, "Releasing").
+naming the tags not yet released, committed on the root's default branch as goal-record
+bookkeeping (`mechanics/pipeline.md`, "Releasing").

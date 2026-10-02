@@ -108,10 +108,12 @@ goal's root, which gitignores `.claude/briefs/`.
 - **Needs you** reads "(none)" when nothing remains.
 - **Sync** appears only on the goal's last task, after Needs you. It lists the pending edits the
   sync will apply, per repository, and the goal proposed to stage next: for a spike, the next
-  planned spike of its experiment; otherwise the top of `planned`. Accepting the brief
-  authorizes the sync, and stages that goal when staging's checks pass (`mechanics/goals.md`),
-  counting this goal's lock as released. When a check fails, the line reads "proposed, not
-  staged: <reason>", and nothing is staged; a later `plan` stages it.
+  planned spike of its experiment; otherwise the top of `planned`. When a spike's experiment has
+  no planned spike left, the line reads "next: none — run `marathon intake experiment.<topic>`".
+  Accepting the brief authorizes the sync, and stages that goal when staging's checks pass,
+  `exclusive` groups included (`mechanics/goals.md`), counting this goal's lock as released.
+  When a check fails, the line reads "proposed, not staged: <reason>", and nothing is staged; a
+  later `plan` stages it.
 
 ```
 ### Sync
@@ -128,11 +130,13 @@ the coordinator's edits.
 ## Answer section
 
 A spike's answer section is the coordinator edit its sync lands in the note its experiment cites
-in `context`, one section per spike. The spike's last task writes the answer under "The answer"
-in the spike's README, and adds this section to its goal record's pending edits.
+in `context`, one section per spike, under the `## Answers · experiment.<topic>` heading
+`experiment` writes there (`commands/experiment.md`). The spike's last task writes the answer
+under "The answer" in the spike's README, and adds this section to its goal record's pending
+edits.
 
 ```markdown
-## Answer · experiment.ai.spike-harness-driver
+### Answer · experiment.ai.spike-harness-driver
 
 **Question:** Can one driver interface run Pi, Claude Code, and OpenCode sessions?
 
@@ -151,7 +155,8 @@ in the spike's README, and adds this section to its goal record's pending edits.
 - **The answer** is one line.
 - **The evidence** is numbered, and each item names where it is proven: a test, a validate task,
   or a running demo. An item proven only by tests says so.
-- **The links** point to the spike README's "The answer" and to the spike's remote.
+- **The links** point to where the spike states its answer, its README's "The answer" for a
+  spike `plan` set up, and to the spike's remote.
 
 `marathon intake` later folds each answer section into the served goals' notes and removes it
 (`commands/intake.md`).

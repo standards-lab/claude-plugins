@@ -52,7 +52,8 @@ syncs it, and stages the goal its session brief proposes when staging's checks p
   only through sessions: `plan`'s planning and administrative edits, `experiment`, `intake`,
   `retro`'s findings, and syncs, each on its own session branch and pull request
   (`mechanics/pipeline.md`, "Branches and pull requests"). While a session branch is checked out
-  there, the coordinator is held until it merges. No goal's record lives there, and a task's
+  there, the coordinator is held until it merges, except from the session that resumes on it
+  (`mechanics/pipeline.md`, 1 · LOCATE). No goal's record lives there, and a task's
   changes to it wait in its goal record's pending edits.
 - **A workspace can narrow the lock.** `[workspace] exclusive` in the coordinator's
   `marathon.toml` lists groups of repositories that at most one active goal may touch at a time
@@ -85,7 +86,8 @@ before anything is deleted:
 A spike sub-goal syncs the same way. Its last task's session brief gives the spike's answer, and
 its pending edits carry the spike's answer section for the note its experiment cites
 (`references/briefs.md`, "Answer section"), which step 2 lands. The goal its Sync section
-proposes is the next planned spike of the same experiment. The experiment stays until its intake,
+proposes is the next planned spike of the same experiment, or, with none left, the experiment's
+intake (`references/briefs.md`, "Session brief"). The experiment stays until its intake,
 which takes in the spikes' answers and archives their remotes (`commands/intake.md`).
 
 If the task's merge can't happen, because there is no `[remote] merge` command or a check fails,
