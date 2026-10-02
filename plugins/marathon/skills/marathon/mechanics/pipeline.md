@@ -85,7 +85,7 @@ this file names (`mechanics/hooks.md`).
 1. Check out the task's branch in each touched repository that hasn't merged it, any
    `<slug>-fix` branch a release left unmerged ("Releasing"), or, resuming a sync, the
    `sync-<goal>` branch in each repository that hasn't merged it.
-2. Fire `on-build`, unless the session resumes only a sync or a release's tags, which build nothing.
+2. Fire `on-build`, unless the session resumes only a sync or a release's tags with no `<slug>-fix` branch open, which build nothing.
 3. Read the brief, Progress, and Handoff from the goal record. Finish any WIP slice first, then
    continue BUILD from the recorded position. Two next moves resume past BUILD instead:
    - "tag <names>" resumes the release at SHIP ("Releasing"), one repository at a time, from the
