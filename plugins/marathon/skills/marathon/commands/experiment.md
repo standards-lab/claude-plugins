@@ -34,7 +34,9 @@ Settle in plan rounds:
    in the coordinator. The spike reads those repositories and never writes to them. Its code
    dependencies are published versions, never a replace directive.
 3. Create the repository on the settled host and push.
-4. At the coordinator, in one direct commit: add the spike as a task of its experiment goal, with
+4. At the coordinator, in one commit on an `experiment-<topic>` branch, published and merged with
+   the approved round outcome as its body (`mechanics/pipeline.md`, "Branches and pull requests"):
+   add the spike as a task of its experiment goal, with
    its `remote` and `path` (`references/manifest.md`), add its repository to the goal's `repos`,
    and stage the goal into `active` if it isn't already. A new goal's `root` is its first spike.
 

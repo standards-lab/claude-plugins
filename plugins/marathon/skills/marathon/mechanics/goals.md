@@ -40,17 +40,19 @@ Three verbs move goals:
 - **sync**: carry a finished goal's context into the workspace, then delete the goal
 - **pivot**: edit any of the three arrays, at any time, as the architect decides
 
-`plan` stages and pivots. The session that ships a goal's last task syncs it.
+`plan` stages and pivots, through its pull request. The session that ships a goal's last task
+syncs it.
 
 ## The repository lock
 
 - **An active goal locks every repository in its `repos`.** No two active goals name the same
   repository, so each goal works on the main checkout of its own repositories, with no worktrees.
   Staging a goal whose `repos` overlap an active goal's waits, or pivots the other goal out.
-- **The coordinator is never locked.** It is the one shared repository, and it changes only two
-  ways: `plan`'s planning and administrative edits, and syncs. No goal's record lives there, and a
-  task's changes to it wait in its goal record's pending edits. Each coordinator commit pulls
-  first and stages explicit paths, never everything.
+- **The coordinator is never locked by a goal.** It is the one shared repository, and it changes
+  only two ways: `plan`'s planning and administrative edits, and syncs, each on its own session
+  branch and pull request (`mechanics/pipeline.md`, "Branches and pull requests"). While a session
+  branch is checked out there, the coordinator is held until it merges. No goal's record lives
+  there, and a task's changes to it wait in its goal record's pending edits.
 - **A workspace can narrow the lock.** `[workspace] exclusive` in the coordinator's
   `marathon.toml` lists groups of repositories that at most one active goal may touch at a time
   (`mechanics/configuration.md`).
@@ -61,20 +63,25 @@ When a goal's last task merges, its session syncs the goal. Every piece of conte
 anything is deleted:
 
 1. Read the goal record's pending edits from the root's default branch.
-2. Apply the pending edits for the coordinator in one commit there: the notes, the catalog, the
-   workspace `order`, and the manifest, removing the goal from `active` and deleting its table
-   with everything under it. Delete any ancestor goal whose criteria now hold, and any ancestor
-   left empty.
-3. Apply each pending edit for another repository on a branch there, published and merged as
-   SHIP does, when no active goal locks that repository. When one does, add the edit as a task of
-   the locking goal in step 2's commit instead.
-4. Delete the goal record from the root, as a direct commit on its default branch.
-5. The lock is released. Tell the architect which `planned` goal could be staged next; staging it
+2. Apply the pending edits for the coordinator in one commit on a `sync-<goal>` branch there: the
+   notes, the catalog, the workspace `order`, and the manifest, removing the goal from `active`
+   and deleting its table with everything under it. Delete any ancestor goal whose criteria now
+   hold, and any ancestor left empty.
+3. Apply each pending edit for another repository on a `sync-<goal>` branch there, when no active
+   goal locks that repository. When one does, add the edit as a task of the locking goal in step
+   2's commit instead.
+4. Publish and merge each `sync-<goal>` branch, lowest layer first, with the Sync section of the
+   last task's session brief as its body (`mechanics/pipeline.md`, "Branches and pull requests").
+5. Once every sync pull request merges, delete the goal record from the root, as a direct commit
+   on its default branch.
+6. The lock is released. Tell the architect which `planned` goal could be staged next; staging it
    is a `plan` decision.
 
 A spike sub-goal syncs the same way. Its experiment stays until its intake, which takes in the
 spikes' answers and archives their remotes (`commands/experiment.md`).
 
-If a merge can't happen, because there is no `[remote] merge` command or a check fails, nothing is
-synced and the record stays: set State to `handoff` with the next move "merge, then sync", and
-stop.
+If the task's merge can't happen, because there is no `[remote] merge` command or a check fails,
+nothing is synced and the record stays: set State to `handoff` with the next move "merge, then
+sync", and stop. If a sync pull request can't merge, the record stays too: set State to `handoff`
+with the next move "merge `sync-<goal>`, then delete the record", as a bookkeeping commit on the
+root's default branch, and stop.

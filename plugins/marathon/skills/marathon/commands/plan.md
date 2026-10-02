@@ -3,7 +3,7 @@
 `plan` defines goals and makes them ready to run: it creates goals and their tasks, sets up their
 repositories and records, stages and orders them, and writes their notes and next briefs. `start`
 runs a ready task. `plan` is also the coordinator's planning and administrative channel: its
-changes there are short, direct commits on the default branch, and it stays short.
+changes land through a `plan-<goal>` branch and pull request, and it stays short.
 
 `plan` runs LOCATE and START (`mechanics/pipeline.md`); the goal is optional.
 
@@ -17,7 +17,8 @@ Nothing changes until the architect approves the outcome.
 
 ## Edits
 
-Apply what the rounds decided, in one commit per kind of change:
+Apply what the rounds decided on a `plan-<goal>` branch in each repository they change, in one
+commit per kind of change:
 
 - **Roadmap**: stage a goal into `active`, pivot any of the three arrays, add or delete goals
   and tasks, and sharpen the next task's entry (`mechanics/goals.md`, `references/manifest.md`).
@@ -34,10 +35,12 @@ Apply what the rounds decided, in one commit per kind of change:
   nothing, and `start` on it stops and asks for this `plan`.
 - **A next brief**: when an active goal's root is on its default branch with no task in
   progress, write the approved brief for its next task into the goal record there, as a direct
-  commit, firing `on-record` first. The next `start` presents it for approval without new rounds.
+  commit on that default branch, never on the plan branch, firing `on-record` first. It is
+  goal-record bookkeeping, the one edit here that skips the pull request. The next `start` presents it for approval without new rounds.
 
 A change the rounds decide for a member repository is recorded as a task of the goal that locks
 it, and lands with that goal's next `start`.
 
-Pull before each commit, stage explicit paths, and push after it. Delete the plan file once its
-edits are committed.
+Publish and merge each `plan-<goal>` branch with the approved round outcome as its body
+(`mechanics/pipeline.md`, "Branches and pull requests"). A project with no remote merges the
+branch locally. Delete the plan file once its edits are published.

@@ -8,8 +8,8 @@ experiment goal keeps none; each of its spike sub-goals keeps its own in the spi
 Anything that must outlast the goal belongs in the notes, the documentation, or the pending edits
 that sync applies.
 
-The goal's first approved brief creates the record, and sync deletes it last
-(`mechanics/goals.md`).
+The goal's first approved brief creates the record, and sync deletes it last, once its sync pull
+request merges (`mechanics/goals.md`).
 
 ## Schema
 
@@ -78,5 +78,6 @@ appear while a task is planned or in progress, and Handoff only while State is `
 ## Where it is committed
 
 The root is a repository the goal locks, so the record changes on the task's branch and merges
-with the task's pull request. Between tasks, `plan` may write the next brief into it as a direct
-commit on the root's default branch, and sync deletes it the same way.
+with the task's pull request. Only bookkeeping commits it straight to the root's default branch:
+the header lines between tasks, the next brief `plan` writes, and deleting the record once its
+sync pull request merges (`mechanics/pipeline.md`, "Branches and pull requests").

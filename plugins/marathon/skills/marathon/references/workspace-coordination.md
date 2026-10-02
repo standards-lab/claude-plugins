@@ -24,7 +24,9 @@ Each active goal locks the repositories in its `repos`, so goals that run at the
 share a member repository, and each works on the main checkout of its own
 (`mechanics/goals.md`). Each goal's record lives in its root, one of the repositories it locks.
 The coordinator is the one shared repository, and it changes only through `plan`'s planning and
-administrative edits and through syncs, as short, direct commits on its default branch.
+administrative edits and through syncs, each landing through its own session branch and pull
+request (`mechanics/pipeline.md`, "Branches and pull requests"). A coordinator on a session branch
+is held until that branch merges.
 
 ## Tasks that span repositories
 

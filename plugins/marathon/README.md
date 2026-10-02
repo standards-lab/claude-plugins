@@ -69,7 +69,8 @@ context project a slice is the deliverable prose, checked by the consistency scr
 A workspace is a directory of marathon projects that sit side by side. One of them, the
 coordinator, holds the roadmap and the dependency order. A task may change several members; it
 runs lowest layer first, each on a branch with the same name, and ships one pull request per
-repository. The coordinator takes only short, direct commits. See
+repository. The coordinator changes only through `plan` and sync, each through its own pull
+request. See
 [`references/workspace-coordination.md`](./skills/marathon/references/workspace-coordination.md).
 
 ## Extensions
