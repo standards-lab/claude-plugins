@@ -155,7 +155,7 @@ and reports.
 |---------|----------------|
 | `start` | The full pipeline for one task |
 | `plan` | LOCATE and START, then plan rounds that end in a `plan-<goal>` pull request in each changed repository (`commands/plan.md`) |
-| `experiment` | `plan`'s stages, plus setting up the spike repository (`commands/experiment.md`) |
+| `experiment` | `plan`'s stages, creating the experiment goal and its planned spikes in an `experiment-<topic>` pull request (`commands/experiment.md`) |
 | `retro` | LOCATE and START, then the retro (`commands/retro.md`) |
 | `status` | Reads only; no stage changes anything (`commands/status.md`) |
 | `reset` | Writes the handoff during BUILD (`commands/reset.md`) |

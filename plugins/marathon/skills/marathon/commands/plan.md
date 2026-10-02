@@ -22,7 +22,8 @@ commit per kind of change:
 
 - **Roadmap**: stage a goal into `active`, pivot any of the three arrays, add or delete goals
   and tasks, and sharpen the next task's entry (`mechanics/goals.md`, `references/manifest.md`).
-  Staging checks the goal's `root`, `repos`, and lock first.
+  Staging checks the goal's `root`, `repos`, and lock first. A spike added to an existing
+  experiment is a sub-goal shaped as `experiment` shapes one (`commands/experiment.md`).
 - **Notes**: write a note a coming goal needs, sharpen one, or delete one the discussion ruled
   out (`references/context-engineering.md`).
 - **Catalog and configuration**: the workspace's repository catalog, `order`, and
@@ -32,11 +33,37 @@ commit per kind of change:
   (`commands/init.md`), add it to `order`, the repository catalog, and the goal's `repos` (and
   `root`, when there is none), write the tasks into the manifest, and create or extend the goal
   record in the root, with the tasks the rounds settled checked. A goal with no `root` locks
-  nothing, and `start` on it stops and asks for this `plan`.
+  nothing, and `start` on it stops and asks for this `plan`. A spike sub-goal adds its own steps
+  ("Spike setup").
 - **A next brief**: when an active goal's root is on its default branch with no task in
   progress, write the approved brief for its next task into the goal record there, as a direct
   commit on that default branch, never on the plan branch, firing `on-record` first. It is
   goal-record bookkeeping, the one edit here that skips the pull request. The next `start` presents it for approval without new rounds.
+
+## Spike setup
+
+`plan experiment.<topic>.<spike>` stages the spike and sets it up through Goal setup. Its
+repository doesn't exist yet, so it is staged without it (`mechanics/goals.md`). The rounds also
+settle:
+
+- **The evidence**: a numbered list of what the spike must show to answer its question.
+- **`init`'s founding decisions** (`commands/init.md`).
+- **The path**: the steps that answer the question, written as the sub-goal's tasks.
+- **The references**: the repositories the spike reads.
+
+Goal setup then runs with these steps:
+
+1. Run `init` at the sub-goal's `path` with the settled decisions. Its `context/README.md` states
+   the question, the evidence list, and the sub-goal; its goals live in the coordinator's
+   roadmap. It writes no `[experiment]` table.
+2. Record the repositories the spike reads, using the served project's own convention. In a
+   workspace, that is a committed list of remotes plus a gitignored map to local checkouts, both
+   in the coordinator. The spike reads those repositories and never writes to them. Its code
+   dependencies are published versions, never a replace directive.
+3. Create the repository at the sub-goal's `remote` and push.
+4. Write the path as the sub-goal's tasks and create the goal record in the spike's repository.
+   The spike stays out of `order` and the repository catalog: LOCATE finds it through its `path`
+   (`mechanics/pipeline.md`).
 
 A change the rounds decide for a member repository is recorded as a task of the goal that locks
 it, and lands with that goal's next `start`.

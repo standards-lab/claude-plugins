@@ -34,7 +34,7 @@ order = [
 [workspace.paths]
 core-lib = "~/code/core-lib"
 
-# Optional: the hosting convention `experiment` proposes for a new spike.
+# Optional: the hosting convention `experiment` and `plan` propose for a new spike.
 [workspace.experiments]
 path   = "~/experiments/spike-<slug>"
 remote = "https://github.com/<owner>/spike-<slug>.git"
