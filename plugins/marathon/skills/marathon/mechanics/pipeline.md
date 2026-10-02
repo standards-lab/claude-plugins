@@ -90,8 +90,10 @@ this file names (`mechanics/hooks.md`).
    continue BUILD from the recorded position. Two next moves resume past BUILD instead:
    - "tag <names>" resumes the release at SHIP ("Releasing"), one repository at a time, from the
      position Handoff records for it: at step 1 for a repository whose task branch hasn't merged;
-     at its `<slug>-fix` branch's publish, merge, or `[remote] ci` step, then the tag step, for one
-     fixing forward; and at the tag step for the rest.
+     at step 2 for one merged with ci not yet green; at its `<slug>-fix` branch's publish, merge,
+     or `[remote] ci` step, then the tag step, for one fixing forward; at the failed-release fix
+     for one whose tag was pushed and whose release failed; and at the tag step only for one
+     merged and green.
    - "merge `sync-<goal>`, then delete the record" resumes the sync at its remaining steps: merge
      each `sync-<goal>` branch not yet merged, then delete the record and release the lock
      (`mechanics/goals.md`, "Sync", steps 4 to 6).
@@ -167,8 +169,8 @@ version releases:
 The release always ends at the planned version. It stops for the architect only for a decision
 the brief doesn't cover, as an escalation (`references/build.md`). When the context fills, set
 State to `handoff` with the next move "tag <names>", naming the tags not yet released and each
-Release repository's position: merged, on `<slug>-fix` at its publish, merge, or ci step, its tag
-pushed and its release failed, or released. Commit it where the root stands: on the root's task
+Release repository's position: merged with ci not yet green, merged and green, on `<slug>-fix`
+at its publish, merge, or ci step, its tag pushed and its release failed, or released. Commit it where the root stands: on the root's task
 branch while that branch hasn't merged, pushed to that branch, whose pull request is already
 published, so the record lands with the merge; or on the root's default branch as bookkeeping once
 it has. Then stop; the next `start` resumes the release (3R · RESUME).
