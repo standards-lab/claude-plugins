@@ -57,7 +57,7 @@ At the coordinator, in one commit on an `intake-<topic>` branch:
   archived.
 
 Publish and merge the branch with the approved round outcome as its body (`mechanics/pipeline.md`,
-"Branches and pull requests"). A project with no remote merges the branch locally.
+"Branches and pull requests").
 
 ## Archive
 

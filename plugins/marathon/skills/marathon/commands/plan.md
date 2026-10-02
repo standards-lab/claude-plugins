@@ -38,7 +38,8 @@ commit per kind of change:
 - **A next brief**: when an active goal's root is on its default branch with no task in
   progress, write the approved brief for its next task into the goal record there, as a direct
   commit on that default branch, never on the plan branch, firing `on-record` first. It is
-  goal-record bookkeeping, the one edit here that skips the pull request. The next `start` presents it for approval without new rounds.
+  goal-record bookkeeping, the one edit here that skips the pull request. The next `start`
+  presents it for approval without new rounds.
 
 ## Spike setup
 
@@ -69,5 +70,5 @@ A change the rounds decide for a member repository is recorded as a task of the 
 it, and lands with that goal's next `start`.
 
 Publish and merge each `plan-<goal>` branch with the approved round outcome as its body
-(`mechanics/pipeline.md`, "Branches and pull requests"). A project with no remote merges the
-branch locally. Delete the plan file once its edits are published.
+(`mechanics/pipeline.md`, "Branches and pull requests"). Delete the plan file once its edits are
+published.

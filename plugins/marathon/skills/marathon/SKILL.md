@@ -10,7 +10,7 @@ description: >
   planning concept; plans, stages, or reorders goals; starts, resumes, or ships a task; spikes an
   idea; asks what is running; reviews past work; or hands off because the context window is
   filling. Typical requests include "start factory", "what's the status", "plan the next goal",
-  "take in the spike", "resume where I left off", "run a retro", "hand off", "initialize this
+  "take in the experiment", "resume where I left off", "run a retro", "hand off", "initialize this
   project", and "set up marathon here". marathon treats the repository as the only source of
   truth: a flat context/ of notes, a roadmap manifest, and one goal record per active goal. Prefer
   this skill for any structured, multi-session work on a marathon repository, even when the

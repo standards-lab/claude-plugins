@@ -30,8 +30,8 @@ this file names (`mechanics/hooks.md`).
      repository.
 2. Read the manifest (`references/manifest.md`): the project's own `context/roadmap.toml`, or the
    coordinator's. First check the coordinator's lock as step 5 does, then pull its default branch.
-   Resolve every repository name the
-   goal uses through `order`, `[workspace.paths]`, or a spike sub-goal's `path`.
+   Resolve every repository name the goal uses through `order`, `[workspace.paths]`, or a spike
+   sub-goal's `path`.
 3. Find the goal: the one the architect names, which must be in `active` and have a `root`; one
    without a `root` is set up by `plan` first (`commands/plan.md`). With none named, print the
    status digest (`commands/status.md`) and ask. A goal that isn't active is staged by `plan`
@@ -48,9 +48,8 @@ this file names (`mechanics/hooks.md`).
      - `brief ready`: START, then BRIEF.
 5. Check the lock: every repository the task touches, other than the coordinator, is on its
    default branch with a clean working tree, or on the task's branch or its `<slug>-fix` branch
-   ("Releasing"). A coordinator on a session branch (`plan-`, `experiment-`, `intake-`, `sync-`,
-   or `retro-`) is held the same way. Anything else means another session holds it: stop and
-   report.
+   ("Releasing"). A coordinator on a session branch ("Branches and pull requests") is held the
+   same way. Anything else means another session holds it: stop and report.
 
 ### 2 · START
 
@@ -92,8 +91,8 @@ coordinator during BUILD. When the context fills, run `reset` on your own (`comm
 
 1. Write the session brief (`references/briefs.md`) to `.claude/briefs/<goal>.md` in the root's
    checkout, and set State to `brief ready`. On the goal's last task, the brief has a Sync
-   section. If the root's `.gitignore` doesn't list
-   `.claude/briefs/`, add the line on the task's branch first.
+   section. If the root's `.gitignore` doesn't list `.claude/briefs/`, add the line on the task's
+   branch first.
 2. Show it, and wait for the architect. **[touch 2]**
    - **Accept**: continue with SHIP. On the goal's last task, accepting also authorizes the sync
      and the staging its Sync section shows.
@@ -114,11 +113,9 @@ coordinator during BUILD. When the context fills, run `reset` on your own (`comm
    ("merge" or the failing check), commit it on the branch, tell the architect, and stop. When
    the task brief has a Release line, merge and tag one repository at a time instead
    ("Releasing").
-6. Switch each repository back to its default branch, pull, and delete the local task branch.
-   Delete the brief file.
-7. When this was the goal's last task, sync, staging the goal the Sync section stages on accept
-   (`mechanics/goals.md`, "Sync"). A planned release finishes first: sync waits until every tag
-   in the Release line is released.
+6. Switch each repository back to its default branch, pull, and delete the local task branch,
+   where Releasing hasn't already. Delete the brief file.
+7. When this was the goal's last task, sync (`mechanics/goals.md`, "Sync").
 
 ### Releasing
 
@@ -126,7 +123,8 @@ A task brief's Release line lists the tags the task releases (`references/briefs
 brief"), and accepting the session brief authorizes them. SHIP then takes each repository in
 turn, lowest layer first, and finishes its release before the next repository's merge:
 
-1. Merge the branch with `[remote] merge`, switch to the default branch, and pull.
+1. Merge the branch with `[remote] merge`, switch to the default branch, pull, and delete the
+   local task branch.
 2. When `[remote] ci` is set, run it on the merge commit (`mechanics/configuration.md`).
    Without it, tagging follows the merge directly.
 3. Tag each of the repository's Release tags, the base artifact before its sub-modules:
@@ -135,7 +133,6 @@ turn, lowest layer first, and finishes its release before the next repository's 
    2. Create the tag annotated "<artifact> <version>" on the merge commit, and push that tag
       alone.
    3. When the repository has a release workflow, confirm the run the tag started succeeds.
-4. Delete the local task branch.
 
 No tag is pushed while the default branch is red. The session fixes forward until the planned
 version releases:

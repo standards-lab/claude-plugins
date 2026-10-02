@@ -33,19 +33,16 @@ the brief describes a finished state.
 Write and show the session brief. Accepting it authorizes publishing and merging; a redirect
 returns to BUILD, or to PLAN when it changes the brief's behaviors.
 
-On the goal's last task, the brief has a Sync section: the pending edits the sync applies and the
-goal proposed to stage next. Accepting it also authorizes the sync, and stages that goal when
-staging's checks pass (`references/briefs.md`, "Session brief"). A spike's last brief gives its
-answer, and its sync lands the answer section (`references/briefs.md`, "Answer section").
+On the goal's last task, the brief has a Sync section, and accepting it also authorizes the sync
+(`references/briefs.md`, "Session brief"). A spike's last brief gives its answer
+(`references/briefs.md`, "Answer section").
 
 ## Ship
 
 Update and commit the goal record, then publish with the brief as the pull request's body and
-merge (`mechanics/pipeline.md`, 6 · SHIP). When the task brief has a Release line, merge and tag
-one repository at a time, lowest layer first: merge, wait for `[remote] ci` on the merge commit,
-then push each tag alone once its version matches. A red default branch or a failed release is
-fixed forward on a `<slug>-fix` branch until the planned version releases ("Releasing"). On the
-goal's last task, sync (`mechanics/goals.md`) once every tag is released.
+merge (`mechanics/pipeline.md`, 6 · SHIP). When the task brief has a Release line, SHIP also tags
+the release, fixing forward until the planned version releases (`mechanics/pipeline.md`,
+"Releasing"). On the goal's last task, sync (`mechanics/goals.md`).
 
 If the context fills before BRIEF, `reset` runs on its own and the next `start` on the goal
 resumes.

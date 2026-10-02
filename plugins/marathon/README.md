@@ -57,7 +57,8 @@ included, lands through a branch and a pull request in each repository it change
 
 The roadmap manifest, `context/roadmap.toml`, holds goals (outcomes) and their tasks (one
 session's work each). Every goal is `active`, `planned`, or `backlog`, except an experiment goal,
-which is never listed. Active goals run side by side, and each locks the repositories it touches, so no two share one and no worktrees are needed.
+which is never listed. Active goals run side by side, and each locks the repositories it touches,
+so no two share one and no worktrees are needed.
 A goal's record, `context/goals/<goal>.md` in its root repository, holds its tasks, the current
 brief, progress, decisions, and the edits it owes other repositories, which sync applies when its
 last task ships. The coordinator changes only through `plan`, `experiment`, `intake`, `retro`, and
@@ -83,8 +84,8 @@ context project a slice is the deliverable prose, checked by the consistency scr
 A workspace is a directory of marathon projects that sit side by side. One of them, the
 coordinator, holds the roadmap and the dependency order. A task may change several members; it
 runs lowest layer first, each on a branch with the same name, and ships one pull request per
-repository. The coordinator changes only through `plan`, `experiment`, `intake`, `retro`, and
-sync, each through its own pull request. See
+repository. The coordinator changes only through the sessions listed under Goals, each through its
+own pull request. See
 [`references/workspace-coordination.md`](./skills/marathon/references/workspace-coordination.md).
 
 ## Extensions
