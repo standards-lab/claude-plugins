@@ -41,7 +41,11 @@ answer, and its sync lands the answer section (`references/briefs.md`, "Answer s
 ## Ship
 
 Update and commit the goal record, then publish with the brief as the pull request's body and
-merge (`mechanics/pipeline.md`, 6 · SHIP). On the goal's last task, sync (`mechanics/goals.md`).
+merge (`mechanics/pipeline.md`, 6 · SHIP). When the task brief has a Release line, merge and tag
+one repository at a time, lowest layer first: merge, wait for `[remote] ci` on the merge commit,
+then push each tag alone once its version matches. A red default branch or a failed release is
+fixed forward on a `<slug>-fix` branch until the planned version releases ("Releasing"). On the
+goal's last task, sync (`mechanics/goals.md`) once every tag is released.
 
 If the context fills before BRIEF, `reset` runs on its own and the next `start` on the goal
 resumes.

@@ -68,6 +68,12 @@ appear while a task is planned or in progress, and Handoff only while State is `
   shows. A goal with sub-goals lists only its own tasks.
 - **Task brief** is the current task's approved brief. The next task's brief replaces it.
 - **Progress** records the build loop's position (`references/build.md`).
+- **Handoff** gives the exact next move while State is `handoff`: the BUILD position `reset`
+  wrote (`commands/reset.md`); "merge", or the failing check, when SHIP can't merge; "tag
+  <names>" when the context fills during a release, naming the tags not yet released
+  (`mechanics/pipeline.md`, "Releasing"); "merge, then sync" or "tag <names>, then sync" on the
+  goal's last task; or "merge `sync-<goal>`, then delete the record" when a sync pull request
+  can't merge (`mechanics/goals.md`, "Sync").
 - **Decisions** logs what each plan round settled and what each task decided without the
   architect, one line each, so a later task doesn't decide it again. It also records rejected
   alternatives (`behavior/planning.md`).

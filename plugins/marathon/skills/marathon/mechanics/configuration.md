@@ -16,6 +16,8 @@ platform = "github"    # the platform the project publishes to
 publish  = "gh pr create"
 # Optional: without it, SHIP stops at the open pull request.
 merge    = "gh pr checks --watch && gh pr merge --merge --delete-branch"
+# Optional: waits for the default branch's CI on the merge commit, and fails if it fails.
+ci       = "gh run watch --exit-status $(gh run list --branch main --commit \"$(git rev-parse HEAD)\" --limit 1 --json databaseId --jq '.[0].databaseId')"
 
 # Optional: only a workspace coordinator declares this table.
 [workspace]
@@ -50,6 +52,12 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   runs (`references/build.md`). A context project names its consistency script, if it has one.
 - **`[remote]`**: the platform, the command SHIP runs to publish a branch, and optionally the
   command it runs to merge the published branch once its checks pass.
+- **`[remote] ci`**: optional. A command that waits for the default branch's CI run on the merge
+  commit, with that commit checked out, and exits nonzero if the run fails. CI often runs more
+  after a merge than on the pull request, such as integration tests only on the default branch,
+  so the merge command's wait on the pull request's checks isn't enough. SHIP runs it before
+  tagging a release; without it, tagging follows the merge directly (`mechanics/pipeline.md`,
+  6 · SHIP).
 - **`[workspace]`**: for the coordinator only. `order` lists layers, lowest first, and an array
   entry is a layer of peers. `exclusive` lists groups of repositories that at most one active goal
   may touch at a time, narrowing the repository lock (`mechanics/goals.md`). `[workspace.paths]`

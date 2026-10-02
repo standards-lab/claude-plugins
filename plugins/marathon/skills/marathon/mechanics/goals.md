@@ -60,8 +60,9 @@ syncs it, and stages the goal its session brief proposes when staging's checks p
 
 ## Sync
 
-When a goal's last task merges, its session syncs the goal. Every piece of context lands before
-anything is deleted:
+When a goal's last task merges, and every tag its task brief's Release line names is released
+(`mechanics/pipeline.md`, "Releasing"), its session syncs the goal. Every piece of context lands
+before anything is deleted:
 
 1. Read the goal record's pending edits from the root's default branch.
 2. Apply the pending edits for the coordinator in one commit on a `sync-<goal>` branch there: the
@@ -89,6 +90,7 @@ which takes in the spikes' answers and archives their remotes (`commands/intake.
 
 If the task's merge can't happen, because there is no `[remote] merge` command or a check fails,
 nothing is synced and the record stays: set State to `handoff` with the next move "merge, then
-sync", and stop. If a sync pull request can't merge, the record stays too: set State to `handoff`
-with the next move "merge `sync-<goal>`, then delete the record", as a bookkeeping commit on the
-root's default branch, and stop.
+sync", and stop. If the context fills while the release is unfinished, the next move is "tag
+<names>, then sync". If a sync pull request can't merge, the record stays too: set State to
+`handoff` with the next move "merge `sync-<goal>`, then delete the record", as a bookkeeping
+commit on the root's default branch, and stop.

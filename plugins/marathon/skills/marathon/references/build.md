@@ -57,7 +57,9 @@ The session records progress in the goal record as slices commit, so a handoff l
 BUILD stops for the architect only for:
 
 - **a one-way door**: an irreversible migration, data loss, or an action with effects outside the
-  repositories
+  repositories. Pushing the tags an accepted brief's Release line names is not one: accepting the
+  brief authorized them, and SHIP tags them without escalating again (`mechanics/pipeline.md`,
+  "Releasing").
 - **a decision the task brief doesn't cover**, which a delegate couldn't settle without changing
   the brief
 - **scope beyond the task**

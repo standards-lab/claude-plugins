@@ -9,7 +9,7 @@ PLAN   architect ⇄ planner, in rounds → task brief + slices     ✔ approve 
 BUILD  per slice: implementer → check; then standards-reviewer,
        spec-reviewer (gaps → implementer), editor
 BRIEF  session brief                                             ✔ accept / redirect [touch 2]
-SHIP   commit the goal record → publish (body = brief) → merge → sync if last task
+SHIP   commit the goal record → publish (body = brief) → merge → tag if Release → sync if last
 ```
 
 Each playbook under `commands/` says which stages it runs. Extension hooks fire only at the points
@@ -47,9 +47,10 @@ this file names (`mechanics/hooks.md`).
      - `building` or `handoff`: resume. START, then RESUME.
      - `brief ready`: START, then BRIEF.
 5. Check the lock: every repository the task touches, other than the coordinator, is on its
-   default branch with a clean working tree, or on the task's branch. A coordinator on a session
-   branch (`plan-`, `experiment-`, `intake-`, `sync-`, or `retro-`) is held the same way. Anything
-   else means another session holds it: stop and report.
+   default branch with a clean working tree, or on the task's branch or its `<slug>-fix` branch
+   ("Releasing"). A coordinator on a session branch (`plan-`, `experiment-`, `intake-`, `sync-`,
+   or `retro-`) is held the same way. Anything else means another session holds it: stop and
+   report.
 
 ### 2 · START
 
@@ -75,10 +76,11 @@ this file names (`mechanics/hooks.md`).
 
 ### 3R · RESUME
 
-1. Check out the task's branch in each touched repository.
+1. Check out the task's branch in each touched repository that hasn't merged it.
 2. Fire `on-build`.
 3. Read the brief, Progress, and Handoff from the goal record. Finish any WIP slice first, then
-   continue BUILD from the recorded position.
+   continue BUILD from the recorded position. A Handoff whose next move is "tag <names>" resumes
+   the release instead, at SHIP ("Releasing"), with the task's branch already merged.
 
 ### 4 · BUILD
 
@@ -109,11 +111,48 @@ coordinator during BUILD. When the context fills, run `reset` on your own (`comm
    `[remote] publish` merges its branch locally instead ("Branches and pull requests").
 5. Merge each one with its `[remote] merge` command, lowest layer first, once its checks pass.
    Without a merge command, or when a check fails, set State to `handoff` with the next move
-   ("merge" or the failing check), commit it on the branch, tell the architect, and stop.
+   ("merge" or the failing check), commit it on the branch, tell the architect, and stop. When
+   the task brief has a Release line, merge and tag one repository at a time instead
+   ("Releasing").
 6. Switch each repository back to its default branch, pull, and delete the local task branch.
    Delete the brief file.
 7. When this was the goal's last task, sync, staging the goal the Sync section stages on accept
-   (`mechanics/goals.md`, "Sync").
+   (`mechanics/goals.md`, "Sync"). A planned release finishes first: sync waits until every tag
+   in the Release line is released.
+
+### Releasing
+
+A task brief's Release line lists the tags the task releases (`references/briefs.md`, "Task
+brief"), and accepting the session brief authorizes them. SHIP then takes each repository in
+turn, lowest layer first, and finishes its release before the next repository's merge:
+
+1. Merge the branch with `[remote] merge`, switch to the default branch, and pull.
+2. When `[remote] ci` is set, run it on the merge commit (`mechanics/configuration.md`).
+   Without it, tagging follows the merge directly.
+3. Tag each of the repository's Release tags, the base artifact before its sub-modules:
+   1. Check that the tag isn't on the remote, and that its version matches the artifact's
+      version as the repository records it, in its manifest or its CHANGELOG's top heading.
+   2. Create the tag annotated "<artifact> <version>" on the merge commit, and push that tag
+      alone.
+   3. When the repository has a release workflow, confirm the run the tag started succeeds.
+4. Delete the local task branch.
+
+No tag is pushed while the default branch is red. The session fixes forward until the planned
+version releases:
+
+- **A red default branch** after the merge, or a version that doesn't match, is fixed on a
+  `<slug>-fix` branch from the default branch, published and merged like the task's branch,
+  with `[remote] ci` run again on its merge commit. Then tag.
+- **A failed release**, a release workflow that fails after the tag is pushed, is fixed the
+  same way. Then delete the tag on the remote and locally, and create and push it again at the
+  same version on the fix's merge commit.
+- **A released tag** is never re-cut. A tag already on the remote that this release didn't push
+  stops the release with an escalation.
+
+The release always ends at the planned version. It stops for the architect only for a decision
+the brief doesn't cover, as an escalation (`references/build.md`). When the context fills, set
+State to `handoff` with the next move "tag <names>", naming the tags not yet released, commit it
+on the root's default branch as bookkeeping, and stop; the next `start` resumes the release.
 
 ## Branches and pull requests
 
@@ -126,6 +165,7 @@ request, in each repository it changes.
 | `plan` | `plan-<goal>`, or `plan-<topic>` when it names no goal | the approved round outcome |
 | `experiment` | `experiment-<topic>` | the approved round outcome |
 | `intake` | `intake-<topic>` | the approved round outcome |
+| `start`, fixing a release | `<slug>-fix` | the failure and its fix |
 | sync | `sync-<goal>` | the Sync section of the last task's session brief |
 | `retro` | `retro-<topic>` | the ticked findings |
 
@@ -174,6 +214,8 @@ and reports.
 - Nothing changes before the architect approves the task brief, except a RESUME of an approved
   one.
 - Nothing is published before the architect accepts the session brief.
+- No tag is pushed while its repository's default branch is red, and a released tag is never
+  re-cut.
 - The coordinator changes only through `plan`, `experiment`, `intake`, `retro`, and sync, each
   through its own pull request.
 - Every change lands through a session's pull request, except goal-record bookkeeping.

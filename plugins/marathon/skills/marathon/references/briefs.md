@@ -45,7 +45,17 @@ Test seams    the interfaces the tests exercise (ideally one)
 Slices        ordered vertical slices, each demoable alone
 Out of scope  what this task will not do
 Door          two-way | one-way (why)
+Release       the exact tags the task releases (optional)
 ```
+
+- **Door** is one-way when the task plans a release, since a pushed tag reaches people outside
+  the repositories. The rest of the task may still be two-way, and the line says which part is
+  which.
+- **Release** appears only when the task releases. It lists each tag in its repository's own
+  naming, such as `marathon/v0.16.1`, or, in a Go repository, `v1.4.0` at the root and
+  `<submodule>/v1.4.0` for a sub-module, one tag per artifact. The plan rounds settle it; it is
+  never inferred from a version bump, and no manifest field holds it. SHIP tags it
+  (`mechanics/pipeline.md`, 6 · SHIP).
 
 ## Session brief
 
@@ -93,6 +103,8 @@ goal's root, which gitignores `.claude/briefs/`.
 - **Decided without you** lists the decisions the brief didn't cover and what the reviewers
   changed.
 - **Merge danger** names the door type and the blast radius. A one-way door gets the close read.
+  When the task brief has a Release line, Merge danger repeats its tags, so accepting the brief
+  authorizes tagging them.
 - **Needs you** reads "(none)" when nothing remains.
 - **Sync** appears only on the goal's last task, after Needs you. It lists the pending edits the
   sync will apply, per repository, and the goal proposed to stage next: for a spike, the next
