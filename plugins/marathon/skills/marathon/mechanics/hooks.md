@@ -24,7 +24,7 @@ declares the hook, do what its SKILL.md says for it. A hook fires just before th
 | Hook | When it fires |
 |------|---------------|
 | `on-start` | At 2 · START, step 1, before the session reads its context |
-| `on-build` | At 3 · PLAN, step 4, on approval, or at 3R · RESUME, step 2, after checkout, except when resuming only a sync |
+| `on-build` | At 3 · PLAN, step 4, on approval, or at 3R · RESUME, step 2, after checkout, except when resuming only a sync or a release's tags |
 | `on-ship` | At 6 · SHIP, step 1, once the architect accepts the session brief |
 | `on-record` | Before the goal record is committed, at SHIP and at `reset` |
 

@@ -109,9 +109,9 @@ The recipes, by the experiment's state:
    experiment's only task. Each spike is set up later by `plan experiment.<topic>.<spike>`.
    A spike always starts in a new repository (`commands/plan.md`, "Spike setup"), so a spike
    task that names an existing project becomes a sub-goal for a new spike repository instead.
-   `experiment.ai`'s `personal-agents` becomes `experiment.ai.spike-local-agents`, at the
-   `[workspace.experiments]` path `~/experiments/spike-local-agents` with the remote
-   `https://github.com/JaimeStill/spike-local-agents.git`. Its summary names
+   `experiment.ai`'s `personal-agents` becomes `experiment.ai.spike-model-hosting`, at the
+   `[workspace.experiments]` path `~/experiments/spike-model-hosting` with the remote
+   `https://github.com/JaimeStill/spike-model-hosting.git`. Its summary names
    `~/code/personal-agents` as a read-only reference, recorded when `plan` sets the spike up.
    Nothing is written to or archived from `personal-agents`. The migration also adds an open
    question to `experiment.ai`'s `intake` task entry, for the intake to decide: whether

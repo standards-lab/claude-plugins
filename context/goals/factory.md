@@ -135,6 +135,8 @@ slices 7/7 committed · standards ✓ · spec — · editor —
 - experiments: SHIP tags the brief's Release line only after main is green, fixing forward until the planned version releases; a tag whose release failed may be deleted and re-pushed, a released tag never.
 - experiments: `[remote] ci` is an optional command that waits for main's CI on the merge commit.
 - experiments: this session runs 0.16.0, so marathon/v0.16.1 is tagged by hand following behavior 9.
+- experiments: a spike always starts in a new repository; an existing project informs it only as a read-only reference. experiment.ai's personal-agents task becomes `experiment.ai.spike-model-hosting` (models, not agents, until paired with a harness), with personal-agents as a reference; intake decides whether its contents and the spike's findings move into a fresh workspace repository.
+- experiments (build): spec review closed 10 gaps: own-branch resume, stuck-sync resume, handoff bookkeeping, intake writes manifest tasks only, per-repository release resume, last-spike Sync line, experiment writes its cited note, ordered migration recipes, root/repos removal, existing-project spikes.
 
 ## Pending edits
 
