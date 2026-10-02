@@ -101,7 +101,7 @@ Release  marathon/v0.16.1
 
 ## Progress
 
-slices 2/7 committed · standards — · spec — · editor —
+slices 3/7 committed · standards — · spec — · editor —
 
 ## Decisions
 
