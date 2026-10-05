@@ -47,12 +47,15 @@ for file in .github/workflows/*.yml .github/workflows/*.yaml; do
   done <<<"$pins"
 done
 
-# latest_stable sets latest to an npm package's stable dist-tag. Like
-# latest_tag, it runs in the current shell so set -e fails currency when npm
-# fails.
+# latest_stable sets latest to an npm package's stable dist-tag, looking each
+# package up once. Like latest_tag, it runs in the current shell.
+declare -A latest_stables=()
 latest_stable() {
   local package=$1
-  latest=$(npm view "$package" dist-tags.stable)
+  if [ -z "${latest_stables[$package]+set}" ]; then
+    latest_stables[$package]=$(npm view "$package" dist-tags.stable)
+  fi
+  latest=${latest_stables[$package]}
   if [ -z "$latest" ]; then
     echo "currency: no stable dist-tag for $package" >&2
     exit 1
@@ -61,7 +64,10 @@ latest_stable() {
 
 for file in .github/workflows/*.yml .github/workflows/*.yaml; do
   # grep exits 1 on no match, which is no pins; any other status fails.
-  pins=$(grep -oP 'npm install -g +\K\S+@\S+' "$file" || [ $? -eq 1 ])
+  # A pin is the first package of an npm install -g, or its i and --global
+  # spellings, with a version after a later @; quotes around a run line are not
+  # part of it.
+  pins=$(grep -oP 'npm (?:install|i) +(?:-g|--global) +\K[^\s"\x27]+@[^\s"\x27]+' "$file" || [ $? -eq 1 ])
   pins=$(sort -u <<<"$pins")
   while read -r spec; do
     [ -n "$spec" ] || continue

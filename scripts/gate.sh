@@ -6,7 +6,7 @@
 # when both pass. It is a development-time command and CI never runs it, since
 # the eval suite runs paid claude sessions on the caller's credential.
 #
-# A plugin with no evals/ directory, or one holding no case, releases on the
+# A plugin with no eval directory, or one holding no case, releases on the
 # check alone, and the gate says so on stderr. A malformed tag, or one naming no
 # plugin under plugins/, fails the gate rather than passing it unchecked.
 set -uo pipefail
@@ -29,10 +29,19 @@ dir="plugins/$plugin"
 scripts/check.sh || fail "scripts/check.sh failed, so $tag is held"
 
 # A case is what claude plugin eval runs: a case.yaml, or a prompt.md with its
-# graders, anywhere below evals/. The results/ directory eval writes holds no
-# case, so a suite with only past results still counts as none.
-cases=$(find "$dir/evals" -path "$dir/evals/results" -prune -o \
-  \( -name case.yaml -o -name prompt.md \) -print 2>/dev/null)
+# graders, anywhere below the eval directory, which is the manifest's
+# experimental.evals or else evals/, as eval resolves it. The results/
+# directory eval writes there holds no case, so a suite with only past results
+# still counts as none. A find that fails holds the tag rather than reading as
+# no cases.
+evals="$dir/$(jq -r '.experimental.evals // "evals"' "$dir/.claude-plugin/plugin.json")" ||
+  fail "$dir/.claude-plugin/plugin.json does not parse"
+cases=
+if [ -d "$evals" ]; then
+  cases=$(find "$evals" -path "$evals/results" -prune -o \
+    \( -name case.yaml -o -name prompt.md \) -print) ||
+    fail "could not list the cases in $evals"
+fi
 if [ -z "$cases" ]; then
   echo "gate: $plugin has no eval cases, so $tag passes on scripts/check.sh alone" >&2
   exit 0
