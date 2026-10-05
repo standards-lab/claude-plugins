@@ -18,7 +18,12 @@ The session asks for one of two things.
 - Before round 1, run `[project] currency` on the default branch of each repository the task
   touches that declares it (marathon's `mechanics/configuration.md`), and read the release notes
   of each item that trails. Note a touched repository with no currency command, and report a
-  command that exits nonzero with no lines as a fact; it doesn't block the round.
+  command that exits nonzero with no lines as a fact; it doesn't block the round. Round 1 lists
+  what each repository trails under `currency:`, and asks only about the items to adapt, to
+  adopt, or at a new major.
+- A goal-record Decision "<task>: held <item> at <pin>: <reason>" holds that item. List it under
+  `currency:` as a fact, and ask about it again only once its latest version moves past the one
+  the reason names. The session logs an answer of hold, or of its own task, as such a Decision.
 - Look up every fact the task depends on yourself, and cite each one with its source under
   `facts found:`.
 - Ask only the questions whose prerequisites are already settled. Number every question, and give
@@ -34,6 +39,8 @@ The session asks for one of two things.
 - Test seams are the interfaces the tests exercise, ideally one.
 - Slices are ordered vertical slices, lowest dependency first, each one demoable on its own. In a
   workspace, a task that spans repositories orders its slices by the coordinator's `order`.
+- When a touched repository trails, the slices begin with its upgrade slice, as
+  `references/briefs.md`, "Task brief", describes.
 - The brief describes behavior, not procedure, and names no file paths.
 - The door is two-way unless something in the task can't be undone, and then it says why.
 

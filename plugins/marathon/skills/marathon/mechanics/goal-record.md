@@ -41,6 +41,7 @@ slices 2/3 committed · standards — · spec — · editor —
 ## Decisions
 
 - transport: kept stdin JSONL over SSE — simpler, and the spike needs one transport.
+- transport: held pgx at v5.6.0: v6.0.0 changes Query; its own task, pgx-v6.
 
 ## Pending edits
 
@@ -77,7 +78,9 @@ appear while a task is planned or in progress, and Handoff only while State is `
   can't merge (`mechanics/goals.md`, "Sync").
 - **Decisions** logs what each plan round settled and what each task decided without the
   architect, one line each, so a later task doesn't decide it again. It also records rejected
-  alternatives (`behavior/planning.md`).
+  alternatives (`behavior/planning.md`). A held dependency is a decision of the form
+  "<task>: held <item> at <pin>: <reason>", whose reason names the latest version it was held
+  from; PLAN lists it as a fact and asks again only once a later version is out.
 - **Pending edits** collects every change the goal owes a repository outside its own work, each
   prefixed with that repository: the coordinator's notes, catalog, workspace `order`, and
   manifest, or a page in the architecture repository. Sync applies them.
