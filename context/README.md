@@ -34,6 +34,6 @@ repository is developed with marathon, so the workflow runs against its own sour
 
 - Each plugin's design lives in its own files under `plugins/<name>/`, not in `context/`.
   `scripts/check.sh` verifies that every pointer inside them resolves.
-- Notes for planned work sit directly under `context/`. The `factory` goal is rooted here, so its
-  record is `context/goals/factory.md`; the workspace roadmap is at the coordinator
+- Notes for planned work sit directly under `context/`. A goal rooted here keeps its record in
+  `context/goals/<goal>.md` while it is active; the workspace roadmap is at the coordinator
   (standards-lab).
