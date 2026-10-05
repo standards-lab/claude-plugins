@@ -69,7 +69,8 @@ BUILD stops for the architect only for:
 
 An escalation uses the plan-round format, headed `ESCALATION` (`references/briefs.md`), printed
 in full in the reply, never through AskUserQuestion (`behavior/planning.md`, "Ask for decisions,
-never for facts"). BUILD resumes once it is answered. Anything else a delegate decides goes under Decided without you.
+never for facts"). BUILD resumes once it is answered. Anything else a delegate decides goes under
+Decided without you.
 
 ## Handoff
 

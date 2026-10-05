@@ -70,7 +70,8 @@ this file names (`mechanics/hooks.md`).
    task, and keep each round, its answers, and the drafted brief in it.
 2. Run plan rounds with the architect (`behavior/planning.md`, `references/briefs.md`). Print
    each round in full in the reply and end the turn there, never through AskUserQuestion
-   (`behavior/planning.md`, "Ask for decisions, never for facts"). The planner profile finds the facts and drafts each round, then the task brief and its slices
+   (`behavior/planning.md`, "Ask for decisions, never for facts"). The planner profile finds the
+   facts and drafts each round, then the task brief and its slices
    (`behavior/delegation.md`). Before round 1, the planner runs `[project] currency` on the
    default branch of each repository the task touches that declares it
    (`mechanics/configuration.md`), and reads the release notes of what trails. Round 1 notes each
@@ -183,10 +184,9 @@ the brief doesn't cover, as an escalation (`references/build.md`). When the cont
 State to `handoff` with the next move "tag <names>", naming the tags not yet released and each
 Release repository's position: merged with ci not yet green, merged and green, on `<slug>-fix`
 at its publish, merge, or ci step, its gate failed, its tag pushed and its release failed, or
-released. Commit it where the root stands: on the root's task
-branch while that branch hasn't merged, pushed to that branch, whose pull request is already
-published, so the record lands with the merge; or on the root's default branch as bookkeeping once
-it has. Then stop; the next `start` resumes the release (3R · RESUME).
+released. Commit it where the root stands: on the root's task branch while that branch hasn't
+merged, pushed to that branch, whose pull request is already published, so the record lands with
+the merge; or on the root's default branch as bookkeeping once it has. Then stop; the next `start` resumes the release (3R · RESUME).
 
 A resumed release ends at the goal record. Once the last named tag releases, set State to `idle`,
 Task and Branch to none, drop Handoff, and check the task if SHIP's record update hadn't landed,

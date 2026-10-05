@@ -19,16 +19,11 @@ execution:
   # no human answers it.
   max_turns: 40
   timeout_seconds: 900
-  # The failure this case guards against happened in plan mode, whose prompt says to end each
-  # turn with AskUserQuestion or ExitPlanMode. Under `claude plugin eval` 2.1.289 that can't be
-  # reproduced: the child runs `claude -p --permission-mode dontAsk --setting-sources user`
-  # with no --permission-prompt-tool, and a -p session without one drops AskUserQuestion,
-  # EnterPlanMode, and ExitPlanMode from its tools whatever is granted. So the case can't fail
-  # no-ask-user-question today, and a fixture defaultMode can't help, since project settings
-  # aren't loaded and the CLI mode wins. It still checks the round's shape in the reply. The
-  # tools stay listed (runs pass --allow-tools EnterPlanMode) so the case discriminates once
-  # eval can offer them. Bash is left out: the fixture declares no currency command and no
-  # remote, so round 1 needs only reads.
+  # The child runs with --setting-sources user, so a fixture defaultMode can't put it in plan
+  # mode either: project settings aren't loaded and the CLI mode wins. EnterPlanMode and
+  # AskUserQuestion stay listed (runs pass --allow-tools EnterPlanMode), though eval drops them
+  # today (see the description), so the case discriminates once eval can offer them. Bash is
+  # left out: the fixture declares no currency command and no remote, so round 1 needs only reads.
   allowed_tools:
     - Read
     - Glob
