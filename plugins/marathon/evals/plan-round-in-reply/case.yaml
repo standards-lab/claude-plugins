@@ -1,0 +1,31 @@
+schema_version: "1.1"
+name: plan-round-in-reply
+description: >-
+  `start` on a task with no brief shows PLAN ROUND 1 in the reply, as numbered questions that each
+  carry rec: and changes: lines and stand on their own, and never asks them through
+  AskUserQuestion. From marathon 0.16.x: plan rounds were shown as AskUserQuestion headlines and
+  the architect rejected them three times, with "I need to see the details for each Round 1
+  decision" (sessions f93cf790, 11b56c96, b23222ce), and a question asked without its context
+  drew "What is this in reference to?" (32b442ee).
+tags: [plan, plan-round]
+context:
+  # Builds a standalone context project whose active goal's next task leaves two decisions open.
+  scaffold_script: scaffold.sh
+execution:
+  # Enough for LOCATE, START, a planner subagent, and round 1; the run ends at the round, since
+  # no human answers it.
+  max_turns: 40
+  timeout_seconds: 900
+  # AskUserQuestion is granted so the failure this case guards against can happen. PLAN enters
+  # plan mode, where that failure was seen, so EnterPlanMode is listed too; eval gates it, so
+  # runs pass --allow-tools EnterPlanMode. Bash is left out: the fixture declares no currency
+  # command and no remote, so round 1 needs only reads.
+  allowed_tools:
+    - Read
+    - Glob
+    - Grep
+    - Skill
+    - Agent
+    - EnterPlanMode
+    - AskUserQuestion
+runs: 3
