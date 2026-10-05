@@ -6,15 +6,15 @@
 # development-time command and CI never runs it.
 #
 # Each lookup captures its command's output in a variable before reading it, so
-# under set -e a failed lookup fails currency instead of reporting nothing.
+# under set -e a failed lookup fails currency instead of reporting nothing. The
+# report is printed only once every lookup has succeeded, so a failure part way
+# through exits nonzero with empty stdout, which the contract reads as a failed
+# command rather than a partial list of what trails.
 set -euo pipefail
+shopt -s nullglob
 cd "$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
 
-stale=0
-report() {
-  echo "$1"
-  stale=1
-}
+trailing=()
 
 # latest_tag sets latest to the tag of a repository's latest release, looking
 # each repository up once. It runs in the current shell, not a command
@@ -32,8 +32,7 @@ latest_tag() {
   fi
 }
 
-for file in .github/workflows/*.yml; do
-  [ -e "$file" ] || continue
+for file in .github/workflows/*.yml .github/workflows/*.yaml; do
   # grep exits 1 on no match, which is no pins; any other status fails.
   pins=$(grep -oP 'uses: *\K[^ ]*@[^ ]*' "$file" || [ $? -eq 1 ])
   pins=$(sort -u <<<"$pins")
@@ -42,8 +41,11 @@ for file in .github/workflows/*.yml; do
     action=${uses%@*}
     pin=${uses#*@}
     latest_tag "$(cut -d/ -f1,2 <<<"$action")"
-    [ "$pin" = "$latest" ] || report "$file: $action $pin -> $latest"
+    [ "$pin" = "$latest" ] || trailing+=("$file: $action $pin -> $latest")
   done <<<"$pins"
 done
 
-exit "$stale"
+if [ ${#trailing[@]} -gt 0 ]; then
+  printf '%s\n' "${trailing[@]}"
+  exit 1
+fi

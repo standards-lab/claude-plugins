@@ -26,11 +26,17 @@ for plugin in plugins/*/; do
   done
 done
 
-# Every marketplace source resolves to a plugin directory.
-while read -r source; do
-  [ -f "$source/.claude-plugin/plugin.json" ] ||
-    err "marketplace source $source does not resolve to a plugin"
-done < <(jq -r '.plugins[].source' .claude-plugin/marketplace.json)
+# Every marketplace source resolves to a plugin directory. The sources are read
+# into a variable first, so a marketplace jq can't parse fails the check rather
+# than yielding no sources to test.
+if sources=$(jq -r '.plugins[].source' .claude-plugin/marketplace.json); then
+  while read -r source; do
+    [ -f "$source/.claude-plugin/plugin.json" ] ||
+      err "marketplace source $source does not resolve to a plugin"
+  done <<<"$sources"
+else
+  err ".claude-plugin/marketplace.json does not parse"
+fi
 
 # Every @-pointer and ./-link in the plugins' markdown resolves to a real file.
 while read -r file; do
