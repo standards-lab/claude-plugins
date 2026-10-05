@@ -31,8 +31,8 @@ documents only in prose today, and marathon-extraction's deterministic checks
 
 ## Assumptions
 
-- Assumes the manifest and goal-record formats stay stable enough to fix as schemas.
-- Assumes a tool can ship inside a plugin and run wherever the plugin is installed.
+- The manifest and goal-record formats stay stable enough to fix as schemas.
+- A tool can ship inside a plugin and run wherever the plugin is installed.
 
 ## Open questions
 
