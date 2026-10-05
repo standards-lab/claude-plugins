@@ -21,6 +21,8 @@ repository is developed with marathon, so the workflow runs against its own sour
   See `marathon-extraction.md`.
 - **marathon-references** (proposed): the references catalog as an extension. See
   `marathon-references-extension.md`.
+- **Tooling layer** (planned): deterministic tools the skills call in place of procedure written
+  as prose. See `tool-based-skills.md`.
 - **Harness testing**: `scripts/check.sh` checks consistency and runs `claude plugin validate` on
   every push. Before each tag, the release gate, `scripts/gate.sh`, runs the check and the
   plugin's `claude plugin eval` suite. marathon's suite has one case, drawn from an observed
