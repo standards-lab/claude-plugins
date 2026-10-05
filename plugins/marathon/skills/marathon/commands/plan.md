@@ -38,8 +38,9 @@ commit per kind of change:
 - **A next brief**: when an active goal's root is on its default branch with no task in
   progress, write the approved brief for its next task into the goal record there, as a direct
   commit on that default branch, never on the plan branch, firing `on-record` first. It is
-  goal-record bookkeeping, the one edit here that skips the pull request. The next `start`
-  presents it for approval without new rounds.
+  goal-record bookkeeping, the one edit here that skips the pull request. The next `start` runs
+  the currency commands again and presents the brief for approval without new rounds, unless
+  something trails that the brief doesn't cover (`mechanics/pipeline.md`, 3 · PLAN).
 
 ## Spike setup
 

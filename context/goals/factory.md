@@ -9,7 +9,7 @@
 1. [x] pipeline
 2. [x] goals
 3. [x] experiments
-4. [ ] currency
+4. [x] currency
 5. [ ] evals
 
 ## Decisions
@@ -48,6 +48,28 @@
 - experiments (build, without the architect): the `[remote] ci` example in configuration.md polls for the merge commit's runs.
 - experiments (build): spec review closed 10 gaps, among them stuck-sync resume, per-repository release resume, the last spike's Sync line, ordered migration recipes, and existing projects as spike references.
 - currency: added before evals by plan, from quality.checks' pending edit; ships as 0.17.0.
+
+- currency: the planner runs `[project] currency` before round 1, including when a stored next brief exists.
+- currency: exit 0 with empty stdout means current; non-zero with lines means trailing; non-zero with no lines is a reported, non-blocking failure.
+- currency: round 1 asks only adapt, adopt, and new-major questions; patch and minor bumps stay facts.
+- currency: upgrade slices come first, one per trailing repo in `order`.
+- currency: a held item is a goal-record Decision, asked about again only when its latest moves; there is no config key.
+- currency: the key is optional; init settles it beside the check.
+- currency: marathon fixes only the contract and prescribes no tool.
+- currency: claude-plugins gets its own currency command and exact action pins.
+- currency: quality.standards applies the migration recipe's code rows.
+- currency (from quality.checks): currency is a development-time step, not CI.
+- currency (from quality.checks): it covers direct dependencies and the toolchain; the resolver settles indirect dependencies.
+- currency (from quality.checks): rejected as an extension.
+- currency (from quality.checks): rejected as a CI gate and as Dependabot version-update PRs.
+- currency (from quality.checks): Renovate is rejected in favour of per-repository scripts.
+- currency: releases only marathon/v0.17.0.
+- currency (build, without the architect): `<where>` in claude-plugins' currency report is the workflow file, so a pin used in two workflows gets one line per file.
+- currency (build, without the architect): `scripts/currency.sh` prints its report only after every lookup succeeds, so a failure exits non-zero with empty stdout; it scans `.yml` and `.yaml` workflows.
+- currency (build, without the architect): a held item's reason names the latest version it declined, so PLAN can tell when a later one is out; the session logs an answer of "hold" or "its own task" as a held item.
+- currency (build, without the architect): `scripts/check.sh` fails when `.claude-plugin/marketplace.json` doesn't parse, a fix from the standards review.
+- currency (build, without the architect): PLAN's currency rule lives in step 2 rather than a new step, so `mechanics/hooks.md`'s step references still hold.
+- currency (build, without the architect): marathon-architecture is unchanged; it still targets marathon 0.16 and later.
 
 ## Pending edits
 

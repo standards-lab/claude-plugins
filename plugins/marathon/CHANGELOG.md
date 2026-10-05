@@ -4,6 +4,65 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.17.0
+
+A task begins by bringing what it touches up to date. A repository may declare a currency
+command, which PLAN runs before round 1; what trails becomes facts and questions in the round and
+upgrade slices at the head of the task. The key is optional, so 0.16.1 repositories keep working;
+see Migrating below to declare it.
+
+### Added
+
+- **`[project] currency`** (`mechanics/configuration.md`): an optional, read-only command that
+  reports which direct dependencies, toolchain versions, and pins, such as CI actions and images,
+  trail their latest release. Indirect dependencies are left to the ecosystem's resolver. It exits
+  0 with empty stdout when everything is current, and nonzero with one stdout line per trailing
+  item, suggested as `<where>: <item> <pin> -> <latest>`, when something trails. Nonzero with no
+  stdout lines is a failed command. Diagnostics go to stderr. PLAN runs it at development time and
+  CI never does. marathon prescribes no tool.
+- **The currency command as a founding decision** of `init`, optional, beside the check.
+- **The `currency:` block** of plan round 1 (`references/briefs.md`): per repository the task
+  touches, each trailing item with a one-line summary of its release notes, or `current`, or
+  `no currency command`, or the failed command as a fact. The round asks only about an item to
+  adapt (a breaking change the code must absorb), to adopt (a new feature worth using), or at a
+  new major (upgrade now, hold, or give it its own task); a patch or minor bump with nothing to
+  adapt stays a fact.
+- **Upgrade slices** (`references/briefs.md`): a task's slices begin with one upgrade slice per
+  trailing repository it touches, in the coordinator's `order`, each done when that repository's
+  currency command exits 0, or reports only held items, with its check passing.
+- **Held items** (`mechanics/goal-record.md`): a goal-record Decision
+  `<task>: held <item> at <pin>: <reason>`, whose reason names the latest version it declined,
+  so the planner asks again only once a later one is out.
+
+### Changed
+
+- **PLAN step 2** (`mechanics/pipeline.md`): before round 1, the planner runs each touched
+  repository's currency command on its default branch and reads the release notes of what trails.
+  A repository without the key is noted, and a failed command is reported as a fact and doesn't
+  block. A stored next brief no longer skips currency: when something trails that the brief
+  doesn't cover, one round opens on it before approval.
+- **This repository** declares `currency = "scripts/currency.sh"`, which checks each workflow's
+  `uses:` pin against the action's latest release tag, and pins its actions to exact release tags.
+
+### Migrating from 0.16.1
+
+Install 0.17.0 first. Declaring the key is optional; a repository without it is noted in round 1
+and otherwise plans as before. Each repository adds the key under `[project]` in its
+`.claude/marathon.toml`, through its own pull request, with a currency command that meets the
+contract (a `mise` task, a script, or the ecosystem's outdated report):
+
+1. **A code repository with its tasks at the root** (go-core, sqlate, go-database, go-web-sdk,
+   go-observability, go-storage, blobfs, go-web-service): `currency = "mise run currency"`.
+2. **A code repository whose tasks live in a subdirectory** (go-web-sdk-template):
+   `currency = "mise -C template run currency"`.
+3. **A context repository that pins actions** (claude-plugins): `currency = "scripts/currency.sh"`,
+   done in this release.
+4. **A repository that pins nothing** (architecture, standards-lab, and the two `.github` profile
+   repositories): no key.
+5. **A spike**: optional, when the spike has a currency task.
+
+The `quality.standards` task applies recipes 1 and 2.
+
 ## v0.16.1
 
 Spikes become goals of their own, every session lands through a pull request, and releases are

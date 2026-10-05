@@ -76,8 +76,19 @@ and [`commands/intake.md`](./skills/marathon/commands/intake.md).
 ## Project kinds
 
 `init` declares a project `code` or `context` in `.claude/marathon.toml`, along with its one
-deterministic `check` command. On a code project a slice adds behavior with its tests; on a
+deterministic `check` command and, optionally, its read-only `currency` command, which reports
+what trails its latest release. On a code project a slice adds behavior with its tests; on a
 context project a slice is the deliverable prose, checked by the consistency script and a read.
+
+## Currency
+
+PLAN runs each touched repository's `currency` command before round 1, so a task begins current.
+Round 1 lists what trails and asks only about what needs a decision: a breaking change to adapt
+to, a feature to adopt, or a new major to upgrade, hold, or give its own task. The task's slices
+then begin with one upgrade slice per trailing repository, and a held item is recorded as a
+decision. CI never runs the command. See
+[`mechanics/configuration.md`](./skills/marathon/mechanics/configuration.md) and
+[`references/briefs.md`](./skills/marathon/references/briefs.md).
 
 ## Workspaces
 

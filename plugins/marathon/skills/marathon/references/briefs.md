@@ -10,24 +10,40 @@ PLAN asks its questions in rounds. A round holds every question whose prerequisi
 settled, and the architect answers them all at once, inline.
 
 ```
-PLAN ROUND 2 · v1.ai · task harness-adapters
+PLAN ROUND 1 · v1.ai · task harness-adapters
 facts found: Pi has RPC mode (pi/docs/rpc.md);
              Claude Code: stream-json
+currency:    go-core
+               go 1.24.2 -> 1.25.1  bug fixes only
+               pgx v5.6.0 -> v6.0.0  Query takes options
+               chi v5.0.12 -> v5.2.0  held (Decisions)
+             go-web-service: current
 
 1. Transport for all harnesses?
    rec: stdin/stdout JSONL — all three
         support it; SSE only in OpenCode
    changes: adapter count 3→1 protocol
-2. Keep sessions resumable in v1?
+2. go-core: pgx v6.0.0, a new major?
+   rec: its own task — the Query change
+        reaches every caller
+   changes: adds task pgx-v6; holds pgx
+3. Keep sessions resumable in v1?
    rec: no — out of scope; note in backlog
    changes: drops persistence slice
 
-reply: "1 ok, 2 yes but ..."
+reply: "1 ok, 2 ok, 3 yes but ..."
 ```
 
 - Number every question.
 - Give every question a `rec:`, and a `changes:` line saying what the answer changes.
 - Cite each fact with its source under `facts found:`.
+- Round 1 carries a `currency:` block beside `facts found:`, per repository the task touches:
+  each trailing item as its currency command reports it, with a one-line summary of its release
+  notes, or `current`, or `no currency command`, or the failed command as a fact. A held item is
+  listed as a fact (`mechanics/goal-record.md`, Decisions).
+- Ask about a trailing item only when it needs a decision: adapt, a breaking change the code must
+  absorb; adopt, a new feature worth using; or a new major, to upgrade now, hold, or give its own
+  task. A patch or minor bump with nothing to adapt stays a fact, and the upgrade slices take it.
 - The rounds end when no question remains open. A BUILD escalation uses the same format, headed
   `ESCALATION` (`references/build.md`).
 
@@ -48,6 +64,10 @@ Door          two-way | one-way (why)
 Release       the exact tags the task releases (optional)
 ```
 
+- **Slices** begin with upgrade slices when a repository the task touches trails: one per
+  trailing repository, in the coordinator's `order`, each done when that repository's currency
+  command exits 0, or reports only held items, with its check passing. The task's own slices
+  build on them.
 - **Door** is one-way when the task plans a release, since a pushed tag reaches people outside
   the repositories. The rest of the task may still be two-way, and the line says which part is
   which.

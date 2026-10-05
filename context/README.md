@@ -10,7 +10,8 @@ repository is developed with marathon, so the workflow runs against its own sour
 - **marathon**: the long-haul development workflow, run as a software factory. The architect is
   involved twice per task, at the task brief and at the session brief, and subagents implement,
   review against standards and the spec, and keep the context current in between. Goals and
-  tasks in the roadmap manifest are the units of work. Its design lives in
+  tasks in the roadmap manifest are the units of work. PLAN runs each repository's optional
+  `currency` command first, so a task begins by upgrading what trails. Its design lives in
   `plugins/marathon/`; the `factory` goal's remaining task is `evals`.
 - **marathon-architecture**: the extension that finds the architecture layer each repository's
   `STANDARDS.md` points to, so the standards-reviewer can apply it.

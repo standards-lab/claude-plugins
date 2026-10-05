@@ -5,9 +5,11 @@ every session reads it.
 
 ```toml
 [project]
-kind  = "code"         # production source with a build-and-test loop
+kind     = "code"      # production source with a build-and-test loop
 # kind = "context"     # the whole repository is context, which the agent writes directly
-check = "mise run check"
+check    = "mise run check"
+# Optional: reports what trails its latest release; PLAN runs it, CI never does.
+currency = "mise run currency"
 # Optional: marathon extensions enabled for this project, by skill name.
 # extensions = ["<extension>"]
 
@@ -59,6 +61,15 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   release what it ships.
 - **`[project] check`**: the repository's one deterministic check, which every slice and review
   runs (`references/build.md`). A context project names its consistency script, if it has one.
+- **`[project] currency`**: optional. The repository's read-only command that reports what trails
+  its latest release: the direct dependencies, the toolchain, and the pins, such as CI actions and
+  images. Indirect dependencies are left to the ecosystem's resolver. PLAN runs it at development
+  time; CI never does, since a release upstream would fail a build nothing in the repository
+  changed. It exits 0 with empty stdout when everything is current. It exits nonzero when something
+  trails, with one stdout line per trailing item, suggested as `<where>: <item> <pin> -> <latest>`,
+  where the latest is what the ecosystem's tooling reports. Nonzero with no stdout lines means the
+  command itself failed, which PLAN reports as a fact and doesn't block on. Diagnostics go to
+  stderr. marathon prescribes no tool.
 - **`[remote]`**: the platform, the command SHIP runs to publish a branch, and optionally the
   command it runs to merge the published branch once its checks pass.
 - **`[remote] ci`**: optional. A command that waits for the default branch's CI runs on the merge
