@@ -75,7 +75,7 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
 - **`[project] gate`**: optional. The repository's release gate, the release-time part of its
   automated checks, such as a plugin's eval suite (`references/build.md`). SHIP runs it at
   development time on the merge commit, before each Release tag, with that tag as its one
-  argument, as in `mise run gate marathon-v0.18.0` (`mechanics/pipeline.md`, "Releasing"). It
+  argument, as in `mise run gate v1.4.0` (`mechanics/pipeline.md`, "Releasing"). It
   runs once `[remote] ci` passes, or straight after the merge without ci. It exits 0 when the tag
   may be pushed, and nonzero to hold it. CI never runs it. Without it, tagging follows ci or the
   merge directly. marathon fixes only this contract and prescribes no tool.
