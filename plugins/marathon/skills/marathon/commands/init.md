@@ -19,6 +19,8 @@ one you write together. It gives the vision and the scope. The structure comes o
 - **The currency command**: optional. The read-only command that reports which direct
   dependencies, toolchain versions, and pins trail their latest release, run at PLAN and never in
   CI (`mechanics/configuration.md`).
+- **The release gate**: optional. The command SHIP runs before each Release tag to decide whether
+  it may be pushed, such as a plugin's eval suite, and never in CI (`mechanics/configuration.md`).
 - **Capability map**: the project's major capabilities, broad, shallow, and unordered.
 - **The first goal**: the one outcome the first sessions work toward, and its first task.
 - **Remote**: the platform, its publish command (`gh pr create`, `glab mr create`), and its merge

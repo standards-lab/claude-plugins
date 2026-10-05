@@ -10,6 +10,8 @@ kind     = "code"      # production source with a build-and-test loop
 check    = "mise run check"
 # Optional: reports what trails its latest release; PLAN runs it, CI never does.
 currency = "mise run currency"
+# Optional: decides whether a Release tag may be pushed; SHIP runs it, CI never does.
+gate     = "mise run gate"
 # Optional: marathon extensions enabled for this project, by skill name.
 # extensions = ["<extension>"]
 
@@ -70,6 +72,13 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   where the latest is what the ecosystem's tooling reports. Nonzero with no stdout lines means the
   command itself failed, which PLAN reports as a fact and doesn't block on. Diagnostics go to
   stderr. marathon prescribes no tool.
+- **`[project] gate`**: optional. The repository's release gate, the release-time part of its
+  automated checks, such as a plugin's eval suite (`references/build.md`). SHIP runs it at
+  development time on the merge commit, before each Release tag, with that tag as its one
+  argument, as in `mise run gate marathon-v0.18.0` (`mechanics/pipeline.md`, "Releasing"). It
+  runs once `[remote] ci` passes, or straight after the merge without ci. It exits 0 when the tag
+  may be pushed, and nonzero to hold it. CI never runs it. Without it, tagging follows ci or the
+  merge directly. marathon fixes only this contract and prescribes no tool.
 - **`[remote]`**: the platform, the command SHIP runs to publish a branch, and optionally the
   command it runs to merge the published branch once its checks pass.
 - **`[remote] ci`**: optional. A command that waits for the default branch's CI runs on the merge
