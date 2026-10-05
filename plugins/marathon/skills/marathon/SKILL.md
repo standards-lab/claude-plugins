@@ -19,7 +19,7 @@ description: >
 
 # Marathon
 
-Version: 0.17.0
+Version: 0.18.0
 
 marathon is a workflow for long-running development. Each session takes one task of an active goal
 from an approved plan to merged work, and the tasks add up to a production-quality version of the

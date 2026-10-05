@@ -4,6 +4,77 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## v0.18.0
+
+A release can be gated. A repository may declare a release gate, which SHIP runs on the merge
+commit before each tag and which holds the tag when it fails; for a plugin, the gate runs its eval
+suite. marathon ships its first eval suite, and plan rounds are printed in full in the reply. The
+key is optional, so 0.17.0 repositories keep working; see Migrating below to declare it.
+
+### Added
+
+- **`[project] gate`** (`mechanics/configuration.md`): an optional release gate, the release-time
+  part of the automated checks, such as a plugin's eval suite. SHIP runs it at development time on
+  the merge commit, before each Release tag, with the tag as its one argument, once `[remote] ci`
+  passes or straight after the merge without ci. It exits 0 when the tag may be pushed and nonzero
+  to hold it. CI never runs it. marathon fixes only this contract and prescribes no tool.
+- **The release gate as a founding decision** of `init`, optional, beside the check and the
+  currency command.
+- **The release gate** in the automated-checks layer (`references/build.md`): for a plugin, its
+  eval suite, too costly to run per slice.
+- **marathon's first eval suite** (`evals/`), one case from observed failures:
+  `plan-round-in-reply`, in which `start` on a task with no brief shows PLAN ROUND 1 in the reply
+  as numbered, self-contained questions with `rec:` and `changes:` lines. Its fixture is an
+  offline scaffold script. Under `claude plugin eval` 2.1.289 a case runs without AskUserQuestion
+  or plan mode, so the case checks the round's shape in the reply and can't reproduce the original
+  failure; its AskUserQuestion grader stays for when eval offers that tool.
+- **Eval cases from retro** (`commands/retro.md`): a ticked plugin eval finding becomes a new case
+  under that plugin's `evals/<case>/` on the repository's `retro-<topic>` branch, its
+  `description` citing the failure's session or PR. Retro writes the case, not the fix, and the
+  gate holds the plugin's next release until the fix merges.
+
+### Changed
+
+- **Releasing** (`mechanics/pipeline.md`): when `[project] gate` is set, it runs before each tag
+  is pushed. A failed gate is fixed forward on `<slug>-fix` like a red default branch, with ci and
+  the gate run again on the fix's merge commit. No tag is pushed while the default branch is red
+  or its gate fails.
+- **Resume and handoff** (`mechanics/pipeline.md`): a release's handoff records a repository whose
+  gate failed, and RESUME picks it up at its fix. A resumed release runs the gate again before
+  each tag it hasn't pushed.
+- **Plan rounds are printed in full in the reply** (`behavior/planning.md`,
+  `references/briefs.md`), never asked through AskUserQuestion, whose headlines drop each
+  question's options, `rec:`, and `changes:`. Plan mode's rule to end each turn with
+  AskUserQuestion or ExitPlanMode gives way: while a round is open, the turn ends with the round
+  printed. Only the task brief's approval goes through ExitPlanMode, with the full brief in the
+  plan file. Intake rounds and BUILD escalations follow the same rule.
+- **Each plan-round question names its subject** (`references/briefs.md`) in its own words, with
+  the options it chooses between, and never points elsewhere for it: not "this", "option B", a
+  term defined outside it, or a file to open.
+- **This repository** declares `gate = "scripts/gate.sh"`, which runs `scripts/check.sh` and then
+  the tagged plugin's eval suite at `--threshold 1.0 --runs 3`; a plugin with no case releases on
+  the check alone. `scripts/check.sh` also runs `claude plugin validate --strict` on each plugin
+  and the marketplace. CI pins Claude Code at 2.1.285, the stable channel, and
+  `scripts/currency.sh` reports that pin against npm's `stable` dist-tag. Eval results are
+  gitignored.
+
+### Migrating from 0.17.0
+
+Install 0.18.0 first. Declaring the key is optional; without it, tagging follows `[remote] ci` or
+the merge as before. A repository that tags releases may add the key under `[project]` in its
+`.claude/marathon.toml`, through its own pull request, with a gate command that meets the contract:
+
+1. **A code repository with its tasks at the root** (go-core, sqlate, go-database, go-web-sdk,
+   go-observability, go-storage, blobfs, go-web-service): optional, since `[remote] ci` already
+   holds a tag on a red default branch. Declare one, such as `gate = "mise run gate"`, when a
+   release needs a check too costly for CI.
+2. **A code repository whose tasks live in a subdirectory** (go-web-sdk-template): optional, as
+   in recipe 1, such as `gate = "mise -C template run gate"`.
+3. **A plugin repository** (claude-plugins): `gate = "scripts/gate.sh"`, done in this release.
+4. **A repository that releases nothing** (architecture, standards-lab, and the two `.github`
+   profile repositories): no key.
+5. **A spike**: no key, unless it tags releases.
+
 ## v0.17.0
 
 A task begins by bringing what it touches up to date. A repository may declare a currency
