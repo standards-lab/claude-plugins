@@ -9,7 +9,8 @@
 1. [x] pipeline
 2. [x] goals
 3. [x] experiments
-4. [ ] evals
+4. [ ] currency
+5. [ ] evals
 
 ## Decisions
 
@@ -46,6 +47,7 @@
 - experiments (build, without the architect): a release's "tag <names>" handoff commits on the root's task branch until it merges, then on the default branch as bookkeeping.
 - experiments (build, without the architect): the `[remote] ci` example in configuration.md polls for the merge commit's runs.
 - experiments (build): spec review closed 10 gaps, among them stuck-sync resume, per-repository release resume, the last spike's Sync line, ordered migration recipes, and existing projects as spike references.
+- currency: added before evals by plan, from quality.checks' pending edit; ships as 0.17.0.
 
 ## Pending edits
 
