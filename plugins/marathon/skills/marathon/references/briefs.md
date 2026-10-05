@@ -7,7 +7,9 @@ ask the architect for them; the architect makes the decisions.
 ## Plan round
 
 PLAN asks its questions in rounds. A round holds every question whose prerequisites are already
-settled, and the architect answers them all at once, inline.
+settled, and the architect answers them all at once, inline. The round is printed in full in the
+reply, never asked through AskUserQuestion (`behavior/planning.md`, "Ask for decisions, never for
+facts").
 
 ```
 PLAN ROUND 1 · v1.ai · task harness-adapters
@@ -19,22 +21,30 @@ currency:    go-core
                chi v5.0.12 -> v5.2.0  held (Decisions)
              go-web-service: current
 
-1. Transport for all harnesses?
+1. Harness transport: stdin/stdout JSONL
+   or SSE?
    rec: stdin/stdout JSONL — all three
         support it; SSE only in OpenCode
    changes: adapter count 3→1 protocol
-2. go-core: pgx v6.0.0, a new major?
+2. go-core's pgx v6.0.0, a new major:
+   upgrade now, hold, or its own task?
    rec: its own task — the Query change
         reaches every caller
    changes: adds task pgx-v6; holds pgx
-3. Keep sessions resumable in v1?
-   rec: no — out of scope; note in backlog
+3. Session resume after a driver restart:
+   build it in v1, or leave it out?
+   rec: leave it out — out of scope;
+        note in backlog
    changes: drops persistence slice
 
 reply: "1 ok, 2 ok, 3 yes but ..."
 ```
 
 - Number every question.
+- Name each question's subject in its own words, with the options it chooses between, so the
+  architect can decide it from the question, its `rec:`, and its `changes:` alone. A question
+  never points elsewhere for its subject: not "this", "option B", a term defined outside it, or
+  a file to open.
 - Give every question a `rec:`, and a `changes:` line saying what the answer changes.
 - Cite each fact with its source under `facts found:`.
 - Round 1 carries a `currency:` block beside `facts found:`, per repository the task touches:
