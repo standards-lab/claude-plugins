@@ -11,9 +11,11 @@ session. An experiment goal has only its intake, which `marathon intake` runs
 
 ## Plan
 
-LOCATE routes to PLAN when the goal record has no approved brief for its current task. Plan the
+LOCATE routes an `idle` goal to PLAN. Without an approved brief for the next task, plan the
 task in rounds to an approved brief and slice list (`behavior/planning.md`,
-`references/briefs.md`). Add detail to the notes the task touches only as far as the brief needs.
+`references/briefs.md`). With one, PLAN runs currency first and presents it, opening a round only
+when something trails that the brief doesn't cover (`mechanics/pipeline.md`, 3 · PLAN). Add detail
+to the notes the task touches only as far as the brief needs.
 
 Branch slug: the task.
 

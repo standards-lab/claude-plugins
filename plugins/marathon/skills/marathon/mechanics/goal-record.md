@@ -57,7 +57,8 @@ appear while a task is planned or in progress, and Handoff only while State is `
 
 - **State** drives `status` and LOCATE:
   - `idle`: between tasks. The next `start` plans the next unchecked task, or, when Task brief
-    already holds that task's brief, presents it for approval.
+    already holds that task's brief, runs currency first and presents it for approval, opening a
+    round when something trails that the brief doesn't cover (`mechanics/pipeline.md`, 3 · PLAN).
   - `building`: a session is in BUILD.
   - `brief ready`: BUILD is done and the session brief waits on the architect.
   - `handoff`: a session stopped partway; the next `start` resumes from Handoff.
