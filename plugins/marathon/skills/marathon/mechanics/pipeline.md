@@ -186,7 +186,8 @@ Release repository's position: merged with ci not yet green, merged and green, o
 at its publish, merge, or ci step, its gate failed, its tag pushed and its release failed, or
 released. Commit it where the root stands: on the root's task branch while that branch hasn't
 merged, pushed to that branch, whose pull request is already published, so the record lands with
-the merge; or on the root's default branch as bookkeeping once it has. Then stop; the next `start` resumes the release (3R · RESUME).
+the merge; or on the root's default branch as bookkeeping once it has. Then stop; the next
+`start` resumes the release (3R · RESUME).
 
 A resumed release ends at the goal record. Once the last named tag releases, set State to `idle`,
 Task and Branch to none, drop Handoff, and check the task if SHIP's record update hadn't landed,

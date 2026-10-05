@@ -1,7 +1,7 @@
 # Harness testing
 
-This note covers how the plugins in this repository are tested. Two layers run: a cheap check on
-every push, and a release gate before each tag that adds a plugin's eval suite.
+This note covers how the plugins in this repository are tested. A cheap check runs on every push,
+and a release gate runs the check and the plugin's eval suite before each tag.
 
 ## Per push: the check
 
@@ -47,17 +47,23 @@ marathon-architecture has none, and the gate skips it. `results/` is gitignored.
 
 ## The seed case
 
-`plan-round-in-reply` runs `start` on a task with no brief and grades the reply: a `PLAN ROUND 1`
-header, numbered questions each with `rec:` and `changes:` lines, and questions that stand on
-their own. It comes from marathon 0.16 sessions in which rounds asked through AskUserQuestion were
-rejected.
+`plan-round-in-reply` runs `start` on a task whose note leaves two independent decisions open, and
+grades the final reply with four graders:
 
-It checks the round's shape only. `claude plugin eval` 2.1.289 runs each case as
-`claude -p --permission-mode dontAsk` with no permission-prompt tool, which drops
-AskUserQuestion, EnterPlanMode, and ExitPlanMode. The case can't reproduce the original failure,
-which happened in plan mode. Its AskUserQuestion grader stays for when eval offers that tool.
+- AskUserQuestion is never called.
+- The reply contains `PLAN ROUND 1`.
+- At least two numbered questions each carry a `rec:` line and a `changes:` line.
+- An `llm` grader judges that every question names its subject and can be decided on its own.
 
-## Held
+The case comes from marathon 0.16 sessions in which the architect rejected rounds shown as
+AskUserQuestion headlines, and a question asked without its context.
 
-- **The standards-reviewer writing into `~/go/pkg/mod`.** A real failure, held until an offline
-  fixture can provoke it.
+The case checks the round's shape in the reply, not the original failure. `claude plugin eval`
+2.1.289 runs each case as `claude -p --permission-mode dontAsk` with no permission-prompt tool,
+which drops AskUserQuestion, EnterPlanMode, and ExitPlanMode, so the AskUserQuestion grader
+passes whatever the skill does. The grader stays for when eval offers that tool.
+
+## Failures without a case
+
+- **The standards-reviewer writing into `~/go/pkg/mod`.** This failure happened in a real session.
+  Its case waits until an offline fixture can provoke it.

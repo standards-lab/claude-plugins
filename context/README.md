@@ -22,8 +22,9 @@ repository is developed with marathon, so the workflow runs against its own sour
 - **marathon-references** (proposed): the references catalog as an extension. See
   `marathon-references-extension.md`.
 - **Harness testing**: `scripts/check.sh` checks consistency and runs `claude plugin validate` on
-  every push. The release gate, `scripts/gate.sh`, adds a plugin's `claude plugin eval` suite
-  before each tag; marathon has one case, from observed failures. See `harness-testing.md`.
+  every push. Before each tag, the release gate, `scripts/gate.sh`, runs the check and the
+  plugin's `claude plugin eval` suite. marathon's suite has one case, drawn from an observed
+  failure. See `harness-testing.md`.
 - **Marketplace host**: the marketplace manifest, with each plugin versioned and released on its
   own.
 - **Further plugins** (planned): the set grows as processes prove worth codifying, such as

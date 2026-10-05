@@ -54,8 +54,8 @@ key is optional, so 0.17.0 repositories keep working; see Migrating below to dec
   `rec:` and `changes:` lines follow the same rule. Each question decides one thing, and one that
   depends on another open question waits for the next round, never asked conditionally.
 - **This repository** declares `gate = "scripts/gate.sh"`, which runs `scripts/check.sh` and then
-  the tagged plugin's eval suite at `--threshold 1.0 --runs 3`; a plugin with no case releases on
-  the check alone. `scripts/check.sh` also runs `claude plugin validate --strict` on each plugin
+  the tagged plugin's eval suite with `--threshold 1.0 --runs 3 --ablation none --scaffold
+  --trust-plugin --no-publish`. A plugin with no case releases on the check alone. `scripts/check.sh` also runs `claude plugin validate --strict` on each plugin
   and the marketplace. CI pins Claude Code at 2.1.285, the stable channel, and
   `scripts/currency.sh` reports that pin against npm's `stable` dist-tag. Eval results are
   gitignored.

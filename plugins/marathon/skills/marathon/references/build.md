@@ -13,9 +13,9 @@ goes to one-way doors.
   check` in `.claude/marathon.toml` (`mechanics/configuration.md`), such as `mise run check` or
   `scripts/check.sh`. It runs the build, vet, tests, lint, and the repository's own tools. A
   mechanical rule becomes part of the check rather than prose in `STANDARDS.md`.
-- **The release gate.** The release-time part of the automated checks, named by `[project] gate`
-  (`mechanics/configuration.md`): for a plugin, its eval suite, which is too costly to run per
-  slice. SHIP runs it before each Release tag (`mechanics/pipeline.md`, "Releasing").
+- **The release gate.** `[project] gate` names the release-time part of the automated checks
+  (`mechanics/configuration.md`). For a plugin it is the eval suite, which costs too much to run
+  per slice. SHIP runs it before each Release tag (`mechanics/pipeline.md`, "Releasing").
 - **Standards.** A repository's `STANDARDS.md` holds judgement calls only, with pointers to the
   architecture pages that apply. Only the standards-reviewer reads it. `CLAUDE.md` holds
   navigation pointers only.
