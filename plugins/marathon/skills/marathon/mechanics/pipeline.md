@@ -68,8 +68,10 @@ this file names (`mechanics/hooks.md`).
 
 1. Enter plan mode. The plan file holds the session's planning state: title it with the goal and
    task, and keep each round, its answers, and the drafted brief in it.
-2. Run plan rounds with the architect (`behavior/planning.md`, `references/briefs.md`). The
-   planner profile finds the facts and drafts each round, then the task brief and its slices
+2. Run plan rounds with the architect (`behavior/planning.md`, `references/briefs.md`). Print
+   each round in full in the reply and end the turn there, never through AskUserQuestion
+   (`behavior/planning.md`, "Ask for decisions, never for facts"). The planner profile finds the
+   facts and drafts each round, then the task brief and its slices
    (`behavior/delegation.md`). Before round 1, the planner runs `[project] currency` on the
    default branch of each repository the task touches that declares it
    (`mechanics/configuration.md`), and reads the release notes of what trails. Round 1 notes each
@@ -77,7 +79,8 @@ this file names (`mechanics/hooks.md`).
    failure doesn't block. When the record already holds an approved brief for this task, the
    currency commands still run first: skip the rounds unless something trails that the brief
    doesn't cover, and in that case open one round on it before approval.
-3. Present the task brief for approval. Nothing changes until the architect approves. **[touch 1]**
+3. Present the task brief for approval through ExitPlanMode, with the full brief in the plan
+   file. Nothing changes until the architect approves. **[touch 1]**
 4. On approval, fire `on-build`.
 5. Create the task's branch, named by the task's slug, from the fetched default branch in each
    repository the task touches. The coordinator gets no branch.
@@ -97,9 +100,9 @@ this file names (`mechanics/hooks.md`).
    - "tag <names>" resumes the release at SHIP ("Releasing"), one repository at a time, from the
      position Handoff records for it: at step 1 for a repository whose task branch hasn't merged;
      at step 2 for one merged with ci not yet green; at its `<slug>-fix` branch's publish, merge,
-     or `[remote] ci` step, then the tag step, for one fixing forward; at the failed-release fix
-     for one whose tag was pushed and whose release failed; and at the tag step only for one
-     merged and green.
+     or `[remote] ci` step, then the tag step, for one fixing forward; at the fix for one whose
+     gate failed; at the failed-release fix for one whose tag was pushed and whose release
+     failed; and at the tag step only for one merged and green.
    - "merge `sync-<goal>`, then delete the record" resumes the sync at its remaining steps: merge
      each `sync-<goal>` branch not yet merged, then delete the record and release the lock
      (`mechanics/goals.md`, "Sync", steps 4 to 6).
@@ -154,17 +157,20 @@ turn, lowest layer first, and finishes its release before the next repository's 
    1. Check that the tag isn't on the remote, unless it is this release's failed tag (below),
       and that its version matches the artifact's
       version as the repository records it, in its manifest or its CHANGELOG's top heading.
-   2. Create the tag annotated "<artifact> <version>" on the merge commit, and push that tag
+   2. When `[project] gate` is set, run it on the merge commit with the tag as its one argument
+      (`mechanics/configuration.md`). Exit 0 lets the tag be pushed; nonzero holds it (below).
+      A resumed release runs it again before each tag it hasn't pushed.
+   3. Create the tag annotated "<artifact> <version>" on the merge commit, and push that tag
       alone.
-   3. When the repository has a release workflow, confirm the run the tag started succeeds.
+   4. When the repository has a release workflow, confirm the run the tag started succeeds.
 
-No tag is pushed while the default branch is red. The session fixes forward until the planned
-version releases:
+No tag is pushed while the default branch is red or its gate fails. The session fixes forward
+until the planned version releases:
 
-- **A red default branch** after the merge, or a version that doesn't match, is fixed on a
-  `<slug>-fix` branch from the default branch, published and merged like the task's branch,
-  with `[remote] ci` run again on its merge commit. Then tag. Opening or resuming a fix branch
-  fires `on-build` first.
+- **A red default branch** after the merge, a failed gate, or a version that doesn't match, is
+  fixed on a `<slug>-fix` branch from the default branch, published and merged like the task's
+  branch, with `[remote] ci` and the gate run again on its merge commit. Then tag. Opening or
+  resuming a fix branch fires `on-build` first.
 - **A failed release**, a release workflow that fails after the tag is pushed, is fixed the
   same way. Then delete the tag on the remote and locally, and create and push it again at the
   same version on the fix's merge commit.
@@ -177,10 +183,11 @@ The release always ends at the planned version. It stops for the architect only 
 the brief doesn't cover, as an escalation (`references/build.md`). When the context fills, set
 State to `handoff` with the next move "tag <names>", naming the tags not yet released and each
 Release repository's position: merged with ci not yet green, merged and green, on `<slug>-fix`
-at its publish, merge, or ci step, its tag pushed and its release failed, or released. Commit it where the root stands: on the root's task
-branch while that branch hasn't merged, pushed to that branch, whose pull request is already
-published, so the record lands with the merge; or on the root's default branch as bookkeeping once
-it has. Then stop; the next `start` resumes the release (3R · RESUME).
+at its publish, merge, or ci step, its gate failed, its tag pushed and its release failed, or
+released. Commit it where the root stands: on the root's task branch while that branch hasn't
+merged, pushed to that branch, whose pull request is already published, so the record lands with
+the merge; or on the root's default branch as bookkeeping once it has. Then stop; the next
+`start` resumes the release (3R · RESUME).
 
 A resumed release ends at the goal record. Once the last named tag releases, set State to `idle`,
 Task and Branch to none, drop Handoff, and check the task if SHIP's record update hadn't landed,
@@ -251,8 +258,8 @@ and reports.
 - Nothing changes before the architect approves the task brief, except a RESUME of an approved
   one.
 - Nothing is published before the architect accepts the session brief.
-- No tag is pushed while its repository's default branch is red, and a released tag is never
-  re-cut.
+- No tag is pushed while its repository's default branch is red or its gate fails, and a
+  released tag is never re-cut.
 - The coordinator changes only through `plan`, `experiment`, `intake`, `retro`, and sync, each
   through its own pull request.
 - Every change lands through a session's pull request, except goal-record bookkeeping and a new

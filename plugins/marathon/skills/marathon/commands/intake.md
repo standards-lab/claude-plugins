@@ -27,7 +27,9 @@ intake's own branch, and it resumes there (`mechanics/pipeline.md`, 1 · LOCATE)
 ## Rounds
 
 Enter plan mode and run plan rounds with the architect, led by the spikes' answers
-(`references/briefs.md`, "Intake round"). The planner finds the facts.
+(`references/briefs.md`, "Intake round"). The planner finds the facts. Print each round in full
+in the reply, never through AskUserQuestion (`behavior/planning.md`, "Ask for decisions, never
+for facts").
 
 - **The first round** names the goals the experiment serves, which no manifest field names: the
   experiment's summary and its intake task's entry inform the proposal. It consolidates every

@@ -1,0 +1,35 @@
+schema_version: "1.1"
+name: plan-round-in-reply
+description: >-
+  `start` on a task with no brief shows PLAN ROUND 1 in the reply, as numbered questions that each
+  carry rec: and changes: lines and stand on their own. From marathon 0.16.x: plan rounds were
+  shown as AskUserQuestion headlines and the architect rejected them three times, with "I need to
+  see the details for each Round 1 decision" (sessions f93cf790, 11b56c96, b23222ce), and a
+  question asked without its context drew "What is this in reference to?" (32b442ee). The case
+  checks the round's shape in the reply only: under `claude plugin eval` 2.1.289 it runs as
+  `claude -p --permission-mode dontAsk` with no permission-prompt tool, which drops
+  AskUserQuestion, EnterPlanMode, and ExitPlanMode, so it can't reproduce the original failure.
+  Its AskUserQuestion grader stays for when eval offers that tool.
+tags: [plan, plan-round]
+context:
+  # Builds a standalone context project whose active goal's next task leaves two decisions open.
+  scaffold_script: scaffold.sh
+execution:
+  # Enough for LOCATE, START, a planner subagent, and round 1; the run ends at the round, since
+  # no human answers it.
+  max_turns: 40
+  timeout_seconds: 900
+  # The child runs with --setting-sources user, so a fixture defaultMode can't put it in plan
+  # mode either: project settings aren't loaded and the CLI mode wins. AskUserQuestion stays
+  # listed, though eval drops it today (see the description), so the case discriminates once eval
+  # can offer it. EnterPlanMode isn't listed: the gate runs with eval's own tool grants, and eval
+  # drops plan mode in any case. Bash is left out: the fixture declares no currency command and
+  # no remote, so round 1 needs only reads.
+  allowed_tools:
+    - Read
+    - Glob
+    - Grep
+    - Skill
+    - Agent
+    - AskUserQuestion
+runs: 3

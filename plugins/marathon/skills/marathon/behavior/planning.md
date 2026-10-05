@@ -35,6 +35,14 @@ finds the facts and drafts each round (`behavior/delegation.md`); the architect 
 question in a round at once. The rounds end when no question remains open, and the architect
 approves the task brief. Nothing changes before that approval.
 
+A round is printed in full in the reply, in the plan round's format, and the plan file keeps a
+copy. The architect answers it inline, in their next message. A round is never presented or
+collected through AskUserQuestion: its headlines drop each question's options, `rec:`, and
+`changes:`, and the architect can't decide from them. Plan mode tells the session to end each
+turn with AskUserQuestion or ExitPlanMode. While a round is open, the turn ends with the round
+printed instead. Only the task brief's approval, once the rounds end, goes through ExitPlanMode,
+with the full brief in the plan file. Intake rounds and BUILD escalations follow the same rule.
+
 ## Planning maintains the roadmap
 
 Planning also keeps the path current. Capture ideas for later as roadmap entries or brief notes,

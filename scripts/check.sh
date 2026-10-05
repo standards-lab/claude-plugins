@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Repository consistency checks, run by .github/workflows/check.yml and runnable locally.
+# Repository consistency checks, run by .github/workflows/ci.yml and runnable locally.
 set -uo pipefail
 
 fail=0
@@ -36,6 +36,23 @@ if sources=$(jq -r '.plugins[].source' .claude-plugin/marketplace.json); then
   done <<<"$sources"
 else
   err ".claude-plugin/marketplace.json does not parse"
+fi
+
+# Claude Code validates each plugin and the marketplace. CI installs claude at
+# the version pinned in ci.yml; locally it is the one on PATH. A missing claude
+# fails the check rather than skipping it, so a passing check always means the
+# manifests were validated. --strict fails on warnings too, since the runtime
+# tolerates what it warns about and the check is where it gets caught.
+if command -v claude >/dev/null; then
+  for target in plugins/*/ .; do
+    # The report is printed only on failure, so a passing run stays quiet.
+    if ! report=$(claude plugin validate --strict "$target" 2>&1); then
+      echo "$report" >&2
+      err "claude plugin validate failed for $target"
+    fi
+  done
+else
+  err "claude is not on PATH, so the plugins and marketplace were not validated"
 fi
 
 # Every @-pointer and ./-link in the plugins' markdown resolves to a real file.

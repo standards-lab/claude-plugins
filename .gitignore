@@ -14,3 +14,6 @@ Thumbs.db
 
 # The session brief: the architect's view of a finished task and its pull request's body.
 .claude/briefs/
+
+# claude plugin eval results and reports.
+plugins/*/evals/results/

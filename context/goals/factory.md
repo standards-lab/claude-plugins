@@ -10,7 +10,7 @@
 2. [x] goals
 3. [x] experiments
 4. [x] currency
-5. [ ] evals
+5. [x] evals
 
 ## Decisions
 
@@ -20,8 +20,6 @@
 - goals: a goal's record lives in its `root`, one of the repositories it locks; sync deletes the
   record last.
 - experiments: runs before evals, as the first `start factory` under 0.16, and ships as 0.16.1.
-- evals: runs under the reinstalled 0.16. Defects its cases expose ship as 0.16.x patches, and the
-  eval gate starts with the next release.
 - The workspace alignment once planned as `factory.alignment` is spread over `quality.checks`,
   `quality.standards`, `quality.architecture-diet`, and `experiment.ai`.
 - experiments: an experiment goal is a container never listed in the arrays; its spikes are sub-goals staged on their own; the ancestor rule stays.
@@ -70,6 +68,27 @@
 - currency (build, without the architect): `scripts/check.sh` fails when `.claude-plugin/marketplace.json` doesn't parse, a fix from the standards review.
 - currency (build, without the architect): PLAN's currency rule lives in step 2 rather than a new step, so `mechanics/hooks.md`'s step references still hold.
 - currency (build, without the architect): marathon-architecture is unchanged; it still targets marathon 0.16 and later.
+
+- evals: the release gate is a new optional core key, `[project] gate`, that SHIP runs on the merge commit before each Release tag, with the tag as its argument. Rejected: running evals in release.yml, and reusing `[remote] ci`.
+- evals: the gate runs eval with `--threshold 1.0 --runs 3 --ablation none --scaffold --trust-plugin --no-publish` and no cost ceiling. A case that fails in any of its 3 runs counts as a defect.
+- evals: the seed suite is one case from observed failures, plan-round-in-reply. Dropped: implementer-no-standards, reviewer-commits, and brief-shape, since none has failed. The reviewer's module-cache write is held until an offline fixture can provoke it.
+- evals: runs under 0.17.0. Defects its cases expose are fixed in this task and ship in its release. The gate first applies to that release, run by hand, since 0.17.0 has no gate step.
+- evals: retro applies a ticked plugin eval finding as a case on its retro-<topic> branch, citing the failure in the case's description. The gate holds the next release until a fix lands.
+- evals: marathon-architecture gets no suite until it has a failure. The gate skips a plugin with no eval suite.
+- evals: fixtures are offline scaffold scripts. Replaying a recorded session through `history_file` was rejected because it carries the old skill text.
+- evals: releases only marathon/v0.18.0. marathon-architecture is unchanged and doesn't release.
+- evals (from round 1): the per-push check also runs `claude plugin validate`, with Claude Code pinned exactly in CI and covered by currency. check.sh's header names ci.yml.
+- evals (from round 1): the build reference names the release gate, a plugin's evals, as the release-time part of the automated-checks layer. The harness-testing note is rewritten to match.
+- evals (escalation): `claude plugin eval` 2.1.289 runs cases as `claude -p --permission-mode dontAsk` with no permission-prompt tool, which drops AskUserQuestion and plan mode, so plan-round-in-reply can't reproduce its failure. It stays as a check of the round's shape in the reply, keeping the AskUserQuestion grader for when eval offers the tool; the skill fix is unproven by eval.
+- evals (redirect): CI pins Claude Code to its latest release (2.1.289), and currency compares the pin against npm's `latest` dist-tag, matching the dev machine and rolling currency.
+- evals (build, without the architect): `scripts/check.sh` runs `claude plugin validate --strict` and fails when `claude` isn't on PATH.
+- evals (build, without the architect): `scripts/gate.sh` takes `<plugin>/v<major>.<minor>.<patch>` and doesn't compare versions, since SHIP already does. It runs the check before the evals, and it finds cases where eval does: under the manifest's `experimental.evals`, or else `evals/`.
+- evals (build, without the architect): the gate passes no `--allow-tools`, and the case doesn't list EnterPlanMode.
+- evals (build, without the architect): the fixture's two decisions, format and audience, are independent, so a compliant round 1 asks both.
+- evals (build, without the architect): the first hand-run gate failed at 0.92 on the self-contained-questions grader, which exposed rounds with conditional questions, bundled decisions, and pointers to "above". `references/briefs.md` now rules these out: each question decides one thing, and a dependent question waits for the next round.
+- evals (build, without the architect): the duplicated pointer clauses to the plan-round rule stay, because trimming them changes the guarded path, and eval can't detect that.
+- evals (build, without the architect): the numbered-questions grader checks two questions; the `llm` grader judges every question.
+- evals (build, without the architect): go-web-sdk-template gets its own Migrating recipe for the gate, because it tags releases.
 
 ## Pending edits
 

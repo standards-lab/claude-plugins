@@ -44,3 +44,9 @@ the ticked findings as its body (`mechanics/pipeline.md`, "Branches and pull req
 - A ticked finding in a repository no active goal locks is applied on that repository's branch.
 - A ticked finding in a repository another active goal locks becomes a task of that goal in the
   roadmap, on the coordinator's branch.
+
+A ticked plugin eval finding becomes a new case under that plugin's `evals/<case>/`, in the
+`claude plugin eval` case format, on its repository's `retro-<topic>` branch. The case's
+`description` cites the failure it came from: the session ID or the PR. Retro writes the case and
+does not fix the plugin; the fix is its own task. Until that task merges, the case may fail, and
+the release gate (`mechanics/configuration.md`, `[project] gate`) holds the plugin's next release.

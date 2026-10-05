@@ -48,7 +48,8 @@ SHIP   goal record → pull request (body = brief) → merge → tag if Release 
 
 BUILD stops for the architect only for a one-way door, a decision the brief doesn't cover, or
 scope beyond the task. When the task brief has a Release line, SHIP tags each release once main
-is green, fixing forward until the planned version releases. Every session, planning and sync
+is green and the repository's optional release gate passes, fixing forward until the planned
+version releases. Every session, planning and sync
 included, lands through a branch and a pull request in each repository it changes. See
 [`mechanics/pipeline.md`](./skills/marathon/mechanics/pipeline.md) and
 [`references/build.md`](./skills/marathon/references/build.md).
@@ -76,8 +77,9 @@ and [`commands/intake.md`](./skills/marathon/commands/intake.md).
 ## Project kinds
 
 `init` declares a project `code` or `context` in `.claude/marathon.toml`, along with its one
-deterministic `check` command and, optionally, its read-only `currency` command, which reports
-what trails its latest release. On a code project a slice adds behavior with its tests; on a
+deterministic `check` command. Two commands are optional: a read-only `currency` command, which
+reports what trails its latest release, and a release `gate` command, such as a plugin's eval
+suite, which SHIP runs before each tag. On a code project a slice adds behavior with its tests; on a
 context project a slice is the deliverable prose, checked by the consistency script and a read.
 
 ## Currency
@@ -109,5 +111,6 @@ a whole workspace under the coordinator's `[workspace]`. See
 
 ## Releases
 
-Releases are cut from [`CHANGELOG.md`](./CHANGELOG.md) by tag. Pushing a tag
-`marathon/v<version>` starts the host's release workflow.
+Releases are cut from [`CHANGELOG.md`](./CHANGELOG.md) by tag. Before SHIP pushes a
+`marathon/v<version>` tag, the repository's release gate, `scripts/gate.sh`, runs the consistency
+check and marathon's eval suite. Pushing the tag starts the host's release workflow.

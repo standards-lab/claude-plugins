@@ -1,54 +1,69 @@
 # Harness testing
 
-This note covers how the plugins in this repository are tested. Plugin evals are their automated
-checks, the first of the three quality layers in marathon's `references/build.md`. The work is
-tracked as `factory.evals`.
+This note covers how the plugins in this repository are tested. A cheap check runs on every push,
+and a release gate runs the check and the plugin's eval suite before each tag.
 
-## Per push: consistency
+## Per push: the check
 
-`scripts/check.sh` runs in CI on every push. It checks that:
+`scripts/check.sh` runs in CI on every push and locally. It checks that:
 
-- the version numbers agree
-- the `@` pointers and `./` links resolve
+- each plugin's manifest version, top CHANGELOG heading, and skill `Version:` lines agree
+- the `@` pointers and `./` links in the plugins' markdown resolve
 - each marketplace source points to a plugin
+- `claude plugin validate --strict` passes for each plugin and the marketplace
 
-It stays cheap, deterministic and always on.
+CI installs Claude Code at an exact version, its latest release, pinned in
+`.github/workflows/ci.yml`. `scripts/currency.sh` reports the pin when it trails npm's `latest`
+dist-tag. The check is deterministic and runs no model.
 
-## Per release: plugin evals
+## Per release: the gate
 
-`claude plugin eval` runs a plugin against a suite of cases and scores each one. Each case is a
-realistic prompt plus one or more graders. It is available in this environment.
+`scripts/gate.sh` is this repository's `[project] gate`. SHIP runs it on the merge commit before
+each `<plugin>/v<version>` tag, with the tag as its argument. It runs `scripts/check.sh`, then:
 
-- **Layout.** Each plugin keeps its suite in `plugins/<name>/evals/`, one directory per case, with
-  `prompt.md`, `graders/`, and a `case.yaml` and scaffold script when the case needs a fixture
-  repository. `results/` is gitignored.
-- **Cases come from failures.** A case is added when a real session fails in a way the plugin
-  should prevent. `retro` sends that failure here (marathon's `commands/retro.md`). A case
-  written before any failure would test a guess, not a regression.
-- **Graders are deterministic where possible.** `tool_used`, `tool_order`, `regex` and
-  `file_exists` cost nothing and read the same way every run. An `llm` grader judges only short
-  output, with its rubric written as concrete PASS and FAIL conditions. Each case grades both
-  the result and the steps that produced it.
-- **The release gate.** The release script runs `scripts/check.sh` and then
-  `claude plugin eval --threshold 1.0`. A plugin doesn't release while a case fails. Evals
-  don't run on every push, because each run costs model calls.
+```
+claude plugin eval plugins/<plugin> --threshold 1.0 --runs 3 --ablation none --scaffold \
+  --trust-plugin --no-publish
+```
 
-## The seed suite
+Every case must pass all three runs, or the tag is held. A plugin with no case releases on the
+check alone. Evals never run per push or in CI, because each run is a paid session.
 
-The seed suite covers the contract marathon 0.16 introduces:
+## Eval suites
 
-- **implementer-no-standards:** the implementer never reads `STANDARDS.md` (`tool_used Read`,
-  `input_match STANDARDS`, `min 0`, `max 0`).
-- **reviewer-commits:** the standards-reviewer commits its fixes (`tool_used Bash`,
-  `input_match git commit`).
-- **brief-shape:** the session brief has Summary, Core changes, Evidence and Merge danger
-  (`regex`).
-- **plan-round-format:** plan-round questions are numbered, each with a recommendation
-  (`regex`).
+A plugin has a suite only once it has a case. marathon has one, in `plugins/marathon/evals/`;
+marathon-architecture has none, and the gate skips it. `results/` is gitignored.
 
-## Assumptions
+- **Cases come from observed failures.** `retro` turns a ticked plugin eval finding into a case on
+  its `retro-<topic>` branch, and the case's `description` cites the failing session or PR
+  (marathon's `commands/retro.md`). The fix is its own task; the gate holds the next release
+  until it merges.
+- **Graders are deterministic where possible.** `tool_used` and `regex` read the same way every
+  run. An `llm` grader judges only short output, with its rubric written as concrete PASS and FAIL
+  conditions.
+- **Fixtures are offline scaffold scripts.** A case that needs a repository builds it with a
+  scaffold script. Replaying a recorded session through `history_file` isn't used, because it
+  carries the skill text of the session it recorded.
 
-- Fixture repositories made by a scaffold script are enough to exercise a whole task without
-  network access.
-- The no-plugin baseline means little for a workflow plugin. Cases run with `--ablation none`
-  unless they test whether a skill fires.
+## The seed case
+
+`plan-round-in-reply` runs `start` on a task whose note leaves two independent decisions open, and
+grades the final reply with four graders:
+
+- AskUserQuestion is never called.
+- The reply contains `PLAN ROUND 1`.
+- At least two numbered questions each carry a `rec:` line and a `changes:` line.
+- An `llm` grader judges that every question names its subject and can be decided on its own.
+
+The case comes from marathon 0.16 sessions in which the architect rejected rounds shown as
+AskUserQuestion headlines, and a question asked without its context.
+
+The case checks the round's shape in the reply, not the original failure. `claude plugin eval`
+2.1.289 runs each case as `claude -p --permission-mode dontAsk` with no permission-prompt tool,
+which drops AskUserQuestion, EnterPlanMode, and ExitPlanMode, so the AskUserQuestion grader
+passes whatever the skill does. The grader stays for when eval offers that tool.
+
+## Failures without a case
+
+- **The standards-reviewer writing into `~/go/pkg/mod`.** This failure happened in a real session.
+  Its case waits until an offline fixture can provoke it.
