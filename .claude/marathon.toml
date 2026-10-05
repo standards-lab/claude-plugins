@@ -4,6 +4,9 @@
 kind = "context"
 # The repository's one deterministic check, which every slice and review runs.
 check = "scripts/check.sh"
+# The read-only, development-time command that reports every pin trailing its latest
+# release; it reads the network, so CI never runs it.
+currency = "scripts/currency.sh"
 
 # Remote platform, the command that publishes a finished branch, the command that merges
 # it once its checks pass, and the command that waits for main's CI on the merge commit before
