@@ -1,6 +1,6 @@
 # goal · factory
 
-- **State:** brief ready
+- **State:** building
 - **Task:** evals
 - **Branch:** evals
 
