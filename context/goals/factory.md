@@ -128,7 +128,7 @@ Release       marathon/v0.18.0
 
 ## Progress
 
-slices 0/7 committed · standards — · spec — · editor —
+slices 1/7 committed · standards — · spec — · editor —
 
 ## Decisions
 
