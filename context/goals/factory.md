@@ -128,7 +128,7 @@ Release       marathon/v0.18.0
 
 ## Progress
 
-slices 6/7 committed · standards — · spec — · editor —
+slices 7/7 committed · gate red (self-contained-questions) · standards — · spec — · editor —
 
 ## Decisions
 
