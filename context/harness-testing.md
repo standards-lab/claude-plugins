@@ -12,8 +12,8 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 - each marketplace source points to a plugin
 - `claude plugin validate --strict` passes for each plugin and the marketplace
 
-CI installs Claude Code at an exact version on the stable channel, pinned in
-`.github/workflows/ci.yml`. `scripts/currency.sh` reports the pin when it trails npm's `stable`
+CI installs Claude Code at an exact version, its latest release, pinned in
+`.github/workflows/ci.yml`. `scripts/currency.sh` reports the pin when it trails npm's `latest`
 dist-tag. The check is deterministic and runs no model.
 
 ## Per release: the gate

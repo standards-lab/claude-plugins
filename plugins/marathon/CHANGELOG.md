@@ -56,8 +56,8 @@ key is optional, so 0.17.0 repositories keep working; see Migrating below to dec
 - **This repository** declares `gate = "scripts/gate.sh"`, which runs `scripts/check.sh` and then
   the tagged plugin's eval suite with `--threshold 1.0 --runs 3 --ablation none --scaffold
   --trust-plugin --no-publish`. A plugin with no case releases on the check alone. `scripts/check.sh` also runs `claude plugin validate --strict` on each plugin
-  and the marketplace. CI pins Claude Code at 2.1.285, the stable channel, and
-  `scripts/currency.sh` reports that pin against npm's `stable` dist-tag. Eval results are
+  and the marketplace. CI pins Claude Code at 2.1.289, its latest release, and
+  `scripts/currency.sh` reports that pin against npm's `latest` dist-tag. Eval results are
   gitignored.
 
 ### Migrating from 0.17.0

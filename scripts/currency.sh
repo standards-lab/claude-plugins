@@ -2,8 +2,8 @@
 # currency reports every pin in .github/workflows that trails its latest
 # release, one stdout line each, and exits non-zero when it reports any. The
 # pins are GitHub Actions, checked against the action's latest release tag, and
-# npm packages installed globally, checked against the package's stable
-# dist-tag, the channel the pin follows. A pin is current only when it equals
+# npm packages installed globally, checked against the package's latest
+# dist-tag, its latest release. A pin is current only when it equals
 # that latest exactly. It reads the network through gh and npm and writes
 # nothing; it is a development-time command and CI never runs it.
 #
@@ -47,17 +47,17 @@ for file in .github/workflows/*.yml .github/workflows/*.yaml; do
   done <<<"$pins"
 done
 
-# latest_stable sets latest to an npm package's stable dist-tag, looking each
+# latest_dist_tag sets latest to an npm package's latest dist-tag, looking each
 # package up once. Like latest_tag, it runs in the current shell.
-declare -A latest_stables=()
-latest_stable() {
+declare -A latest_dist_tags=()
+latest_dist_tag() {
   local package=$1
-  if [ -z "${latest_stables[$package]+set}" ]; then
-    latest_stables[$package]=$(npm view "$package" dist-tags.stable)
+  if [ -z "${latest_dist_tags[$package]+set}" ]; then
+    latest_dist_tags[$package]=$(npm view "$package" dist-tags.latest)
   fi
-  latest=${latest_stables[$package]}
+  latest=${latest_dist_tags[$package]}
   if [ -z "$latest" ]; then
-    echo "currency: no stable dist-tag for $package" >&2
+    echo "currency: no latest dist-tag for $package" >&2
     exit 1
   fi
 }
@@ -74,7 +74,7 @@ for file in .github/workflows/*.yml .github/workflows/*.yaml; do
     # The version follows the last @, since a scoped package name begins with one.
     package=${spec%@*}
     pin=${spec##*@}
-    latest_stable "$package"
+    latest_dist_tag "$package"
     [ "$pin" = "$latest" ] || trailing+=("$file: $package $pin -> $latest")
   done <<<"$pins"
 done

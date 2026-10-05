@@ -198,7 +198,7 @@ slices 7/7 committed · standards ✓ · spec ✓ (2 rounds) · editor ✓ · ga
 - evals (from round 1): the per-push check also runs `claude plugin validate`, with Claude Code pinned exactly in CI and covered by currency. check.sh's header names ci.yml.
 - evals (from round 1): the build reference names the release gate, a plugin's evals, as the release-time part of the automated-checks layer. The harness-testing note is rewritten to match.
 - evals (escalation): `claude plugin eval` 2.1.289 runs cases as `claude -p --permission-mode dontAsk` with no permission-prompt tool, which drops AskUserQuestion and plan mode, so plan-round-in-reply can't reproduce its failure. It stays as a check of the round's shape in the reply, keeping the AskUserQuestion grader for when eval offers the tool; the skill fix is unproven by eval.
-- evals (build, without the architect): CI pins Claude Code to npm's `stable` dist-tag (2.1.285), and currency compares the pin against `stable`, not `latest`.
+- evals (redirect): CI pins Claude Code to its latest release (2.1.289), and currency compares the pin against npm's `latest` dist-tag, matching the dev machine and rolling currency.
 - evals (build, without the architect): `scripts/check.sh` runs `claude plugin validate --strict` and fails when `claude` isn't on PATH.
 - evals (build, without the architect): `scripts/gate.sh` takes `<plugin>/v<major>.<minor>.<patch>` and doesn't compare versions, since SHIP already does. It runs the check before the evals, and it finds cases where eval does: under the manifest's `experimental.evals`, or else `evals/`.
 - evals (build, without the architect): the gate passes no `--allow-tools`, and the case doesn't list EnterPlanMode.
