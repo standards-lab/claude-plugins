@@ -49,8 +49,10 @@ key is optional, so 0.17.0 repositories keep working; see Migrating below to dec
   printed. Only the task brief's approval goes through ExitPlanMode, with the full brief in the
   plan file. Intake rounds and BUILD escalations follow the same rule.
 - **Each plan-round question names its subject** (`references/briefs.md`) in its own words, with
-  the options it chooses between, and never points elsewhere for it: not "this", "option B", a
-  term defined outside it, or a file to open.
+  the options it chooses between, and never points elsewhere for it: not "this", "option B",
+  "above", facts found, another question, a term defined outside it, or a file to open. Its
+  `rec:` and `changes:` lines follow the same rule. Each question decides one thing, and one that
+  depends on another open question waits for the next round, never asked conditionally.
 - **This repository** declares `gate = "scripts/gate.sh"`, which runs `scripts/check.sh` and then
   the tagged plugin's eval suite at `--threshold 1.0 --runs 3`; a plugin with no case releases on
   the check alone. `scripts/check.sh` also runs `claude plugin validate --strict` on each plugin
