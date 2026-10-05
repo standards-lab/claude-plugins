@@ -20,16 +20,16 @@ execution:
   max_turns: 40
   timeout_seconds: 900
   # The child runs with --setting-sources user, so a fixture defaultMode can't put it in plan
-  # mode either: project settings aren't loaded and the CLI mode wins. EnterPlanMode and
-  # AskUserQuestion stay listed (runs pass --allow-tools EnterPlanMode), though eval drops them
-  # today (see the description), so the case discriminates once eval can offer them. Bash is
-  # left out: the fixture declares no currency command and no remote, so round 1 needs only reads.
+  # mode either: project settings aren't loaded and the CLI mode wins. AskUserQuestion stays
+  # listed, though eval drops it today (see the description), so the case discriminates once eval
+  # can offer it. EnterPlanMode isn't listed: the gate runs with eval's own tool grants, and eval
+  # drops plan mode in any case. Bash is left out: the fixture declares no currency command and
+  # no remote, so round 1 needs only reads.
   allowed_tools:
     - Read
     - Glob
     - Grep
     - Skill
     - Agent
-    - EnterPlanMode
     - AskUserQuestion
 runs: 3

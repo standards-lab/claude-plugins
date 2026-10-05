@@ -49,10 +49,9 @@ fi
 
 # Every case must score 1.0 over its three runs (--threshold 1.0 --runs 3),
 # against the plugin alone (--ablation none). --scaffold and --trust-plugin let the
-# suite build its fixtures without a prompt, --no-publish keeps the results
-# local, and --allow-tools EnterPlanMode grants the tool marathon's
-# plan-round-in-reply case lists.
+# suite build its fixtures without a prompt, and --no-publish keeps the results
+# local.
 claude plugin eval "$dir" --threshold 1.0 --runs 3 --ablation none --scaffold \
-  --trust-plugin --no-publish --allow-tools EnterPlanMode ||
+  --trust-plugin --no-publish ||
   fail "the $plugin eval suite failed, so $tag is held"
 echo "gate: $tag passes."

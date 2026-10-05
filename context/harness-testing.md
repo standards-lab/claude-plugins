@@ -23,7 +23,7 @@ each `<plugin>/v<version>` tag, with the tag as its argument. It runs `scripts/c
 
 ```
 claude plugin eval plugins/<plugin> --threshold 1.0 --runs 3 --ablation none --scaffold \
-  --trust-plugin --no-publish --allow-tools EnterPlanMode
+  --trust-plugin --no-publish
 ```
 
 Every case must pass all three runs, or the tag is held. A plugin with no case releases on the

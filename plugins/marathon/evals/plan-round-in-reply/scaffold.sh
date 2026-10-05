@@ -114,8 +114,13 @@ nothing here settles them.
   quarterly review. Three of the five runbooks name internal hosts or secret paths, so this
   audience needs a redaction pass first, and a rule that keeps new runbooks clean.
 
-The answer to one shapes the other: a PDF sent beyond the team can't be recalled once a host
-name in it changes.
+The two are independent, and either can be settled first. Every format sits behind the
+company's single sign-on (a site on the internal docs host, a PDF on the internal file share, or
+read access to this repository), and one access group grants all three, so the audience is that
+group's membership whatever the format. A downloaded PDF outlives the next edit, but it does so
+for on-call engineers as much as for support, so that cost weighs on the format alone. The
+redaction pass depends on the audience alone: a secret path is as exposed on a web page as in a
+PDF or a Markdown file.
 EOF
 
 cat >context/roadmap.toml <<EOF
