@@ -36,6 +36,8 @@ cat >.gitignore <<'EOF'
 .claude/briefs/
 EOF
 
+# What a marathon project carries. Eval runs with --setting-sources user, so the session never
+# loads this file; it is here for the planner and the fixture's realism, not to set the mode.
 cat >.claude/settings.json <<'EOF'
 {
   "plansDirectory": "./.claude/plans",
