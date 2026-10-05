@@ -199,6 +199,8 @@ slices 6/7 committed · standards — · spec — · editor —
 - evals (from round 1): the per-push check also runs `claude plugin validate`, with Claude Code pinned exactly in CI and covered by currency. check.sh's header names ci.yml.
 - evals (from round 1): the build reference names the release gate, a plugin's evals, as the release-time part of the automated-checks layer. The harness-testing note is rewritten to match.
 
+- evals (escalation): `claude plugin eval` 2.1.289 runs cases as `claude -p --permission-mode dontAsk` with no permission-prompt tool, which drops AskUserQuestion and plan mode, so plan-round-in-reply can't reproduce its failure. It stays as a check of the round's shape in the reply, keeping the AskUserQuestion grader for when eval offers the tool; the skill fix is unproven by eval.
+
 ## Pending edits
 
 - architecture · `standards/go-elemental/principles/release-and-ci.md`: release preparation lands through a PR, not a direct commit to main; a tag whose release failed may be deleted and re-pushed at the same version, while a released tag is never re-cut.
