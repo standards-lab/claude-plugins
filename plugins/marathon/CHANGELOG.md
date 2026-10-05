@@ -31,8 +31,8 @@ see Migrating below to declare it.
   trailing repository it touches, in the coordinator's `order`, each done when that repository's
   currency command exits 0, or reports only held items, with its check passing.
 - **Held items** (`mechanics/goal-record.md`): a goal-record Decision
-  `<task>: held <item> at <pin>: <reason>`, whose reason names the latest version it was held
-  from, so the planner asks again only once a later one is out.
+  `<task>: held <item> at <pin>: <reason>`, whose reason names the latest version it declined,
+  so the planner asks again only once a later one is out.
 
 ### Changed
 

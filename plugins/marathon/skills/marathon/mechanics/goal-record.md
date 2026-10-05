@@ -57,8 +57,9 @@ appear while a task is planned or in progress, and Handoff only while State is `
 
 - **State** drives `status` and LOCATE:
   - `idle`: between tasks. The next `start` plans the next unchecked task, or, when Task brief
-    already holds that task's brief, runs currency first and presents it for approval, opening a
-    round when something trails that the brief doesn't cover (`mechanics/pipeline.md`, 3 · PLAN).
+    already holds that task's brief, runs the currency commands first and presents the brief for
+    approval, opening a round when something trails that the brief doesn't cover
+    (`mechanics/pipeline.md`, 3 · PLAN).
   - `building`: a session is in BUILD.
   - `brief ready`: BUILD is done and the session brief waits on the architect.
   - `handoff`: a session stopped partway; the next `start` resumes from Handoff.
@@ -80,8 +81,8 @@ appear while a task is planned or in progress, and Handoff only while State is `
 - **Decisions** logs what each plan round settled and what each task decided without the
   architect, one line each, so a later task doesn't decide it again. It also records rejected
   alternatives (`behavior/planning.md`). A held dependency is a decision of the form
-  "<task>: held <item> at <pin>: <reason>", whose reason names the latest version it was held
-  from; PLAN lists it as a fact and asks again only once a later version is out.
+  "<task>: held <item> at <pin>: <reason>", whose reason names the latest version it declined;
+  PLAN lists it as a fact and asks again only once a later version is out.
 - **Pending edits** collects every change the goal owes a repository outside its own work, each
   prefixed with that repository: the coordinator's notes, catalog, workspace `order`, and
   manifest, or a page in the architecture repository. Sync applies them.

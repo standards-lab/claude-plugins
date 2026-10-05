@@ -74,9 +74,9 @@ this file names (`mechanics/hooks.md`).
    default branch of each repository the task touches that declares it
    (`mechanics/configuration.md`), and reads the release notes of what trails. Round 1 notes each
    touched repository with no currency command, and reports a command that failed as a fact; a
-   failure doesn't block. When the record already holds an approved brief for this task, currency
-   still runs first: skip the rounds unless something trails that the brief doesn't cover, and
-   then open one round on it before approval.
+   failure doesn't block. When the record already holds an approved brief for this task, the
+   currency commands still run first: skip the rounds unless something trails that the brief
+   doesn't cover, and in that case open one round on it before approval.
 3. Present the task brief for approval. Nothing changes until the architect approves. **[touch 1]**
 4. On approval, fire `on-build`.
 5. Create the task's branch, named by the task's slug, from the fetched default branch in each

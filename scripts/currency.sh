@@ -7,7 +7,7 @@
 #
 # Each lookup captures its command's output in a variable before reading it, so
 # under set -e a failed lookup fails currency instead of reporting nothing. The
-# report is printed only once every lookup has succeeded, so a failure part way
+# report is printed only once every lookup has succeeded, so a failure partway
 # through exits nonzero with empty stdout, which the contract reads as a failed
 # command rather than a partial list of what trails.
 set -euo pipefail
