@@ -1,6 +1,6 @@
 # goal · factory
 
-- **State:** building
+- **State:** brief ready
 - **Task:** evals
 - **Branch:** evals
 
@@ -128,7 +128,7 @@ Release       marathon/v0.18.0
 
 ## Progress
 
-slices 7/7 committed · standards ✓ · spec ✓ (2 rounds) · editor ✓ · gate rerun pending
+slices 7/7 committed · standards ✓ · spec ✓ (2 rounds) · editor ✓ · gate ✓ (1.00, $1.58)
 
 ## Decisions
 
