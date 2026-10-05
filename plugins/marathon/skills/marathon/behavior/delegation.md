@@ -11,7 +11,7 @@ a fresh context.
 
 | Profile | Stage | Loads | Does |
 |---|---|---|---|
-| **planner** | PLAN | the goal record, notes, roadmap, code | Finds the facts, drafts the round's questions, then the task brief and slices; changes nothing |
+| **planner** | PLAN | the goal record, notes, roadmap, code, the currency output and the release notes of what trails | Runs the currency commands, finds the facts, drafts the round's questions, then the task brief and slices; changes nothing |
 | **implementer** | BUILD | the slice brief and the check command only | Makes one slice work with the check passing, and commits it |
 | **standards-reviewer** | BUILD | `STANDARDS.md`, the architecture pages it points to, the diff | Applies the standards, sweeps for tests that lie, and commits its fixes |
 | **spec-reviewer** | BUILD | the task brief, the diff, the running behavior | Returns where the work is missing, wrong, or out of scope; changes nothing |

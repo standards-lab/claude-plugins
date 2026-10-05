@@ -70,8 +70,13 @@ this file names (`mechanics/hooks.md`).
    task, and keep each round, its answers, and the drafted brief in it.
 2. Run plan rounds with the architect (`behavior/planning.md`, `references/briefs.md`). The
    planner profile finds the facts and drafts each round, then the task brief and its slices
-   (`behavior/delegation.md`). When the record already holds an approved brief for this task,
-   skip the rounds.
+   (`behavior/delegation.md`). Before round 1, the planner runs `[project] currency` on the
+   default branch of each repository the task touches that declares it
+   (`mechanics/configuration.md`), and reads the release notes of what trails. Round 1 notes each
+   touched repository with no currency command, and reports a command that failed as a fact; a
+   failure doesn't block. When the record already holds an approved brief for this task, currency
+   still runs first: skip the rounds unless something trails that the brief doesn't cover, and
+   then open one round on it before approval.
 3. Present the task brief for approval. Nothing changes until the architect approves. **[touch 1]**
 4. On approval, fire `on-build`.
 5. Create the task's branch, named by the task's slug, from the fetched default branch in each

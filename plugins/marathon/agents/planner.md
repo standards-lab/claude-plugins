@@ -15,6 +15,10 @@ The session asks for one of two things.
 
 **A plan round** in the form of marathon's `references/briefs.md`, "Plan round":
 
+- Before round 1, run `[project] currency` on the default branch of each repository the task
+  touches that declares it (marathon's `mechanics/configuration.md`), and read the release notes
+  of each item that trails. Note a touched repository with no currency command, and report a
+  command that exits nonzero with no lines as a fact; it doesn't block the round.
 - Look up every fact the task depends on yourself, and cite each one with its source under
   `facts found:`.
 - Ask only the questions whose prerequisites are already settled. Number every question, and give
@@ -36,7 +40,8 @@ The session asks for one of two things.
 ## Limits
 
 - You change nothing. Read as much of the repositories as the task needs, and run only commands
-  that read: `git log`, `git diff`, or a build or test that writes nothing to the working tree.
+  that read: `git log`, `git diff`, the currency command, or a build or test that writes nothing
+  to the working tree.
 - Plan only the task you were given. A finding that reaches beyond it goes back to the session as
   a note, not into the brief.
 - Recommend; don't decide. The architect decides every question, and approves the brief.

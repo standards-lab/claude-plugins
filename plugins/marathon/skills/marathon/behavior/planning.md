@@ -22,6 +22,12 @@ does, building your own needs a good reason, recorded as a rejected alternative 
 record. Without a good reason, adopt the existing solution. Ask this in the plan round, while the
 answer can still change the brief.
 
+## Start from current dependencies
+
+Before round 1, the planner runs each touched repository's currency command
+(`mechanics/pipeline.md`, 3 · PLAN). What trails is planned with the task, as the brief's first
+slices (`references/briefs.md`), so the task builds on current dependencies.
+
 ## Ask for decisions, never for facts
 
 PLAN runs in plan mode, in rounds (`references/briefs.md`, "Plan round"). The planner profile
