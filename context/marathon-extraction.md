@@ -104,8 +104,8 @@ the task's diff against the want-list, which is noisier and gives the architect 
 
 Bundle schema validation, the `evidence` check, origin de-duplication, adding references, and
 generating the want-list are deterministic. They belong in a tool the skill calls
-(`v1.harness.tooling`), per `architecture/harness/tool-based-skills.md`. The skill's text keeps
-only the judgment of what is general and where it belongs.
+(`v1.harness.tooling`), per `tool-based-skills.md`. The skill's text keeps only the judgment of
+what is general and where it belongs.
 
 ## The first consumer
 
