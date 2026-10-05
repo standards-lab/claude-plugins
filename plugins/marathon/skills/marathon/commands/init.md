@@ -16,6 +16,9 @@ one you write together. It gives the vision and the scope. The structure comes o
   `context` (skills, prose, configuration).
 - **The check**: the one deterministic command that runs the build, tests, and lint, or the
   consistency script of a context project (`references/build.md`).
+- **The currency command**: optional. The read-only command that reports which direct
+  dependencies, toolchain versions, and pins trail their latest release, run at PLAN and never in
+  CI (`mechanics/configuration.md`).
 - **Capability map**: the project's major capabilities, broad, shallow, and unordered.
 - **The first goal**: the one outcome the first sessions work toward, and its first task.
 - **Remote**: the platform, its publish command (`gh pr create`, `glab mr create`), and its merge
