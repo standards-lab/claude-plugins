@@ -1,9 +1,8 @@
 # claude-plugins
 
 The Standards Lab organization's Claude Code plugin marketplace: independently versioned plugins that
-codify the organization's development processes. This is the harness level of the reference architecture —
-the worked example for the agent harness the other levels are built with. Managed with the marathon
-workflow; start from `context/README.md`.
+codify the organization's development processes. Managed with the marathon workflow; start from
+`context/README.md`.
 
 ## Plugin design lives in the skill
 

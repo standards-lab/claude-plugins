@@ -1,8 +1,7 @@
 # claude-plugins
 
-claude-plugins is the Standards Lab organization's Claude Code plugin marketplace. It is the
-harness level of the organization's reference architecture: plugins that codify the
-organization's development processes, so every project applies them the same way. The
+claude-plugins is the Standards Lab organization's Claude Code plugin marketplace. Its plugins
+codify the organization's development processes, so every project applies them the same way. The
 repository is developed with marathon, so the workflow runs against its own source.
 
 ## Capability map
