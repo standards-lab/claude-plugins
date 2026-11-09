@@ -46,7 +46,7 @@ The extension has three parts:
   The sessions that run the new tasks do that work.
 
 This design makes marathon-extraction a hybrid extension: capture fires at a hook, and package
-and intake are invoked by the architect (see the taxonomy in `marathon-sitrep.md`).
+and intake are invoked by the architect.
 
 ### Ledger entries
 
@@ -124,5 +124,4 @@ references, and intake are built when a bundle first needs to cross.
 - Whether the standard states the marker convention on a per-module page, or each consumer
   chooses its own.
 - How the extension records that it is enabled and which marathon version it targets.
-  `marathon-sitrep.md` has the same questions, and one answer serves both.
 - Whether adding references belongs to intake or to the references extension that intake calls.

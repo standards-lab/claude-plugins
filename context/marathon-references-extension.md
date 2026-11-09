@@ -33,8 +33,8 @@ catalogs.
 
 ## Open questions
 
-- Which kind of extension it is: one that fires at hooks, one the architect invokes, or both (see
-  the taxonomy in `marathon-sitrep.md`). Sessions read the catalog but never advance it, so it
+- Which kind of extension it is: one that fires at hooks, one the architect invokes, or both.
+  Sessions read the catalog but never advance it, so it
   may need no hooks at all. Whether the extension contract supports a pure file convention is
   the main question.
 - Whether `on-start` adds a convention, such as citing catalog keys in prose the way roadmap
