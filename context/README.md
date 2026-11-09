@@ -14,8 +14,6 @@ repository is developed with marathon, so the workflow runs against its own sour
   release gate before each tag. Its design lives in `plugins/marathon/`.
 - **marathon-architecture**: the extension that finds the architecture layer each repository's
   `STANDARDS.md` points to, so the standards-reviewer can apply it.
-- **marathon-sitrep** (planned): situation reports over a date range for a chosen audience. See
-  `marathon-sitrep.md`.
 - **marathon-extraction** (planned): carries patterns a consumer proves back to the blueprint.
   See `marathon-extraction.md`.
 - **marathon-references** (proposed): the references catalog as an extension. See
