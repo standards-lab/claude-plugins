@@ -48,8 +48,8 @@ the ticked findings as its body (`mechanics/pipeline.md`, "Branches and pull req
 
 - A ticked finding in the coordinator is applied on the coordinator's branch.
 - A ticked finding in a repository no active goal locks is applied on that repository's branch.
-- A ticked finding in a repository another active goal locks becomes a task of that goal in the
-  roadmap, on the coordinator's branch.
+- A ticked finding in a repository another active goal locks becomes a task in that goal's
+  file, on the coordinator's branch.
 
 A ticked plugin eval finding becomes a new case under that plugin's `evals/<case>/`, in the
 `claude plugin eval` case format, on its repository's `retro-<topic>` branch. The case's

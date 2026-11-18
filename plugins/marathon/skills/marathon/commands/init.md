@@ -46,12 +46,13 @@ Keep every file brief, a few sentences each.
 │   └── marathon.toml  # mechanics/configuration.md
 └── context/
     ├── README.md      # vision and capability map
-    ├── roadmap.toml   # active = [the first goal]; references/manifest.md
+    ├── roadmap.toml   # the index: active = [the first goal]; references/manifest.md
+    ├── roadmap/       # the first goal's file, once one is settled
     └── <note>.md      # optional: what the first goal needs to know
 ```
 
-A member of a workspace has no `roadmap.toml`; its goals live in the coordinator's, and so do a
-spike's. A coordinator adds a `[workspace]` table (`references/workspace-coordination.md`).
+A member of a workspace has no roadmap index or goal files; its goals live in the coordinator's, and
+so do a spike's. A coordinator adds a `[workspace]` table (`references/workspace-coordination.md`).
 Extensions are enabled later, when the project adopts them (`references/extensions.md`). Don't
 create `docs/`; a task that documents creates it.
 

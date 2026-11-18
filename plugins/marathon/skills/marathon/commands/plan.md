@@ -28,8 +28,9 @@ Once the architect approves the outcome (`mechanics/pipeline.md`, "Invariants"),
 rounds decided on a `plan-<goal>` branch in each repository they change, in one commit per kind
 of change:
 
-- **Roadmap**: stage a goal into `active`, pivot any of the three arrays, add or delete goals
-  and tasks, and sharpen the next task's entry (`mechanics/goals.md`, `references/manifest.md`).
+- **Roadmap**: stage a goal into `active`, pivot any of the three arrays, add or delete goals,
+  each in its own file, and tasks, and sharpen the next task's entry (`mechanics/goals.md`,
+  `references/manifest.md`).
   Staging checks the goal's `root`, `repos`, and lock first. A spike added to an existing
   experiment is a sub-goal shaped as `experiment` shapes one (`commands/experiment.md`).
 - **Notes**: write a note a coming goal needs, sharpen one, or delete one the discussion ruled
@@ -39,7 +40,7 @@ of change:
 - **Goal setup**: for an active goal whose repositories, `root`, record, or tasks aren't set up
   yet, create what is missing: run `init` in each new repository the rounds decided
   (`commands/init.md`), add it to `order`, the repository catalog, and the goal's `repos` (and
-  `root`, when there is none), write the tasks into the manifest, and create or extend the goal
+  `root`, when there is none), write the tasks into the goal's file, and create or extend the goal
   record in the root, with the tasks the rounds settled checked. A goal with no `root` locks
   nothing, and `start` on it stops and asks for this `plan`. A spike sub-goal adds its own steps
   ("Spike setup").

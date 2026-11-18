@@ -211,7 +211,8 @@ the goal's root, which gitignores `.claude/briefs/`.
 >
 > - **coordinator**
 >   - context/ai.md: answer section for spike-harness-driver
->   - roadmap.toml: remove experiment.ai.spike-harness-driver
+>   - roadmap.toml: remove experiment.ai.spike-harness-driver from `active`
+>   - roadmap/experiment.ai.spike-harness-driver.toml: delete
 > - **architecture**
 >   - standards/harnesses.md: name the driver interface
 > - **next:** experiment.ai.spike-local-subagents · staged on accept
