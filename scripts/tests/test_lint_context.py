@@ -15,6 +15,8 @@ planned = []
 backlog = []
 """
 TASK = 'order = ["a"]\n\n[tasks.a]\n'
+CONTEXT_README = "# Repo\n\n## Capability map\n\n- **Note** (built): see [note](note.md).\n"
+ENTRY_FORM = "open it as '- **Name** (built): text' or '- **Name** (planned): text'"
 ENTRY_FIX = "move detail to the goal's context note"
 
 
@@ -32,7 +34,7 @@ class LintContextTest(unittest.TestCase):
         self.addCleanup(tmp.cleanup)
         self.root = Path(tmp.name)
         self.write("README.md", text(10))
-        self.write("context/README.md", text(10))
+        self.write("context/README.md", CONTEXT_README)
         self.write("context/note.md", text(10))
         self.write("context/roadmap.toml", INDEX)
         self.write("context/roadmap/goal.toml", 'repos = []\n')
@@ -74,9 +76,10 @@ class LintContextTest(unittest.TestCase):
         )
 
     def test_context_readme_budget(self):
-        self.write("context/README.md", text(1000))
+        padding = 1000 - len(CONTEXT_README.split())
+        self.write("context/README.md", text(padding) + CONTEXT_README)
         self.assert_clean()
-        self.write("context/README.md", text(1001))
+        self.write("context/README.md", text(padding + 1) + CONTEXT_README)
         self.assert_fails(
             "context/README.md: README is 1,001 words, budget 1,000; "
             "trim; move detail to docs/"
@@ -280,6 +283,110 @@ class LintContextTest(unittest.TestCase):
     def test_missing_roadmap_is_clean(self):
         (self.root / "context/roadmap.toml").unlink()
         (self.root / "context/roadmap/goal.toml").unlink()
+        self.assert_clean()
+
+    def capability_map(self, entries, after=""):
+        self.write(
+            "context/README.md",
+            "# Repo\n\nIntro.\n\n## Capability map\n\n" + entries + after,
+        )
+
+    def test_capability_map_entries(self):
+        self.capability_map(
+            "- **Note** (built): see [note](note.md).\n"
+            "- **Two** (built): spans lines\n"
+            "  and links on a continuation, [notes](./).\n"
+            "\n"
+            "  - a nested item\n"
+            "- **Later** (planned): links nothing yet.\n"
+            "- **Soon** (planned): see [note](note.md).\n",
+            "\n## Other\n\nProse after the map is not an entry.\n",
+        )
+        self.assert_clean()
+
+    def test_capability_map_heading_required(self):
+        self.write("context/README.md", "# Repo\n\n## Capabilities\n\n- **A** (planned): a\n")
+        self.assert_fails(
+            "context/README.md: no '## Capability map' heading; add one listing each "
+            "feature as built or planned"
+        )
+
+    def test_capability_map_without_readme_is_unchecked(self):
+        (self.root / "context/README.md").unlink()
+        self.assert_clean()
+
+    def test_capability_map_entry_form(self):
+        cases = (
+            ("- **Name**: text\n", "entry 'Name'"),
+            ("- **Name** (active): text\n", "entry 'Name'"),
+            ("- **Name** (built) text [n](note.md)\n", "entry 'Name'"),
+            ("- Name (built): text [n](note.md)\n", "entry without a bold name"),
+        )
+        for entry, label in cases:
+            with self.subTest(entry=entry):
+                self.capability_map(entry)
+                self.assert_fails(f"context/README.md:7: capability map {label}: {ENTRY_FORM}")
+
+    def test_capability_map_prose_is_not_an_entry(self):
+        self.capability_map("Some prose.\n\n- **A** (planned): a\n")
+        self.assert_fails(
+            f"context/README.md:7: capability map line is not an entry; {ENTRY_FORM}"
+        )
+
+    def test_built_entry_needs_a_relative_link(self):
+        for entry in (
+            "- **A** (built): links nothing.\n",
+            "- **A** (built): only [a site](https://example.com).\n",
+            "- **A** (built): only `[code](note.md)`.\n",
+        ):
+            with self.subTest(entry=entry):
+                self.capability_map(entry + "- **B** (built): [n](note.md)\n")
+                self.assert_fails(
+                    "context/README.md:7: capability map entry 'A' is built but links "
+                    "nothing; link its home with a relative link"
+                )
+
+    def test_capability_map_links_must_resolve(self):
+        for status in ("built", "planned"):
+            with self.subTest(status=status):
+                self.capability_map(f"- **A** ({status}): see [gone](gone.md).\n")
+                self.assert_fails("context/README.md:7: link gone.md does not resolve")
+
+    def test_links_resolve(self):
+        self.write("docs/guide.md", "# Guide\n")
+        self.write("docs/img/a b.png", "")
+        self.write(
+            "README.md",
+            "[guide](docs/guide.md#top) [dir](docs/) [q](docs/guide.md?x=1)\n"
+            "[angle](<docs/img/a b.png>) [encoded](docs/img/a%20b.png)\n"
+            '[titled](docs/guide.md "Title") [rooted](/docs/guide.md)\n'
+            "[web](https://example.com/x) [mail](mailto:a@example.com) [anchor](#top)\n"
+            "[ref]: docs/guide.md\n"
+            "`[span](gone.md)` and ``[double `tick`](gone.md)``\n"
+            "```\n[fenced](gone.md)\n```\n"
+            "~~~md\n[tilde](gone.md)\n```\n~~~\n",
+        )
+        self.write("docs/sub/page.md", "[up](../guide.md) [root](/README.md)\n")
+        self.write("context/goals/goal.md", "# Goal\n\n[note](../note.md)\n")
+        self.assert_clean()
+
+    def test_unresolved_links_fail(self):
+        self.write("README.md", "Intro.\n\n[a](missing.md) and [b](<gone dir/>)\n")
+        self.write("context/note.md", "[c](gone.md#x)\n\n[d]: ../nowhere.md\n")
+        self.write("docs/page.md", "[e](/docs/missing.md \"title\")\n")
+        self.write("context/goals/goal.md", "[f](note.md)\n")
+        self.assert_fails(
+            "README.md:3: link missing.md does not resolve",
+            "README.md:3: link <gone dir/> does not resolve",
+            "context/goals/goal.md:1: link note.md does not resolve",
+            "context/note.md:1: link gone.md#x does not resolve",
+            "context/note.md:3: link ../nowhere.md does not resolve",
+            "docs/page.md:1: link /docs/missing.md does not resolve",
+        )
+
+    def test_links_outside_scanned_files_are_unchecked(self):
+        self.write("other/page.md", "[a](missing.md)\n")
+        self.write("docs/page.txt", "[a](missing.md)\n")
         self.assert_clean()
 
 

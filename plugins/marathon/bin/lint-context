@@ -5,7 +5,9 @@ Every file under context/ is of a known kind: the context README, a note, a
 goal record, the roadmap index, or a goal file. Notes, READMEs, goal-record
 sections, and roadmap entries stay within fixed word budgets, where a word is a
 whitespace-separated token, as wc -w counts it. The roadmap keeps the shape
-marathon's references/manifest.md gives it. Prints one line per failure and
+marathon's references/manifest.md gives it. The context README's capability
+map lists each feature as built or planned, and every relative markdown link in
+the root README, context/, and docs/ resolves. Prints one line per failure and
 exits nonzero if there is any.
 """
 
@@ -13,6 +15,7 @@ import re
 import sys
 import tomllib
 from pathlib import Path
+from urllib.parse import unquote
 
 CONTEXT_README_BUDGET = 1000
 ROOT_README_BUDGET = 1500
@@ -31,6 +34,16 @@ CRITERION_BUDGET = 60
 ENTRY_FIX = "move detail to the goal's context note"
 PARSE_ERRORS = (tomllib.TOMLDecodeError, UnicodeDecodeError)
 RECORD_TASK = re.compile(r"\d+\. \[[ x]\] (\S+)$")
+CAPABILITY_MAP = "## Capability map"
+CAPABILITY_ENTRY = re.compile(r"- \*\*(.+?)\*\* \((built|planned)\): \S")
+CAPABILITY_NAME = re.compile(r"- \*\*(.+?)\*\*")
+ENTRY_FORM = "open it as '- **Name** (built): text' or '- **Name** (planned): text'"
+FENCE = re.compile(r"\s*(`{3,}|~{3,})")
+CODE_SPAN = re.compile(r"(`+)(?!`).*?(?<!`)\1(?!`)")
+LINK_TITLE = r"""(?:\s+(?:"[^"]*"|'[^']*'|\([^)]*\)))?"""
+INLINE_LINK = re.compile(r"\]\(\s*(<[^>]*>|[^\s)]*)" + LINK_TITLE + r"\s*\)")
+LINK_DEFINITION = re.compile(r" {0,3}\[(?!\^)[^\]]+\]:\s*(<[^>]*>|\S+)")
+URL_SCHEME = re.compile(r"[A-Za-z][A-Za-z0-9+.-]*:")
 
 
 def words(text):
@@ -272,6 +285,125 @@ def check_record_tasks(root, files):
             )
 
 
+def outside_code(text):
+    """Yields (line number, line) for lines outside fenced code, code spans blanked."""
+    fence = None
+    for number, line in enumerate(text.splitlines(), 1):
+        match = FENCE.match(line)
+        if fence is None and match:
+            fence = match.group(1)
+        elif fence is not None:
+            if match and match.group(1).startswith(fence):
+                fence = None
+        else:
+            yield number, CODE_SPAN.sub("", line)
+
+
+def link_targets(text):
+    """Yields (line number, target) for each inline link and link definition."""
+    for number, line in outside_code(text):
+        definition = LINK_DEFINITION.match(line)
+        if definition:
+            yield number, definition.group(1)
+        for match in INLINE_LINK.finditer(line):
+            yield number, match.group(1)
+
+
+def link_path(target):
+    """Returns the target's path part, or None if the link is not to a repo path."""
+    if target.startswith("<") and target.endswith(">"):
+        target = target[1:-1]
+    if URL_SCHEME.match(target) or target.startswith("#"):
+        return None
+    return unquote(re.split(r"[#?]", target, maxsplit=1)[0])
+
+
+def resolves(root, rel, path):
+    """Whether a link path resolves; a /-rooted path is relative to the repo root."""
+    if path.startswith("/"):
+        return (root / path.lstrip("/")).exists()
+    return (root / rel).parent.joinpath(path).exists()
+
+
+def linking_files(root):
+    """Yields the root README and every .md under context/ and docs/, relative."""
+    if (root / "README.md").is_file():
+        yield Path("README.md")
+    for top in ("context", "docs"):
+        if (root / top).is_dir():
+            for path in sorted((root / top).rglob("*.md")):
+                rel = path.relative_to(root)
+                if path.is_file() and not any(p.startswith(".") for p in rel.parts):
+                    yield rel
+
+
+def check_links(root, files):
+    for rel in linking_files(root):
+        for number, target in link_targets((root / rel).read_text()):
+            path = link_path(target)
+            if path is not None and not resolves(root, rel, path):
+                yield f"{rel}:{number}: link {target} does not resolve"
+
+
+def capability_entries(lines, start):
+    """Yields (line number, opening line, entry lines) for each top-level list item.
+
+    Lines from start up to the next ## heading are the section. A line that is
+    neither blank, indented, nor a list item comes back as an entry of its own
+    with no opening "- ", so the check reports it as not an entry.
+    """
+    entry = None
+    for number in range(start, len(lines) + 1):
+        line = lines[number - 1]
+        if line.startswith("## "):
+            break
+        if line.startswith("- ") or (line.strip() and not line[0].isspace()):
+            if entry is not None:
+                yield entry
+            entry = (number, line, [number])
+        elif entry is not None:
+            entry[2].append(number)
+        elif line.strip():
+            yield number, line, [number]
+    if entry is not None:
+        yield entry
+
+
+def check_capability_map(root, files):
+    rel = Path("context", "README.md")
+    if not (root / rel).is_file():
+        return
+    text = (root / rel).read_text()
+    lines = text.splitlines()
+    if CAPABILITY_MAP not in lines:
+        yield (
+            f"{rel}: no '{CAPABILITY_MAP}' heading; add one listing each feature "
+            "as built or planned"
+        )
+        return
+    targets = {}
+    for number, target in link_targets(text):
+        if link_path(target) is not None:
+            targets.setdefault(number, []).append(target)
+    start = lines.index(CAPABILITY_MAP) + 2
+    for number, line, entry_lines in capability_entries(lines, start):
+        if not line.startswith("- "):
+            yield f"{rel}:{number}: capability map line is not an entry; {ENTRY_FORM}"
+            continue
+        match = CAPABILITY_ENTRY.match(line)
+        if match is None:
+            named = CAPABILITY_NAME.match(line)
+            name = f"'{named.group(1)}'" if named else "without a bold name"
+            yield f"{rel}:{number}: capability map entry {name}: {ENTRY_FORM}"
+            continue
+        name, status = match.groups()
+        if status == "built" and not any(n in targets for n in entry_lines):
+            yield (
+                f"{rel}:{number}: capability map entry '{name}' is built but links "
+                "nothing; link its home with a relative link"
+            )
+
+
 CHECKS = (
     check_kinds,
     check_budgets,
@@ -281,6 +413,8 @@ CHECKS = (
     check_repos,
     check_order,
     check_record_tasks,
+    check_capability_map,
+    check_links,
 )
 
 
