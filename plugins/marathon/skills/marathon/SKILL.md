@@ -55,6 +55,9 @@ The pipeline refers to these files where it needs them:
 - [`mechanics/configuration.md`](./mechanics/configuration.md): the layout of
   `.claude/marathon.toml`.
 - [`mechanics/hooks.md`](./mechanics/hooks.md): how extension hooks resolve and fire.
+- [`mechanics/resume.md`](./mechanics/resume.md): 3R · RESUME, read when LOCATE routes a goal to it.
+- [`mechanics/releasing.md`](./mechanics/releasing.md): SHIP's release tagging, read when the task
+  brief has a Release line, or to resume a release.
 
 ## Commands
 

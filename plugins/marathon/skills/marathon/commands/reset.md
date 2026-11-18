@@ -17,8 +17,9 @@ Read first, before acting:
    slice, and any escalation still waiting on the architect.
 3. **Commit the record.** Fire `on-record`, then commit it on the task's branch in the root.
 4. **Leave the branches open** and unpublished, and stop. The next `start` on the goal resumes at
-   3R · RESUME (`mechanics/pipeline.md`).
+   3R · RESUME (`mechanics/resume.md`).
 
 A session that stops during PLAN needs no reset: the plan file keeps the open round. One whose
 context fills while SHIP releases hands off the same way, with the next move "tag <names>"
-naming the tags not yet released and each repository's position, committed where `mechanics/pipeline.md` ("Releasing") says.
+naming the tags not yet released and each repository's position, committed where
+`mechanics/releasing.md` says.

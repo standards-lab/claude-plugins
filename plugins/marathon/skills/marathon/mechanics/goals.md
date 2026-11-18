@@ -62,7 +62,7 @@ syncs it, and stages the goal its session brief proposes when staging's checks p
 ## Sync
 
 When a goal's last task merges, and every tag its task brief's Release line names is released
-(`mechanics/pipeline.md`, "Releasing"), its session syncs the goal. Every piece of context lands
+(`mechanics/releasing.md`), its session syncs the goal. Every piece of context lands
 before anything is deleted:
 
 1. Read the goal record's pending edits from the root's default branch.

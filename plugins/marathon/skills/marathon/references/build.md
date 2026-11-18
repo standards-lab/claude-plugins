@@ -15,7 +15,7 @@ goes to one-way doors.
   mechanical rule becomes part of the check rather than prose in `STANDARDS.md`.
 - **The release gate.** `[project] gate` names the release-time part of the automated checks
   (`mechanics/configuration.md`). For a plugin it is the eval suite, which costs too much to run
-  per slice. SHIP runs it before each Release tag (`mechanics/pipeline.md`, "Releasing").
+  per slice. SHIP runs it before each Release tag (`mechanics/releasing.md`).
 - **Standards.** A repository's `STANDARDS.md` holds judgement calls only, with pointers to the
   architecture pages that apply. Only the standards-reviewer reads it. `CLAUDE.md` holds
   navigation pointers only.
@@ -61,8 +61,7 @@ BUILD stops for the architect only for:
 
 - **a one-way door**: an irreversible migration, data loss, or an action with effects outside the
   repositories. Pushing the tags an accepted brief's Release line names is not one: accepting the
-  brief authorized them, and SHIP tags them without escalating again (`mechanics/pipeline.md`,
-  "Releasing").
+  brief authorized them, and SHIP tags them without escalating again (`mechanics/releasing.md`).
 - **a decision the task brief doesn't cover**, which a delegate couldn't settle without changing
   the brief
 - **scope beyond the task**

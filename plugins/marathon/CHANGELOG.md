@@ -29,6 +29,11 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   another plugin's possessive against that plugin. A path whose first segment is no directory of
   the plugin, such as `context/roadmap.toml`, belongs to the consumer's repository and is skipped,
   as are placeholders, fenced code, and released CHANGELOG entries.
+- **Releasing and RESUME load on demand.** Both move out of `mechanics/pipeline.md` into
+  `mechanics/releasing.md` and `mechanics/resume.md`, which the pipeline links where each stage
+  stood. A session reads RESUME only when LOCATE routes there, and Releasing only at SHIP with a
+  Release line; resuming a release moves into `mechanics/releasing.md`, so a resumed task that
+  isn't releasing never reads it. Stages, steps, and hook firing points are unchanged.
 
 ## v0.18.0
 

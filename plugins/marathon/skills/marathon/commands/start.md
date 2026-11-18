@@ -53,8 +53,8 @@ On the goal's last task, the brief has a Sync section, and accepting it also aut
 
 Update and commit the goal record, then publish with the brief as the pull request's body and
 merge (`mechanics/pipeline.md`, 6 · SHIP). When the task brief has a Release line, SHIP also tags
-the release, fixing forward until the planned version releases (`mechanics/pipeline.md`,
-"Releasing"). On the goal's last task, sync (`mechanics/goals.md`).
+the release, fixing forward until the planned version releases (`mechanics/releasing.md`). On
+the goal's last task, sync (`mechanics/goals.md`).
 
 If the context fills before BRIEF, `reset` runs on its own and the next `start` on the goal
 resumes.

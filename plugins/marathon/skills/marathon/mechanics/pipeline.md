@@ -13,7 +13,7 @@ SHIP   commit the goal record → publish (body = brief) → merge → tag if Re
 ```
 
 Each playbook under `commands/` says which stages it runs. Extension hooks fire only at the points
-this file names (`mechanics/hooks.md`).
+this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/hooks.md`).
 
 ## Stages
 
@@ -53,8 +53,8 @@ this file names (`mechanics/hooks.md`).
      - `brief ready`: START, then BRIEF.
 5. Check the lock: every repository the task touches, other than the coordinator, is on its
    default branch with a clean working tree, on the task's branch or its `<slug>-fix` branch
-   ("Releasing"), or, resuming a sync, on `sync-<goal>`. A coordinator on a session branch
-   ("Branches and pull requests") is held the same way, unless the branch is the resuming
+   (`mechanics/releasing.md`), or, resuming a sync, on `sync-<goal>`. A coordinator on a session
+   branch ("Branches and pull requests") is held the same way, unless the branch is the resuming
    session's own, the one the table names for this goal or topic: the session resumes on it.
    Anything else means another session holds it: stop and report.
 
@@ -90,22 +90,8 @@ this file names (`mechanics/hooks.md`).
 
 ### 3R · RESUME
 
-1. Check out the task's branch in each touched repository that hasn't merged it, any
-   `<slug>-fix` branch a release left unmerged ("Releasing"), or, resuming a sync, the
-   `sync-<goal>` branch in each repository that hasn't merged it.
-2. Fire `on-build`, unless the session resumes only a sync or a release. A release fires it
-   whenever it opens or resumes a `<slug>-fix` branch ("Releasing").
-3. Read the brief, Progress, and Handoff from the goal record. Finish any WIP slice first, then
-   continue BUILD from the recorded position. Two next moves resume past BUILD instead:
-   - "tag <names>" resumes the release at SHIP ("Releasing"), one repository at a time, from the
-     position Handoff records for it: at step 1 for a repository whose task branch hasn't merged;
-     at step 2 for one merged with ci not yet green; at its `<slug>-fix` branch's publish, merge,
-     or `[remote] ci` step, then the tag step, for one fixing forward; at the fix for one whose
-     gate failed; at the failed-release fix for one whose tag was pushed and whose release
-     failed; and at the tag step only for one merged and green.
-   - "merge `sync-<goal>`, then delete the record" resumes the sync at its remaining steps: merge
-     each `sync-<goal>` branch not yet merged, then delete the record and release the lock
-     (`mechanics/goals.md`, "Sync", steps 4 to 6).
+When LOCATE routes here, read [`mechanics/resume.md`](./resume.md): it checks the task's branches
+back out and continues BUILD, or a release or sync, from the goal record.
 
 ### 4 · BUILD
 
@@ -138,61 +124,15 @@ coordinator during BUILD. When the context fills, run `reset` on your own (`comm
    Without a merge command, or when a check fails, set State to `handoff` with the next move
    ("merge" or the failing check), commit it on the branch, tell the architect, and stop. When
    the task brief has a Release line, merge and tag one repository at a time instead
-   ("Releasing").
+   (`mechanics/releasing.md`).
 6. Switch each repository back to its default branch, pull, and delete the local task branch,
    where Releasing hasn't already. Delete the brief file.
 7. When this was the goal's last task, sync (`mechanics/goals.md`, "Sync").
 
 ### Releasing
 
-A task brief's Release line lists the tags the task releases (`references/briefs.md`, "Task
-brief"), and accepting the session brief authorizes them. SHIP then takes each repository in
-turn, lowest layer first, and finishes its release before the next repository's merge:
-
-1. Merge the branch with `[remote] merge`, switch to the default branch, pull, and delete the
-   local task branch.
-2. When `[remote] ci` is set, run it on the merge commit (`mechanics/configuration.md`).
-   Without it, tagging follows the merge directly.
-3. Tag each of the repository's Release tags, the base artifact before its sub-modules:
-   1. Check that the tag isn't on the remote, unless it is this release's failed tag (below),
-      and that its version matches the artifact's
-      version as the repository records it, in its manifest or its CHANGELOG's top heading.
-   2. When `[project] gate` is set, run it on the merge commit with the tag as its one argument
-      (`mechanics/configuration.md`). Exit 0 lets the tag be pushed; nonzero holds it (below).
-      A resumed release runs it again before each tag it hasn't pushed.
-   3. Create the tag annotated "<artifact> <version>" on the merge commit, and push that tag
-      alone.
-   4. When the repository has a release workflow, confirm the run the tag started succeeds.
-
-No tag is pushed while the default branch is red or its gate fails. The session fixes forward
-until the planned version releases:
-
-- **A red default branch** after the merge, a failed gate, or a version that doesn't match, is
-  fixed on a `<slug>-fix` branch from the default branch, published and merged like the task's
-  branch, with `[remote] ci` and the gate run again on its merge commit. Then tag. Opening or
-  resuming a fix branch fires `on-build` first.
-- **A failed release**, a release workflow that fails after the tag is pushed, is fixed the
-  same way. Then delete the tag on the remote and locally, and create and push it again at the
-  same version on the fix's merge commit.
-- **A released tag** is never re-cut. A tag whose release failed is this release's tag when the
-  Release line names it and this session or an earlier session of the same release pushed it, as
-  Handoff records: it is deleted and pushed again at the same version, as above. Only a tag on the
-  remote that no session of this release pushed stops the release with an escalation.
-
-The release always ends at the planned version. It stops for the architect only for a decision
-the brief doesn't cover, as an escalation (`references/build.md`). When the context fills, set
-State to `handoff` with the next move "tag <names>", naming the tags not yet released and each
-Release repository's position: merged with ci not yet green, merged and green, on `<slug>-fix`
-at its publish, merge, or ci step, its gate failed, its tag pushed and its release failed, or
-released. Commit it where the root stands: on the root's task branch while that branch hasn't
-merged, pushed to that branch, whose pull request is already published, so the record lands with
-the merge; or on the root's default branch as bookkeeping once it has. Then stop; the next
-`start` resumes the release (3R · RESUME).
-
-A resumed release ends at the goal record. Once the last named tag releases, set State to `idle`,
-Task and Branch to none, drop Handoff, and check the task if SHIP's record update hadn't landed,
-as a bookkeeping commit on the root's default branch. On the goal's last task, sync follows
-(`mechanics/goals.md`, "Sync").
+When the task brief has a Release line, read [`mechanics/releasing.md`](./releasing.md) at SHIP: it
+merges and tags one repository at a time, fixing forward until the planned version releases.
 
 ## Branches and pull requests
 
@@ -225,11 +165,12 @@ Only goal-record bookkeeping commits straight to the root's default branch: the 
 (State, Task, Branch) between tasks; State `handoff` with its Handoff section for a release's
 "tag <names>" once the root's task branch has merged, and for a stuck sync's "merge
 `sync-<goal>`, then delete the record"; the return to `idle` once a resumed release's last tag
-releases ("Releasing"); the approved next brief `plan` writes; and deleting the record once its
-sync pull request merges (`mechanics/goal-record.md`). Everything else, including the manifest and its arrays, the notes,
-the repository catalog, the configuration, and `retro`'s coordinator findings, goes through a
-pull request. The one other direct commit is a new repository's first: `init`'s commit, pushed to
-create the default branch that later pull requests merge into (`commands/init.md`).
+releases (`mechanics/releasing.md`); the approved next brief `plan` writes; and deleting the
+record once its sync pull request merges (`mechanics/goal-record.md`). Everything else, including
+the manifest and its arrays, the notes, the repository catalog, the configuration, and `retro`'s
+coordinator findings, goes through a pull request. The one other direct commit is a new
+repository's first: `init`'s commit, pushed to create the default branch that later pull requests
+merge into (`commands/init.md`).
 
 ## Committing
 
