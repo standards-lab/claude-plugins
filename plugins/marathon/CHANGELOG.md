@@ -18,6 +18,56 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   only when the installed marathon is below the floor or such a release lies between the floor
   and the installed version; otherwise it applies the extension without asking. A release that
   changes the contract updates the affected extensions and bumps their floor in the same goal.
+- **Files load through links.** Claude Code expands `@`-include lines only in CLAUDE.md, so
+  SKILL.md's three were never loaded. SKILL.md now links `behavior/` and `mechanics/pipeline.md`
+  and says to read the command's playbook first. Each playbook opens with a Read first list of
+  the files that command needs before acting; the rest stay cited where their subject comes up.
+- **This repository's check resolves file citations.** `scripts/check.sh` fails on a backtick
+  file citation in a plugin's markdown that names no file. A bare path resolves against the skill
+  root inside a skill and against the plugin or its skill roots elsewhere, `./` and `../` paths
+  against the citing file, `${CLAUDE_PLUGIN_ROOT}/` paths against the plugin, and a path after
+  another plugin's possessive against that plugin. A path whose first segment is no directory of
+  the plugin, such as `context/roadmap.toml`, belongs to the consumer's repository and is skipped,
+  as are placeholders, fenced code, and released CHANGELOG entries.
+- **Releasing and RESUME load on demand.** Both move out of `mechanics/pipeline.md` into
+  `mechanics/releasing.md` and `mechanics/resume.md`, which the pipeline links where each stage
+  stood. A session reads RESUME only when LOCATE routes there, and Releasing only at SHIP with a
+  Release line; resuming a release moves into `mechanics/releasing.md`, so a resumed task that
+  isn't releasing never reads it. Stages, steps, and hook firing points are unchanged.
+- **Repeated rules get one home.** A rule stated in several skill files now lives in one, and the
+  others cite it: how a round is presented (`behavior/planning.md`), the currency commands before
+  round 1 and taking an approved brief to approval (`mechanics/pipeline.md`, 3 · PLAN), nothing
+  changing before approval (`mechanics/pipeline.md`, Invariants, which now names a `plan`,
+  `experiment`, or `intake` round outcome too), the branch check and explicit-path staging before
+  a commit (`mechanics/pipeline.md`, Committing), when `on-record` fires (`mechanics/hooks.md`),
+  goal-record bookkeeping commits (`mechanics/pipeline.md`), the context-fill handoff
+  (`references/build.md`), and release tags authorized by acceptance and the release handoff
+  (`mechanics/releasing.md`). Behavior is unchanged.
+- **Profiles cite the skill.** Each subagent profile holds only its own delegate's behavior and
+  cites the skill, by `${CLAUDE_PLUGIN_ROOT}/skills/marathon/` paths, for the rest: limits, the
+  branch check before a commit, round and brief formats, currency, and planning rules. Every
+  delegate limit now lives in `behavior/delegation.md`, Limits, and the profile table there cites
+  each profile. The standards-reviewer profile owns the tests-that-lie sweep, and the editor cites
+  `references/context-engineering.md` for note rules.
+- **The slice brief has a format** (`references/briefs.md`, Slice brief): behaviors, test seam,
+  branches, check command, and the standards that bear on the slice, quoted with their source and
+  always including the comment rule. The implementer still never loads `STANDARDS.md` whole.
+- **Comment rules.** The implementer writes only the comments the quoted standard requires, never
+  one that excuses a workaround. The standards-reviewer removes such comments, or fixes their
+  cause, and edits doc-comment wording. The editor never edits source files.
+- **Architect-facing formats are markdown** (`references/briefs.md`): the plan and intake
+  rounds, escalations, task and slice briefs, session brief, status digest, and retro render as
+  markdown, hard-wrapped at 100 characters, with code fences only around code. A round's
+  questions are bold, with **rec:** and **changes:** beneath; the status digest is a table and the
+  retro a checklist. The goal record stores the task brief unfenced. The `plan-round-in-reply`
+  eval gains regex graders that fail a round inside a code fence or with a line over 100
+  characters.
+- **This repository's check holds the skill's footprint.** `scripts/check.sh` sums the words in
+  each command's read-first set (its SKILL.md, the playbook, and the files its Read first lists
+  reach, followed transitively) and in each agent profile, and fails when one exceeds its budget in
+  `scripts/budgets.txt`. It also fails when a skill's description, measured as YAML folds it,
+  exceeds 1,024 characters. marathon's description drops its prose on the repository's layout to
+  fit, keeping every trigger phrase.
 
 ## v0.18.0
 

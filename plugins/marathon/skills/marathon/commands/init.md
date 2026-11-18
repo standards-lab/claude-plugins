@@ -4,6 +4,12 @@ Set up marathon on a repository, once, from a planning concept. `init` first che
 isn't set up: no `context/` here and no sibling declaring itself coordinator. Settle every decision
 in plan mode, in plan rounds, before creating any file.
 
+Read first, before acting:
+
+- [`../behavior/planning.md`](../behavior/planning.md)
+- [`../mechanics/configuration.md`](../mechanics/configuration.md)
+- [`../references/manifest.md`](../references/manifest.md)
+
 ## 1. Find the concept
 
 The concept is the document the architect points you to, often a `concept.md` or a charter, or

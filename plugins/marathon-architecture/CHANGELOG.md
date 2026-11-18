@@ -9,8 +9,10 @@ GitHub releases the tags cut.
 ### Changed
 
 - **Requires marathon ≥ 0.19.0.** The extension declares the minimum marathon version it
-  requires in place of the version it targets, as marathon's extension contract
-  (`references/extensions.md`, Compatibility) defines from 0.19.0.
+  requires in place of the version it targets, as the extension contract in marathon's
+  `references/extensions.md`, Compatibility, defines from 0.19.0.
+- **`mechanics/pipeline.md` loads through a link.** SKILL.md's `@`-include line was never
+  expanded; it now links the file and says to read it when the extension loads.
 
 ## v0.3.0
 

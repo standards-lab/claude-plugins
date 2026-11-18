@@ -5,15 +5,13 @@ description: >
   A workflow for long-running development run as a software factory. The architect engages twice
   per task, approving the task brief and accepting the session brief, while subagents implement,
   review against standards and against the spec, and keep the context current in between. Goals
-  and tasks in a roadmap manifest are the units of work, and active goals run side by side, each
-  locking its own repositories. Use this skill whenever the architect sets up a project from a
-  planning concept; plans, stages, or reorders goals; starts, resumes, or ships a task; spikes an
-  idea; asks what is running; reviews past work; or hands off because the context window is
-  filling. Typical requests include "start factory", "what's the status", "plan the next goal",
-  "take in the experiment", "resume where I left off", "run a retro", "hand off", "initialize this
-  project", and "set up marathon here". marathon treats the repository as the only source of
-  truth: a flat context/ of notes, a roadmap manifest, and one goal record per active goal. Prefer
-  this skill for any structured, multi-session work on a marathon repository, even when the
+  and tasks in a roadmap manifest are the units of work, and active goals run side by side. Use
+  this skill whenever the architect sets up a project from a planning concept; plans, stages, or
+  reorders goals; starts, resumes, or ships a task; spikes an idea; asks what is running; reviews
+  past work; or hands off because the context window is filling. Typical requests include "start
+  factory", "what's the status", "plan the next goal", "take in the experiment", "resume where I
+  left off", "run a retro", "hand off", "initialize this project", and "set up marathon here".
+  Prefer this skill for any structured, multi-session work on a marathon repository, even when the
   architect doesn't name it.
 ---
 
@@ -30,21 +28,21 @@ is the source of truth, not an issue tracker and not the conversation.
 
 Use this skill whenever a session begins, advances, pauses, resumes, or ends on a marathon
 repository: one with a top-level `context/`, or a workspace of such repositories. Set up a new
-repository with `init`.
+repository with `init`. Each session starts by reading its command's playbook (Commands, below).
 
 ## Behavior
 
-These rules apply in every session: how a session plans, and how it hands work to subagents.
+These rules govern how a session plans and how it hands work to subagents.
 
-@behavior/planning.md
-
-@behavior/delegation.md
+- [`behavior/planning.md`](./behavior/planning.md): how a session decides its scope, in plan
+  rounds with the architect.
+- [`behavior/delegation.md`](./behavior/delegation.md): the subagent profiles, and what each
+  delegate may do.
 
 ## Mechanics
 
-The session pipeline applies to every command:
-
-@mechanics/pipeline.md
+- [`mechanics/pipeline.md`](./mechanics/pipeline.md): the session pipeline, which applies to every
+  command.
 
 The pipeline refers to these files where it needs them:
 
@@ -55,11 +53,15 @@ The pipeline refers to these files where it needs them:
 - [`mechanics/configuration.md`](./mechanics/configuration.md): the layout of
   `.claude/marathon.toml`.
 - [`mechanics/hooks.md`](./mechanics/hooks.md): how extension hooks resolve and fire.
+- [`mechanics/resume.md`](./mechanics/resume.md): 3R · RESUME, read when LOCATE routes a goal to it.
+- [`mechanics/releasing.md`](./mechanics/releasing.md): SHIP's release tagging, read when the task
+  brief has a Release line, or to resume a release.
 
 ## Commands
 
 The first argument names the command. Each command's playbook supplies the content of the
-pipeline's stages.
+pipeline's stages. Read the playbook for the command being run first. Its Read first list names
+the files to read before acting; read every other file it cites when its subject comes up.
 
 | Command | When to use it | Playbook |
 |---------|----------------|----------|
@@ -68,7 +70,7 @@ pipeline's stages.
 | `start` | To run one task of an active goal: plan, build, brief, ship, and sync on the last task | [`commands/start.md`](./commands/start.md) |
 | `experiment` | Once per topic, to create an `experiment.<topic>` goal, its `intake` task, and its planned spikes; `plan` sets up each spike | [`commands/experiment.md`](./commands/experiment.md) |
 | `intake` | Once per experiment, after every spike has synced: to decide what the served goals build from the answers, close the experiment, and archive its spikes | [`commands/intake.md`](./commands/intake.md) |
-| `status` | To print one line per active goal, with what needs the architect first | [`commands/status.md`](./commands/status.md) |
+| `status` | To print one row per active goal, with what needs the architect first | [`commands/status.md`](./commands/status.md) |
 | `retro` | To turn comments on past work into checks, standards, skill changes, or notes | [`commands/retro.md`](./commands/retro.md) |
 | `reset` | To hand off a task partway; runs on its own when the context fills | [`commands/reset.md`](./commands/reset.md) |
 

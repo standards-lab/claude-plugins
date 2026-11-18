@@ -24,16 +24,16 @@ answer can still change the brief.
 
 ## Start from current dependencies
 
-Before round 1, the planner runs each touched repository's currency command
-(`mechanics/pipeline.md`, 3 · PLAN). What trails is planned with the task, as the brief's first
-slices (`references/briefs.md`, "Task brief"), so the task builds on current dependencies.
+What the currency commands report trailing (`mechanics/pipeline.md`, 3 · PLAN) is planned with
+the task, as the brief's first slices (`references/briefs.md`, "Task brief"), so the task builds
+on current dependencies.
 
 ## Ask for decisions, never for facts
 
 PLAN runs in plan mode, in rounds (`references/briefs.md`, "Plan round"). The planner profile
 finds the facts and drafts each round (`behavior/delegation.md`); the architect answers every
 question in a round at once. The rounds end when no question remains open, and the architect
-approves the task brief. Nothing changes before that approval.
+approves the task brief (`mechanics/pipeline.md`, "Invariants").
 
 A round is printed in full in the reply, in the plan round's format, and the plan file keeps a
 copy. The architect answers it inline, in their next message. A round is never presented or

@@ -33,7 +33,7 @@ Run a command as `marathon <command>` or `/marathon:marathon <command>`.
 | `start <goal>` | Runs the goal's next task: plan, build, brief, ship, and sync on the last task. |
 | `experiment` | Creates an `experiment.<topic>` goal, its `intake` task, and its planned spikes, once per topic. |
 | `intake <experiment>` | Takes in a finished experiment: decides what the served goals build from the spikes' answers, closes it, and archives the spikes. |
-| `status` | Prints one line per active goal, with what needs the architect first. |
+| `status` | Prints one row per active goal, with what needs the architect first. |
 | `retro` | Turns comments on past work into checks, standards, skill changes, or notes. |
 | `reset` | Hands off a task partway; runs on its own when the context fills. |
 
@@ -49,9 +49,10 @@ SHIP   goal record → pull request (body = brief) → merge → tag if Release 
 BUILD stops for the architect only for a one-way door, a decision the brief doesn't cover, or
 scope beyond the task. When the task brief has a Release line, SHIP tags each release once main
 is green and the repository's optional release gate passes, fixing forward until the planned
-version releases. Every session, planning and sync
-included, lands through a branch and a pull request in each repository it changes. See
-[`mechanics/pipeline.md`](./skills/marathon/mechanics/pipeline.md) and
+version releases. Every session, planning and sync included, lands through a branch and a pull
+request in each repository it changes. See
+[`mechanics/pipeline.md`](./skills/marathon/mechanics/pipeline.md),
+[`mechanics/releasing.md`](./skills/marathon/mechanics/releasing.md), and
 [`references/build.md`](./skills/marathon/references/build.md).
 
 ## Goals

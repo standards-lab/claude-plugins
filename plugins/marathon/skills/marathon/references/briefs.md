@@ -1,67 +1,70 @@
 # Briefs
 
-These are the formats marathon writes for the architect. Each one is read in the terminal, fits on
-about one screen, and leads with what needs a decision. Agents look up facts themselves and never
-ask the architect for them; the architect makes the decisions.
+These are the formats marathon writes for the architect, plus the slice brief it writes for an
+implementer. Each one the architect reads is read in the terminal, fits on about one screen, and
+leads with what needs a decision. Agents look up facts themselves and never ask the architect for
+them; the architect makes the decisions.
+
+Every format is markdown, hard-wrapped at 100 characters in the reply, and code fences appear only
+around code. Each template below is shown as a blockquote so it renders as it will in the reply;
+the reply drops the `> `.
 
 ## Plan round
 
 PLAN asks its questions in rounds. A round holds every question whose prerequisites are already
 settled, and the architect answers them all at once, inline. A question that depends on the answer
 to another open question waits for the next round; it is never asked conditionally, as in "only if
-1 is yes". The round is printed in full in the reply, never asked through AskUserQuestion
-(`behavior/planning.md`, "Ask for decisions, never for facts").
+1 is yes". The round is presented as `behavior/planning.md`, "Ask for decisions, never for
+facts", says.
 
-```
-PLAN ROUND 1 · v1.ai · task harness-adapters
-facts found: Pi has RPC mode (pi/docs/rpc.md);
-             Claude Code: stream-json
-currency:    go-core
-               go 1.24.2 -> 1.25.1  bug fixes only
-               pgx v5.6.0 -> v6.0.0  Query takes options
-               chi v5.0.12 -> v5.2.0  held (Decisions)
-             go-web-service: current
-
-1. Harness transport: stdin/stdout JSONL
-   or SSE?
-   rec: stdin/stdout JSONL — Pi, Claude
-        Code, and OpenCode all support it;
-        SSE only in OpenCode
-   changes: adapter count 3→1 protocol
-2. go-core's pgx v6.0.0, a new major:
-   upgrade now, hold, or its own task?
-   rec: its own task — v6's Query takes
-        options, which reaches every caller
-   changes: adds task pgx-v6; holds pgx
-3. Session resume after a driver restart:
-   build it in v1, or leave it out?
-   rec: leave it out — out of scope;
-        note in backlog
-   changes: drops persistence slice
-
-reply: "1 ok, 2 ok, 3 yes but ..."
-```
+> ## PLAN ROUND 1 · v1.ai · task harness-adapters
+>
+> **Facts found**
+> - Pi has an RPC mode (pi/docs/rpc.md).
+> - Claude Code streams JSON (stream-json).
+>
+> **Currency**
+> - go-core
+>   - go 1.24.2 → 1.25.1: bug fixes only
+>   - pgx v5.6.0 → v6.0.0: Query takes options
+>   - chi v5.0.12 → v5.2.0: held (Decisions)
+> - go-web-service: current
+>
+> **Questions**
+>
+> 1. **Harness transport: stdin/stdout JSONL or SSE?**
+>    - **rec:** stdin/stdout JSONL. Pi, Claude Code, and OpenCode all support it; only OpenCode
+>      supports SSE.
+>    - **changes:** the adapters share one protocol instead of three.
+> 2. **go-core's pgx v6.0.0, a new major: upgrade now, hold, or give it its own task?**
+>    - **rec:** its own task. v6's Query takes options, which reaches every caller.
+>    - **changes:** adds task pgx-v6; holds pgx at v5.6.0.
+> 3. **Session resume after a driver restart: build it in v1, or leave it out?**
+>    - **rec:** leave it out of v1 and note it in the backlog.
+>    - **changes:** drops the persistence slice.
+>
+> **reply:** "1 ok, 2 ok, 3 yes but ..."
 
 - Number every question.
 - Name each question's subject in its own words, with the options it chooses between, so the
-  architect can decide it from the question, its `rec:`, and its `changes:` alone. All three lines
+  architect can decide it from the question, its **rec:**, and its **changes:** alone. All three
   name the things they refer to and never point elsewhere for them: not "this", "option B",
-  "above", `facts found:`, another question, a term defined outside the question, or a file to
+  "above", **Facts found**, another question, a term defined outside the question, or a file to
   open.
 - Decide one thing per question. When two choices are coupled, ask the one that settles the
   other; the dependent choice waits for the next round. Never bundle two decisions into lettered
   combinations.
-- Give every question a `rec:`, and a `changes:` line saying what the answer changes.
-- Cite each fact with its source under `facts found:`.
-- Round 1 carries a `currency:` block beside `facts found:`, per repository the task touches:
-  each trailing item as its currency command reports it, with a one-line summary of its release
-  notes, or `current`, or `no currency command`, or the failed command as a fact. A held item is
-  listed as a fact (`mechanics/goal-record.md`, Decisions).
+- Give every question a **rec:**, and a **changes:** line saying what the answer changes.
+- Cite each fact with its source under **Facts found**.
+- Round 1 carries a **Currency** list after **Facts found**, per repository the task touches: each
+  trailing item as its currency command reports it, with a one-line summary of its release notes,
+  or `current`, or `no currency command`, or the failed command as a fact. A held item is listed
+  as a fact (`mechanics/goal-record.md`, Decisions).
 - Ask about a trailing item only when it needs a decision: adapt, a breaking change the code must
   absorb; adopt, a new feature worth using; or a new major, to upgrade now, hold, or give its own
   task. A patch or minor bump with nothing to adapt stays a fact, and the upgrade slices take it.
 - The rounds end when no question remains open. A BUILD escalation uses the same format, headed
-  `ESCALATION` (`references/build.md`).
+  `ESCALATION` in place of `PLAN ROUND <n>` (`references/build.md`).
 
 ## Task brief
 
@@ -69,16 +72,32 @@ The task brief is what the architect approves at PLAN, and it is BUILD's contrac
 behavior, not procedure, and names no file paths, so it stays valid while other goals change the
 code. The goal record keeps it (`mechanics/goal-record.md`).
 
-```
-## Task brief · experiment.ai.spike-harness-driver · harness-adapters
-Problem       what is missing and why it matters now
-Behaviors     numbered, each testable
-Test seams    the interfaces the tests exercise (ideally one)
-Slices        ordered vertical slices, each demoable alone
-Out of scope  what this task will not do
-Door          two-way | one-way (why)
-Release       the exact tags the task releases (optional)
-```
+> ## Task brief · experiment.ai.spike-harness-driver · harness-adapters
+>
+> **Problem**
+>
+> What is missing and why it matters now.
+>
+> **Behaviors**
+> 1. Numbered, each testable.
+>
+> **Test seams**
+> - The interfaces the tests exercise, ideally one.
+>
+> **Slices**
+> 1. Ordered vertical slices, each demoable alone.
+>
+> **Out of scope**
+>
+> What this task will not do.
+>
+> **Door**
+>
+> Two-way, or one-way, and why.
+>
+> **Release**
+>
+> The exact tags the task releases (optional).
 
 - **Slices** begin with upgrade slices when a repository the task touches trails: one per
   trailing repository, in the coordinator's `order`, each done when that repository's currency
@@ -93,55 +112,92 @@ Release       the exact tags the task releases (optional)
   never inferred from a version bump, and no manifest field holds it. SHIP tags it
   (`mechanics/pipeline.md`, 6 · SHIP).
 
+## Slice brief
+
+The slice brief is what the session gives a fresh implementer for one slice at BUILD
+(`references/build.md`, "The loop"). It is all the implementer reads before the code, so it
+carries the standards that bear on the slice, quoted, in place of the whole `STANDARDS.md`
+(`behavior/delegation.md`).
+
+> ## Slice brief · experiment.ai.spike-harness-driver · harness-adapters · slice 2/3
+>
+> **Behaviors**
+> 1. Numbered, each testable: what this slice adds.
+>
+> **Test seam**
+>
+> The interface the tests exercise.
+>
+> **Branches**
+> - repository → branch, for each repository the slice touches
+>
+> **Check**
+> - the check command, per repository
+>
+> **Standards**
+> - the sections that bear on the slice, quoted, each with its source
+
+- **Behaviors** come from the task brief, numbered as it numbers them.
+- **Standards** quotes the sections of the repository's `STANDARDS.md`, and of the architecture
+  pages it points to, that bear on the slice, each with its file and section. It always quotes
+  the repository's rule on comments, or says the repository has none. A repository with no
+  `STANDARDS.md` gets the line "no STANDARDS.md".
+
 ## Session brief
 
 The session brief is the architect's view of the finished task, and the body of its pull request.
 The diff is already committed when the architect reads it and isn't visible in the terminal, so
-Core changes carries the code that matters. The session writes it to `.claude/briefs/<goal>.md` in the
-goal's root, which gitignores `.claude/briefs/`.
+Core changes carries the code that matters. The session writes it to `.claude/briefs/<goal>.md` in
+the goal's root, which gitignores `.claude/briefs/`.
 
-```
-## experiment.ai.spike-harness-driver · task 3/5 · harness-adapters
-
-### Summary
-  clutch run --harness=<pi|claude|opencode>
-  adapters/ ─┬ pi/       (new)
-             ├ claude/   (new)
-             └ driver.go Session interface
-
-### Core changes
-  1. driver.Session — one interface over every harness
-       type Session interface { Send(ctx, Turn) (Reply, error); Close() error }
-     why: adapters differ only in transport
-  2. pi.New(cfg) (*Session, error) — RPC over stdin/stdout JSONL
-     why: matches plan round 2, question 1
-
-### Evidence
-  mise run check        ✓ 214 tests, lint, split
-  clutch demo adapters  → transcript excerpt
-
-### Decided without you
-  1. Kept stdin JSONL over SSE (simpler, spike)
-  2. Standards-reviewer: 4 fixes, 2 tautological tests cut
-
-### Merge danger
-  two-way door · blast radius: spike repo only
-
-### Needs you
-  (none)
-```
+> ## experiment.ai.spike-harness-driver · task 3/5 · harness-adapters
+>
+> ### Summary
+>
+> ```
+> clutch run --harness=<pi|claude|opencode>
+> adapters/ ─┬ pi/       (new)
+>            ├ claude/   (new)
+>            └ driver.go Session interface
+> ```
+>
+> ### Core changes
+>
+> 1. **driver.Session**: one interface over every harness. Why: the adapters differ only in
+>    transport.
+>    ```go
+>    type Session interface { Send(ctx, Turn) (Reply, error); Close() error }
+>    ```
+> 2. **pi.New**: RPC over stdin/stdout JSONL. Why: plan round 2, question 1 chose it.
+>    ```go
+>    func New(cfg Config) (*Session, error)
+>    ```
+>
+> ### Evidence
+>
+> - `mise run check`: ✓ 214 tests, lint, split
+> - `clutch demo adapters`: transcript excerpt
+>
+> ### Decided without you
+>
+> 1. Kept stdin JSONL over SSE: simpler, and a spike needs one transport.
+> 2. Standards-reviewer: 4 fixes, 2 tautological tests cut.
+>
+> **Merge danger:** two-way door · blast radius: the spike repository only
+>
+> **Needs you:** none
 
 - **Summary** is the smallest visual that makes the change clear: CLI usage, a tree, or
-  pseudocode.
+  pseudocode, fenced as code.
 - **Core changes** lists one to five entries. Each gives a short excerpt or a before-and-after
-  signature, and one line on why.
+  signature, fenced as code, and one line on why.
 - **Evidence** comes from commands the architect can rerun.
 - **Decided without you** lists the decisions the brief didn't cover and what the reviewers
   changed.
 - **Merge danger** names the door type and the blast radius. A one-way door gets the close read.
-  When the task brief has a Release line, Merge danger repeats its tags, so accepting the brief
-  authorizes tagging them.
-- **Needs you** reads "(none)" when nothing remains.
+  When the task brief has a Release line, Merge danger repeats its tags, which accepting the
+  brief authorizes (`mechanics/releasing.md`).
+- **Needs you** reads "none" when nothing remains.
 - **Sync** appears only on the goal's last task, after Needs you. It lists the pending edits the
   sync will apply, per repository, and the goal proposed to stage next: for a spike, the next
   planned spike of its experiment; otherwise the top of `planned`. When a spike's experiment has
@@ -151,13 +207,14 @@ goal's root, which gitignores `.claude/briefs/`.
   When a check fails, the line reads "proposed, not staged: <reason>", and nothing is staged; a
   later `plan` stages it.
 
-```
-### Sync
-  coordinator   context/ai.md: answer section for spike-harness-driver
-                roadmap.toml: remove experiment.ai.spike-harness-driver
-  architecture  standards/harnesses.md: name the driver interface
-  next          experiment.ai.spike-local-subagents · staged on accept
-```
+> ### Sync
+>
+> - **coordinator**
+>   - context/ai.md: answer section for spike-harness-driver
+>   - roadmap.toml: remove experiment.ai.spike-harness-driver
+> - **architecture**
+>   - standards/harnesses.md: name the driver interface
+> - **next:** experiment.ai.spike-local-subagents · staged on accept
 
 On a spike's last task, the brief gives the spike's answer: Summary states the question and the
 one-line answer, Evidence carries the numbered evidence, and Sync lists the answer section among
@@ -169,7 +226,7 @@ A spike's answer section is the coordinator edit its sync lands in the note its 
 in `context`, one section per spike, under the `## Answers · experiment.<topic>` heading
 `experiment` writes there (`commands/experiment.md`). The spike's last task writes the answer
 under "The answer" in the spike's README, and adds this section to its goal record's pending
-edits.
+edits. The example is a note's file content, so it stays fenced.
 
 ```markdown
 ### Answer · experiment.ai.spike-harness-driver
@@ -199,70 +256,77 @@ edits.
 
 ## Status digest
 
-`status` prints one line per active goal: the goal, its tasks done out of its total, its state,
-and the repositories it locks. Goals that need the architect sort first and carry a `!`.
+`status` prints a table with one row per active goal: the goal, its tasks done out of its total,
+its state, and the repositories it locks. Goals that need the architect sort first and carry a
+`!`.
 
-```
-── STATUS · 2026-10-01 ──
-! experiment.ai.spike-harness-driver    2/3  brief ready  spike-harness-driver
-  experiment.ai.spike-local-subagents  1/3  building     spike-local-subagents
-  factory                              1/3  building     claude-plugins
-  v1.messaging                         0/1  idle         go-messaging, go-core, go-web-service
-```
+> ## Status · 2026-10-01
+>
+> | goal | done | state | locks |
+> |---|---|---|---|
+> | ! experiment.ai.spike-harness-driver | 2/3 | brief ready | spike-harness-driver |
+> | experiment.ai.spike-local-subagents | 1/3 | building | spike-local-subagents |
+> | factory | 1/3 | building | claude-plugins |
+> | v1.messaging | 0/1 | idle | go-messaging, go-core, go-web-service |
 
 The state is the goal record's State line (`mechanics/goal-record.md`). A goal with no record
 yet shows `no record`.
 
 ## Retro
 
-`retro` reviews a task, a goal, or a date range. It groups its findings by the layer that should
-catch them next time, one line each with a proposed change, and the architect ticks the ones to
-apply.
+`retro` reviews a task, a goal, or a date range. It groups its findings under one heading per
+layer that should catch them next time, one checkbox each with a proposed change, and the
+architect ticks the ones to apply.
 
-```
-RETRO · goal v1.storage · 2026-09-14..09-24
-check/eval
-  [ ] 1. depguard rule: providers only in internal/app (go-web-service)
-standard
-  [ ] 2. STANDARDS.md: one contract, one home — doc.go inventory
-skill/profile
-  [ ] 3. implementer brief: name the check command explicitly
-context
-  [ ] 4. cull blobfs-composition.md — expressed in blobfs/docs
-```
+> ## Retro · goal v1.storage · 2026-09-14..09-24
+>
+> ### check/eval
+> - [ ] 1. depguard rule: providers only in internal/app (go-web-service)
+>
+> ### standard
+> - [ ] 2. STANDARDS.md: one contract, one home — doc.go inventory
+>
+> ### skill/profile
+> - [ ] 3. implementer brief: name the check command explicitly
+>
+> ### context
+> - [ ] 4. cull blobfs-composition.md — expressed in blobfs/docs
 
 ## Intake round
 
 `intake` runs plan rounds led by the spikes' answers (`commands/intake.md`). The header names the
-experiment and the goals it serves, then summarizes each spike's answer section: its question,
-its one-line answer, and its evidence. The numbered questions follow, in the plan round's form.
+experiment and the goals it serves, then summarizes each spike's answer section under its name:
+its question, its one-line answer, and its evidence. The numbered questions follow, in the plan
+round's form.
 
-```
-INTAKE ROUND 2 · experiment.ai → v1.ai, v1.agents
-spike-harness-driver
-  question  one driver interface over Pi, Claude Code, and OpenCode?
-  answer    yes; stdin/stdout JSONL carries all three
-  evidence  3 items; item 3 by tests only
-spike-local-subagents
-  question  do local models hold a subagent's tool loop?
-  answer    no; tool calls drift past 20 turns
-  evidence  4 items; item 2 waits on a larger model
-
-1. Does v1.ai build on the driver interface?
-   rec: yes, as its first task, harness-driver
-   changes: adds a task to v1.ai; folds the answer into context/ai.md
-2. Does v1.agents keep local subagents?
-   rec: no; cloud models only until a larger local model is tested
-   changes: drops v1.agents' local-subagents task
-3. Archive spike-local-subagents?
-   rec: yes; keep spike-harness-driver open as v1.ai's reference
-   changes: one remote archived after the merge
-
-reply: "1 ok, 2 ok, 3 yes but ..."
-```
+> ## INTAKE ROUND 2 · experiment.ai → v1.ai, v1.agents
+>
+> **spike-harness-driver**
+> - **question:** one driver interface over Pi, Claude Code, and OpenCode?
+> - **answer:** yes; stdin/stdout JSONL carries all three
+> - **evidence:** 3 items; item 3 by tests only
+>
+> **spike-local-subagents**
+> - **question:** do local models hold a subagent's tool loop?
+> - **answer:** no; tool calls drift past 20 turns
+> - **evidence:** 4 items; item 2 waits on a larger model
+>
+> **Questions**
+>
+> 1. **Does v1.ai build its first task, harness-driver, on the driver interface?**
+>    - **rec:** yes, as its first task.
+>    - **changes:** adds a task to v1.ai; folds the answer into context/ai.md.
+> 2. **Does v1.agents keep its local-subagents task?**
+>    - **rec:** no; cloud models only until a larger local model is tested.
+>    - **changes:** drops v1.agents' local-subagents task.
+> 3. **Archive spike-local-subagents' remote, or keep it open?**
+>    - **rec:** archive it; keep spike-harness-driver open as v1.ai's reference.
+>    - **changes:** one remote archived after the merge.
+>
+> **reply:** "1 ok, 2 ok, 3 yes but ..."
 
 - The first round names the served goals, which the header lists from then on, and
   consolidates the spikes' answer sections.
 - Each spike's summary comes from its answer section, with any evidence proven only by tests,
   or still waiting, called out.
-- Every question has a `rec:` and a `changes:` line, as in a plan round.
+- Every question has a **rec:** and a **changes:** line, as in a plan round.

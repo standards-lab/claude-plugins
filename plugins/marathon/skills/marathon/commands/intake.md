@@ -5,6 +5,16 @@ goal it serves builds from them, and close the experiment. `intake` runs the exp
 task, its only one; the argument names the experiment, as in `intake experiment.ai`. A spike that
 works is evidence, and the intake is where it becomes a decision.
 
+Read first, before acting:
+
+- [`../mechanics/pipeline.md`](../mechanics/pipeline.md)
+- [`../behavior/planning.md`](../behavior/planning.md)
+- [`../behavior/delegation.md`](../behavior/delegation.md)
+- [`../references/briefs.md`](../references/briefs.md)
+- [`../mechanics/goals.md`](../mechanics/goals.md)
+- [`../references/manifest.md`](../references/manifest.md)
+- [`../references/context-engineering.md`](../references/context-engineering.md)
+
 ## When it runs
 
 `intake` runs only when no spike sub-goal of the experiment remains in the manifest: each spike's
@@ -13,7 +23,7 @@ with its array and, when it has a record, its State.
 
 `intake` runs LOCATE and START (`mechanics/pipeline.md`), which fires `on-start`. LOCATE finds
 the experiment goal in the manifest, not in `active`: an experiment goal is never listed. The
-experiment keeps no goal record, and the intake writes none, so it never fires `on-record`.
+experiment keeps no goal record, and the intake writes none (`mechanics/hooks.md`).
 
 ## State
 
@@ -27,9 +37,8 @@ intake's own branch, and it resumes there (`mechanics/pipeline.md`, 1 · LOCATE)
 ## Rounds
 
 Enter plan mode and run plan rounds with the architect, led by the spikes' answers
-(`references/briefs.md`, "Intake round"). The planner finds the facts. Print each round in full
-in the reply, never through AskUserQuestion (`behavior/planning.md`, "Ask for decisions, never
-for facts").
+(`references/briefs.md`, "Intake round"), each presented as `behavior/planning.md`, "Ask for
+decisions, never for facts", says. The planner finds the facts.
 
 - **The first round** names the goals the experiment serves, which no manifest field names: the
   experiment's summary and its intake task's entry inform the proposal. It consolidates every
@@ -41,11 +50,10 @@ for facts").
   of each spike. A spike the round keeps open, such as a repository that outlives the
   experiment, stays open.
 
-Nothing changes until the architect approves the outcome.
-
 ## Edits
 
-At the coordinator, in one commit on an `intake-<topic>` branch:
+Once the architect approves the outcome (`mechanics/pipeline.md`, "Invariants"), at the
+coordinator, in one commit on an `intake-<topic>` branch:
 
 - Write the decided tasks into each served goal (`references/manifest.md`). The intake edits
   only the manifest's tasks and never another goal's record: an active served goal takes them

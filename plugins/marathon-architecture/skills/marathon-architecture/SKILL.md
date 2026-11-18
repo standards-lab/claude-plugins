@@ -33,9 +33,8 @@ reference each repository's `STANDARDS.md` points to, so the standards-reviewer 
 
 ## Mechanics
 
-The hook map, and where the layer is found, load with this skill:
-
-@mechanics/pipeline.md
+Read [`mechanics/pipeline.md`](./mechanics/pipeline.md) when the extension loads: it holds the
+hook map and where the layer is found.
 
 - [`mechanics/on-start.md`](./mechanics/on-start.md): find the layer, create or adopt it, and
   give the session its location.

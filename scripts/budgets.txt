@@ -1,0 +1,15 @@
+# Word budgets that scripts/check.sh enforces, one "path words" pair per line.
+# A command's path stands for its read-first set; a profile's for its file.
+plugins/marathon/skills/marathon/commands/experiment.md 9300
+plugins/marathon/skills/marathon/commands/init.md 3500
+plugins/marathon/skills/marathon/commands/intake.md 9500
+plugins/marathon/skills/marathon/commands/plan.md 8900
+plugins/marathon/skills/marathon/commands/reset.md 4400
+plugins/marathon/skills/marathon/commands/retro.md 6300
+plugins/marathon/skills/marathon/commands/start.md 7900
+plugins/marathon/skills/marathon/commands/status.md 5100
+plugins/marathon/agents/editor.md 500
+plugins/marathon/agents/implementer.md 300
+plugins/marathon/agents/planner.md 300
+plugins/marathon/agents/spec-reviewer.md 300
+plugins/marathon/agents/standards-reviewer.md 500

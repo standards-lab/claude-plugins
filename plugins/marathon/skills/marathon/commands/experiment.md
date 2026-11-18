@@ -12,6 +12,10 @@ An experiment decides nothing on its own: a spike that works is evidence, not a 
 planned spikes. When `experiment.<topic>` already exists, stop: a later spike is added with
 `plan`. `experiment` runs `plan`'s stages (`commands/plan.md`), with the rounds and edits below.
 
+Read first, before acting:
+
+- [`./plan.md`](./plan.md), and the files in its Read first list
+
 ## Rounds
 
 Settle in plan rounds:

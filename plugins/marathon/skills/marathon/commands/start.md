@@ -9,14 +9,21 @@ On a spike, `start experiment.<topic>.<spike>` runs the spike's tasks, its path 
 session. An experiment goal has only its intake, which `marathon intake` runs
 (`commands/intake.md`): `start` on `experiment.<topic>` refuses and points there.
 
+Read first, before acting:
+
+- [`../mechanics/pipeline.md`](../mechanics/pipeline.md)
+- [`../behavior/planning.md`](../behavior/planning.md)
+- [`../behavior/delegation.md`](../behavior/delegation.md)
+- [`../mechanics/goal-record.md`](../mechanics/goal-record.md)
+- [`../references/briefs.md`](../references/briefs.md)
+- [`../references/build.md`](../references/build.md)
+
 ## Plan
 
 LOCATE routes an `idle` goal to PLAN. Without an approved brief for the next task, plan the
 task in rounds to an approved brief and slice list (`behavior/planning.md`,
-`references/briefs.md`). With one, PLAN runs the currency commands first and then presents the
-brief, opening a round only when something trails that the brief doesn't cover
-(`mechanics/pipeline.md`, 3 · PLAN). Add detail to the notes the task touches only as far as the
-brief needs.
+`references/briefs.md`). With one, PLAN takes it to approval (`mechanics/pipeline.md`, 3 ·
+PLAN). Add detail to the notes the task touches only as far as the brief needs.
 
 Branch slug: the task.
 
@@ -33,10 +40,8 @@ the brief describes a finished state.
 
 ## Brief
 
-Write and show the session brief. Accepting it authorizes publishing and merging; a redirect
-returns to BUILD, or to PLAN when it changes the brief's behaviors.
-
-On the goal's last task, the brief has a Sync section, and accepting it also authorizes the sync
+Write and show the session brief, and act on the architect's accept or redirect
+(`mechanics/pipeline.md`, 5 · BRIEF). On the goal's last task, the brief has a Sync section
 (`references/briefs.md`, "Session brief"). A spike's last brief gives its answer
 (`references/briefs.md`, "Answer section").
 
@@ -44,8 +49,7 @@ On the goal's last task, the brief has a Sync section, and accepting it also aut
 
 Update and commit the goal record, then publish with the brief as the pull request's body and
 merge (`mechanics/pipeline.md`, 6 · SHIP). When the task brief has a Release line, SHIP also tags
-the release, fixing forward until the planned version releases (`mechanics/pipeline.md`,
-"Releasing"). On the goal's last task, sync (`mechanics/goals.md`).
+the release, fixing forward until the planned version releases (`mechanics/releasing.md`). On
+the goal's last task, sync (`mechanics/goals.md`).
 
-If the context fills before BRIEF, `reset` runs on its own and the next `start` on the goal
-resumes.
+If the context fills before BRIEF, the session hands off (`references/build.md`, "Handoff").

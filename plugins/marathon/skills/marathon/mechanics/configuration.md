@@ -75,9 +75,9 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
 - **`[project] gate`**: optional. The repository's release gate, the release-time part of its
   automated checks, such as a plugin's eval suite (`references/build.md`). SHIP runs it at
   development time on the merge commit, before each Release tag, with that tag as its one
-  argument, as in `mise run gate v1.4.0` (`mechanics/pipeline.md`, "Releasing"). It exits 0
-  when the tag may be pushed, and nonzero to hold it. CI never runs it. marathon fixes only this
-  contract and prescribes no tool.
+  argument, as in `mise run gate v1.4.0` (`mechanics/releasing.md`). It exits 0 when the tag may
+  be pushed, and nonzero to hold it. CI never runs it. marathon fixes only this contract and
+  prescribes no tool.
 - **`[remote]`**: the platform, the command SHIP runs to publish a branch, and optionally the
   command it runs to merge the published branch once its checks pass.
 - **`[remote] ci`**: optional. A command that waits for the default branch's CI runs on the merge
@@ -85,7 +85,7 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   runs more after a merge than on the pull request, such as integration tests only on the default
   branch, so the merge command's wait on the pull request's checks isn't enough. SHIP runs it
   before tagging a release; without it, tagging follows the merge directly
-  (`mechanics/pipeline.md`, "Releasing").
+  (`mechanics/releasing.md`).
 - **`[workspace]`**: for the coordinator only. `order` lists layers, lowest first, and an array
   entry is a layer of peers. `exclusive` lists groups of repositories that at most one active goal
   may touch at a time, narrowing the repository lock (`mechanics/goals.md`). `[workspace.paths]`

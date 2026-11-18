@@ -4,6 +4,12 @@ Turn what the architect had to say about past work into changes to the system, s
 written twice. `retro` reviews a task, a goal, or a date range, and includes the drift pass: notes
 the code now expresses or contradicts. It runs LOCATE and START (`mechanics/pipeline.md`).
 
+Read first, before acting:
+
+- [`../mechanics/pipeline.md`](../mechanics/pipeline.md)
+- [`../references/briefs.md`](../references/briefs.md)
+- [`../references/context-engineering.md`](../references/context-engineering.md)
+
 ## Gather
 
 For the range, read:
