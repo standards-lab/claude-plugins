@@ -4,6 +4,21 @@ All notable changes to the marathon plugin are documented here. Versions follow
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
+with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
+
+## Unreleased
+
+### Changed
+
+- **Extension contract:** an extension declares the minimum marathon version it requires, as
+  `Requires: marathon ≥ X.Y.Z` in its SKILL.md, in place of the version it targets
+  (`references/extensions.md`, `mechanics/hooks.md`). Any later marathon is compatible unless a
+  release above the floor marks a contract change with this marker. An agent reports a mismatch
+  only when the installed marathon is below the floor or such a release lies between the floor
+  and the installed version; otherwise it applies the extension without asking. A release that
+  changes the contract updates the affected extensions and bumps their floor in the same goal.
+
 ## v0.18.0
 
 A release can be gated. A repository may declare a release gate, which SHIP runs on the merge

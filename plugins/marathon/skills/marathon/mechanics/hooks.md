@@ -11,8 +11,9 @@ Find the enabled extensions once, at 2 · START, before the first hook fires:
 2. In a workspace, also read `[workspace] extensions` from the coordinator's `marathon.toml`.
 3. Combine the two lists in order, without duplicates. An extension whose skill is installed is
    active. Tell the architect about any that isn't installed, and continue without it.
-4. Read each active extension's SKILL.md declaration. If it targets an incompatible marathon
-   version, tell the architect and ask before applying it.
+4. Read each active extension's SKILL.md declaration and check its `Requires:` floor against the
+   installed marathon (`references/extensions.md`, Compatibility). On a mismatch, tell the
+   architect and ask before applying it.
 
 When no extension is enabled, every hook does nothing.
 

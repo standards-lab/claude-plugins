@@ -29,11 +29,26 @@ Removing the entry disables the extension. The architect decides whether its fil
 ## What an extension declares
 
 - Its skill description contains "marathon extension".
-- Its SKILL.md names the artifact it owns, if any, the hooks it acts at, and the marathon version
-  it targets. When the version is incompatible, report the mismatch instead of guessing.
+- Its SKILL.md names the artifact it owns, if any, the hooks it acts at, and the minimum marathon
+  version it requires, as `Requires: marathon ≥ X.Y.Z`.
 - It creates its artifact in the first session after it is enabled.
 - It adds no key to `marathon.toml` other than its entry in the `extensions` list. Its own
   configuration lives in a file it owns, which marathon never reads.
+
+## Compatibility
+
+The `Requires:` version is a floor. Any later marathon is compatible unless a release after the
+floor changed the extension contract. marathon's CHANGELOG, at its plugin root, marks each such
+change with an entry that starts `**Extension contract:**`; an agent scans for that marker and
+reads the release heading above each match.
+
+Report a mismatch only when:
+
+- the installed marathon is below the floor, or
+- a release above the floor, up to the installed version, marks a contract change.
+
+Otherwise apply the extension without asking. A marathon release that changes the contract
+updates the affected extensions and bumps their floor in the same goal.
 
 ## Source of truth
 
