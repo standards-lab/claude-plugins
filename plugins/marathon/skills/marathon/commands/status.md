@@ -26,5 +26,5 @@ With a goal named (`references/briefs.md`, "Goal status"):
 
 1. Read the goal's file (`references/manifest.md`) and its goal record, if it has one.
 2. List its tasks in `order`, each done when the record checks it, or all open with no record.
-3. Add one line per sub-goal, each file whose name extends the goal's by one segment, with its
-   done count, taken as the digest's step 2 takes it.
+3. Add one line per sub-goal, meaning each file whose name extends the goal's by one segment,
+   with its done count, counted as the digest's step 2 counts it.

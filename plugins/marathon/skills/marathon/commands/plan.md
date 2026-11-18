@@ -28,8 +28,8 @@ Once the architect approves the outcome (`mechanics/pipeline.md`, "Invariants"),
 rounds decided on a `plan-<goal>` branch in each repository they change, in one commit per kind
 of change:
 
-- **Roadmap**: stage a goal into `active`, pivot any of the three arrays, add or delete goals,
-  each in its own file, and tasks, and sharpen the next task's entry (`mechanics/goals.md`,
+- **Roadmap**: stage a goal into `active`, pivot any of the three arrays, add or delete goal
+  files and their tasks, and sharpen the next task's entry (`mechanics/goals.md`,
   `references/manifest.md`).
   Staging checks the goal's `root`, `repos`, and lock first. A spike added to an existing
   experiment is a sub-goal shaped as `experiment` shapes one (`commands/experiment.md`).

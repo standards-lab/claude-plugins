@@ -121,7 +121,7 @@ coordinator's single file until the `release` task.
 
 ## Progress
 
-slices 5/5 committed · standards done · spec done · editor —
+slices 5/5 committed · standards done · spec done · editor done
 
 ## Decisions
 
@@ -231,6 +231,27 @@ slices 5/5 committed · standards done · spec done · editor —
   the next 100. Trims wait for content-budgets (plan).
 - roadmap-layout: the roadmap stays TOML; Markdown and HTML were rejected because the roadmap is
   data that LOCATE, staging, lint-context, and the planned CLI parse (plan).
+- roadmap-layout: a task's `repos` stays optional, and a task without one uses its goal's `repos`.
+  That default works inside one file, so it is not ancestor inheritance.
+- roadmap-layout: goal files keep the `name` title field. "Doesn't repeat the goal's name" means
+  the file doesn't repeat its dotted path.
+- roadmap-layout: container goals write `repos = []`, and the index comment is one line.
+- roadmap-layout: prose always tells the two arrays apart as "the goal's `order`" and "the
+  workspace `order`".
+- roadmap-layout: a sub-goal's file name "extends" its parent's by one segment, not "begins with"
+  it, so `v10` is not a child of `v1`.
+- roadmap-layout: `experiment` also creates the file for the reserved root goal `experiment` when
+  none exists, because intake's empty-ancestor deletion can remove it.
+- roadmap-layout: in `status <goal>`, a done task is marked `x`, and a sub-goal with no record
+  counts 0/n.
+- roadmap-layout: the CHANGELOG puts the migration steps inside the Changed bullet, not in a
+  separate "Migrating from" section.
+- roadmap-layout: budgets raised: experiment 9300→9700, init 3500→3800, intake 9500→9900, plan
+  8900→9300, retro 6300→6400, start 7900→8000, status 5100→5500.
+- roadmap-layout: the plan-round eval scores 0.83–0.89 against the gate's 1.0 threshold on both
+  `main` and this branch, because the model's reply lines run past 100 characters; that predates
+  this task. The scaffold builds the new layout, and in every run the model found the goal
+  through it.
 
 ## Pending edits
 

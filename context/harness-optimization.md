@@ -22,11 +22,12 @@ Read these sizes, in words, to judge the work:
 
 - The skill: SKILL.md links each file instead of `@`-including it, and each command's playbook
   opens with a "Read first" list of the files it needs. `start`'s read-first set, SKILL.md and the
-  playbook included, is 7,898 words against a budget of 7,900. `mechanics/pipeline.md` is about
-  1,958 words, down from 2,715, since Releasing and RESUME moved to their own files.
+  playbook included, is 7,981 words against a budget of 8,000. `mechanics/pipeline.md` is about
+  1,970 words, down from 2,715, since Releasing and RESUME moved to their own files.
 - The planner profile: 273 words, down from 554, since profiles cite the skill's rules instead of
   restating them.
-- The coordinator's `context/roadmap.toml`: 12,765 words, with dated lines its format forbids.
+- The coordinator's `context/roadmap.toml`: one file of 13,353 words over 61 goals and 74 tasks,
+  with no task order and dated lines its format forbids. It stays one file until `release`.
 - A long goal record: docproc's `v1.ai.processing` runs to 14,278 words, 11,283 of them
   Decisions.
 - Spike READMEs that became lab notebooks: `spike-html-conventions`, at 24,678 words.
@@ -44,10 +45,11 @@ Read these sizes, in words, to judge the work:
 - **One release at the end.** Nothing releases until the last task, so sessions keep running the
   installed 0.18.0 until then. The sync then cleans the coordinator's roadmap and notes under the
   new check.
-- **Roadmap layout** (task `roadmap-layout`). The coordinator's `roadmap.toml` is 13,210 words,
-  2,175 of them a dated header, over 61 goals and 72 tasks, and it records no task order. It
-  becomes an index of the three arrays plus one `context/roadmap/<goal>.toml` per goal, holding
-  its own `root` and `repos`, an `order` array, and its tasks. The final sync splits it.
+- **Roadmap layout** (task `roadmap-layout`). Unreleased marathon reads an index of the three
+  arrays plus one `context/roadmap/<goal>.toml` per goal, holding its own `root` and `repos`, an
+  `order` array, and its tasks (marathon's `references/manifest.md`). The installed 0.18.0 still
+  reads the coordinator's single file, so `release`'s sync splits it and moves its dated header
+  into notes.
 - **Harness standards** (task `harness-standards`). claude-plugins gains a `STANDARDS.md` for the
   judgement calls of harness programming, which the standards-reviewer applies. The architecture
   layer's `harness/` pages left in its architecture-diet because one repository can't promote a
@@ -66,3 +68,8 @@ A retro or `retro-routes` can take these up.
   "Read first" line per playbook.
 - The check skips a bare citation whose first directory exists in no plugin or skill root, so a
   typo in that directory goes uncaught.
+- marathon's manifest reference says `repos = []` means "only `plan` works on it", but `intake`
+  runs on experiment goals, which write `repos = []`. This predates `roadmap-layout`.
+- The plan-round eval fails the release gate's 1.0 threshold on `main`, scoring 0.83–0.89
+  because the model's reply lines run past 100 characters. `release` needs it fixed, or the
+  threshold settled, before tagging.
