@@ -68,6 +68,21 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   `scripts/budgets.txt`. It also fails when a skill's description, measured as YAML folds it,
   exceeds 1,024 characters. marathon's description drops its prose on the repository's layout to
   fit, keeping every trigger phrase.
+- **The roadmap is an index plus one file per goal** (`references/manifest.md`). The index,
+  `context/roadmap.toml`, holds only the `active`, `planned`, and `backlog` arrays and a comment of
+  at most two lines that points to the format. Each goal, container goals and the reserved root
+  goal `experiment` included, has its own `context/roadmap/<dotted-goal>.toml`, its fields at the
+  top level and its tasks as `[tasks.<slug>]` tables. Every goal file writes `repos`, with `[]`
+  for a coordinator-only goal, and writes `root` once known; no goal inherits either from an
+  ancestor. A file that holds tasks has an `order` array of every task slug, in run order, and
+  `status <goal>` prints a goal's tasks in that order. To migrate an existing single-file roadmap:
+  1. Split it into the index and one goal file per goal, container goals included, each named by
+     the goal's full dotted path.
+  2. Write `root` and `repos` in each goal file, including values a goal used to inherit from an
+     ancestor, with `repos = []` for a coordinator-only goal.
+  3. Add an `order` array to each goal that has tasks, listing its task slugs in run order.
+  4. Move any narrative comments out of the index into notes under `context/`, leaving only the
+     arrays and the format pointer.
 
 ## v0.18.0
 
