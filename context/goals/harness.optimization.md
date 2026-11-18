@@ -121,7 +121,7 @@ consumers adopt `lint-context` only after it.
 
 ## Progress
 
-slices 5/6 committed · standards — · spec — · editor —
+slices 6/6 committed · standards running · spec — · editor —
 
 ## Decisions
 
