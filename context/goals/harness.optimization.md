@@ -103,7 +103,7 @@ Two-way. Nothing is released, and sessions keep running the installed 0.18.0.
 
 ## Progress
 
-slices 5/7 committed · standards — · spec — · editor —
+slices 6/7 committed · standards — · spec — · editor —
 
 ## Decisions
 
