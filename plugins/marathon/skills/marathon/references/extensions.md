@@ -37,7 +37,7 @@ Removing the entry disables the extension. The architect decides whether its fil
 
 ## Compatibility
 
-The `Requires:` version is a floor. Any later marathon is compatible unless a release after the
+The `Requires:` version is a floor. Any later marathon is compatible unless a release above the
 floor changed the extension contract. marathon's CHANGELOG, at its plugin root, marks each such
 change with an entry that starts `**Extension contract:**`; an agent scans for that marker and
 reads the release heading above each match.

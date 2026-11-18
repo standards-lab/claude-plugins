@@ -9,8 +9,8 @@ GitHub releases the tags cut.
 ### Changed
 
 - **Requires marathon ≥ 0.19.0.** The extension declares the minimum marathon version it
-  requires, a floor rather than a target: any later marathon is compatible unless a release above
-  the floor changes the extension contract.
+  requires in place of the version it targets, as marathon's extension contract
+  (`references/extensions.md`, Compatibility) defines from 0.19.0.
 
 ## v0.3.0
 
