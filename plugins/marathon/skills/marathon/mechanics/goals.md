@@ -1,8 +1,9 @@
 # Goals
 
-Goals and tasks are marathon's whole vocabulary for work, including work that runs at the same
-time. The roadmap manifest, `context/roadmap.toml`, holds them (`references/manifest.md`); a
-standalone project keeps its own, and a workspace keeps one at the coordinator.
+Goals and tasks are marathon's whole vocabulary for work, including work that runs at the same time.
+The roadmap manifest holds them: an index, `context/roadmap.toml`, of the three arrays, and one file
+per goal in `context/roadmap/` (`references/manifest.md`). A standalone project keeps its own, and a
+workspace keeps one at the coordinator.
 
 ## Goals and tasks
 
@@ -18,7 +19,7 @@ standalone project keeps its own, and a workspace keeps one at the coordinator.
 
 ## Three states
 
-Every goal the manifest lists is in exactly one of three root arrays of dotted paths:
+Every goal the manifest lists is in exactly one of the index's three arrays of dotted paths:
 
 - **`active`**: the goals running now. It is a live snapshot, edited at any time.
 - **`planned`**: the long-term order, top first.
@@ -39,6 +40,9 @@ Three verbs move goals:
   (`commands/plan.md`).
 - **sync**: carry a finished goal's context into the workspace, then delete the goal
 - **pivot**: edit any of the three arrays, at any time, as the architect decides
+
+Staging and pivoting edit only the index. Adding a goal creates its file, and adding a task adds
+its table to its goal's file and appends its slug to `order`.
 
 `plan` stages and pivots, through its pull request. The session that ships a goal's last task
 syncs it, and stages the goal its session brief proposes when staging's checks pass.
@@ -67,12 +71,13 @@ anything is deleted:
 
 1. Read the goal record's pending edits from the root's default branch.
 2. Apply the pending edits for the coordinator in one commit on a `sync-<goal>` branch there: the
-   notes, the catalog, the workspace `order`, and the manifest, removing the goal from `active`
-   and deleting its table with everything under it. Delete any ancestor goal whose criteria now
-   hold, and any ancestor left empty. When the session brief's Sync section reads "staged on
-   accept", stage that goal in the same commit (`references/briefs.md`, "Session brief"),
-   checking staging's requirements again; if one no longer holds, leave the goal where it is and
-   give the architect the reason.
+   notes, the catalog, the workspace `order`, the index, and the goal files. Remove the goal from
+   `active`, and delete its file and its sub-goals' files. Then delete the file of each ancestor
+   whose criteria now hold, or that is left empty: one with no tasks of its own and no file whose
+   name extends its own. When the session brief's Sync section reads "staged on accept", stage
+   that goal in the same commit (`references/briefs.md`, "Session brief"), checking staging's
+   requirements again; if one no longer holds, leave the goal where it is and give the architect
+   the reason.
 3. Apply each pending edit for another repository on a `sync-<goal>` branch there, when no active
    goal locks that repository. When one does, add the edit as a task of the locking goal in step
    2's commit instead.

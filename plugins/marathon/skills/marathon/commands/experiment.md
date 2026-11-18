@@ -35,13 +35,14 @@ Settle in plan rounds:
 
 At the coordinator, in one commit on an `experiment-<topic>` branch:
 
-- Add `experiment.<topic>` with its `intake` task, which `marathon intake` runs once no spike
-  remains (`commands/intake.md`). The experiment goal is never listed in the arrays.
+- Create `experiment.<topic>`'s file with its `intake` task, which `marathon intake` runs once no
+  spike remains (`commands/intake.md`), and the reserved root goal `experiment`'s file when there
+  is none. The experiment goal is never listed in the arrays.
 - Create the note the experiment cites, or extend it when it exists, with an
   `## Answers · experiment.<topic>` heading under which the spikes' answer sections land
   (`references/briefs.md`, "Answer section").
-- Add each spike as a sub-goal with its `root` and `repos` set to its repository, its `remote`
-  and `path`, and a summary of its question and the decision it changes
+- Create a file for each spike, a sub-goal with its `root` and `repos` set to its repository, its
+  `remote` and `path`, and a summary of its question and the decision it changes
   (`references/manifest.md`). Append the spikes to `planned` in the settled order.
 
 `experiment` creates no repository and stages no spike. Publish and merge the branch with the

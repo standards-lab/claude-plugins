@@ -88,10 +88,10 @@ add sources. Until then, intake edits the catalog files directly.
 Capture nominates well only when the consumer knows what the blueprint is waiting for. The
 consumer may read the blueprint's remaining goals, because it sits downstream, but copying them
 into its context would duplicate the roadmap. Instead, the extension generates a want-list file
-from `context/roadmap.toml`. The file is stamped with the roadmap's source commit, regenerated
-at each crossing, never edited by hand, and gitignored. When both workspaces are on the same
-machine, the extension reads the roadmap directly through its references key, and no file is
-generated.
+from the roadmap's index and goal files. The file is stamped with the roadmap's source commit,
+regenerated at each crossing, never edited by hand, and gitignored. When both workspaces are on
+the same machine, the extension reads the roadmap directly through its references key, and no
+file is generated.
 
 ### Nomination markers
 

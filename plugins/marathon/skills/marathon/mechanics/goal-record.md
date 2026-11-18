@@ -45,7 +45,8 @@ slices 2/3 committed · standards — · spec — · editor —
 
 ## Pending edits
 
-- coordinator · roadmap: add backlog goal `harness-resume` (resumable sessions, ruled out of v1).
+- coordinator · roadmap/harness-resume.toml: create the goal (resumable sessions, ruled out of
+  v1); roadmap.toml: add it to `backlog`.
 - coordinator · references catalog: add the `pi` repository.
 - architecture · a page on model tiers, from `context/model-tiers.md` in this repository.
 ```
@@ -64,10 +65,11 @@ appear while a task is planned or in progress, and Handoff only while State is `
 
   An open plan round lives in the session's plan file, not here (`mechanics/pipeline.md`, 3 ·
   PLAN).
-- **Tasks** lists the goal's tasks in the order they run, each checked by the SHIP that merges
-  it. The manifest keeps a task's table until its goal syncs, so the record is where progress
-  shows. A goal with sub-goals lists only its own tasks. A task the manifest gains while the goal
-  is active, such as one `intake` writes, joins Tasks at the goal's next `plan` or `start`.
+- **Tasks** mirrors the `order` of the goal's file (`references/manifest.md`), each task checked
+  by the SHIP that merges it. The goal's file keeps a task's table until the goal syncs, so the
+  record is where progress shows. A goal with sub-goals lists only its own tasks. A task that
+  joins `order` while the goal is active, such as one `intake` writes, joins Tasks at the goal's
+  next `plan` or `start`.
 - **Task brief** is the current task's approved brief, stored as markdown in the shape of
   `references/briefs.md`, "Task brief", unfenced. The next task's brief replaces it. Briefs
   already stored fenced stay as they are until the record is next rewritten.
@@ -83,8 +85,8 @@ appear while a task is planned or in progress, and Handoff only while State is `
   "<task>: held <item> at <pin>: <reason>", whose reason names the latest version it declined;
   PLAN lists it as a fact and asks again only once a later version is out.
 - **Pending edits** collects every change the goal owes a repository outside its own work, each
-  prefixed with that repository: the coordinator's notes, catalog, workspace `order`, and
-  manifest, or a page in the architecture repository. Sync applies them.
+  prefixed with that repository: the coordinator's notes, catalog, workspace `order`, roadmap
+  index, and goal files, or a page in the architecture repository. Sync applies them.
 
 ## Where it is committed
 

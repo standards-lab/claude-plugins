@@ -13,15 +13,15 @@ Two rules follow:
 
 ## What `context/` holds
 
-The directory is flat, with no subdirectories, except `context/goals/`, which holds the records
-of the goals rooted in this repository (`mechanics/goal-record.md`):
+The directory is flat except for two subdirectories: `context/goals/`, which holds the records of
+the goals rooted in this repository (`mechanics/goal-record.md`), and `context/roadmap/`:
 
 - `context/README.md`: stable orientation. A short statement of the vision, and a broad, shallow,
   unordered map of the capabilities the project will need.
 - `context/*.md`: notes. A note holds intent the built work doesn't express yet, such as a
   decision with its reasoning and rejected alternatives, or an idea with its open questions.
-- `context/roadmap.toml`: the roadmap manifest, at a standalone project or the coordinator
-  (`references/manifest.md`).
+- `context/roadmap.toml` and `context/roadmap/<goal>.toml`: the roadmap manifest's index and its
+  goal files, at a standalone project or the coordinator (`references/manifest.md`).
 - `context/goals/<goal>.md`: a goal record, the session state of one active goal.
 
 The source, the optional `docs/` directory, and any files an enabled extension owns sit outside

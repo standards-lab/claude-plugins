@@ -20,8 +20,8 @@ marathon itself never mentions the catalog.
 
 Any marathon workspace draws on repositories beyond its members: prior work to reuse, external
 examples, and related efforts. Each one needs a portable identity plus a map of where it is
-checked out on this machine, so the workspace can be rebuilt anywhere. The roadmap manifest has
-the same shape: a file with a schema, owned by an extension.
+checked out on this machine, so the workspace can be rebuilt anywhere. The catalog would take the
+roadmap's shape, data files with a schema, but owned by an extension.
 
 ## Proposal
 

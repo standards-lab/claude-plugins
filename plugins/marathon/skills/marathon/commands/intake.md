@@ -17,12 +17,12 @@ Read first, before acting:
 
 ## When it runs
 
-`intake` runs only when no spike sub-goal of the experiment remains in the manifest: each spike's
-sync has removed it (`mechanics/goals.md`, "Sync"). When any remains, stop and report each one
+`intake` runs only when no spike sub-goal of the experiment has a file left: each spike's sync
+has deleted it (`mechanics/goals.md`, "Sync"). When any remains, stop and report each one
 with its array and, when it has a record, its State.
 
 `intake` runs LOCATE and START (`mechanics/pipeline.md`), which fires `on-start`. LOCATE finds
-the experiment goal in the manifest, not in `active`: an experiment goal is never listed. The
+the experiment's file, not an entry in `active`: an experiment goal is never listed. The
 experiment keeps no goal record, and the intake writes none (`mechanics/hooks.md`).
 
 ## State
@@ -55,15 +55,15 @@ decisions, never for facts", says. The planner finds the facts.
 Once the architect approves the outcome (`mechanics/pipeline.md`, "Invariants"), at the
 coordinator, in one commit on an `intake-<topic>` branch:
 
-- Write the decided tasks into each served goal (`references/manifest.md`). The intake edits
-  only the manifest's tasks and never another goal's record: an active served goal takes them
+- Write the decided tasks into each served goal's file (`references/manifest.md`). The intake
+  edits only goal files' tasks and never another goal's record: an active served goal takes them
   into its record at its next `plan` or `start` (`mechanics/goal-record.md`, "Fields").
 - Fold each answer section into the served goals' notes at the coordinator, creating a note a
   served goal then cites in its `context` when it has none there, and remove the answer section
   from the experiment's note. Sharpen or delete that note as the round decided
   (`references/context-engineering.md`).
-- Remove the experiment goal, with its intake task, from the manifest, and any ancestor left
-  empty.
+- Delete the experiment's file, and the file of any ancestor left empty (`mechanics/goals.md`,
+  "Sync").
 - Update the repository catalog as the round decided, recording each spike it archives as
   archived.
 
