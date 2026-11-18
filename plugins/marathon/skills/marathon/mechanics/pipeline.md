@@ -28,11 +28,11 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
    - A **spike** session starts from the coordinator or the workspace, or from the root of the
      standalone project whose roadmap holds the spike's experiment, never from the spike's own
      repository.
-2. Read the manifest (`references/manifest.md`): the project's own `context/roadmap.toml`, or the
-   coordinator's. First check the coordinator's lock as step 5 does, then pull its default branch,
-   unless the session resumes on its own branch there.
-   Resolve every repository name the goal uses through `order`, `[workspace.paths]`, or a spike
-   sub-goal's `path`.
+2. Read the manifest (`references/manifest.md`): the index, the project's own
+   `context/roadmap.toml` or the coordinator's, then the named goal's file beside it. First check
+   the coordinator's lock as step 5 does, then pull its default branch, unless the session resumes
+   on its own branch there. Take the goal's `repos` and `root` from its file, and resolve each
+   repository name through the workspace's `order` or `[workspace.paths]`, or a spike's `path`.
 3. Find the goal: the one the architect names, which must be in `active` and have a `root`; one
    without a `root` is set up by `plan` first (`commands/plan.md`). With none named, print the
    status digest (`commands/status.md`) and ask. A goal that isn't active is staged by `plan`
@@ -40,8 +40,8 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
    staged: only `intake` runs on it (`commands/intake.md`), and `start` refuses and points there.
    A goal no longer listed, because its coordinator sync pull request merged, is found when its
    record in its root is in `handoff` with the next move "merge `sync-<goal>`, then delete the
-   record": its root is the one the last version of the manifest that lists the goal names (the
-   coordinator's history of `context/roadmap.toml`). START, then RESUME.
+   record": its root is the `root` in its deleted goal file's last version in the coordinator's
+   git history. START, then RESUME.
 4. Find where the goal stands, in this order:
    - A plan file under `.claude/plans/` whose title names the goal holds an open plan round:
      continue it. START, then PLAN.

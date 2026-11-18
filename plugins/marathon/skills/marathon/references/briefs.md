@@ -272,6 +272,19 @@ its state, and the repositories it locks. Goals that need the architect sort fir
 The state is the goal record's State line (`mechanics/goal-record.md`). A goal with no record
 yet shows `no record`.
 
+## Goal status
+
+`status <goal>` prints the goal's tasks in `order`, then one line per sub-goal.
+
+> ## Status · v1.data · 2026-10-01
+>
+> | task | done |
+> |---|---|
+> | reads | x |
+> | writes | |
+>
+> - v1.data.cache: 0/2
+
 ## Retro
 
 `retro` reviews a task, a goal, or a date range. It groups its findings under one heading per
