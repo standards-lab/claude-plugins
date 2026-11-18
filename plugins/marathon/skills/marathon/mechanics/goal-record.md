@@ -28,7 +28,7 @@ request merges (`mechanics/goals.md`).
 
 ## Task brief · transport
 
-(the approved brief, in the form of references/briefs.md, "Task brief")
+(the approved brief's fields, as markdown in the shape of references/briefs.md, "Task brief")
 
 ## Progress
 
@@ -68,7 +68,9 @@ appear while a task is planned or in progress, and Handoff only while State is `
   it. The manifest keeps a task's table until its goal syncs, so the record is where progress
   shows. A goal with sub-goals lists only its own tasks. A task the manifest gains while the goal
   is active, such as one `intake` writes, joins Tasks at the goal's next `plan` or `start`.
-- **Task brief** is the current task's approved brief. The next task's brief replaces it.
+- **Task brief** is the current task's approved brief, stored as markdown in the shape of
+  `references/briefs.md`, "Task brief", unfenced. The next task's brief replaces it. Briefs
+  already stored fenced stay as they are until the record is next rewritten.
 - **Progress** records the build loop's position (`references/build.md`).
 - **Handoff** gives the exact next move while State is `handoff`: the BUILD position `reset`
   wrote (`commands/reset.md`); "merge", or the failing check, when SHIP can't merge; "tag

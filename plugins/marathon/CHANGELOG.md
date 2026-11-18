@@ -55,6 +55,13 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 - **Comment rules.** The implementer writes only the comments the quoted standard requires, never
   one that excuses a workaround. The standards-reviewer removes such comments, or fixes their
   cause, and edits doc-comment wording. The editor never edits source files.
+- **Architect-facing formats are markdown** (`references/briefs.md`): the plan and intake
+  rounds, escalations, task and slice briefs, session brief, status digest, and retro render as
+  markdown, hard-wrapped at 100 characters, with code fences only around code. A round's
+  questions are bold, with **rec:** and **changes:** beneath; the status digest is a table and the
+  retro a checklist. The goal record stores the task brief unfenced. The `plan-round-in-reply`
+  eval gains regex graders that fail a round inside a code fence or with a line over 100
+  characters.
 
 ## v0.18.0
 

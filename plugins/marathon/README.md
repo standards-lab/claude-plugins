@@ -33,7 +33,7 @@ Run a command as `marathon <command>` or `/marathon:marathon <command>`.
 | `start <goal>` | Runs the goal's next task: plan, build, brief, ship, and sync on the last task. |
 | `experiment` | Creates an `experiment.<topic>` goal, its `intake` task, and its planned spikes, once per topic. |
 | `intake <experiment>` | Takes in a finished experiment: decides what the served goals build from the spikes' answers, closes it, and archives the spikes. |
-| `status` | Prints one line per active goal, with what needs the architect first. |
+| `status` | Prints one row per active goal, with what needs the architect first. |
 | `retro` | Turns comments on past work into checks, standards, skill changes, or notes. |
 | `reset` | Hands off a task partway; runs on its own when the context fills. |
 

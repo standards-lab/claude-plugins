@@ -72,7 +72,7 @@ the files to read before acting; read every other file it cites when its subject
 | `start` | To run one task of an active goal: plan, build, brief, ship, and sync on the last task | [`commands/start.md`](./commands/start.md) |
 | `experiment` | Once per topic, to create an `experiment.<topic>` goal, its `intake` task, and its planned spikes; `plan` sets up each spike | [`commands/experiment.md`](./commands/experiment.md) |
 | `intake` | Once per experiment, after every spike has synced: to decide what the served goals build from the answers, close the experiment, and archive its spikes | [`commands/intake.md`](./commands/intake.md) |
-| `status` | To print one line per active goal, with what needs the architect first | [`commands/status.md`](./commands/status.md) |
+| `status` | To print one row per active goal, with what needs the architect first | [`commands/status.md`](./commands/status.md) |
 | `retro` | To turn comments on past work into checks, standards, skill changes, or notes | [`commands/retro.md`](./commands/retro.md) |
 | `reset` | To hand off a task partway; runs on its own when the context fills | [`commands/reset.md`](./commands/reset.md) |
 
