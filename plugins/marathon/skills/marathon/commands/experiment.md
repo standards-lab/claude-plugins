@@ -36,8 +36,8 @@ Settle in plan rounds:
 At the coordinator, in one commit on an `experiment-<topic>` branch:
 
 - Create `experiment.<topic>`'s file with its `intake` task, which `marathon intake` runs once no
-  spike remains (`commands/intake.md`), and the `experiment` root's file when it has none. The
-  experiment goal is never listed in the arrays.
+  spike remains (`commands/intake.md`), and the reserved root goal `experiment`'s file when there
+  is none. The experiment goal is never listed in the arrays.
 - Create the note the experiment cites, or extend it when it exists, with an
   `## Answers · experiment.<topic>` heading under which the spikes' answer sections land
   (`references/briefs.md`, "Answer section").

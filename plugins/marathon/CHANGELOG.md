@@ -71,7 +71,7 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 - **The roadmap is an index plus one file per goal** (`references/manifest.md`). The index,
   `context/roadmap.toml`, holds only the `active`, `planned`, and `backlog` arrays and a comment of
   at most two lines that points to the format. Each goal, container goals and the reserved root
-  goal `experiment` included, has its own `context/roadmap/<dotted-goal>.toml`, its fields at the
+  goal `experiment` included, has its own `context/roadmap/<goal>.toml`, its fields at the
   top level and its tasks as `[tasks.<slug>]` tables. Every goal file writes `repos`, with `[]`
   for a coordinator-only goal, and writes `root` once known; no goal inherits either from an
   ancestor. A file that holds tasks has an `order` array of every task slug, in run order, and

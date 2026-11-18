@@ -11,12 +11,12 @@ Read first, before acting:
 - [`../mechanics/goal-record.md`](../mechanics/goal-record.md)
 - [`../references/briefs.md`](../references/briefs.md)
 
-1. Read `active` from the manifest (`references/manifest.md`): a standalone project's own, or the
+1. Read `active` from the index (`references/manifest.md`): a standalone project's own, or the
    coordinator's.
 2. For each active goal, read its goal record from its root's working tree
    (`mechanics/goal-record.md`). Count the checked tasks against the listed tasks, and take the
    State line. A goal with no record shows `0/n` and the state `no record`, counting its tasks
-   in the manifest. A plan file under `.claude/plans/` that names the goal shows the State
+   in its file's `order`. A plan file under `.claude/plans/` that names the goal shows the State
    `planning`.
 3. Mark with `!` each goal that is `planning` or `brief ready`, or whose Handoff holds an
    unanswered escalation or an unmerged pull request, and sort those first.

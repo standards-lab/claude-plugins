@@ -19,7 +19,7 @@ workspace keeps one at the coordinator.
 
 ## Three states
 
-Every goal the manifest lists is in exactly one of three root arrays of dotted paths:
+Every goal the manifest lists is in exactly one of the index's three arrays of dotted paths:
 
 - **`active`**: the goals running now. It is a live snapshot, edited at any time.
 - **`planned`**: the long-term order, top first.
@@ -74,7 +74,7 @@ anything is deleted:
    notes, the catalog, the workspace `order`, the index, and the goal files. Remove the goal from
    `active`, and delete its file and its sub-goals' files. Then delete the file of each ancestor
    whose criteria now hold, or that is left empty: one with no tasks of its own and no file whose
-   name begins with its name. When the session brief's Sync section reads "staged on accept", stage
+   name extends its own. When the session brief's Sync section reads "staged on accept", stage
    that goal in the same commit (`references/briefs.md`, "Session brief"), checking staging's
    requirements again; if one no longer holds, leave the goal where it is and give the architect
    the reason.
