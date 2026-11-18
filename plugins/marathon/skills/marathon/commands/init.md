@@ -21,13 +21,16 @@ one you write together. It gives the vision and the scope. The structure comes o
 - **Project kind**: `code` if a build-and-test loop defines the slices and validation, otherwise
   `context` (skills, prose, configuration).
 - **The check**: the one deterministic command that runs the build, tests, and lint, or the
-  consistency script of a context project (`references/build.md`).
+  consistency script of a context project (`references/build.md`). It calls `lint-context`
+  (`mechanics/configuration.md`).
 - **The currency command**: optional. The read-only command that reports which direct
   dependencies, toolchain versions, and pins trail their latest release, run at PLAN and never in
   CI (`mechanics/configuration.md`).
 - **The release gate**: optional. The command SHIP runs before each Release tag to decide whether
   it may be pushed, such as a plugin's eval suite, and never in CI (`mechanics/configuration.md`).
-- **Capability map**: the project's major capabilities, broad, shallow, and unordered.
+- **Capability map**: the project's major capabilities, broad, shallow, and unordered, as built
+  and planned entries under `## Capability map` in `context/README.md`, in the shape
+  `lint-context` checks.
 - **The first goal**: the one outcome the first sessions work toward, and its first task.
 - **Remote**: the platform, its publish command (`gh pr create`, `glab mr create`), and its merge
   command, or none for a local-only project.

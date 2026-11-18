@@ -11,8 +11,8 @@ goes to one-way doors.
 
 - **The check.** Each repository exposes one deterministic check command, named by `[project]
   check` in `.claude/marathon.toml` (`mechanics/configuration.md`), such as `mise run check` or
-  `scripts/check.sh`. It runs the build, vet, tests, lint, and the repository's own tools. A
-  mechanical rule becomes part of the check rather than prose in `STANDARDS.md`.
+  `scripts/check.sh`. It runs the build, vet, tests, lint, the repository's own tools, and
+  `lint-context`. A mechanical rule becomes part of the check rather than prose in `STANDARDS.md`.
 - **The release gate.** `[project] gate` names the release-time part of the automated checks
   (`mechanics/configuration.md`). For a plugin it is the eval suite, which costs too much to run
   per slice. SHIP runs it before each Release tag (`mechanics/releasing.md`).

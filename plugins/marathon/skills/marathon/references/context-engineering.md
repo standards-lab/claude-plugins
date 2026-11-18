@@ -13,16 +13,18 @@ Two rules follow:
 
 ## What `context/` holds
 
-The directory is flat except for two subdirectories: `context/goals/`, which holds the records of
-the goals rooted in this repository (`mechanics/goal-record.md`), and `context/roadmap/`:
+`context/` holds these files and nothing else, which `lint-context` checks, along with their
+budgets:
 
 - `context/README.md`: stable orientation. A short statement of the vision, and a broad, shallow,
-  unordered map of the capabilities the project will need.
+  unordered map of the capabilities the project will need. The map sits under `## Capability map`,
+  each entry built or planned, in the shape `lint-context` checks.
 - `context/*.md`: notes. A note holds intent the built work doesn't express yet, such as a
   decision with its reasoning and rejected alternatives, or an idea with its open questions.
 - `context/roadmap.toml` and `context/roadmap/<goal>.toml`: the roadmap manifest's index and its
   goal files, at a standalone project or the coordinator (`references/manifest.md`).
-- `context/goals/<goal>.md`: a goal record, the session state of one active goal.
+- `context/goals/<goal>.md`: a goal record, the session state of one active goal rooted in this
+  repository (`mechanics/goal-record.md`).
 
 The source, the optional `docs/` directory, and any files an enabled extension owns sit outside
 `context/` (`references/extensions.md`).

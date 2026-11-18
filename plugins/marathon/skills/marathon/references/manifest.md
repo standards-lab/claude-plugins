@@ -7,9 +7,9 @@ plain TOML, with no inline tables and no timestamps.
 
 ## The index
 
-The index holds the three arrays, `active`, `planned`, and `backlog`, and a comment of at most two
-lines that points to this format. It holds nothing else: no goal tables and no other comments. The
-arrays are the only sequences across goals; the goal files have no order among themselves.
+The index holds the three arrays, `active`, `planned`, and `backlog`, and a comment that points to
+this format. The arrays are the only sequences across goals; the goal files have no order among
+themselves.
 
 ## Goal files
 
@@ -33,19 +33,19 @@ reference to it.
 
 ## Fields
 
-A goal file has these fields:
+`lint-context` holds the index and the goal files to this shape, and their entries to their
+budgets. A goal file has these fields:
 
 - `name`: the outcome, as a title.
 - `summary`: what it means for this outcome to hold.
-- `repos`: the repositories it locks while active, other than the coordinator. Every goal file
-  writes it, and `[]` means the goal touches only the coordinator's `context/`, so only `plan`
-  works on it and it has no record. An active goal's `repos` cover every repository its tasks
-  touch, other than the coordinator.
+- `repos`: the repositories it locks while active, other than the coordinator. `[]` means the
+  goal touches only the coordinator's `context/`, so only `plan` works on it and it has no
+  record. An active goal's `repos` cover every repository its tasks touch, other than the
+  coordinator.
 - `root`: the repository, one of `repos`, that holds the goal record and receives the context the
   goal syncs. A file writes it once the goal has one, and every active goal has one. A goal file
   with no `root` means `plan` sets the goal up first.
-- `order`: every task slug in the file exactly once, in run order. A file that holds tasks has it,
-  and the goal record's task list mirrors it.
+- `order`: the file's task slugs, in run order. The goal record's task list mirrors it.
 - `criteria` (optional): the statements that close the goal once they all hold.
 - `context` (optional): the files that carry the detail.
 

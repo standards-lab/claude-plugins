@@ -63,6 +63,17 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   release what it ships.
 - **`[project] check`**: the repository's one deterministic check, which every slice and review
   runs (`references/build.md`). A context project names its consistency script, if it has one.
+  Every repository's check calls `lint-context`, which holds `context/` to its file kinds, word
+  budgets, and shapes, and checks the relative links in the root README, `context/`, and
+  `docs/`. It ships in the plugin's `bin/`, so a session has it on PATH, and it needs Python 3.11
+  or later. A CI that lacks the plugin fetches it from a pinned `marathon/vX.Y.Z` tag, and the pin
+  is bumped like any other dependency:
+
+  ```sh
+  base=https://raw.githubusercontent.com/standards-lab/claude-plugins/refs/tags
+  curl -fsSLo lint-context "$base/marathon/vX.Y.Z/plugins/marathon/bin/lint-context"
+  python3 lint-context
+  ```
 - **`[project] currency`**: optional. The repository's read-only command that reports what trails
   its latest release: the direct dependencies, the toolchain, and the pins, such as CI actions and
   images. Indirect dependencies are left to the ecosystem's resolver. PLAN runs it at development

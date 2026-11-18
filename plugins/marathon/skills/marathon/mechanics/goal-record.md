@@ -53,6 +53,8 @@ slices 2/3 committed · standards — · spec — · editor —
 
 The header lines, Tasks, Decisions, and Pending edits are always present. Task brief and Progress
 appear while a task is planned or in progress, and Handoff only while State is `handoff`.
+`lint-context` holds Tasks to the goal file's `order`, and Task brief, Decisions, and Pending edits
+to their budgets.
 
 ## Fields
 
