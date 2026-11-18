@@ -138,6 +138,89 @@ while read -r file; do
   done < <(citations "$file")
 done < <(find plugins -name '*.md')
 
+# Word budgets, recorded in scripts/budgets.txt. Each is the size measured when
+# it was set, rounded up to the next 100 words, so routine edits fit and growth
+# beyond that is a deliberate budget change.
+declare -A budget
+while read -r path words; do
+  budget[$path]=$words
+done < <(grep -v '^\s*\(#\|$\)' scripts/budgets.txt)
+
+# Prints the files a markdown file's Read first list links, as written.
+read_first() {
+  awk '
+    /^Read first/ { listed = 1; next }
+    !listed { next }
+    /^[^ \t-]/ { exit }
+    {
+      line = $0
+      while (match(line, /\]\(\.\.?\/[^)#]+/)) {
+        print substr(line, RSTART + 2, RLENGTH - 2)
+        line = substr(line, RSTART + RLENGTH)
+      }
+    }
+  ' "$1"
+}
+
+# Fails when the words in a file or files exceed the budget for key.
+within_budget() {
+  local key=$1 words
+  shift
+  words=$(cat "$@" | wc -w)
+  if [ -z "${budget[$key]:-}" ]; then
+    err "$key: $words words, no budget in scripts/budgets.txt"
+  elif [ "$words" -gt "${budget[$key]}" ]; then
+    err "$key: $words words, over its budget of ${budget[$key]}"
+  fi
+}
+
+# A command's read-first set: its skill's SKILL.md, the playbook, and every
+# file reached through Read first lists from there, each counted once.
+for playbook in plugins/*/skills/*/commands/*.md; do
+  declare -A seen=()
+  queue=("$playbook")
+  set_files=("$(dirname "$(dirname "$playbook")")/SKILL.md")
+  while [ ${#queue[@]} -gt 0 ]; do
+    file=${queue[0]}
+    queue=("${queue[@]:1}")
+    [ -z "${seen[$file]:-}" ] && [ -f "$file" ] || continue
+    seen[$file]=1
+    set_files+=("$file")
+    while read -r target; do
+      queue+=("$(realpath -m --relative-to=. "$(dirname "$file")/$target")")
+    done < <(read_first "$file")
+  done
+  within_budget "$playbook" "${set_files[@]}"
+  unset seen
+done
+
+for profile in plugins/*/agents/*.md; do
+  within_budget "$profile" "$profile"
+done
+
+# A skill's description is capped at 1,024 characters. It is measured as YAML
+# reads it: a folded (>) scalar joins its lines with spaces, so the raw lines
+# would overcount. The trailing newline YAML keeps is not counted.
+for skill in plugins/*/skills/*/SKILL.md; do
+  length=$(awk '
+    NR == 1 { next }
+    /^---$/ { exit }
+    folding && /^[ \t]/ { sub(/^[ \t]+/, ""); text = text (text == "" ? "" : " ") $0; next }
+    folding { exit }
+    /^description:/ {
+      value = $0
+      sub(/^description:[ \t]*/, "", value)
+      if (value ~ /^>-?$/) { folding = 1; next }
+      gsub(/^["\047]|["\047]$/, "", value)
+      text = value
+      exit
+    }
+    END { printf "%s", text }
+  ' "$skill" | LC_ALL=C.UTF-8 wc -m)
+  [ "$length" -le 1024 ] ||
+    err "$skill: description is $length characters, over the 1024 limit"
+done
+
 if [ "$fail" -ne 0 ]; then
   exit 1
 fi

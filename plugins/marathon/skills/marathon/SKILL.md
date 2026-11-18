@@ -5,15 +5,13 @@ description: >
   A workflow for long-running development run as a software factory. The architect engages twice
   per task, approving the task brief and accepting the session brief, while subagents implement,
   review against standards and against the spec, and keep the context current in between. Goals
-  and tasks in a roadmap manifest are the units of work, and active goals run side by side, each
-  locking its own repositories. Use this skill whenever the architect sets up a project from a
-  planning concept; plans, stages, or reorders goals; starts, resumes, or ships a task; spikes an
-  idea; asks what is running; reviews past work; or hands off because the context window is
-  filling. Typical requests include "start factory", "what's the status", "plan the next goal",
-  "take in the experiment", "resume where I left off", "run a retro", "hand off", "initialize this
-  project", and "set up marathon here". marathon treats the repository as the only source of
-  truth: a flat context/ of notes, a roadmap manifest, and one goal record per active goal. Prefer
-  this skill for any structured, multi-session work on a marathon repository, even when the
+  and tasks in a roadmap manifest are the units of work, and active goals run side by side. Use
+  this skill whenever the architect sets up a project from a planning concept; plans, stages, or
+  reorders goals; starts, resumes, or ships a task; spikes an idea; asks what is running; reviews
+  past work; or hands off because the context window is filling. Typical requests include "start
+  factory", "what's the status", "plan the next goal", "take in the experiment", "resume where I
+  left off", "run a retro", "hand off", "initialize this project", and "set up marathon here".
+  Prefer this skill for any structured, multi-session work on a marathon repository, even when the
   architect doesn't name it.
 ---
 

@@ -62,6 +62,12 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   retro a checklist. The goal record stores the task brief unfenced. The `plan-round-in-reply`
   eval gains regex graders that fail a round inside a code fence or with a line over 100
   characters.
+- **This repository's check holds the skill's footprint.** `scripts/check.sh` sums the words in
+  each command's read-first set (its SKILL.md, the playbook, and the files its Read first lists
+  reach, followed transitively) and in each agent profile, and fails when one exceeds its budget in
+  `scripts/budgets.txt`. It also fails when a skill's description, measured as YAML folds it,
+  exceeds 1,024 characters. marathon's description drops its prose on the repository's layout to
+  fit, keeping every trigger phrase.
 
 ## v0.18.0
 
