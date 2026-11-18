@@ -43,6 +43,18 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   goal-record bookkeeping commits (`mechanics/pipeline.md`), the context-fill handoff
   (`references/build.md`), and release tags authorized by acceptance and the release handoff
   (`mechanics/releasing.md`). Behavior is unchanged.
+- **Profiles cite the skill.** Each subagent profile holds only its own delegate's behavior and
+  cites the skill, by `${CLAUDE_PLUGIN_ROOT}/skills/marathon/` paths, for the rest: limits, the
+  branch check before a commit, round and brief formats, currency, and planning rules. Every
+  delegate limit now lives in `behavior/delegation.md`, Limits, and the profile table there cites
+  each profile. The standards-reviewer profile owns the tests-that-lie sweep, and the editor cites
+  `references/context-engineering.md` for note rules.
+- **The slice brief has a format** (`references/briefs.md`, Slice brief): behaviors, test seam,
+  branches, check command, and the standards that bear on the slice, quoted with their source and
+  always including the comment rule. The implementer still never loads `STANDARDS.md` whole.
+- **Comment rules.** The implementer writes only the comments the quoted standard requires, never
+  one that excuses a workaround. The standards-reviewer removes such comments, or fixes their
+  cause, and edits doc-comment wording. The editor never edits source files.
 
 ## v0.18.0
 

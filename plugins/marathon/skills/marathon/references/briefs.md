@@ -1,7 +1,8 @@
 # Briefs
 
-These are the formats marathon writes for the architect. Each one is read in the terminal, fits on
-about one screen, and leads with what needs a decision. Agents look up facts themselves and never
+These are the formats marathon writes for the architect, plus the slice brief it writes for an
+implementer. Each one the architect reads is read in the terminal, fits on about one screen, and
+leads with what needs a decision. Agents look up facts themselves and never
 ask the architect for them; the architect makes the decisions.
 
 ## Plan round
@@ -92,6 +93,28 @@ Release       the exact tags the task releases (optional)
   `<submodule>/v1.4.0` for a sub-module, one tag per artifact. The plan rounds settle it; it is
   never inferred from a version bump, and no manifest field holds it. SHIP tags it
   (`mechanics/pipeline.md`, 6 · SHIP).
+
+## Slice brief
+
+The slice brief is what the session gives a fresh implementer for one slice at BUILD
+(`references/build.md`, "The loop"). It is all the implementer reads before the code, so it
+carries the standards that bear on the slice, quoted, in place of the whole `STANDARDS.md`
+(`behavior/delegation.md`).
+
+```
+## Slice brief · experiment.ai.spike-harness-driver · harness-adapters · slice 2/3
+Behaviors   numbered, each testable: what this slice adds
+Test seam   the interface the tests exercise
+Branches    repository → branch, for each repository the slice touches
+Check       the check command, per repository
+Standards   the sections that bear on the slice, quoted, each with its source
+```
+
+- **Behaviors** come from the task brief, numbered as it numbers them.
+- **Standards** quotes the sections of the repository's `STANDARDS.md`, and of the architecture
+  pages it points to, that bear on the slice, each with its file and section. It always quotes
+  the repository's rule on comments, or says the repository has none. A repository with no
+  `STANDARDS.md` gets the line "no STANDARDS.md".
 
 ## Session brief
 
