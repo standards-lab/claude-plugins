@@ -81,11 +81,15 @@ to their budgets.
   <names>" when the context fills during a release (`mechanics/releasing.md`); "merge, then
   sync" or "tag <names>, then sync" on the goal's last task; or "merge `sync-<goal>`, then
   delete the record" when a sync pull request can't merge (`mechanics/goals.md`, "Sync").
-- **Decisions** logs what each plan round settled and what each task decided without the
-  architect, one line each, so a later task doesn't decide it again. It also records rejected
-  alternatives (`behavior/planning.md`). A held dependency is a decision of the form
-  "<task>: held <item> at <pin>: <reason>", whose reason names the latest version it declined;
-  PLAN lists it as a fact and asks again only once a later version is out.
+- **Decisions** keeps only what binds later tasks, one line each, so a later task doesn't decide
+  it again: a settled question a later task relies on, a rejected alternative
+  (`behavior/planning.md`), a hold, and a falsified assumption
+  (`references/context-engineering.md`). A hold is a decision of the form "<task>: held <item>
+  at <pin>: <reason>", whose reason names the latest version it declined; PLAN lists it as a fact
+  and asks again only once a later version is out. A decision the merged code or its
+  documentation now expresses no longer binds, and git history keeps it: at BUILD the editor
+  drops it on the task's branch (`references/build.md`, "The loop"), and the session brief lists
+  the drop (`references/briefs.md`, "Session brief").
 - **Pending edits** collects every change the goal owes a repository outside its own work, each
   prefixed with that repository: the coordinator's notes, catalog, workspace `order`, roadmap
   index, and goal files, or a page in the architecture repository. Sync applies them.

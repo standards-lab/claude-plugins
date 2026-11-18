@@ -35,8 +35,8 @@ The source, the optional `docs/` directory, and any files an enabled extension o
   `context/`, in the built work or its documentation, point to it instead of restating it.
 - **State what exists, or what is planned.** Describe what exists in the present tense, and mark
   planned work as planned. A note has no status line, history, dates, or other detail that only
-  holds for a while. The roadmap and the goal records track status: what remains, what a task
-  decided, and what validation proved. Every document outside that tracking follows this rule,
+  holds for a while. The roadmap and the goal records track status: what remains, what binds
+  later tasks, and what validation proved. Every document outside that tracking follows this rule,
   including `docs/` and READMEs. CHANGELOGs are exempt.
 - **Start short.** A note begins as a sentence or two and gains detail only when its work is
   close.
@@ -45,7 +45,8 @@ The source, the optional `docs/` directory, and any files an enabled extension o
   notes that named it, and record the falsified assumption in the goal record's Decisions.
 - **Treat a new design as provisional.** A design a session just produced stays provisional until
   a later session's caller, build, or experiment uses it and it holds. The goal record's Decisions
-  records when that happens. The same applies to writing a skill from the design.
+  records when that happens, until the built work expresses the design
+  (`mechanics/goal-record.md`). The same applies to writing a skill from the design.
 
 ## Project documentation
 
@@ -55,7 +56,8 @@ wrong is a defect. The change that made it wrong fixes it, or a later task does,
 flags it. The first task that documents the repository creates `docs/`. The reasoning
 behind a built capability belongs in `docs/`, the package documentation, or the README, written by
 the task that builds the capability. Knowledge that applies beyond the repository isn't project
-documentation, so it stays a note.
+documentation, so it stays a note. A spike's `docs/` holds its evidence: one page per survey or
+result, each linked from its evidence item (`commands/plan.md`, "Spike setup").
 
 ## Tending the notes
 

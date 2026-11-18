@@ -66,8 +66,10 @@ also settle:
 Goal setup then runs with these steps:
 
 1. Run `init` at the sub-goal's `path` with the settled decisions. Its `context/README.md` states
-   the question, the evidence list, and the sub-goal; its goals live in the coordinator's
-   roadmap. It writes no `[experiment]` table.
+   the question, the numbered evidence list, the sub-goal, and an empty "The answer" section that
+   the spike's last task fills; its goals live in the coordinator's roadmap. It writes no
+   `[experiment]` table. Each survey or result the spike produces gets its own page under
+   `docs/`, linked from its evidence item, and `lint-context` checks that the links resolve.
 2. Record the repositories the spike reads, using the served project's own convention. In a
    workspace, that is a committed list of remotes plus a gitignored map to local checkouts, both
    in the coordinator. The spike reads those repositories and never writes to them. Its code

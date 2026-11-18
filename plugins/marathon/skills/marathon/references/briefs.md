@@ -182,6 +182,7 @@ the goal's root, which gitignores `.claude/briefs/`.
 >
 > 1. Kept stdin JSONL over SSE: simpler, and a spike needs one transport.
 > 2. Standards-reviewer: 4 fixes, 2 tautological tests cut.
+> 3. Dropped decision "harness: a Session closes on EOF": the `driver` package docs state it.
 >
 > **Merge danger:** two-way door · blast radius: the spike repository only
 >
@@ -192,8 +193,9 @@ the goal's root, which gitignores `.claude/briefs/`.
 - **Core changes** lists one to five entries. Each gives a short excerpt or a before-and-after
   signature, fenced as code, and one line on why.
 - **Evidence** comes from commands the architect can rerun.
-- **Decided without you** lists the decisions the brief didn't cover and what the reviewers
-  changed.
+- **Decided without you** lists the decisions the brief didn't cover, what the reviewers
+  changed, and each Decision the editor dropped (`mechanics/goal-record.md`). A drop the
+  architect rejects is a redirect, and the session restores the line.
 - **Merge danger** names the door type and the blast radius. A one-way door gets the close read.
   When the task brief has a Release line, Merge danger repeats its tags, which accepting the
   brief authorizes (`mechanics/releasing.md`).
@@ -226,8 +228,8 @@ the coordinator's edits.
 A spike's answer section is the coordinator edit its sync lands in the note its experiment cites
 in `context`, one section per spike, under the `## Answers · experiment.<topic>` heading
 `experiment` writes there (`commands/experiment.md`). The spike's last task writes the answer
-under "The answer" in the spike's README, and adds this section to its goal record's pending
-edits. The example is a note's file content, so it stays fenced.
+under "The answer" in the spike's `context/README.md`, and adds this section to its goal
+record's pending edits. The example is a note's file content, so it stays fenced.
 
 ```markdown
 ### Answer · experiment.ai.spike-harness-driver
@@ -241,16 +243,16 @@ edits. The example is a note's file content, so it stays fenced.
 2. Sessions survive a restart. Proven by the validate task `resume-sessions`.
 3. OpenCode's tool calls round-trip. Proven only by tests: `adapters/opencode`.
 
-[The answer](https://github.com/example/spike-harness-driver#the-answer) ·
-[spike-harness-driver](https://github.com/example/spike-harness-driver)
+[The answer](https://github.com/example/spike-harness-driver/blob/main/context/README.md#the-answer)
+· [spike-harness-driver](https://github.com/example/spike-harness-driver)
 ```
 
 - **The question** is the spike's, as its sub-goal states it.
 - **The answer** is one line.
 - **The evidence** is numbered, and each item names where it is proven: a test, a validate task,
   or a running demo. An item proven only by tests says so.
-- **The links** point to where the spike states its answer, its README's "The answer" for a
-  spike `plan` set up, and to the spike's remote.
+- **The links** point to where the spike states its answer, "The answer" in its
+  `context/README.md`, and to the spike's remote.
 
 `marathon intake` later folds each answer section into the served goals' notes and removes it
 (`commands/intake.md`).

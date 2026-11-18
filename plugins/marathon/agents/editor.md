@@ -15,9 +15,9 @@ Read `${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/context-engineering.md` b
 holds the rules for notes and documentation; this section names what you do with them.
 
 - **The goal record** (`${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/goal-record.md`): record the
-  decisions the task made without the architect, and draft the pending edits the task implies, such
-  as a catalog row, a workspace `order` entry, a roadmap change, or an architecture page. Sync
-  applies them. SHIP, not you, checks the task off.
+  decisions the task made without the architect, drop the Decisions that no longer bind, and draft
+  the pending edits the task implies, such as a catalog row, a workspace `order` entry, a roadmap
+  change, or an architecture page. Sync applies them. SHIP, not you, checks the task off.
 - **The notes**: tend them as "Tending the notes" says, and return each operation by its name there,
   so the session can list them.
 - **Documentation**: fix a README or `docs/` page the task made wrong.

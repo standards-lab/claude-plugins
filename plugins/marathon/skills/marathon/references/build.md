@@ -46,8 +46,9 @@ first, so each higher layer builds against the real change below it.
 3. **Review the spec.** Engage the spec-reviewer with the task brief. For each gap it returns,
    engage an implementer to close it, then engage the spec-reviewer again. After two rounds that
    leave the same gap open, escalate.
-4. **Edit.** Engage the editor once. It updates the goal record, tends the notes, and edits the
-   changed prose. Read its edits and commit them.
+4. **Edit.** Engage the editor once. It updates the goal record, dropping the Decisions that no
+   longer bind (`mechanics/goal-record.md`), tends the notes, and edits the changed prose. Read
+   its edits and commit them.
 5. **Validate.** Run the check in every touched repository, plus whatever the spec-reviewer ran to
    show each behavior. The results are the session brief's Evidence. Don't go on to BRIEF with a
    failing check.
