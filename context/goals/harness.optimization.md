@@ -1,14 +1,14 @@
 # goal · harness.optimization
 
-- **State:** brief ready
-- **Task:** roadmap-layout
-- **Branch:** roadmap-layout
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
 1. [x] version-floor
 2. [x] skill-footprint
-3. [ ] roadmap-layout
+3. [x] roadmap-layout
 4. [ ] content-budgets
 5. [ ] retro-routes
 6. [ ] evidence-artifacts
@@ -118,10 +118,6 @@ Each slice raises the budgets its own edits push over, so the check passes after
 
 Two-way. Nothing is released. Sessions keep running the installed 0.18.0, which reads the
 coordinator's single file until the `release` task.
-
-## Progress
-
-slices 5/5 committed · standards done · spec done · editor done
 
 ## Decisions
 
