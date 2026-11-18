@@ -121,7 +121,7 @@ consumers adopt `lint-context` only after it.
 
 ## Progress
 
-slices 4/6 committed · standards — · spec — · editor —
+slices 5/6 committed · standards — · spec — · editor —
 
 ## Decisions
 
@@ -289,4 +289,5 @@ slices 4/6 committed · standards — · spec — · editor —
 
 ## Pending edits
 
-none
+- standards-lab · `.claude/marathon.toml`: set `[project] check` to `lint-context`, applied at
+  `release`'s sync after the roadmap split (content-budgets).
