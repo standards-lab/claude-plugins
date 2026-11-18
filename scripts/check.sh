@@ -72,9 +72,9 @@ done < <(find plugins -name '*.md')
 # that reads as a file path: it contains a / and ends in an extension, with no
 # < or * placeholder and no URL scheme. The owner is the word before a
 # possessive just ahead of the span, as in marathon's `references/briefs.md`,
-# even across a line break, and - when there is none. Fenced code blocks are skipped. A CHANGELOG is
-# read only up to its first release heading, because released entries cite the
-# tree as it stood then.
+# even across a line break, or - when there is none. Fenced code blocks are
+# skipped. A CHANGELOG is read only up to its first release heading, because
+# released entries cite the tree as it stood then.
 citations() {
   awk '
     /^[ \t]*(```|~~~)/ { fenced = !fenced; next }
@@ -191,7 +191,6 @@ for playbook in plugins/*/skills/*/commands/*.md; do
     done < <(read_first "$file")
   done
   within_budget "$playbook" "${set_files[@]}"
-  unset seen
 done
 
 for profile in plugins/*/agents/*.md; do
@@ -199,23 +198,22 @@ for profile in plugins/*/agents/*.md; do
 done
 
 # A skill's description is capped at 1,024 characters. It is measured as YAML
-# reads it: a folded (>) scalar joins its lines with spaces, so the raw lines
-# would overcount. The trailing newline YAML keeps is not counted.
+# reads it: the indented lines of a block or multi-line scalar join with one
+# character each, so the raw lines would overcount. The trailing newline YAML
+# keeps is not counted.
 for skill in plugins/*/skills/*/SKILL.md; do
   length=$(awk '
     NR == 1 { next }
     /^---$/ { exit }
-    folding && /^[ \t]/ { sub(/^[ \t]+/, ""); text = text (text == "" ? "" : " ") $0; next }
-    folding { exit }
+    joining && /^[ \t]/ { sub(/^[ \t]+/, ""); text = text (text == "" ? "" : " ") $0; next }
+    joining { exit }
     /^description:/ {
-      value = $0
-      sub(/^description:[ \t]*/, "", value)
-      if (value ~ /^>-?$/) { folding = 1; next }
-      gsub(/^["\047]|["\047]$/, "", value)
-      text = value
-      exit
+      text = $0
+      sub(/^description:[ \t]*/, "", text)
+      if (text ~ /^[>|][-+]?$/) text = ""
+      joining = 1
     }
-    END { printf "%s", text }
+    END { gsub(/^["\047]|["\047]$/, "", text); printf "%s", text }
   ' "$skill" | LC_ALL=C.UTF-8 wc -m)
   [ "$length" -le 1024 ] ||
     err "$skill: description is $length characters, over the 1024 limit"
