@@ -79,14 +79,11 @@ and a task by its goal's path and its slug: `v1.data`, `v1.data.reads`,
 
 ## Lifecycle
 
-- **Only what remains**: sync deletes a finished goal's file and the files of its sub-goals. It
-  then deletes the file of each ancestor whose criteria now hold, or that is left empty: one with
-  no tasks of its own and no file whose name begins with its name. A task's table stays until
-  then, and the goal record shows its progress. A stale entry is a defect, and the session that
-  finds it fixes it, or records it under the goal record's pending edits when the roadmap is in
-  another repository.
-- **Order as written**: a task added while its goal is active joins `order` when its table is
-  written, and joins the goal record's task list at the goal's next `plan` or `start`.
+- **Only what remains**: sync deletes a finished goal's file, its sub-goals' files, and those of
+  the ancestors it closes or leaves empty (`mechanics/goals.md`, "Sync"). A task's table stays
+  until then, and the goal record shows its progress. A stale entry is a defect, and the session
+  that finds it fixes it, or records it under the goal record's pending edits when the roadmap is
+  in another repository.
 - **Detail only at the front**: an active goal's next task carries detail. Every other entry stays
   a short statement, with its detail in the linked files.
 
