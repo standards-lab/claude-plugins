@@ -57,10 +57,11 @@ request in each repository it changes. See
 
 ## Goals
 
-The roadmap manifest, `context/roadmap.toml`, holds goals (outcomes) and their tasks (one
-session's work each). Every goal is `active`, `planned`, or `backlog`, except an experiment goal,
-which is never listed. Active goals run side by side, and each locks the repositories it touches,
-so no two share one and no worktrees are needed.
+The roadmap manifest holds goals (outcomes) and their tasks (one session's work each): an index,
+`context/roadmap.toml`, of the three arrays, and one file per goal in `context/roadmap/`. Every
+goal is `active`, `planned`, or `backlog`, except an experiment goal, which is never listed.
+Active goals run side by side, and each locks the repositories it touches, so no two share one and
+no worktrees are needed.
 A goal's record, `context/goals/<goal>.md` in its root repository, holds its tasks, the current
 brief, progress, decisions, and the edits it owes other repositories, which sync applies when its
 last task ships. The coordinator changes only through `plan`, `experiment`, `intake`, `retro`, and

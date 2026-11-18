@@ -10,12 +10,13 @@ set -euo pipefail
 # A standalone project's repository is the project itself, named by its directory.
 repo=$(basename "$PWD")
 
-mkdir -p .claude context runbooks scripts
+mkdir -p .claude context/roadmap runbooks scripts
 
 cat >CLAUDE.md <<'EOF'
 # ops-handbook
 
-- Context: `context/README.md`, then the roadmap in `context/roadmap.toml`.
+- Context: `context/README.md`, then the roadmap index `context/roadmap.toml` and its goal files
+  in `context/roadmap/`.
 - Standards: `STANDARDS.md`.
 - Check: `scripts/check.sh`.
 EOF
@@ -123,23 +124,24 @@ redaction pass depends on the audience alone: a secret path is as exposed on a w
 PDF or a Markdown file.
 EOF
 
-cat >context/roadmap.toml <<EOF
-# Roadmap: what remains on the path to the target end state. The format is marathon's
-# references/manifest.md.
+cat >context/roadmap.toml <<'EOF'
+# Roadmap index: the three arrays. The format is marathon's references/manifest.md.
 
 active = ["publish"]
 planned = []
 backlog = []
+EOF
 
-[goals.publish]
+cat >context/roadmap/publish.toml <<EOF
 name = "The handbook published"
-root = "$repo"
-repos = ["$repo"]
 summary = "Readers reach the current runbooks during an incident without cloning the repository."
+repos = ["$repo"]
+root = "$repo"
+order = ["first-edition"]
 criteria = ["A first edition is published in the chosen format to the chosen audience."]
 context = ["context/publishing.md"]
 
-[goals.publish.tasks.first-edition]
+[tasks.first-edition]
 name = "First edition"
 summary = "Choose the publishing format and the audience, then publish the first edition of the five runbooks."
 proof = "A reader in the chosen audience opens the first edition and finds every runbook."

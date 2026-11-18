@@ -9,7 +9,7 @@ one session, while each repository stays a complete marathon project of its own.
 A workspace is the directory that holds the projects as siblings. It has no `context/` of its
 own. Instead, the project that already describes the whole set of repositories, usually an
 organization-context project, declares itself coordinator with a `[workspace]` table
-(`mechanics/configuration.md`). The coordinator holds the workspace's roadmap manifest.
+(`mechanics/configuration.md`). The coordinator holds the workspace's roadmap index and goal files.
 
 The coordinator's `order` lists **layers**, lowest dependency first. An array entry is a layer of
 peers with no dependencies between them. Each key is the name of a sibling directory, or a
@@ -36,7 +36,7 @@ one as that repository's own pull request, lowest layer first.
 
 ## Experiments
 
-An experiment's spikes are sub-goals, each listed in the roadmap with the remote and local path
+An experiment's spikes are sub-goals, each with a goal file that names the remote and local path
 of its own repository outside the workspace. Each spike locks only that repository, so spikes run
 beside each other and beside the workspace's goals. A spike session starts from the
 coordinator or the workspace, and LOCATE finds the spike's repository through its `path`

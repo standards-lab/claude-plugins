@@ -87,6 +87,6 @@ Read each reference when its subject comes up:
 - [`references/briefs.md`](./references/briefs.md): every format the architect reads.
 - [`references/workspace-coordination.md`](./references/workspace-coordination.md): the
   coordinator, the dependency order, and steps that span repositories.
-- [`references/manifest.md`](./references/manifest.md): the `roadmap.toml` format. Read it before
-  editing or creating the manifest.
+- [`references/manifest.md`](./references/manifest.md): the roadmap index and goal files. Read it
+  before editing or creating either.
 - [`references/extensions.md`](./references/extensions.md): the extension system.
