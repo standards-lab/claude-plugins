@@ -28,7 +28,7 @@ jobs:
           echo "changelog=plugins/$PREFIX/CHANGELOG.md" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release
-        uses: taiki-e/create-gh-release-action@v1.11.0
+        uses: taiki-e/create-gh-release-action@v1.12.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           prefix: ${{ steps.plugin.outputs.prefix }}
