@@ -43,6 +43,10 @@ Read these sizes, in words, to judge the work:
 - **One release at the end.** Nothing releases until the last task, so sessions keep running the
   installed 0.18.0 until then. The sync then cleans the coordinator's roadmap and notes under the
   new check.
+- **Roadmap layout** (task `roadmap-layout`). The coordinator's `roadmap.toml` is 13,210 words,
+  2,175 of them a dated header, over 61 goals and 72 tasks, and it records no task order. It
+  becomes an index of the three arrays plus one `context/roadmap/<goal>.toml` per goal, holding
+  its own `root` and `repos`, an `order` array, and its tasks. The final sync splits it.
 - **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
 
 ## Findings for later

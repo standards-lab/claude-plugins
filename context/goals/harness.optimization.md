@@ -8,11 +8,12 @@
 
 1. [x] version-floor
 2. [ ] skill-footprint
-3. [ ] content-budgets
-4. [ ] retro-routes
-5. [ ] evidence-artifacts
-6. [ ] comment-standard
-7. [ ] release
+3. [ ] roadmap-layout
+4. [ ] content-budgets
+5. [ ] retro-routes
+6. [ ] evidence-artifacts
+7. [ ] comment-standard
+8. [ ] release
 
 ## Task brief · version-floor
 
@@ -64,3 +65,12 @@ Door          two-way (no release)
   which satisfies the 0.19.0 floor.
 - version-floor: marathon-architecture's CHANGELOG cites marathon's Compatibility section instead
   of restating the rule (standards review).
+- roadmap-layout: the roadmap stays in repository files, one `context/roadmap/<goal>.toml` per
+  goal, with `context/roadmap.toml` holding only the three arrays; GitHub Issues were rejected for
+  losing PR-reviewed planning, offline sessions, and checks (plan).
+- roadmap-layout: a goal's task order is an `order` array in its goal file, which the record's
+  task list mirrors; every goal file states its own `root` and `repos` (plan).
+- roadmap-layout: `status` prints the cross-goal view on demand; a GitHub Project mirror is
+  deferred to `v1.harness.tooling` (plan).
+- roadmap-layout: the coordinator's roadmap is split during this goal's final sync; the task
+  precedes content-budgets so its manifest rules are written once (plan).
