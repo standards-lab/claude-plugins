@@ -1,8 +1,8 @@
 # goal · harness.optimization
 
-- **State:** idle
-- **Task:** none
-- **Branch:** none
+- **State:** building
+- **Task:** roadmap-layout
+- **Branch:** roadmap-layout
 
 ## Tasks
 
@@ -16,91 +16,112 @@
 8. [ ] harness-standards
 9. [ ] release
 
-## Task brief · skill-footprint
+## Task brief · roadmap-layout
 
 **Problem**
 
-marathon's SKILL.md `@`-includes three files that Claude Code never expands. Agents therefore read
-about 4,300 words by hand, including release and resume rules they rarely need. Rules repeat across
-the skill and its agent profiles, and no check bounds the size of either. The formats the architect
-reads are code-fenced templates, which lose their formatting in the terminal and on GitHub.
+The coordinator's roadmap is one file: 13,353 words covering 61 goals and 74 tasks. It records no
+task order, and every session reads all of it to find a single goal. A goal can take its `root`
+and `repos` from an ancestor, so a reader has to walk the tree to learn what a goal locks.
+marathon describes this single-file layout in several places: the manifest reference, LOCATE,
+plan, experiment, intake, init, sync, status, the README, and the eval scaffold. Each goal should
+be a short file of its own that carries its own task order, and an index should hold only the
+three arrays.
 
 **Behaviors**
 
-1. No plugin's markdown contains an `@`-include line. marathon's SKILL.md tells the session to read
-   its command's playbook first. Each playbook opens with links to the files it needs before acting.
-2. Releasing and RESUME each live in their own file. A session reads the Releasing file only when a
-   task brief has a Release line, and the RESUME file only when LOCATE routes to RESUME. Stage
-   names and the moments hooks fire are unchanged.
-3. Each rule that repeated across the skill's files has one home, and every other file cites it.
-   This covers rounds never going through AskUserQuestion, currency before round 1, nothing
-   changing before approval, the branch check before a commit, and the order of on-record.
-4. Each agent profile holds only its delegate's own behavior. It cites the skill's sections, the
-   delegate limits included, by `${CLAUDE_PLUGIN_ROOT}` paths that Claude Code fills in when it
-   loads the agent. The skill keeps one line per profile and cites the profile for what that
-   delegate does.
-5. The slice brief has a written format: behaviors, test seam, branches, check command, and the
-   standards sections that bear on the slice, quoted with their source and always including the
-   comment rule. The delegation rule says the implementer never loads `STANDARDS.md` whole.
-6. The implementer writes only the comments its quoted standard requires, and never one that
-   excuses a workaround. The standards-reviewer sweeps for comments that excuse a workaround and
-   edits doc-comment wording. The editor never edits source files.
-7. These formats are markdown with code fences only around code: plan rounds, intake rounds,
-   escalations, task briefs, session briefs, the status digest, and retros.
-   - Rounds and escalations use a heading, bold labels over lists, and numbered questions with
-     bold rec and changes lines.
-   - Task briefs use bold labels over lists.
-   - The status digest is a table, and retros are checkbox lists under one heading per layer.
-   - Every format is hard-wrapped at 100 characters in the reply, under one width rule in the
-     brief-formats reference.
-   - A goal record stores its task brief in the same markdown shape.
-8. The repository check fails, naming the count and the limit, when:
-   - a command's read-first set exceeds its word budget;
-   - an agent profile exceeds its word budget;
-   - a skill description exceeds 1,024 characters;
-   - a backtick file citation, or one built on `${CLAUDE_PLUGIN_ROOT}`, doesn't resolve.
+1. The roadmap index keeps its current name. It holds the `active`, `planned`, and `backlog`
+   arrays and a format-pointer comment of at most two lines. It holds nothing else: no goal
+   tables and no other comments.
+2. Every goal has its own TOML file in a roadmap directory beside the index, named by the goal's
+   full dotted path. That includes container goals that sit in no array, and the reserved
+   `experiment` root. The goal's fields sit at the top level, and each task is a `[tasks.<slug>]`
+   table. The file doesn't repeat the goal's name.
+3. Every goal file writes `repos`, and `[]` means the goal touches only the coordinator. A file
+   writes `root` once the goal has one; a file with no `root` means `plan` sets the goal up first.
+   No field takes its value from an ancestor. A spike's file adds `remote` and `path`.
+4. A goal file that holds tasks has an `order` array listing every task slug in the file exactly
+   once, in run order, and the goal record's task list mirrors it. A task added while the goal is
+   active joins `order` when it is written, and joins the record's task list at the goal's next
+   `plan` or `start`.
+5. LOCATE reads the index, then the named goal's file. For a goal that is no longer listed, it
+   finds the root in the history of the goal's deleted file.
+6. The roadmap's writers keep the layout whole:
+   - staging and pivoting edit only the index;
+   - adding a goal creates its file;
+   - adding a task adds its table and appends the slug to `order`;
+   - `experiment` creates the experiment's file and one file per spike;
+   - `intake` deletes the experiment's file, and the file of any ancestor left empty;
+   - `init` creates the index, and a file for the first goal once it settles one.
+7. Sync deletes the goal's file and the files of its sub-goals. It then deletes the file of each
+   ancestor whose criteria now hold, or that is left empty: one with no tasks of its own and no
+   file whose name begins with its name.
+8. `status <goal>` prints the goal's own tasks in `order`. Each is marked done from the goal
+   record, or all are open when the goal has no record. One line follows per sub-goal, with its
+   done count. The brief-formats reference shows this table beside the status digest. Bare
+   `status` is unchanged and lists active goals only.
+9. No mention in either plugin describes the roadmap as a single file holding goal tables. This
+   covers:
+   - the skill, its references, and SKILL.md;
+   - the README;
+   - the context-engineering and workspace-coordination references;
+   - the Sync example and the pending-edit wording in the brief formats and the goal record.
 
-   Each word budget is the size at the end of this task, rounded up to the next 100 words.
-9. The plan-round eval fails a round printed inside a code fence, and a round with a line over 100
-   characters. Its self-contained grader finds the round by the line that contains the round
-   header.
-10. Both plugins' CHANGELOGs record the changes under Unreleased with no extension-contract marker.
-    Their READMEs link only to files that exist.
-11. The repository check passes, and the currency command reports nothing.
+   Every mention describes the index-plus-goal-files layout. The manifest reference shows its
+   example as the index and its goal files.
+10. The plan-round eval's scaffold builds an index and a goal file, and the eval passes on it.
+11. marathon's CHANGELOG records the layout under Unreleased, with a migration step: split the
+    single file into the index and one file per goal, state `root` and `repos` in each file, and
+    add `order`. The entry carries no extension-contract marker.
+12. Each read-first set this task pushes over its word budget gets a raised budget: its size at
+    the end of the task, rounded up to the next 100 words. Every other budget stays as it is, and
+    the session brief lists each raise.
+13. The repository check passes, and the currency command reports nothing.
 
 **Test seams**
 
-- The repository check, including its failure on a planted violation of each new rule
-- The plan-round eval's graders, run on a passing round and on a fenced, over-wide round
-- One live delegate engagement showing that a `${CLAUDE_PLUGIN_ROOT}` citation in a profile resolves
+- The repository check
+- The plan-round eval, run on the rebuilt scaffold
+- The manifest reference's example, parsed with Python's `tomllib`: every file parses, the index
+  holds only the arrays, and each `order` matches its file's task tables
+- A search across both plugins for the single-file layout, meaning `[goals.` table headers or the
+  index described as holding goals or tasks, which finds nothing
 
 **Slices**
 
-1. Explicit loading in marathon and marathon-architecture, with the check rejecting `@`-include
-   lines
-2. The check resolves backtick and `${CLAUDE_PLUGIN_ROOT}` file citations
-3. Releasing and RESUME move into their own files, and the citations to them are repointed
-4. Repeated rules get one home within the skill
-5. Profiles cite the skill by `${CLAUDE_PLUGIN_ROOT}` paths and keep only their own behavior. The
-   slice brief gets its format, with quoted standards. The comment rules land in the implementer,
-   standards-reviewer, and editor profiles.
-6. The architect-facing formats and the goal-record brief become markdown under the 100-character
-   width rule. The plan-round eval gains its code-fence and line-width graders.
-7. Word budgets for the read-first sets and the profiles, and the description cap. marathon's
-   description is trimmed to fit.
+1. The manifest reference describes the index and the goal files: their naming, their fields,
+   `repos` and `root` with no inheritance, `order`, the comment rule, and an example that parses.
+2. LOCATE reads the index and then the goal file, and finds a synced goal's root in its deleted
+   file's history. `status <goal>` prints the goal's tasks in order, and the digest is unchanged.
+3. The writers: plan, experiment, intake, init, and sync create and delete goal files and keep
+   `order`. The goal record mirrors `order`, and the pending edits and the Sync example name goal
+   files.
+4. The remaining mentions of the single file move to the new layout: SKILL.md, the README, and the
+   context-engineering and workspace-coordination references. The eval scaffold builds the new
+   layout, and the eval passes.
+5. marathon's CHANGELOG gets the migration step under Unreleased, and the budgets are measured a
+   final time.
+
+Each slice raises the budgets its own edits push over, so the check passes after every slice.
 
 **Out of scope**
 
-- `lint-context` and budgets on produced content (task content-budgets)
-- The roadmap layout (task roadmap-layout)
-- The architecture layer's comment standard (task comment-standard)
-- Evidence artifacts in the session brief (task evidence-artifacts)
-- Rewriting briefs already stored fenced in goal records
+- Splitting the coordinator's roadmap, the one-off script that does it, and moving its dated
+  header narrative (task release)
+- Layout checks, such as `order` against the task tables and the arrays against the files, which
+  belong to `lint-context` (task content-budgets)
+- Listing `planned` and `backlog` in bare `status`
+- A GitHub Project mirror, and a LOCATE and status CLI (`v1.harness.tooling`)
 - Releasing or tagging either plugin (task release)
 
 **Door**
 
-Two-way. Nothing is released, and sessions keep running the installed 0.18.0.
+Two-way. Nothing is released. Sessions keep running the installed 0.18.0, which reads the
+coordinator's single file until the `release` task.
+
+## Progress
+
+slices 0/5 committed · standards — · spec — · editor —
 
 ## Decisions
 
@@ -183,6 +204,33 @@ Two-way. Nothing is released, and sessions keep running the installed 0.18.0.
 - harness-standards: harness programming principles live in claude-plugins' STANDARDS.md, not the
   architecture layer, whose pages need more than one repository to express them; the task
   evaluates this goal's practices, those before it, and the Pocock practices 0.16 adopted (plan).
+- roadmap-layout: a goal file is named by its full dotted path and sits flat in the roadmap
+  directory, as goal records do; nested directories were rejected (plan).
+- roadmap-layout: a goal file holds the goal's fields at the top level and its tasks as
+  `[tasks.<slug>]`. The full `[goals.<path>]` table was rejected, because the file name is the
+  goal's identity (plan).
+- roadmap-layout: every goal has a file, container goals and the `experiment` root included, and
+  sync deletes an empty ancestor by deleting its file (plan).
+- roadmap-layout: `repos` is always written, with `[]` meaning coordinator-only. `root` is written
+  once it is known, and its absence means `plan` sets the goal up. Ancestor inheritance is
+  dropped, because no goal used it (plan).
+- roadmap-layout: `status <goal>` prints the goal's own tasks in `order`, with done marks from the
+  record, then one line per sub-goal with its done count (plan).
+- roadmap-layout: bare `status` stays the digest of active goals; the index is the cross-goal view
+  (plan).
+- roadmap-layout: the index's only comment is a format pointer of at most two lines. Narrative
+  belongs in notes, and `release`'s sync moves the coordinator's header (plan).
+- roadmap-layout: marathon 0.19.0 reads only the per-goal layout. The CHANGELOG has a migration
+  step under Unreleased and no extension-contract marker, because no extension reads the roadmap
+  (plan).
+- roadmap-layout: every mention of the single-file roadmap across the plugins, the eval scaffold
+  included, describes the index-plus-goal-files layout. The index keeps its name (plan).
+- roadmap-layout: layout checks belong to content-budgets' `lint-context`, which parses with
+  Python's standard `tomllib`. This task ships no script (plan).
+- roadmap-layout: each budget the task pushes over is raised to its task-end size, rounded up to
+  the next 100. Trims wait for content-budgets (plan).
+- roadmap-layout: the roadmap stays TOML; Markdown and HTML were rejected because the roadmap is
+  data that LOCATE, staging, lint-context, and the planned CLI parse (plan).
 
 ## Pending edits
 
