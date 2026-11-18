@@ -12,8 +12,8 @@ lowest layer first, and finishes its release before the next repository's merge:
    Without it, tagging follows the merge directly.
 3. Tag each of the repository's Release tags, the base artifact before its sub-modules:
    1. Check that the tag isn't on the remote, unless it is this release's failed tag (below),
-      and that its version matches the artifact's
-      version as the repository records it, in its manifest or its CHANGELOG's top heading.
+      and that its version matches the artifact's version as the repository records it, in its
+      manifest or its CHANGELOG's top heading.
    2. When `[project] gate` is set, run it on the merge commit with the tag as its one argument
       (`mechanics/configuration.md`). Exit 0 lets the tag be pushed; nonzero holds it (below).
       A resumed release runs it again before each tag it hasn't pushed.
