@@ -22,6 +22,13 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   SKILL.md's three were never loaded. SKILL.md now links `behavior/` and `mechanics/pipeline.md`
   and says to read the command's playbook first. Each playbook opens with a Read first list of
   the files that command needs before acting; the rest stay cited where their subject comes up.
+- **This repository's check resolves file citations.** `scripts/check.sh` fails on a backtick
+  file citation in a plugin's markdown that names no file. A bare path resolves against the skill
+  root inside a skill and against the plugin or its skill roots elsewhere, `./` and `../` paths
+  against the citing file, `${CLAUDE_PLUGIN_ROOT}/` paths against the plugin, and a path after
+  another plugin's possessive against that plugin. A path whose first segment is no directory of
+  the plugin, such as `context/roadmap.toml`, belongs to the consumer's repository and is skipped,
+  as are placeholders, fenced code, and released CHANGELOG entries.
 
 ## v0.18.0
 

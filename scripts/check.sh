@@ -68,6 +68,76 @@ while read -r file; do
   done < <(grep -oP '\]\(\K\.\.?/[^)#]+' "$file")
 done < <(find plugins -name '*.md')
 
+# Prints "line<TAB>owner<TAB>span" for each backtick span in a markdown file
+# that reads as a file path: it contains a / and ends in an extension, with no
+# < or * placeholder and no URL scheme. The owner is the word before a
+# possessive just ahead of the span, as in marathon's `references/briefs.md`,
+# even across a line break, and - when there is none. Fenced code blocks are skipped. A CHANGELOG is
+# read only up to its first release heading, because released entries cite the
+# tree as it stood then.
+citations() {
+  awk '
+    /^[ \t]*(```|~~~)/ { fenced = !fenced; next }
+    fenced { next }
+    FILENAME ~ /CHANGELOG\.md$/ && /^## v/ { exit }
+    {
+      rest = carry " " $0
+      carry = match($0, /[^ \t`]+$/) ? substr($0, RSTART) : ""
+      while (match(rest, /`[^`]+`/)) {
+        before = substr(rest, 1, RSTART - 1)
+        span = substr(rest, RSTART + 1, RLENGTH - 2)
+        rest = substr(rest, RSTART + RLENGTH)
+        owner = "-"
+        if (match(before, /[A-Za-z0-9-]+\047s[ \t]+$/)) {
+          owner = substr(before, RSTART)
+          sub(/\047s[ \t]+$/, "", owner)
+        }
+        if (span ~ /^[A-Za-z0-9._${}\/-]+\/[A-Za-z0-9._-]+\.[a-z]+$/ && span !~ /:\/\//)
+          print FNR "\t" owner "\t" span
+      }
+    }
+  ' "$1"
+}
+
+# Every backtick file citation in the plugins' markdown names a real file.
+# ${CLAUDE_PLUGIN_ROOT}/ paths resolve against the plugin, and ./ and ../ paths
+# against the citing file. A bare path resolves against the skill root inside a
+# skill, and outside one (profiles, README, CHANGELOG) against the plugin root
+# or any of its skill roots. A path another plugin owns, written as
+# marathon's `references/briefs.md`, resolves against that plugin's roots. A
+# bare path is a plugin citation only when its first segment is a directory in
+# one of those roots; anything else, such as context/roadmap.toml or
+# .claude/marathon.toml, is a path in the consumer's repository.
+while read -r file; do
+  plugin=$(echo "$file" | cut -d/ -f1-2)
+  if [[ $file == "$plugin"/skills/*/* ]]; then
+    roots=("$(echo "$file" | cut -d/ -f1-4)")
+  else
+    roots=("$plugin" "$plugin"/skills/*)
+  fi
+  while IFS=$'\t' read -r line owner cite; do
+    bases=("${roots[@]}")
+    if [ -d "plugins/$owner" ]; then
+      bases=("plugins/$owner" "plugins/$owner"/skills/*)
+    fi
+    case $cite in
+      '${CLAUDE_PLUGIN_ROOT}/'*)
+        [ -f "$plugin/${cite#*/}" ] || err "$file:$line: citation $cite does not resolve"
+        continue ;;
+      ./* | ../*)
+        [ -f "$(dirname "$file")/$cite" ] || err "$file:$line: citation $cite does not resolve"
+        continue ;;
+    esac
+    cited=0
+    for root in "${bases[@]}"; do
+      [ -d "$root/${cite%%/*}" ] || continue
+      cited=1
+      [ -f "$root/$cite" ] && continue 2
+    done
+    [ "$cited" -eq 0 ] || err "$file:$line: citation $cite does not resolve"
+  done < <(citations "$file")
+done < <(find plugins -name '*.md')
+
 if [ "$fail" -ne 0 ]; then
   exit 1
 fi
