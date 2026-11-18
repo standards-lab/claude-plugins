@@ -1,13 +1,13 @@
 # goal · harness.optimization
 
-- **State:** brief ready
-- **Task:** skill-footprint
-- **Branch:** skill-footprint
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
 1. [x] version-floor
-2. [ ] skill-footprint
+2. [x] skill-footprint
 3. [ ] roadmap-layout
 4. [ ] content-budgets
 5. [ ] retro-routes
@@ -100,10 +100,6 @@ reads are code-fenced templates, which lose their formatting in the terminal and
 **Door**
 
 Two-way. Nothing is released, and sessions keep running the installed 0.18.0.
-
-## Progress
-
-slices 7/7 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
