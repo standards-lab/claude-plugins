@@ -1,15 +1,15 @@
 # goal · harness.optimization
 
-- **State:** brief ready
-- **Task:** content-budgets
-- **Branch:** content-budgets
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
 1. [x] version-floor
 2. [x] skill-footprint
 3. [x] roadmap-layout
-4. [ ] content-budgets
+4. [x] content-budgets
 5. [ ] retro-routes
 6. [ ] evidence-artifacts
 7. [ ] comment-standard
@@ -118,10 +118,6 @@ Each slice adjusts the budgets its own edits move, so the check passes after eve
 
 Two-way. Nothing is released. Sessions keep running the installed 0.18.0 until `release`, and
 consumers adopt `lint-context` only after it.
-
-## Progress
-
-slices 6/6 committed · standards done · spec done · editor done
 
 ## Decisions
 
