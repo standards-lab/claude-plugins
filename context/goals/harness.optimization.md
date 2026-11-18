@@ -121,7 +121,7 @@ coordinator's single file until the `release` task.
 
 ## Progress
 
-slices 2/5 committed · standards — · spec — · editor —
+slices 3/5 committed · standards — · spec — · editor —
 
 ## Decisions
 
