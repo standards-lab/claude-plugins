@@ -70,16 +70,20 @@ def classify(rel):
     return None
 
 
-def context_files(root):
-    """Yields every file under context/, skipping dotfiles and dot directories."""
-    context = root / "context"
-    if not context.is_dir():
+def read(path):
+    return path.read_text(encoding="utf-8")
+
+
+def tree_files(root, top, pattern="*"):
+    """Yields each file under top matching pattern, relative to root.
+
+    Dotfiles and dot directories are skipped.
+    """
+    if not (root / top).is_dir():
         return
-    for path in sorted(context.rglob("*")):
+    for path in sorted((root / top).rglob(pattern)):
         rel = path.relative_to(root)
-        if any(part.startswith(".") for part in rel.parts):
-            continue
-        if path.is_file():
+        if path.is_file() and not any(part.startswith(".") for part in rel.parts):
             yield rel
 
 
@@ -109,21 +113,21 @@ def check_kinds(root, files):
 def check_budgets(root, files):
     readme = root / "README.md"
     if readme.is_file():
-        count = words(readme.read_text())
+        count = words(read(readme))
         if count > ROOT_README_BUDGET:
             yield over("README.md", "README", count, ROOT_README_BUDGET, PROSE_FIX)
     for rel in files:
         kind = classify(rel)
         if kind == "context-readme":
-            count = words((root / rel).read_text())
+            count = words(read(root / rel))
             if count > CONTEXT_README_BUDGET:
                 yield over(rel, "README", count, CONTEXT_README_BUDGET, PROSE_FIX)
         elif kind == "note":
-            count = words((root / rel).read_text())
+            count = words(read(root / rel))
             if count > NOTE_BUDGET:
                 yield over(rel, "note", count, NOTE_BUDGET, PROSE_FIX)
         elif kind == "record":
-            for heading, body in record_sections((root / rel).read_text()):
+            for heading, body in record_sections(read(root / rel)):
                 for prefix, budget, fix in RECORD_SECTION_BUDGETS:
                     if heading == prefix or heading.startswith(prefix + " "):
                         count = words(body)
@@ -138,7 +142,7 @@ def parse(root, rel):
     check_toml_parses reports the error once; every other check skips the file.
     """
     try:
-        return tomllib.loads((root / rel).read_text())
+        return tomllib.loads(read(root / rel))
     except PARSE_ERRORS:
         return None
 
@@ -164,7 +168,7 @@ def check_toml_parses(root, files):
         if classify(rel) not in ("roadmap-index", "goal-file"):
             continue
         try:
-            tomllib.loads((root / rel).read_text())
+            tomllib.loads(read(root / rel))
         except PARSE_ERRORS as error:
             yield f"{rel}: does not parse: {error}"
 
@@ -173,7 +177,7 @@ def check_index(root, files):
     for rel in files:
         if classify(rel) != "roadmap-index":
             continue
-        text = (root / rel).read_text()
+        text = read(root / rel)
         comments = sum(1 for line in text.splitlines() if line.lstrip().startswith("#"))
         if comments > INDEX_COMMENT_LINES:
             yield (
@@ -277,7 +281,7 @@ def check_record_tasks(root, files):
         order = data.get("order", [])
         if not is_slug_list(order):
             continue
-        listed = record_tasks((root / record).read_text())
+        listed = record_tasks(read(root / record))
         if listed != order:
             yield (
                 f"{record}: ## Tasks lists [{', '.join(listed)}], but {rel} "
@@ -330,16 +334,12 @@ def linking_files(root):
     if (root / "README.md").is_file():
         yield Path("README.md")
     for top in ("context", "docs"):
-        if (root / top).is_dir():
-            for path in sorted((root / top).rglob("*.md")):
-                rel = path.relative_to(root)
-                if path.is_file() and not any(p.startswith(".") for p in rel.parts):
-                    yield rel
+        yield from tree_files(root, top, "*.md")
 
 
 def check_links(root, files):
     for rel in linking_files(root):
-        for number, target in link_targets((root / rel).read_text()):
+        for number, target in link_targets(read(root / rel)):
             path = link_path(target)
             if path is not None and not resolves(root, rel, path):
                 yield f"{rel}:{number}: link {target} does not resolve"
@@ -373,7 +373,7 @@ def check_capability_map(root, files):
     rel = Path("context", "README.md")
     if not (root / rel).is_file():
         return
-    text = (root / rel).read_text()
+    text = read(root / rel)
     lines = text.splitlines()
     if CAPABILITY_MAP not in lines:
         yield (
@@ -420,7 +420,7 @@ CHECKS = (
 
 def main():
     root = Path.cwd()
-    files = list(context_files(root))
+    files = list(tree_files(root, "context"))
     failures = [line for check in CHECKS for line in check(root, files)]
     for line in failures:
         print(line)
