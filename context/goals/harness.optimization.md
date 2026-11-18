@@ -45,7 +45,7 @@ Door          two-way (no release)
 
 ## Progress
 
-slices 1/3 committed · standards — · spec — · editor —
+slices 2/3 committed · standards — · spec — · editor —
 
 ## Decisions
 
