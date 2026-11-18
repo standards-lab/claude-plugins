@@ -1,12 +1,12 @@
 # goal · harness.optimization
 
-- **State:** building
-- **Task:** version-floor
-- **Branch:** version-floor
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
-1. [ ] version-floor
+1. [x] version-floor
 2. [ ] skill-footprint
 3. [ ] content-budgets
 4. [ ] retro-routes
@@ -42,10 +42,6 @@ Slices        1. bump create-gh-release-action to v1.12.0 and @anthropic-ai/clau
 Out of scope  releasing or tagging either plugin (task `release`); other extensions' notes
 Door          two-way (no release)
 ```
-
-## Progress
-
-slices 3/3 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
