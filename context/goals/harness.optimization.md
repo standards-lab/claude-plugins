@@ -13,7 +13,8 @@
 5. [ ] retro-routes
 6. [ ] evidence-artifacts
 7. [ ] comment-standard
-8. [ ] release
+8. [ ] harness-standards
+9. [ ] release
 
 ## Task brief · skill-footprint
 
@@ -179,6 +180,9 @@ Two-way. Nothing is released, and sessions keep running the installed 0.18.0.
   any edit to that set needs a budget change.
 - skill-footprint: marathon's description shrank from 1,153 to 975 characters to fit the 1,024
   cap.
+- harness-standards: harness programming principles live in claude-plugins' STANDARDS.md, not the
+  architecture layer, whose pages need more than one repository to express them; the task
+  evaluates this goal's practices, those before it, and the Pocock practices 0.16 adopted (plan).
 
 ## Pending edits
 

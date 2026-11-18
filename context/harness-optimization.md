@@ -48,6 +48,10 @@ Read these sizes, in words, to judge the work:
   2,175 of them a dated header, over 61 goals and 72 tasks, and it records no task order. It
   becomes an index of the three arrays plus one `context/roadmap/<goal>.toml` per goal, holding
   its own `root` and `repos`, an `order` array, and its tasks. The final sync splits it.
+- **Harness standards** (task `harness-standards`). claude-plugins gains a `STANDARDS.md` for the
+  judgement calls of harness programming, which the standards-reviewer applies. The architecture
+  layer's `harness/` pages left in its architecture-diet because one repository can't promote a
+  page; their history (`b927dd8^:harness/`) and the Pocock practices of 0.16 are inputs.
 - **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
 
 ## Findings for later
