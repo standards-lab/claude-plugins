@@ -1,8 +1,8 @@
 # goal · harness.optimization
 
-- **State:** idle
-- **Task:** none
-- **Branch:** none
+- **State:** building
+- **Task:** content-budgets
+- **Branch:** content-budgets
 
 ## Tasks
 
@@ -16,108 +16,112 @@
 8. [ ] harness-standards
 9. [ ] release
 
-## Task brief · roadmap-layout
+## Task brief · content-budgets
 
 **Problem**
 
-The coordinator's roadmap is one file: 13,353 words covering 61 goals and 74 tasks. It records no
-task order, and every session reads all of it to find a single goal. A goal can take its `root`
-and `repos` from an ancestor, so a reader has to walk the tree to learn what a goal locks.
-marathon describes this single-file layout in several places: the manifest reference, LOCATE,
-plan, experiment, intake, init, sync, status, the README, and the eval scaffold. Each goal should
-be a short file of its own that carries its own task order, and an index should hold only the
-three arrays.
+marathon states the size and shape of what it writes as prose, nothing checks it, and the content
+has outgrown it. docproc's `v1.ai.processing` record holds 12,334 words of Decisions. A spike
+README runs to 24,678 words, and a note to 24,934. Decisions only accumulate. Spikes keep their
+answer in either README, in both, or in neither, and the capability map is unstructured prose.
+`roadmap-layout` also left the roadmap's layout rules unchecked. Each rule should be a
+deterministic check that every repository's check runs, and the skill should point to that check
+instead of restating it.
 
 **Behaviors**
 
-1. The roadmap index keeps its current name. It holds the `active`, `planned`, and `backlog`
-   arrays and a format-pointer comment of at most two lines. It holds nothing else: no goal
-   tables and no other comments.
-2. Every goal has its own TOML file in a roadmap directory beside the index, named by the goal's
-   full dotted path. That includes container goals that sit in no array, and the reserved
-   `experiment` root. The goal's fields sit at the top level, and each task is a `[tasks.<slug>]`
-   table. The file doesn't repeat the goal's name.
-3. Every goal file writes `repos`, and `[]` means the goal touches only the coordinator. A file
-   writes `root` once the goal has one; a file with no `root` means `plan` sets the goal up first.
-   No field takes its value from an ancestor. A spike's file adds `remote` and `path`.
-4. A goal file that holds tasks has an `order` array listing every task slug in the file exactly
-   once, in run order, and the goal record's task list mirrors it. A task added while the goal is
-   active joins `order` when it is written, and joins the record's task list at the goal's next
-   `plan` or `start`.
-5. LOCATE reads the index, then the named goal's file. For a goal that is no longer listed, it
-   finds the root in the history of the goal's deleted file.
-6. The roadmap's writers keep the layout whole:
-   - staging and pivoting edit only the index;
-   - adding a goal creates its file;
-   - adding a task adds its table and appends the slug to `order`;
-   - `experiment` creates the experiment's file and one file per spike;
-   - `intake` deletes the experiment's file, and the file of any ancestor left empty;
-   - `init` creates the index, and a file for the first goal once it settles one.
-7. Sync deletes the goal's file and the files of its sub-goals. It then deletes the file of each
-   ancestor whose criteria now hold, or that is left empty: one with no tasks of its own and no
-   file whose name begins with its name.
-8. `status <goal>` prints the goal's own tasks in `order`. Each is marked done from the goal
-   record, or all are open when the goal has no record. One line follows per sub-goal, with its
-   done count. The brief-formats reference shows this table beside the status digest. Bare
-   `status` is unchanged and lists active goals only.
-9. No mention in either plugin describes the roadmap as a single file holding goal tables. This
-   covers:
-   - the skill, its references, and SKILL.md;
-   - the README;
-   - the context-engineering and workspace-coordination references;
-   - the Sync example and the pending-edit wording in the brief formats and the goal record.
+1. marathon ships `lint-context`, one executable on the plugin's PATH. It needs only Python 3.11
+   or later and its standard library. It takes no arguments and checks the repository at the
+   current directory. It prints one line per failure, naming the file, the rule, and the measured
+   size against the limit where there is one. It exits nonzero when anything fails, and exits 0
+   silently otherwise. A word is a whitespace-separated token.
+2. A file in the context directory is the context README, a note directly in that directory, a
+   goal record in its goals directory, or the roadmap index or a goal file in its roadmap
+   directory. Any other file there fails.
+3. Word budgets are fixed, with no configuration:
+   - a goal record's Task brief 1,200, Decisions 2,000, and Pending edits 1,000, with its other
+     sections unbudgeted;
+   - each note 1,500;
+   - the context README 1,000;
+   - the root README 1,500.
 
-   Every mention describes the index-plus-goal-files layout. The manifest reference shows its
-   example as the index and its goal files.
-10. The plan-round eval's scaffold builds an index and a goal file, and the eval passes on it.
-11. marathon's CHANGELOG records the layout under Unreleased, with a migration step: split the
-    single file into the index and one file per goal, state `root` and `repos` in each file, and
-    add `order`. The entry carries no extension-contract marker.
-12. Each read-first set this task pushes over its word budget gets a raised budget: its size at
-    the end of the task, rounded up to the next 100 words. Every other budget stays as it is, and
-    the session brief lists each raise.
-13. The repository check passes, and the currency command reports nothing.
+   Documentation pages are unbudgeted. A spike repository gets the same rules.
+4. In the roadmap:
+   - each goal's and task's summary is at most 100 words, each proof 40, and each criteria
+     statement 60;
+   - the index holds only the three arrays and a comment of at most two lines;
+   - every goal file writes `repos`;
+   - a goal file with tasks has an `order` that lists each task table exactly once;
+   - a goal record's task list matches its goal file's `order` when that file is in the same
+     repository.
+5. The context README has a `## Capability map` heading. Each entry under it is a list item that
+   opens with a bold feature name, then `(built)` or `(planned)`. A built entry carries at least
+   one relative link, and every link it carries resolves. A planned entry may carry none.
+6. Every relative link outside code in the root README, the context directory, and the
+   documentation pages resolves.
+7. claude-plugins' check runs `lint-context` from the working tree and runs its tests, and both
+   pass on this repository: its map has the new shape, and this goal's record fits its budgets.
+8. The skill says each repository's check calls `lint-context`. A repository whose CI lacks the
+   plugin fetches the script from the pinned `marathon/vX.Y.Z` tag by its tag URL. `init` writes
+   a check that calls it, and describes the map as built and planned entries.
+9. Decisions keep only what binds later tasks: settlements they rely on, rejected alternatives,
+   holds, and falsified assumptions. At BUILD the editor drops the Decisions that no longer bind,
+   on the task's branch, and the session brief lists each drop.
+10. A spike keeps its question, evidence, and answer in its context README. Each survey or result
+    gets its own documentation page, linked from its evidence item. The answer section links to
+    the context README's answer, and spike setup, `experiment`, and the answer section all say so.
+11. The skill's prose for each rule `lint-context` checks is cut to a pointer to it. Each
+    read-first set a trim shrinks gets a lowered budget, and each set pushed over gets a raised
+    one. Either way the new budget is the set's size at task end, rounded up to the next 100
+    words. The session brief lists each change.
+12. marathon's CHANGELOG records the change under Unreleased, with no extension-contract marker.
+    Its migration step says to call `lint-context` from the check, reshape the map, move a
+    spike's answer into its context README, and trim whatever fails.
+13. The goal record's pending edits include setting standards-lab's check to `lint-context` at
+    `release`'s sync.
+14. The repository check passes, and the currency command reports nothing.
 
 **Test seams**
 
+- `lint-context` run on fixture trees by stdlib `unittest` tests, which assert its exit status and
+  its failure lines
 - The repository check
-- The plan-round eval, run on the rebuilt scaffold
-- The manifest reference's example, parsed with Python's `tomllib`: every file parses, the index
-  holds only the arrays, and each `order` matches its file's task tables
-- A search across both plugins for the single-file layout, meaning `[goals.` table headers or the
-  index described as holding goals or tasks, which finds nothing
 
 **Slices**
 
-1. The manifest reference describes the index and the goal files: their naming, their fields,
-   `repos` and `root` with no inheritance, `order`, the comment rule, and an example that parses.
-2. LOCATE reads the index and then the goal file, and finds a synced goal's root in its deleted
-   file's history. `status <goal>` prints the goal's tasks in order, and the digest is unchanged.
-3. The writers: plan, experiment, intake, init, and sync create and delete goal files and keep
-   `order`. The goal record mirrors `order`, and the pending edits and the Sync example name goal
-   files.
-4. The remaining mentions of the single file move to the new layout: SKILL.md, the README, and the
-   context-engineering and workspace-coordination references. The eval scaffold builds the new
-   layout, and the eval passes.
-5. marathon's CHANGELOG gets the migration step under Unreleased, and the budgets are measured a
-   final time.
+1. `lint-context` classifies the files in the context directory and holds the READMEs, the notes,
+   and the record sections to their budgets. claude-plugins' check runs it from the working tree,
+   along with the tests. This goal's Decisions are pruned to what binds later tasks, so the
+   record passes with this task's approved Decisions in it.
+2. The roadmap checks: entry budgets, the index's contents, `repos`, `order`, and the record's
+   task list.
+3. The capability map's shape and the relative links. This repository's map takes the new shape.
+4. The skill: the check calls `lint-context`, CI fetches it by tag, and `init` writes both. The
+   prose of each checked rule becomes a pointer, and the budgets are measured.
+5. The Decisions rule and the spike layout in the skill. The editor's pass applies the rule to
+   this task's own Decisions.
+6. The CHANGELOG entry, the standards-lab pending edit, and a final budget measure.
 
-Each slice raises the budgets its own edits push over, so the check passes after every slice.
+Each slice adjusts the budgets its own edits move, so the check passes after every slice.
 
 **Out of scope**
 
-- Splitting the coordinator's roadmap, the one-off script that does it, and moving its dated
-  header narrative (task release)
-- Layout checks, such as `order` against the task tables and the arrays against the files, which
-  belong to `lint-context` (task content-budgets)
-- Listing `planned` and `backlog` in bare `status`
-- A GitHub Project mirror, and a LOCATE and status CLI (`v1.harness.tooling`)
-- Releasing or tagging either plugin (task release)
+- Running `lint-context` on other repositories or trimming their content. Each repository does
+  that when it adopts the script, and `release`'s sync does it for the coordinator.
+- Checks across repositories, such as a member's record against the coordinator's goal file
+- Budget options or per-repository overrides, and budgets on documentation pages or other record
+  sections
+- CLAUDE.md, and STANDARDS.md (task `harness-standards`)
+- Releasing or tagging either plugin (task `release`)
 
 **Door**
 
-Two-way. Nothing is released. Sessions keep running the installed 0.18.0, which reads the
-coordinator's single file until the `release` task.
+Two-way. Nothing is released. Sessions keep running the installed 0.18.0 until `release`, and
+consumers adopt `lint-context` only after it.
+
+## Progress
+
+slices 0/6 committed · standards — · spec — · editor —
 
 ## Decisions
 
@@ -248,6 +252,40 @@ coordinator's single file until the `release` task.
   `main` and this branch, because the model's reply lines run past 100 characters; that predates
   this task. The scaffold builds the new layout, and in every run the model found the goal
   through it.
+- content-budgets: `lint-context` ships as one stdlib-only Python executable in marathon's `bin/`,
+  called by each repository's `[project] check` (plan).
+- content-budgets: CI without the plugin fetches `lint-context` from the pinned `marathon/vX.Y.Z`
+  tag; skipping when absent was rejected (plan).
+- content-budgets: Decisions keep only what binds later tasks (relied-on settlements, rejected
+  alternatives, holds, falsified assumptions); the editor drops the rest on the task branch at BUILD
+  and the session brief lists each drop (plan).
+- content-budgets: a spike's surveys and results live in `docs/`, one page per evidence item linked
+  from it; its question, evidence, and answer live in `context/README.md` (plan).
+- content-budgets: the capability map is named features marked `(built)` or `(planned)`, under a
+  required `## Capability map` heading; built entries need a resolving relative link, planned ones
+  may have none (plan).
+- content-budgets: budgets are fixed in `lint-context` with no configuration or options;
+  `lint-context` checks only its own repository and takes no arguments (plan).
+- content-budgets: budgets are Task brief 1,200, Decisions 2,000, Pending edits 1,000; notes 1,500;
+  context README 1,000; root README 1,500; manifest summary 100, proof 40, criteria statement 60;
+  `docs/` pages unbudgeted (plan).
+- content-budgets: spikes get the same rules with no marker; file kinds are fixed paths, and any
+  other file under `context/` fails (plan).
+- content-budgets: relative links outside code resolve in the root README, `context/`, and `docs/`;
+  the roadmap index holds only the arrays and a comment of at most two lines, and every goal file
+  writes `repos` (plan).
+- content-budgets: skill prose for each rule `lint-context` checks is cut to a pointer, and
+  read-first budgets move to their task-end size (plan).
+- content-budgets: standards-lab's check becomes `lint-context` at `release`'s sync, after the
+  roadmap split (plan).
+- content-budgets: budget numbers live only in `lint-context`, whose failure lines name each limit;
+  it checks the current directory, not the git top level.
+- content-budgets: a map entry reads `- **Name** (built|planned): text`; a link resolves when its
+  file or directory exists, and anchors, absolute URLs, and code are skipped.
+- content-budgets: tests are stdlib `unittest` on fixture trees built in temporary directories, kept
+  outside the plugin; CI uses the runner's `python3`.
+- content-budgets: no extension-contract marker, because no extension reads the files `lint-context`
+  checks.
 
 ## Pending edits
 
