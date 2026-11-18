@@ -9,8 +9,8 @@ ask the architect for them; the architect makes the decisions.
 PLAN asks its questions in rounds. A round holds every question whose prerequisites are already
 settled, and the architect answers them all at once, inline. A question that depends on the answer
 to another open question waits for the next round; it is never asked conditionally, as in "only if
-1 is yes". The round is printed in full in the reply, never asked through AskUserQuestion
-(`behavior/planning.md`, "Ask for decisions, never for facts").
+1 is yes". The round is presented as `behavior/planning.md`, "Ask for decisions, never for
+facts", says.
 
 ```
 PLAN ROUND 1 · v1.ai · task harness-adapters
@@ -139,8 +139,8 @@ goal's root, which gitignores `.claude/briefs/`.
 - **Decided without you** lists the decisions the brief didn't cover and what the reviewers
   changed.
 - **Merge danger** names the door type and the blast radius. A one-way door gets the close read.
-  When the task brief has a Release line, Merge danger repeats its tags, so accepting the brief
-  authorizes tagging them.
+  When the task brief has a Release line, Merge danger repeats its tags, which accepting the
+  brief authorizes (`mechanics/releasing.md`).
 - **Needs you** reads "(none)" when nothing remains.
 - **Sync** appears only on the goal's last task, after Needs you. It lists the pending edits the
   sync will apply, per repository, and the goal proposed to stage next: for a spike, the next

@@ -34,6 +34,15 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   stood. A session reads RESUME only when LOCATE routes there, and Releasing only at SHIP with a
   Release line; resuming a release moves into `mechanics/releasing.md`, so a resumed task that
   isn't releasing never reads it. Stages, steps, and hook firing points are unchanged.
+- **Repeated rules get one home.** A rule stated in several skill files now lives in one, and the
+  others cite it: how a round is presented (`behavior/planning.md`), the currency commands before
+  round 1 and taking an approved brief to approval (`mechanics/pipeline.md`, 3 · PLAN), nothing
+  changing before approval (`mechanics/pipeline.md`, Invariants, which now names a `plan`,
+  `experiment`, or `intake` round outcome too), the branch check and explicit-path staging before
+  a commit (`mechanics/pipeline.md`, Committing), when `on-record` fires (`mechanics/hooks.md`),
+  goal-record bookkeeping commits (`mechanics/pipeline.md`), the context-fill handoff
+  (`references/build.md`), and release tags authorized by acceptance and the release handoff
+  (`mechanics/releasing.md`). Behavior is unchanged.
 
 ## v0.18.0
 

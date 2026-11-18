@@ -20,6 +20,4 @@ Read first, before acting:
    3R · RESUME (`mechanics/resume.md`).
 
 A session that stops during PLAN needs no reset: the plan file keeps the open round. One whose
-context fills while SHIP releases hands off the same way, with the next move "tag <names>"
-naming the tags not yet released and each repository's position, committed where
-`mechanics/releasing.md` says.
+context fills while SHIP releases hands off as `mechanics/releasing.md` says.

@@ -60,16 +60,15 @@ The session records progress in the goal record as slices commit, so a handoff l
 BUILD stops for the architect only for:
 
 - **a one-way door**: an irreversible migration, data loss, or an action with effects outside the
-  repositories. Pushing the tags an accepted brief's Release line names is not one: accepting the
-  brief authorized them, and SHIP tags them without escalating again (`mechanics/releasing.md`).
+  repositories. Pushing the tags an accepted brief's Release line names is not one
+  (`mechanics/releasing.md`).
 - **a decision the task brief doesn't cover**, which a delegate couldn't settle without changing
   the brief
 - **scope beyond the task**
 
-An escalation uses the plan-round format, headed `ESCALATION` (`references/briefs.md`), printed
-in full in the reply, never through AskUserQuestion (`behavior/planning.md`, "Ask for decisions,
-never for facts"). BUILD resumes once it is answered. Anything else a delegate decides goes under
-Decided without you.
+An escalation uses the plan-round format, headed `ESCALATION` (`references/briefs.md`), and is
+presented as a round is (`behavior/planning.md`, "Ask for decisions, never for facts"). BUILD
+resumes once it is answered. Anything else a delegate decides goes under Decided without you.
 
 ## Handoff
 

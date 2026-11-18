@@ -2,9 +2,9 @@
 
 SHIP releases when the task brief has a Release line (`mechanics/pipeline.md`, 6 · SHIP), and
 RESUME comes here when the next move is "tag <names>" (`mechanics/resume.md`). The line lists the
-tags the task releases (`references/briefs.md`, "Task brief"), and accepting the session brief
-authorizes them. SHIP then takes each repository in turn, lowest layer first, and finishes its
-release before the next repository's merge:
+tags the task releases (`references/briefs.md`, "Task brief"). Accepting the session brief
+authorizes them, so SHIP tags them without escalating again. SHIP takes each repository in turn,
+lowest layer first, and finishes its release before the next repository's merge:
 
 1. Merge the branch with `[remote] merge`, switch to the default branch, pull, and delete the
    local task branch.

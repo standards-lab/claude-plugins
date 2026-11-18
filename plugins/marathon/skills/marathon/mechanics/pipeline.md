@@ -68,10 +68,9 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
 
 1. Enter plan mode. The plan file holds the session's planning state: title it with the goal and
    task, and keep each round, its answers, and the drafted brief in it.
-2. Run plan rounds with the architect (`behavior/planning.md`, `references/briefs.md`). Print
-   each round in full in the reply and end the turn there, never through AskUserQuestion
-   (`behavior/planning.md`, "Ask for decisions, never for facts"). The planner profile finds the
-   facts and drafts each round, then the task brief and its slices
+2. Run plan rounds with the architect, each presented as `behavior/planning.md`, "Ask for
+   decisions, never for facts", says, in the format of `references/briefs.md`. The planner
+   profile finds the facts and drafts each round, then the task brief and its slices
    (`behavior/delegation.md`). Before round 1, the planner runs `[project] currency` on the
    default branch of each repository the task touches that declares it
    (`mechanics/configuration.md`), and reads the release notes of what trails. Round 1 notes each
@@ -80,7 +79,7 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
    currency commands still run first: skip the rounds unless something trails that the brief
    doesn't cover, and in that case open one round on it before approval.
 3. Present the task brief for approval through ExitPlanMode, with the full brief in the plan
-   file. Nothing changes until the architect approves. **[touch 1]**
+   file ("Invariants"). **[touch 1]**
 4. On approval, fire `on-build`.
 5. Create the task's branch, named by the task's slug, from the fetched default branch in each
    repository the task touches. The coordinator gets no branch.
@@ -97,7 +96,7 @@ back out and continues BUILD, or a release or sync, from the goal record.
 
 Run the build loop in `references/build.md` without stopping. Escalate only for what that file
 names. A change the task owes the coordinator goes in the record's pending edits, never into the
-coordinator during BUILD. When the context fills, run `reset` on your own (`commands/reset.md`).
+coordinator during BUILD. When the context fills, hand off (`references/build.md`, "Handoff").
 
 ### 5 · BRIEF
 
@@ -116,7 +115,7 @@ coordinator during BUILD. When the context fills, run `reset` on your own (`comm
 1. Fire `on-ship`.
 2. Update the goal record: check the task, add its decisions, set State to `idle` and Task to
    none, and clear Progress.
-3. Fire `on-record`, then commit the record on the task's branch.
+3. Fire `on-record` (`mechanics/hooks.md`), then commit the record on the task's branch.
 4. Publish each touched repository's branch with its `[remote] publish` command, lowest layer
    first, using the brief file as the body (for GitHub, `--body-file`). A repository with no
    `[remote] publish` merges its branch locally instead ("Branches and pull requests").
@@ -149,13 +148,12 @@ request, in each repository it changes.
 | sync | `sync-<goal>` | the Sync section of the last task's session brief |
 | `retro` | `retro-<topic>` | the ticked findings |
 
-Each branch starts from the freshly pulled default branch, and each commit stages explicit paths,
-never everything. The architect's approval of the outcome, the session brief, or the ticked
-findings authorizes publishing and merging. Each repository publishes with its `[remote] publish`
-command and merges with its `[remote] merge` command once its checks pass, lowest layer first,
-then switches back to its default branch, pulls, and deletes the local branch. A merge that can't
-happen leaves the branch checked out, which holds the repository until it merges: tell the
-architect and stop.
+Each branch starts from the freshly pulled default branch. The architect's approval of the
+outcome, the session brief, or the ticked findings authorizes publishing and merging. Each
+repository publishes with its `[remote] publish` command and merges with its `[remote] merge`
+command once its checks pass, lowest layer first, then switches back to its default branch,
+pulls, and deletes the local branch. A merge that can't happen leaves the branch checked out,
+which holds the repository until it merges: tell the architect and stop.
 
 A project with no `[remote] publish` branches the same way and, once the architect approves,
 merges the branch locally into its default branch. A standalone project's own manifest, notes,
@@ -176,7 +174,7 @@ merge into (`commands/init.md`).
 
 Before every commit, any agent confirms the checkout is on the session's branch, or on the root's
 default branch for goal-record bookkeeping. A checkout on any other branch means the session stops
-and reports.
+and reports. Each commit stages explicit paths, never everything.
 
 ## How each command uses the pipeline
 
@@ -196,8 +194,8 @@ and reports.
 - A session advances one task of one goal, on one branch name in each touched repository.
 - Every session starts and ends at the goal record, so the next session learns where to begin
   from the repository, not the conversation.
-- Nothing changes before the architect approves the task brief, except a RESUME of an approved
-  one.
+- Nothing changes before the architect approves the task brief, or the round outcome for `plan`,
+  `experiment`, and `intake`, except a RESUME of an approved brief.
 - Nothing is published before the architect accepts the session brief.
 - No tag is pushed while its repository's default branch is red or its gate fails, and a
   released tag is never re-cut.

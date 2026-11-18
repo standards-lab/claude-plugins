@@ -57,9 +57,7 @@ appear while a task is planned or in progress, and Handoff only while State is `
 
 - **State** drives `status` and LOCATE:
   - `idle`: between tasks. The next `start` plans the next unchecked task, or, when Task brief
-    already holds that task's brief, runs the currency commands first and presents the brief for
-    approval, opening a round when something trails that the brief doesn't cover
-    (`mechanics/pipeline.md`, 3 · PLAN).
+    already holds that task's brief, takes it to approval (`mechanics/pipeline.md`, 3 · PLAN).
   - `building`: a session is in BUILD.
   - `brief ready`: BUILD is done and the session brief waits on the architect.
   - `handoff`: a session stopped partway; the next `start` resumes from Handoff.
@@ -74,10 +72,9 @@ appear while a task is planned or in progress, and Handoff only while State is `
 - **Progress** records the build loop's position (`references/build.md`).
 - **Handoff** gives the exact next move while State is `handoff`: the BUILD position `reset`
   wrote (`commands/reset.md`); "merge", or the failing check, when SHIP can't merge; "tag
-  <names>" when the context fills during a release, naming the tags not yet released and each
-  repository's position (`mechanics/releasing.md`); "merge, then sync" or "tag <names>, then
-  sync" on the goal's last task; or "merge `sync-<goal>`, then delete the record" when a sync
-  pull request can't merge (`mechanics/goals.md`, "Sync").
+  <names>" when the context fills during a release (`mechanics/releasing.md`); "merge, then
+  sync" or "tag <names>, then sync" on the goal's last task; or "merge `sync-<goal>`, then
+  delete the record" when a sync pull request can't merge (`mechanics/goals.md`, "Sync").
 - **Decisions** logs what each plan round settled and what each task decided without the
   architect, one line each, so a later task doesn't decide it again. It also records rejected
   alternatives (`behavior/planning.md`). A held dependency is a decision of the form
@@ -90,8 +87,5 @@ appear while a task is planned or in progress, and Handoff only while State is `
 ## Where it is committed
 
 The root is a repository the goal locks, so the record changes on the task's branch and merges
-with the task's pull request. Only bookkeeping commits it straight to the root's default branch:
-the header lines between tasks, State `handoff` with its Handoff for an unfinished release whose
-root has merged or a stuck sync, the return to `idle` once a resumed release finishes, the next
-brief `plan` writes, and deleting the record once its sync pull request merges
+with the task's pull request. Only bookkeeping commits it straight to the root's default branch
 (`mechanics/pipeline.md`, "Branches and pull requests").

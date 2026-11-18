@@ -22,10 +22,8 @@ Read first, before acting:
 
 LOCATE routes an `idle` goal to PLAN. Without an approved brief for the next task, plan the
 task in rounds to an approved brief and slice list (`behavior/planning.md`,
-`references/briefs.md`). With one, PLAN runs the currency commands first and then presents the
-brief, opening a round only when something trails that the brief doesn't cover
-(`mechanics/pipeline.md`, 3 · PLAN). Add detail to the notes the task touches only as far as the
-brief needs.
+`references/briefs.md`). With one, PLAN takes it to approval (`mechanics/pipeline.md`, 3 ·
+PLAN). Add detail to the notes the task touches only as far as the brief needs.
 
 Branch slug: the task.
 
@@ -42,10 +40,8 @@ the brief describes a finished state.
 
 ## Brief
 
-Write and show the session brief. Accepting it authorizes publishing and merging; a redirect
-returns to BUILD, or to PLAN when it changes the brief's behaviors.
-
-On the goal's last task, the brief has a Sync section, and accepting it also authorizes the sync
+Write and show the session brief, and act on the architect's accept or redirect
+(`mechanics/pipeline.md`, 5 · BRIEF). On the goal's last task, the brief has a Sync section
 (`references/briefs.md`, "Session brief"). A spike's last brief gives its answer
 (`references/briefs.md`, "Answer section").
 
@@ -56,5 +52,4 @@ merge (`mechanics/pipeline.md`, 6 · SHIP). When the task brief has a Release li
 the release, fixing forward until the planned version releases (`mechanics/releasing.md`). On
 the goal's last task, sync (`mechanics/goals.md`).
 
-If the context fills before BRIEF, `reset` runs on its own and the next `start` on the goal
-resumes.
+If the context fills before BRIEF, the session hands off (`references/build.md`, "Handoff").
