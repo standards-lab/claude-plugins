@@ -219,6 +219,17 @@ for skill in plugins/*/skills/*/SKILL.md; do
     err "$skill: description is $length characters, over the 1024 limit"
 done
 
+# marathon's lint-context holds this repository's context to its file kinds
+# and word budgets, run from the working tree so the check tests the copy being
+# changed. Its tests build failing fixtures in temporary directories, and -B
+# keeps them from writing bytecode into the tree. The test report is printed
+# only on failure.
+plugins/marathon/bin/lint-context || err "lint-context failed"
+if ! report=$(python3 -B -m unittest discover -s scripts/tests 2>&1); then
+  echo "$report" >&2
+  err "scripts/tests failed"
+fi
+
 if [ "$fail" -ne 0 ]; then
   exit 1
 fi

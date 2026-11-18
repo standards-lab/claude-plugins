@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+"""Check a marathon repository's context at the current working directory.
+
+Every file under context/ is of a known kind: the context README, a note, a
+goal record, the roadmap index, or a goal file. Notes, READMEs, and goal-record
+sections stay within fixed word budgets, where a word is a whitespace-separated
+token, as wc -w counts it. Prints one line per failure and exits nonzero if
+there is any.
+"""
+
+import sys
+from pathlib import Path
+
+CONTEXT_README_BUDGET = 1000
+ROOT_README_BUDGET = 1500
+NOTE_BUDGET = 1500
+RECORD_SECTION_BUDGETS = (
+    ("## Task brief", 1200, "shorten"),
+    ("## Decisions", 2000, "prune what no longer binds later tasks"),
+    ("## Pending edits", 1000, "apply or shorten"),
+)
+PROSE_FIX = "trim; move detail to docs/"
+
+
+def words(text):
+    return len(text.split())
+
+
+def over(path, kind, count, budget, fix):
+    return f"{path}: {kind} is {count:,} words, budget {budget:,}; {fix}"
+
+
+def classify(rel):
+    """Returns the kind of a path relative to the root, or None if it has none."""
+    parts = rel.parts
+    if parts == ("context", "README.md"):
+        return "context-readme"
+    if parts == ("context", "roadmap.toml"):
+        return "roadmap-index"
+    if len(parts) == 2 and rel.suffix == ".md":
+        return "note"
+    if len(parts) == 3 and parts[1] == "goals" and rel.suffix == ".md":
+        return "record"
+    if len(parts) == 3 and parts[1] == "roadmap" and rel.suffix == ".toml":
+        return "goal-file"
+    return None
+
+
+def context_files(root):
+    """Yields every file under context/, skipping dotfiles and dot directories."""
+    context = root / "context"
+    if not context.is_dir():
+        return
+    for path in sorted(context.rglob("*")):
+        rel = path.relative_to(root)
+        if any(part.startswith(".") for part in rel.parts):
+            continue
+        if path.is_file():
+            yield rel
+
+
+def record_sections(text):
+    """Yields (heading, body) for each ## section; the heading is not in the body."""
+    heading, body = None, []
+    for line in text.splitlines():
+        if line.startswith("## "):
+            if heading is not None:
+                yield heading, "\n".join(body)
+            heading, body = line, []
+        elif heading is not None:
+            body.append(line)
+    if heading is not None:
+        yield heading, "\n".join(body)
+
+
+def check_kinds(root, files):
+    for rel in files:
+        if classify(rel) is None:
+            yield (
+                f"{rel}: not a context file; context/ holds only README.md, "
+                "notes (*.md), goals/*.md, roadmap.toml, and roadmap/*.toml"
+            )
+
+
+def check_budgets(root, files):
+    readme = root / "README.md"
+    if readme.is_file():
+        count = words(readme.read_text())
+        if count > ROOT_README_BUDGET:
+            yield over("README.md", "README", count, ROOT_README_BUDGET, PROSE_FIX)
+    for rel in files:
+        kind = classify(rel)
+        if kind == "context-readme":
+            count = words((root / rel).read_text())
+            if count > CONTEXT_README_BUDGET:
+                yield over(rel, "README", count, CONTEXT_README_BUDGET, PROSE_FIX)
+        elif kind == "note":
+            count = words((root / rel).read_text())
+            if count > NOTE_BUDGET:
+                yield over(rel, "note", count, NOTE_BUDGET, PROSE_FIX)
+        elif kind == "record":
+            for heading, body in record_sections((root / rel).read_text()):
+                for prefix, budget, fix in RECORD_SECTION_BUDGETS:
+                    if heading == prefix or heading.startswith(prefix + " "):
+                        count = words(body)
+                        if count > budget:
+                            name = heading[3:].strip()
+                            yield over(rel, f"section '{name}'", count, budget, fix)
+
+
+CHECKS = (check_kinds, check_budgets)
+
+
+def main():
+    root = Path.cwd()
+    files = list(context_files(root))
+    failures = [line for check in CHECKS for line in check(root, files)]
+    for line in failures:
+        print(line)
+    return 1 if failures else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
