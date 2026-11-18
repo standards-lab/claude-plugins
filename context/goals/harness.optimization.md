@@ -45,7 +45,7 @@ Door          two-way (no release)
 
 ## Progress
 
-slices 3/3 committed · standards — · spec — · editor —
+slices 3/3 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
@@ -60,3 +60,11 @@ slices 3/3 committed · standards — · spec — · editor —
   on-start only locates the layer, and the question itself is the problem this task removes.
 - version-floor: bumped CI pins create-gh-release-action v1.12.0 and claude-code 2.1.327 as
   slice 1; neither needed adapting.
+- version-floor: a contract change is a CHANGELOG entry starting `**Extension contract:**`;
+  marathon's CHANGELOG preamble states the convention and `references/extensions.md`,
+  Compatibility, cites it.
+- version-floor: unreleased changes sit under `## Unreleased` in each CHANGELOG; `release` renames
+  them to marathon v0.19.0 and marathon-architecture's next version and releases both together,
+  which satisfies the 0.19.0 floor.
+- version-floor: marathon-architecture's CHANGELOG cites marathon's Compatibility section instead
+  of restating the rule (standards review).

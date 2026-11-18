@@ -8,7 +8,8 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 `scripts/check.sh` runs in CI on every push and locally. It checks that:
 
 - each plugin's manifest version, top CHANGELOG heading, and skill `Version:` lines agree
-- the `@` pointers and `./` links in the plugins' markdown resolve
+- the `@` pointers and `](./...)` links in the plugins' markdown resolve. It doesn't resolve paths
+  written inside backticks; a retro or `skill-footprint` can extend it.
 - each marketplace source points to a plugin
 - `claude plugin validate --strict` passes for each plugin and the marketplace
 
