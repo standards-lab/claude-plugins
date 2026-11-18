@@ -20,12 +20,12 @@ ENTRY_FORM = "open it as '- **Name** (built): text' or '- **Name** (planned): te
 ENTRY_FIX = "move detail to the goal's context note"
 
 
-def text(count):
-    return " ".join(["word"] * count) + "\n"
-
-
 def phrase(count):
     return " ".join(["word"] * count)
+
+
+def text(count):
+    return phrase(count) + "\n"
 
 
 class LintContextTest(unittest.TestCase):
@@ -257,10 +257,13 @@ class LintContextTest(unittest.TestCase):
             "# Goal\n\n## Tasks\n\n1. [x] a\n2. [ ] b\n\n## Decisions\n\nNone.\n",
         )
         self.assert_clean()
-        for listed in ("1. [ ] b\n2. [x] a\n", "1. [x] a\n", ""):
+        for listed, slugs in (
+            ("1. [ ] b\n2. [x] a\n", "b, a"),
+            ("1. [x] a\n", "a"),
+            ("", ""),
+        ):
             with self.subTest(listed=listed):
                 self.write("context/goals/goal.md", f"# Goal\n\n## Tasks\n\n{listed}")
-                slugs = ", ".join(line.split()[-1] for line in listed.splitlines())
                 self.assert_fails(
                     f"context/goals/goal.md: ## Tasks lists [{slugs}], but "
                     "context/roadmap/goal.toml order is [a, b]; make the list mirror order"
