@@ -11,8 +11,8 @@ goes to one-way doors.
 
 - **The check.** Each repository exposes one deterministic check command, named by `[project]
   check` in `.claude/marathon.toml` (`mechanics/configuration.md`), such as `mise run check` or
-  `scripts/check.sh`. It runs the build, vet, tests, lint, and the repository's own tools. A
-  mechanical rule becomes part of the check rather than prose in `STANDARDS.md`.
+  `scripts/check.sh`. It runs the build, vet, tests, lint, the repository's own tools, and
+  `lint-context`. A mechanical rule becomes part of the check rather than prose in `STANDARDS.md`.
 - **The release gate.** `[project] gate` names the release-time part of the automated checks
   (`mechanics/configuration.md`). For a plugin it is the eval suite, which costs too much to run
   per slice. SHIP runs it before each Release tag (`mechanics/releasing.md`).
@@ -46,8 +46,9 @@ first, so each higher layer builds against the real change below it.
 3. **Review the spec.** Engage the spec-reviewer with the task brief. For each gap it returns,
    engage an implementer to close it, then engage the spec-reviewer again. After two rounds that
    leave the same gap open, escalate.
-4. **Edit.** Engage the editor once. It updates the goal record, tends the notes, and edits the
-   changed prose. Read its edits and commit them.
+4. **Edit.** Engage the editor once. It updates the goal record, dropping the Decisions that no
+   longer bind (`mechanics/goal-record.md`), tends the notes, and edits the changed prose. Read
+   its edits and commit them.
 5. **Validate.** Run the check in every touched repository, plus whatever the spec-reviewer ran to
    show each behavior. The results are the session brief's Evidence. Don't go on to BRIEF with a
    failing check.

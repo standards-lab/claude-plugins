@@ -22,21 +22,24 @@ Read these sizes, in words, to judge the work:
 
 - The skill: SKILL.md links each file instead of `@`-including it, and each command's playbook
   opens with a "Read first" list of the files it needs. `start`'s read-first set, SKILL.md and the
-  playbook included, is 7,981 words against a budget of 8,000. `mechanics/pipeline.md` is about
+  playbook included, is 8,098 words against a budget of 8,100. `mechanics/pipeline.md` is about
   1,970 words, down from 2,715, since Releasing and RESUME moved to their own files.
 - The planner profile: 273 words, down from 554, since profiles cite the skill's rules instead of
   restating them.
 - The coordinator's `context/roadmap.toml`: one file of 13,353 words over 61 goals and 74 tasks,
   with no task order and dated lines its format forbids. It stays one file until `release`.
-- A long goal record: docproc's `v1.ai.processing` runs to 14,278 words, 11,283 of them
+- A long goal record: docproc's `v1.ai.processing` runs to 15,245 words, 12,334 of them
   Decisions.
 - Spike READMEs that became lab notebooks: `spike-html-conventions`, at 24,678 words.
 - Coordinator notes that carry history: `ai-hosting.md`, at 8,698 words.
 
 ## Settled
 
-- **Budgets are checks.** A `lint-context` script ships in the plugin, and each repository's
-  `[project] check` calls it.
+- **Budgets are checks** (built). marathon's `bin/lint-context` holds `context/` to its file
+  kinds, the READMEs, notes, and goal-record sections to word budgets, and the roadmap and
+  capability map to their shapes, and it resolves relative links. Each repository's
+  `[project] check` calls it (marathon's `mechanics/configuration.md`). The installed 0.18.0
+  lacks it, so the coordinator adopts it at `release`'s sync.
 - **Comments** (task `comment-standard`). The architecture layer's comment standard becomes a
   near-ban: package documentation, plus the reasons that lint suppressions and pin holds require.
   That task needs the architecture lock. marathon's implementer and standards-reviewer profiles
@@ -73,3 +76,8 @@ A retro or `retro-routes` can take these up.
 - The plan-round eval fails the release gate's 1.0 threshold on `main`, scoring 0.83–0.89
   because the model's reply lines run past 100 characters. `release` needs it fixed, or the
   threshold settled, before tagging.
+- A spike's `docs/` pages that link to its goal record break when sync deletes the record.
+- `retro` reads the redirects and escalations recorded in a goal record's Decisions, which the
+  editor now prunes once the built work expresses them.
+- `start`'s and `intake`'s read-first sets sit 2 and 8 words under their budgets, so almost any
+  edit to either needs a budget change.

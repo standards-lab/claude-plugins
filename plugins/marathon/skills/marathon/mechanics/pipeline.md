@@ -84,8 +84,8 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
 5. Create the task's branch, named by the task's slug, from the fetched default branch in each
    repository the task touches. The coordinator gets no branch.
 6. Log the plan into the goal record, creating the record if it doesn't exist: the brief under
-   Task brief, and one line per settled question under Decisions. Set State to `building`, then
-   delete the plan file.
+   Task brief, and under Decisions one line per settled question a later task relies on
+   (`mechanics/goal-record.md`). Set State to `building`, then delete the plan file.
 
 ### 3R · RESUME
 

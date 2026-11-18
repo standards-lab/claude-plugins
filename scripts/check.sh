@@ -219,6 +219,15 @@ for skill in plugins/*/skills/*/SKILL.md; do
     err "$skill: description is $length characters, over the 1024 limit"
 done
 
+# lint-context runs from the working tree, not the installed plugin, so the
+# check tests the copy being changed. -B keeps the tests from writing bytecode
+# into the tree.
+plugins/marathon/bin/lint-context || err "lint-context failed"
+if ! report=$(python3 -B -m unittest discover -s scripts/tests 2>&1); then
+  echo "$report" >&2
+  err "scripts/tests failed"
+fi
+
 if [ "$fail" -ne 0 ]; then
   exit 1
 fi

@@ -13,16 +13,18 @@ Two rules follow:
 
 ## What `context/` holds
 
-The directory is flat except for two subdirectories: `context/goals/`, which holds the records of
-the goals rooted in this repository (`mechanics/goal-record.md`), and `context/roadmap/`:
+`context/` holds these files and nothing else, which `lint-context` checks, along with their
+budgets:
 
 - `context/README.md`: stable orientation. A short statement of the vision, and a broad, shallow,
-  unordered map of the capabilities the project will need.
+  unordered map of the capabilities the project will need. The map sits under `## Capability map`,
+  each entry built or planned, in the shape `lint-context` checks.
 - `context/*.md`: notes. A note holds intent the built work doesn't express yet, such as a
   decision with its reasoning and rejected alternatives, or an idea with its open questions.
 - `context/roadmap.toml` and `context/roadmap/<goal>.toml`: the roadmap manifest's index and its
   goal files, at a standalone project or the coordinator (`references/manifest.md`).
-- `context/goals/<goal>.md`: a goal record, the session state of one active goal.
+- `context/goals/<goal>.md`: a goal record, the session state of one active goal rooted in this
+  repository (`mechanics/goal-record.md`).
 
 The source, the optional `docs/` directory, and any files an enabled extension owns sit outside
 `context/` (`references/extensions.md`).
@@ -33,8 +35,8 @@ The source, the optional `docs/` directory, and any files an enabled extension o
   `context/`, in the built work or its documentation, point to it instead of restating it.
 - **State what exists, or what is planned.** Describe what exists in the present tense, and mark
   planned work as planned. A note has no status line, history, dates, or other detail that only
-  holds for a while. The roadmap and the goal records track status: what remains, what a task
-  decided, and what validation proved. Every document outside that tracking follows this rule,
+  holds for a while. The roadmap and the goal records track status: what remains, what binds
+  later tasks, and what validation proved. Every document outside that tracking follows this rule,
   including `docs/` and READMEs. CHANGELOGs are exempt.
 - **Start short.** A note begins as a sentence or two and gains detail only when its work is
   close.
@@ -43,7 +45,8 @@ The source, the optional `docs/` directory, and any files an enabled extension o
   notes that named it, and record the falsified assumption in the goal record's Decisions.
 - **Treat a new design as provisional.** A design a session just produced stays provisional until
   a later session's caller, build, or experiment uses it and it holds. The goal record's Decisions
-  records when that happens. The same applies to writing a skill from the design.
+  records when that happens, until the built work expresses the design
+  (`mechanics/goal-record.md`). The same applies to writing a skill from the design.
 
 ## Project documentation
 
@@ -53,7 +56,8 @@ wrong is a defect. The change that made it wrong fixes it, or a later task does,
 flags it. The first task that documents the repository creates `docs/`. The reasoning
 behind a built capability belongs in `docs/`, the package documentation, or the README, written by
 the task that builds the capability. Knowledge that applies beyond the repository isn't project
-documentation, so it stays a note.
+documentation, so it stays a note. A spike's `docs/` holds its evidence: one page per survey or
+result, each linked from its evidence item (`commands/plan.md`, "Spike setup").
 
 ## Tending the notes
 

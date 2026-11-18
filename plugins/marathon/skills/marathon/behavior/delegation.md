@@ -39,8 +39,8 @@ These limits bind every delegate, and each profile cites them.
   against what it would have built.
 - Only the implementer and the standards-reviewer commit, each as `mechanics/pipeline.md`,
   "Committing", says. No delegate publishes, merges, or writes the goal record's State or Tasks.
-  Only the editor writes in the goal record: it drafts the Decisions and Pending edits, and the
-  session commits them.
+  Only the editor writes in the goal record: it drafts the Decisions and Pending edits and drops
+  the Decisions that no longer bind, and the session commits them.
 - The planner and the spec-reviewer change nothing. They run only commands that write nothing to
   the working tree, such as `git log`, `git diff`, the currency command, or a build or test.
 - The standards-reviewer and the editor don't change what the task does. The standards-reviewer

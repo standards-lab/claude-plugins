@@ -9,6 +9,17 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 
 ## Unreleased
 
+### Added
+
+- **`lint-context`** (`bin/lint-context`, `mechanics/configuration.md`): a stdlib Python 3.11
+  script, on PATH in a session, that checks the `context/` of the repository it runs in. Every
+  file there is of a known kind: the context README, a note, a goal record, the roadmap index, or
+  a goal file. Notes, READMEs, goal-record sections, and roadmap summaries, proofs, and criteria
+  stay within word budgets, each failure naming its fix. The roadmap keeps the shape
+  `references/manifest.md` gives it, the context README's capability map lists each entry as
+  built or planned, and every relative link in the root README, `context/`, and `docs/`
+  resolves. This repository's check runs it and its tests.
+
 ### Changed
 
 - **Extension contract:** an extension declares the minimum marathon version it requires, as
@@ -83,6 +94,26 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   3. Add an `order` array to each goal that has tasks, listing its task slugs in run order.
   4. Move any narrative comments out of the index into notes under `context/`, leaving only the
      arrays and the format pointer.
+- **Every repository's check calls `lint-context`** (`mechanics/configuration.md`,
+  `references/build.md`, `commands/init.md`), and the skill points to it for what it checks
+  rather than restating the rules. The capability map sits under `## Capability map` in
+  `context/README.md`, each entry marked built or planned. To migrate:
+  1. Call `lint-context` from the repository's `[project] check`. A CI without the plugin fetches
+     it from a pinned `marathon/vX.Y.Z` tag, as `mechanics/configuration.md` shows.
+  2. Reshape the capability map into `- **Name** (built): ...` and `- **Name** (planned): ...`
+     entries under `## Capability map`.
+  3. In a spike, move its answer under "The answer" in its `context/README.md`, and each survey or
+     result into its own `docs/` page linked from its evidence item.
+  4. Run `lint-context` and trim, or move to `docs/`, whatever it reports over budget.
+- **Decisions keep only what binds later tasks** (`mechanics/goal-record.md`): a settled question
+  a later task relies on, a rejected alternative, a hold, or a falsified assumption. At BUILD the
+  editor drops a Decision the merged code or its documentation now expresses
+  (`references/build.md`), and the session brief's Decided without you lists each drop, which the
+  architect can reject (`references/briefs.md`).
+- **A spike's evidence lives in `docs/`** (`commands/plan.md`, "Spike setup"): its
+  `context/README.md` holds the question, the numbered evidence list, and "The answer", which its
+  last task fills, and each survey or result gets its own `docs/` page linked from its evidence
+  item. The answer section's link points to "The answer" in that README (`references/briefs.md`).
 
 ## v0.18.0
 
