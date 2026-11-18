@@ -2,13 +2,16 @@
 """Check a marathon repository's context at the current working directory.
 
 Every file under context/ is of a known kind: the context README, a note, a
-goal record, the roadmap index, or a goal file. Notes, READMEs, and goal-record
-sections stay within fixed word budgets, where a word is a whitespace-separated
-token, as wc -w counts it. Prints one line per failure and exits nonzero if
-there is any.
+goal record, the roadmap index, or a goal file. Notes, READMEs, goal-record
+sections, and roadmap entries stay within fixed word budgets, where a word is a
+whitespace-separated token, as wc -w counts it. The roadmap keeps the shape
+marathon's references/manifest.md gives it. Prints one line per failure and
+exits nonzero if there is any.
 """
 
+import re
 import sys
+import tomllib
 from pathlib import Path
 
 CONTEXT_README_BUDGET = 1000
@@ -20,6 +23,14 @@ RECORD_SECTION_BUDGETS = (
     ("## Pending edits", 1000, "apply or shorten"),
 )
 PROSE_FIX = "trim; move detail to docs/"
+INDEX_ARRAYS = ("active", "planned", "backlog")
+INDEX_COMMENT_LINES = 2
+GOAL_ENTRY_BUDGETS = (("summary", 100),)
+TASK_ENTRY_BUDGETS = (("summary", 100), ("proof", 40))
+CRITERION_BUDGET = 60
+ENTRY_FIX = "move detail to the goal's context note"
+PARSE_ERRORS = (tomllib.TOMLDecodeError, UnicodeDecodeError)
+RECORD_TASK = re.compile(r"\d+\. \[[ x]\] (\S+)$")
 
 
 def words(text):
@@ -108,7 +119,169 @@ def check_budgets(root, files):
                             yield over(rel, f"section '{name}'", count, budget, fix)
 
 
-CHECKS = (check_kinds, check_budgets)
+def parse(root, rel):
+    """Returns the TOML file's table, or None if it does not parse.
+
+    check_toml_parses reports the error once; every other check skips the file.
+    """
+    try:
+        return tomllib.loads((root / rel).read_text())
+    except PARSE_ERRORS:
+        return None
+
+
+def goal_files(root, files):
+    """Yields (rel, table) for each goal file that parses."""
+    for rel in files:
+        if classify(rel) == "goal-file":
+            data = parse(root, rel)
+            if data is not None:
+                yield rel, data
+
+
+def task_tables(data):
+    tasks = data.get("tasks", {})
+    if not isinstance(tasks, dict):
+        return {}
+    return {slug: table for slug, table in tasks.items() if isinstance(table, dict)}
+
+
+def check_toml_parses(root, files):
+    for rel in files:
+        if classify(rel) not in ("roadmap-index", "goal-file"):
+            continue
+        try:
+            tomllib.loads((root / rel).read_text())
+        except PARSE_ERRORS as error:
+            yield f"{rel}: does not parse: {error}"
+
+
+def check_index(root, files):
+    for rel in files:
+        if classify(rel) != "roadmap-index":
+            continue
+        text = (root / rel).read_text()
+        comments = sum(1 for line in text.splitlines() if line.lstrip().startswith("#"))
+        if comments > INDEX_COMMENT_LINES:
+            yield (
+                f"{rel}: {comments} comment lines, at most {INDEX_COMMENT_LINES}; "
+                "keep one comment that points to the format"
+            )
+        data = parse(root, rel)
+        if data is None:
+            continue
+        for key, value in data.items():
+            if key not in INDEX_ARRAYS:
+                yield (
+                    f"{rel}: '{key}' is not one of active, planned, backlog; "
+                    "the index holds only the three arrays"
+                )
+            elif not isinstance(value, list):
+                yield f"{rel}: '{key}' is not an array"
+
+
+def criteria_statements(criteria):
+    """Yields (label, statement); a string is one statement, a list is several."""
+    if isinstance(criteria, str):
+        yield "criteria", criteria
+    elif isinstance(criteria, list):
+        for i, statement in enumerate(criteria):
+            if isinstance(statement, str):
+                yield f"criteria[{i}]", statement
+
+
+def entry_budgets(rel, entry, table, budgets):
+    for field, budget in budgets:
+        value = table.get(field)
+        if isinstance(value, str):
+            count = words(value)
+            if count > budget:
+                yield over(rel, f"{entry} {field}", count, budget, ENTRY_FIX)
+
+
+def check_entry_budgets(root, files):
+    for rel, data in goal_files(root, files):
+        yield from entry_budgets(rel, "goal", data, GOAL_ENTRY_BUDGETS)
+        for label, statement in criteria_statements(data.get("criteria")):
+            count = words(statement)
+            if count > CRITERION_BUDGET:
+                yield over(rel, f"goal {label}", count, CRITERION_BUDGET, ENTRY_FIX)
+        for slug, table in task_tables(data).items():
+            yield from entry_budgets(rel, f"tasks.{slug}", table, TASK_ENTRY_BUDGETS)
+
+
+def check_repos(root, files):
+    for rel, data in goal_files(root, files):
+        if "repos" not in data:
+            yield f"{rel}: repos is missing; every goal file writes it, [] for none"
+
+
+def is_slug_list(value):
+    return isinstance(value, list) and all(isinstance(slug, str) for slug in value)
+
+
+def check_order(root, files):
+    for rel, data in goal_files(root, files):
+        slugs = task_tables(data)
+        if "order" not in data:
+            if slugs:
+                yield f"{rel}: order is missing; list each task slug once, in run order"
+            continue
+        order = data["order"]
+        if not is_slug_list(order):
+            yield f"{rel}: order is not an array of task slugs"
+            continue
+        seen = set()
+        for slug in order:
+            if slug in seen:
+                yield f"{rel}: order lists '{slug}' more than once"
+            elif slug not in slugs:
+                yield f"{rel}: order lists '{slug}', which has no [tasks.{slug}] table"
+            seen.add(slug)
+        for slug in slugs:
+            if slug not in seen:
+                yield f"{rel}: order lacks task '{slug}'"
+
+
+def record_tasks(text):
+    """Returns the slugs of the record's ## Tasks list, in order."""
+    for heading, body in record_sections(text):
+        if heading == "## Tasks":
+            return [
+                match.group(1)
+                for line in body.splitlines()
+                if (match := RECORD_TASK.match(line.strip()))
+            ]
+    return []
+
+
+def check_record_tasks(root, files):
+    present = set(files)
+    for rel, data in goal_files(root, files):
+        record = Path("context", "goals", rel.stem + ".md")
+        if record not in present:
+            continue
+        order = data.get("order", [])
+        if not is_slug_list(order):
+            continue
+        listed = record_tasks((root / record).read_text())
+        if listed != order:
+            yield (
+                f"{record}: ## Tasks lists [{', '.join(listed)}], but {rel} "
+                f"order is [{', '.join(order)}]; make the list mirror order"
+            )
+
+
+CHECKS = (
+    check_kinds,
+    check_budgets,
+    check_toml_parses,
+    check_index,
+    check_entry_budgets,
+    check_repos,
+    check_order,
+    check_record_tasks,
+)
 
 
 def main():
