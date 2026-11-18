@@ -29,7 +29,7 @@ reference each repository's `STANDARDS.md` points to, so the standards-reviewer 
   `[workspace]` at a coordinator, the layer is the one member repository named by `repo` in this
   extension's `.claude/marathon-architecture.toml` at the coordinator, and it serves every member.
 - **Hooks:** `on-start`.
-- **Targets:** marathon 0.16.
+- **Requires:** marathon ≥ 0.19.0.
 
 ## Mechanics
 

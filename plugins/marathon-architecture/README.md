@@ -51,7 +51,7 @@ doesn't exist, and adopts it unchanged if it does. In a workspace, if
 `.claude/marathon-architecture.toml` doesn't exist or has no `repo` key, the session agrees the
 layer's repository with the architect and writes the file. The architecture repository is a
 marathon project of its own, set up with `marathon init` as a `context` project; the hook never
-creates it. Requires marathon 0.16 or later.
+creates it. Requires marathon 0.19.0 or later.
 
 ## What the layer holds
 
