@@ -30,9 +30,6 @@ Read these sizes, in words, to judge the work:
 
 ## Settled
 
-- **Extensions declare a floor.** An extension declares the minimum marathon version it
-  requires. A release that changes the extension contract updates the affected extensions and
-  bumps their floor in the same goal.
 - **Budgets are checks.** A `lint-context` script ships in the plugin, and each repository's
   `[project] check` calls it.
 - **Comments.**
@@ -47,3 +44,11 @@ Read these sizes, in words, to judge the work:
   installed 0.18.0 until then. The sync then cleans the coordinator's roadmap and notes under the
   new check.
 - **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
+
+## Findings for later
+
+A retro, `skill-footprint`, or `retro-routes` can take these up.
+
+- claude-plugins has no `STANDARDS.md`, so nothing points to the architecture pages the standards
+  review applies: `principles/rolling-currency.md`, `principles/independent-releases.md`, and
+  `principles/context-architecture.md` in the architecture repository.

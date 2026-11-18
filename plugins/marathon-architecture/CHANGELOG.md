@@ -4,6 +4,14 @@ All notable changes to the marathon-architecture plugin are documented here. Ver
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## Unreleased
+
+### Changed
+
+- **Requires marathon ≥ 0.19.0.** The extension declares the minimum marathon version it
+  requires in place of the version it targets, as marathon's extension contract
+  (`references/extensions.md`, Compatibility) defines from 0.19.0.
+
 ## v0.3.0
 
 ### Changed

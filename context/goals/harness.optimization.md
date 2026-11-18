@@ -6,7 +6,7 @@
 
 ## Tasks
 
-1. [ ] version-floor
+1. [x] version-floor
 2. [ ] skill-footprint
 3. [ ] content-budgets
 4. [ ] retro-routes
@@ -31,10 +31,14 @@ Behaviors     1. The extension contract says an extension declares the minimum m
               5. marathon-architecture declares "Requires: marathon ≥ 0.19.0" (the release that
                  carries this contract), and its README and CHANGELOG agree.
               6. The repository's check passes.
-Test seams    the repository check (pointer resolution, plugin validate); a reading of the
-              contract against marathon-architecture's declaration
-Slices        1. the contract and CHANGELOG convention in marathon
-              2. marathon-architecture's declaration, README, and CHANGELOG entry (unreleased)
+              7. CI pins are current: create-gh-release-action v1.12.0, claude-code 2.1.327.
+Test seams    the repository check (pointer resolution, plugin validate); scripts/currency.sh
+              reports nothing; a reading of the contract against marathon-architecture's
+              declaration
+Slices        1. bump create-gh-release-action to v1.12.0 and @anthropic-ai/claude-code to
+                 2.1.327 in .github/workflows/
+              2. the contract and CHANGELOG convention in marathon
+              3. marathon-architecture's declaration, README, and CHANGELOG entry (unreleased)
 Out of scope  releasing or tagging either plugin (task `release`); other extensions' notes
 Door          two-way (no release)
 ```
@@ -48,3 +52,15 @@ Door          two-way (no release)
 - Content budgets are a `lint-context` check the plugin ships, not prose rules (plan).
 - The architecture comment standard becomes a near-ban; `comment-standard` adds architecture to
   the goal's repos through a plan once v1.ai.processing frees it (plan).
+- version-floor: applied marathon-architecture 0.3.0 (targets 0.16) under marathon 0.18.0; its
+  on-start only locates the layer, and the question itself is the problem this task removes.
+- version-floor: bumped CI pins create-gh-release-action v1.12.0 and claude-code 2.1.327 as
+  slice 1; neither needed adapting.
+- version-floor: a contract change is a CHANGELOG entry starting `**Extension contract:**`;
+  marathon's CHANGELOG preamble states the convention and `references/extensions.md`,
+  Compatibility, cites it.
+- version-floor: unreleased changes sit under `## Unreleased` in each CHANGELOG; `release` renames
+  them to marathon v0.19.0 and marathon-architecture's next version and releases both together,
+  which satisfies the 0.19.0 floor.
+- version-floor: marathon-architecture's CHANGELOG cites marathon's Compatibility section instead
+  of restating the rule (standards review).

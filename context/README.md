@@ -13,9 +13,10 @@ repository is developed with marathon, so the workflow runs against its own sour
   `currency` command first, so a task begins by upgrading what trails, and SHIP runs an optional
   release gate before each tag. Its design lives in `plugins/marathon/`.
 - **marathon-architecture**: the extension that finds the architecture layer each repository's
-  `STANDARDS.md` points to, so the standards-reviewer can apply it.
+  `STANDARDS.md` points to, so the standards-reviewer can apply it. Like every extension, it
+  declares the minimum marathon version it requires (marathon's `references/extensions.md`).
 - **harness.optimization** (active): marathon and the content it produces held to budgets by
-  checks, and extensions that declare a minimum marathon version. See `harness-optimization.md`.
+  checks. See `harness-optimization.md`.
 - **marathon-extraction** (planned): carries patterns a consumer proves back to the blueprint.
   See `marathon-extraction.md`.
 - **marathon-references** (proposed): the references catalog as an extension. See
