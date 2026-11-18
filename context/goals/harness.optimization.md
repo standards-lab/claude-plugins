@@ -103,7 +103,7 @@ Two-way. Nothing is released, and sessions keep running the installed 0.18.0.
 
 ## Progress
 
-slices 7/7 committed · standards ✓ · spec ✓ · editor —
+slices 7/7 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
@@ -162,3 +162,28 @@ slices 7/7 committed · standards ✓ · spec ✓ · editor —
 - skill-footprint: The plan-round eval gains a code-fence grader and a line-width grader (plan).
 - skill-footprint: The format work joins skill-footprint; the roadmap redesign is its own task,
   roadmap-layout (plan).
+- skill-footprint: The check also verifies `../` links, not only `./` links.
+- skill-footprint: The check treats a bare backtick path as a plugin citation only when its first
+  segment is a directory in a plugin or skill root. A cross-plugin possessive, as in marathon's
+  `references/briefs.md`, resolves against the owning plugin, and released CHANGELOG sections are
+  skipped.
+- skill-footprint: A playbook's read-first list is a set of links under a "Read first" line.
+  experiment's list points at `commands/plan.md`.
+- skill-footprint: Releasing's resume detail lives in `mechanics/releasing.md`, "Resuming a
+  release", not in `mechanics/resume.md`.
+- skill-footprint: The invariant that nothing changes before approval also covers the outcomes of
+  plan, experiment, and intake rounds.
+- skill-footprint: `behavior/delegation.md`, Limits, holds every delegate limit, including those
+  that apply to one profile only.
+- skill-footprint: The templates in `references/briefs.md` are blockquotes, and each question's rec
+  and changes lines are nested bullets.
+- skill-footprint: Word budgets live in `scripts/budgets.txt`, keyed by file path, and a file with
+  no budget fails the check.
+- skill-footprint: start's read-first set measures 7,898 words against its 7,900 budget, so almost
+  any edit to that set needs a budget change.
+- skill-footprint: marathon's description shrank from 1,153 to 975 characters to fit the 1,024
+  cap.
+
+## Pending edits
+
+none

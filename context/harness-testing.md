@@ -8,8 +8,16 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 `scripts/check.sh` runs in CI on every push and locally. It checks that:
 
 - each plugin's manifest version, top CHANGELOG heading, and skill `Version:` lines agree
-- the `@` pointers and `](./...)` links in the plugins' markdown resolve. It doesn't resolve paths
-  written inside backticks; a retro or `skill-footprint` can extend it.
+- no plugin's markdown contains an `@`-include line, which Claude Code expands only in CLAUDE.md
+- the `./` and `../` links in the plugins' markdown resolve
+- the backtick file citations in the plugins' markdown resolve, including `${CLAUDE_PLUGIN_ROOT}`
+  paths and paths another plugin owns, as in marathon's `references/briefs.md`. A bare path counts
+  as a citation only when its first segment is a directory in a plugin or skill root, and a
+  CHANGELOG's released sections are skipped.
+- each command's read-first set and each agent profile stay within the word budget recorded in
+  `scripts/budgets.txt`. A command's set is its skill's SKILL.md, the playbook, and every file
+  reached through "Read first" lists from there. A file with no budget fails.
+- each skill description is at most 1,024 characters
 - each marketplace source points to a plugin
 - `claude plugin validate --strict` passes for each plugin and the marketplace
 
@@ -49,12 +57,15 @@ marathon-architecture has none, and the gate skips it. `results/` is gitignored.
 ## The seed case
 
 `plan-round-in-reply` runs `start` on a task whose note leaves two independent decisions open, and
-grades the final reply with four graders:
+grades the final reply with six graders:
 
 - AskUserQuestion is never called.
 - The reply contains `PLAN ROUND 1`.
+- The round doesn't sit inside a code fence.
+- No line of the round exceeds 100 characters.
 - At least two numbered questions each carry a `rec:` line and a `changes:` line.
-- An `llm` grader judges that every question names its subject and can be decided on its own.
+- An `llm` grader judges that every question names its subject and can be decided on its own. It
+  finds the round by the line that contains `PLAN ROUND 1`.
 
 The case comes from marathon 0.16 sessions in which the architect rejected rounds shown as
 AskUserQuestion headlines, and a question asked without its context.

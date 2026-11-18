@@ -20,8 +20,12 @@ and the content it produces outgrows them.
 
 Read these sizes, in words, to judge the work:
 
-- The skill: 4,289 words in SKILL.md and its three @-includes. The includes appeared as literal
-  text when the skill loaded, so they load only when an agent reads them.
+- The skill: SKILL.md links each file instead of `@`-including it, and each command's playbook
+  opens with a "Read first" list of the files it needs. `start`'s read-first set, SKILL.md and the
+  playbook included, is 7,898 words against a budget of 7,900. `mechanics/pipeline.md` is about
+  1,958 words, down from 2,715, since Releasing and RESUME moved to their own files.
+- The planner profile: 273 words, down from 554, since profiles cite the skill's rules instead of
+  restating them.
 - The coordinator's `context/roadmap.toml`: 12,765 words, with dated lines its format forbids.
 - A long goal record: docproc's `v1.ai.processing` runs to 14,278 words, 11,283 of them
   Decisions.
@@ -32,14 +36,11 @@ Read these sizes, in words, to judge the work:
 
 - **Budgets are checks.** A `lint-context` script ships in the plugin, and each repository's
   `[project] check` calls it.
-- **Comments.**
-  - marathon's implementer writes only the comments the standard requires, and never one that
-    excuses a workaround.
-  - The standards-reviewer sweeps for comments that excuse.
-  - The editor stays out of source files.
-  - The architecture layer's comment standard becomes a near-ban: package documentation, plus
-    the reasons that lint suppressions and pin holds require. That task needs the architecture
-    lock.
+- **Comments** (task `comment-standard`). The architecture layer's comment standard becomes a
+  near-ban: package documentation, plus the reasons that lint suppressions and pin holds require.
+  That task needs the architecture lock. marathon's implementer and standards-reviewer profiles
+  hold marathon's own comment rules, and marathon's `behavior/delegation.md` keeps the editor out
+  of source files.
 - **One release at the end.** Nothing releases until the last task, so sessions keep running the
   installed 0.18.0 until then. The sync then cleans the coordinator's roadmap and notes under the
   new check.
@@ -51,8 +52,13 @@ Read these sizes, in words, to judge the work:
 
 ## Findings for later
 
-A retro, `skill-footprint`, or `retro-routes` can take these up.
+A retro or `retro-routes` can take these up.
 
 - claude-plugins has no `STANDARDS.md`, so nothing points to the architecture pages the standards
   review applies: `principles/rolling-currency.md`, `principles/independent-releases.md`, and
   `principles/context-architecture.md` in the architecture repository.
+- The check finds a command's read-first set by the "Read first" line. A playbook whose line is
+  renamed silently yields a smaller set that still passes its budget. The check could require one
+  "Read first" line per playbook.
+- The check skips a bare citation whose first directory exists in no plugin or skill root, so a
+  typo in that directory goes uncaught.

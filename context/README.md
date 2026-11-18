@@ -23,10 +23,12 @@ repository is developed with marathon, so the workflow runs against its own sour
   `marathon-references-extension.md`.
 - **Tooling layer** (planned): deterministic tools the skills call in place of procedure written
   as prose. See `tool-based-skills.md`.
-- **Harness testing**: `scripts/check.sh` checks consistency and runs `claude plugin validate` on
-  every push. Before each tag, the release gate, `scripts/gate.sh`, runs the check and the
-  plugin's `claude plugin eval` suite. marathon's suite has one case, drawn from an observed
-  failure. See `harness-testing.md`.
+- **Harness testing**: `scripts/check.sh` runs on every push. It checks consistency, rejects
+  `@`-include lines, resolves file links and citations, holds each command's read-first set and
+  each agent profile to a word budget, caps skill descriptions at 1,024 characters, and runs
+  `claude plugin validate`. Before each tag, the release gate, `scripts/gate.sh`, runs the check
+  and the plugin's `claude plugin eval` suite. marathon's suite has one case, drawn from an
+  observed failure. See `harness-testing.md`.
 - **Marketplace host**: the marketplace manifest, with each plugin versioned and released on its
   own.
 - **Further plugins** (planned): the set grows as processes prove worth codifying, such as

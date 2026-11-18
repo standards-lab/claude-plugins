@@ -49,9 +49,10 @@ SHIP   goal record → pull request (body = brief) → merge → tag if Release 
 BUILD stops for the architect only for a one-way door, a decision the brief doesn't cover, or
 scope beyond the task. When the task brief has a Release line, SHIP tags each release once main
 is green and the repository's optional release gate passes, fixing forward until the planned
-version releases. Every session, planning and sync
-included, lands through a branch and a pull request in each repository it changes. See
-[`mechanics/pipeline.md`](./skills/marathon/mechanics/pipeline.md) and
+version releases. Every session, planning and sync included, lands through a branch and a pull
+request in each repository it changes. See
+[`mechanics/pipeline.md`](./skills/marathon/mechanics/pipeline.md),
+[`mechanics/releasing.md`](./skills/marathon/mechanics/releasing.md), and
 [`references/build.md`](./skills/marathon/references/build.md).
 
 ## Goals
