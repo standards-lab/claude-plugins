@@ -1,6 +1,6 @@
 # goal · harness.optimization
 
-- **State:** building
+- **State:** brief ready
 - **Task:** roadmap-layout
 - **Branch:** roadmap-layout
 
