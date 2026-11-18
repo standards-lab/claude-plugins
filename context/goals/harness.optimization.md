@@ -1,6 +1,6 @@
 # goal · harness.optimization
 
-- **State:** building
+- **State:** brief ready
 - **Task:** content-budgets
 - **Branch:** content-budgets
 
