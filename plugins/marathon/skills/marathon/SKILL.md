@@ -30,21 +30,21 @@ is the source of truth, not an issue tracker and not the conversation.
 
 Use this skill whenever a session begins, advances, pauses, resumes, or ends on a marathon
 repository: one with a top-level `context/`, or a workspace of such repositories. Set up a new
-repository with `init`.
+repository with `init`. Each session starts by reading its command's playbook (Commands, below).
 
 ## Behavior
 
-These rules apply in every session: how a session plans, and how it hands work to subagents.
+These rules govern how a session plans and how it hands work to subagents.
 
-@behavior/planning.md
-
-@behavior/delegation.md
+- [`behavior/planning.md`](./behavior/planning.md): how a session decides its scope, in plan
+  rounds with the architect.
+- [`behavior/delegation.md`](./behavior/delegation.md): the subagent profiles, and what each
+  delegate may do.
 
 ## Mechanics
 
-The session pipeline applies to every command:
-
-@mechanics/pipeline.md
+- [`mechanics/pipeline.md`](./mechanics/pipeline.md): the session pipeline, which applies to every
+  command.
 
 The pipeline refers to these files where it needs them:
 
@@ -59,7 +59,8 @@ The pipeline refers to these files where it needs them:
 ## Commands
 
 The first argument names the command. Each command's playbook supplies the content of the
-pipeline's stages.
+pipeline's stages. Read the playbook for the command being run first. Its Read first list names
+the files to read before acting; read every other file it cites when its subject comes up.
 
 | Command | When to use it | Playbook |
 |---------|----------------|----------|

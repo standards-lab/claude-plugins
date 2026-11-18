@@ -9,6 +9,15 @@ On a spike, `start experiment.<topic>.<spike>` runs the spike's tasks, its path 
 session. An experiment goal has only its intake, which `marathon intake` runs
 (`commands/intake.md`): `start` on `experiment.<topic>` refuses and points there.
 
+Read first, before acting:
+
+- [`../mechanics/pipeline.md`](../mechanics/pipeline.md)
+- [`../behavior/planning.md`](../behavior/planning.md)
+- [`../behavior/delegation.md`](../behavior/delegation.md)
+- [`../mechanics/goal-record.md`](../mechanics/goal-record.md)
+- [`../references/briefs.md`](../references/briefs.md)
+- [`../references/build.md`](../references/build.md)
+
 ## Plan
 
 LOCATE routes an `idle` goal to PLAN. Without an approved brief for the next task, plan the

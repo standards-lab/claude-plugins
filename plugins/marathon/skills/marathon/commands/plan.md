@@ -7,6 +7,15 @@ changes land through a `plan-<goal>` branch and pull request, and it stays short
 
 `plan` runs LOCATE and START (`mechanics/pipeline.md`); the goal is optional.
 
+Read first, before acting:
+
+- [`../mechanics/pipeline.md`](../mechanics/pipeline.md)
+- [`../behavior/planning.md`](../behavior/planning.md)
+- [`../behavior/delegation.md`](../behavior/delegation.md)
+- [`../references/briefs.md`](../references/briefs.md)
+- [`../mechanics/goals.md`](../mechanics/goals.md)
+- [`../references/manifest.md`](../references/manifest.md)
+
 ## Rounds
 
 Enter plan mode and run plan rounds with the architect (`references/briefs.md`, "Plan round").

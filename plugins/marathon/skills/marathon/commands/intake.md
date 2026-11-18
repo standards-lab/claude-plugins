@@ -5,6 +5,16 @@ goal it serves builds from them, and close the experiment. `intake` runs the exp
 task, its only one; the argument names the experiment, as in `intake experiment.ai`. A spike that
 works is evidence, and the intake is where it becomes a decision.
 
+Read first, before acting:
+
+- [`../mechanics/pipeline.md`](../mechanics/pipeline.md)
+- [`../behavior/planning.md`](../behavior/planning.md)
+- [`../behavior/delegation.md`](../behavior/delegation.md)
+- [`../references/briefs.md`](../references/briefs.md)
+- [`../mechanics/goals.md`](../mechanics/goals.md)
+- [`../references/manifest.md`](../references/manifest.md)
+- [`../references/context-engineering.md`](../references/context-engineering.md)
+
 ## When it runs
 
 `intake` runs only when no spike sub-goal of the experiment remains in the manifest: each spike's

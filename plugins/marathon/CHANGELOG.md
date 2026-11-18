@@ -18,6 +18,10 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   only when the installed marathon is below the floor or such a release lies between the floor
   and the installed version; otherwise it applies the extension without asking. A release that
   changes the contract updates the affected extensions and bumps their floor in the same goal.
+- **Files load through links.** Claude Code expands `@`-include lines only in CLAUDE.md, so
+  SKILL.md's three were never loaded. SKILL.md now links `behavior/` and `mechanics/pipeline.md`
+  and says to read the command's playbook first. Each playbook opens with a Read first list of
+  the files that command needs before acting; the rest stay cited where their subject comes up.
 
 ## v0.18.0
 

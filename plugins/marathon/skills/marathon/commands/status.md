@@ -4,6 +4,12 @@ Print the status digest: one line per active goal, with the goals that need the 
 (`references/briefs.md`, "Status digest"). Each active spike sub-goal is a line of its own; an
 experiment goal is never active, so it has none. `status` changes nothing and fires no hook.
 
+Read first, before acting:
+
+- [`../references/manifest.md`](../references/manifest.md)
+- [`../mechanics/goal-record.md`](../mechanics/goal-record.md)
+- [`../references/briefs.md`](../references/briefs.md)
+
 1. Read `active` from the manifest (`references/manifest.md`): a standalone project's own, or the
    coordinator's.
 2. For each active goal, read its goal record from its root's working tree

@@ -55,15 +55,17 @@ else
   err "claude is not on PATH, so the plugins and marketplace were not validated"
 fi
 
-# Every @-pointer and ./-link in the plugins' markdown resolves to a real file.
+# Claude Code expands an @-include line only in CLAUDE.md, never in a skill's
+# markdown, so a plugin loads its files through links instead. Every ./ and ../
+# link in the plugins' markdown resolves to a real file.
 while read -r file; do
   dir=$(dirname "$file")
-  while read -r target; do
-    [ -e "$dir/$target" ] || err "$file: @$target does not resolve"
-  done < <(grep -oP '^@\K\S+' "$file")
+  while IFS=: read -r line _; do
+    err "$file:$line: @-include line; link the file instead"
+  done < <(grep -nP '^\s*@\S+\s*$' "$file")
   while read -r target; do
     [ -e "$dir/$target" ] || err "$file: link $target does not resolve"
-  done < <(grep -oP '\]\(\K\./[^)#]+' "$file")
+  done < <(grep -oP '\]\(\K\.\.?/[^)#]+' "$file")
 done < <(find plugins -name '*.md')
 
 if [ "$fail" -ne 0 ]; then
