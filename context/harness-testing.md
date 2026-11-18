@@ -20,6 +20,8 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 - each skill description is at most 1,024 characters
 - each marketplace source points to a plugin
 - `claude plugin validate --strict` passes for each plugin and the marketplace
+- marathon's `lint-context`, run from the working tree, passes on this repository's `context/`,
+  READMEs, and links, and its tests in `scripts/tests/` pass
 
 CI installs Claude Code at an exact version, its latest release, pinned in
 `.github/workflows/ci.yml`. `scripts/currency.sh` reports the pin when it trails npm's `latest`

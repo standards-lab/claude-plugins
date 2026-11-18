@@ -79,9 +79,12 @@ and [`commands/intake.md`](./skills/marathon/commands/intake.md).
 ## Project kinds
 
 `init` declares a project `code` or `context` in `.claude/marathon.toml`, along with its one
-deterministic `check` command. Two commands are optional: a read-only `currency` command, which
-reports what trails its latest release, and a release `gate` command, such as a plugin's eval
-suite, which SHIP runs before each tag. On a code project a slice adds behavior with its tests; on a
+deterministic `check` command. Every check calls `lint-context`, a script marathon ships on the
+session's PATH, which holds `context/` to its file kinds, word budgets, and shapes and resolves
+relative links (see
+[`mechanics/configuration.md`](./skills/marathon/mechanics/configuration.md)). Two commands are
+optional: a read-only `currency` command, which reports what trails its latest release, and a
+release `gate` command, such as a plugin's eval suite, which SHIP runs before each tag. On a code project a slice adds behavior with its tests; on a
 context project a slice is the deliverable prose, checked by the consistency script and a read.
 
 ## Currency
