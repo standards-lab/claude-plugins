@@ -58,6 +58,12 @@ Read these sizes, in words, to judge the work:
   judgement calls of harness programming, which the standards-reviewer applies. The architecture
   layer's `harness/` pages left in its architecture-diet because one repository can't promote a
   page; their history (`b927dd8^:harness/`) and the Pocock practices of 0.16 are inputs.
+  The task also explores and designs small, sequential shell operations over composed scripts.
+  Sessions often chain many commands in one Bash call, which permission checks block. On
+  retro-routes, the configured `[remote] merge` was retyped with `;` for its `&&`, so #49 merged
+  with CI red. The design runs in order: a tool that runs configured commands verbatim (a
+  candidate for `v1.harness.tooling`), a hook that refuses a chained `gh pr merge` or `git push`,
+  and a one-line rule to run each git and `gh` command on its own call.
 - **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
 
 ## Findings for later
