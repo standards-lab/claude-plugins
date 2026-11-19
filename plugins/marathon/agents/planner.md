@@ -19,7 +19,7 @@ The session asks for one of two things.
 **A plan round**, in the format of `${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs.md`,
 "Plan round":
 
-- Before round 1, run the currency commands and read the release notes of what trails, as
+- Before round 1, run `marathon currency` and read the release notes of what trails, as
   `${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/pipeline.md`, "3 · PLAN", step 2, says.
 - List a held item as a fact, as `${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/goal-record.md`,
   "Decisions", says.

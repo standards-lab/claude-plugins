@@ -10,21 +10,22 @@ description: >-
   under `claude plugin eval` 2.1.289 it runs as `claude -p --permission-mode dontAsk` with no
   permission-prompt tool, which drops AskUserQuestion, EnterPlanMode, and ExitPlanMode, so it can't
   reproduce the original failure. Its AskUserQuestion grader stays for when eval offers that tool.
+  It allows no Bash: the fixture declares no currency command and no remote, so round 1 needs only
+  reads. The graders read the round from the line that contains PLAN ROUND 1, headed as
+  references/briefs.md shows it. line-width fails a line of 101 or more characters from there to
+  the first line that contains reply:, or to the end of the reply when the round has none; its u
+  flag counts characters, not UTF-16 units. no-code-fence fails when that line follows an odd
+  number of fence lines, so the last one opens a block the round sits in; a fence line may be
+  indented or quoted, and opens with ``` or ~~~. numbered-questions needs two numbered questions,
+  each with a rec: line and then a changes: line before the next numbered line, allowing
+  indentation, list bullets, and bold markup before each. self-contained-questions judges only
+  the round text; the regex graders check its shape.
 tags: [plan, plan-round]
 context:
-  # Builds a standalone context project whose active goal's next task leaves two decisions open.
   scaffold_script: scaffold.sh
 execution:
-  # Enough for LOCATE, START, a planner subagent, and round 1; the run ends at the round, since
-  # no human answers it.
   max_turns: 40
   timeout_seconds: 900
-  # The child runs with --setting-sources user, so a fixture defaultMode can't put it in plan
-  # mode either: project settings aren't loaded and the CLI mode wins. AskUserQuestion stays
-  # listed, though eval drops it today (see the description), so the case discriminates once eval
-  # can offer it. EnterPlanMode isn't listed: the gate runs with eval's own tool grants, and eval
-  # drops plan mode in any case. Bash is left out: the fixture declares no currency command and
-  # no remote, so round 1 needs only reads.
   allowed_tools:
     - Read
     - Glob

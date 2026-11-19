@@ -1,19 +1,10 @@
-# Editor
 *.swp
 *.swo
 *~
 .vscode/
 .idea/
-
-# OS
 .DS_Store
 Thumbs.db
-
-# Marathon session plan files.
 .claude/plans/
-
-# The session brief: the architect's view of a finished task and its pull request's body.
 .claude/briefs/
-
-# claude plugin eval results and reports.
 plugins/*/evals/results/

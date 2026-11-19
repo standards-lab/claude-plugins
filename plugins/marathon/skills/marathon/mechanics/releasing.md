@@ -6,15 +6,15 @@ tags the task releases (`references/briefs.md`, "Task brief"). Accepting the ses
 authorizes them, so SHIP tags them without escalating again. SHIP takes each repository in turn,
 lowest layer first, and finishes its release before the next repository's merge:
 
-1. Merge the branch with `[remote] merge`, switch to the default branch, pull, and delete the
+1. Merge the branch with `marathon merge`, switch to the default branch, pull, and delete the
    local task branch.
-2. When `[remote] ci` is set, run it on the merge commit (`mechanics/configuration.md`).
+2. When `[remote] ci` is set, run `marathon ci` on the merge commit (`mechanics/configuration.md`).
    Without it, tagging follows the merge directly.
 3. Tag each of the repository's Release tags, the base artifact before its sub-modules:
    1. Check that the tag isn't on the remote, unless it is this release's failed tag (below),
       and that its version matches the artifact's version as the repository records it, in its
       manifest or its CHANGELOG's top heading.
-   2. When `[project] gate` is set, run it on the merge commit with the tag as its one argument
+   2. When `[project] gate` is set, run `marathon gate <tag>` on the merge commit
       (`mechanics/configuration.md`). Exit 0 lets the tag be pushed; nonzero holds it (below).
       A resumed release runs it again before each tag it hasn't pushed.
    3. Create the tag annotated "<artifact> <version>" on the merge commit, and push that tag
@@ -26,8 +26,8 @@ until the planned version releases:
 
 - **A red default branch** after the merge, a failed gate, or a version that doesn't match, is
   fixed on a `<slug>-fix` branch from the default branch, published and merged like the task's
-  branch, with `[remote] ci` and the gate run again on its merge commit. Then tag. Opening or
-  resuming a fix branch fires `on-build` first.
+  branch, with `marathon ci` and `marathon gate` run again on its merge commit. Then tag. Opening
+  or resuming a fix branch fires `on-build` first.
 - **A failed release**, a release workflow that fails after the tag is pushed, is fixed the
   same way. Then delete the tag on the remote and locally, and create and push it again at the
   same version on the fix's merge commit.

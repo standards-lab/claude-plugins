@@ -11,7 +11,8 @@ repository is developed with marathon, so the workflow runs against its own sour
   implement, review against standards and the spec, and keep the context current in between.
   Goals and tasks in the roadmap manifest are the units of work. PLAN runs each repository's
   optional `currency` command first, so a task begins by upgrading what trails, and SHIP runs an
-  optional release gate before each tag. Its design lives in
+  optional release gate before each tag. Each step that runs a configured command calls the
+  plugin's `marathon` command, which runs it exactly as declared. Its design lives in
   [plugins/marathon](../plugins/marathon/).
 - **marathon-architecture** (built): the extension that finds the architecture layer each
   repository's `STANDARDS.md` points to, so the standards-reviewer can apply it. Like every
@@ -28,12 +29,15 @@ repository is developed with marathon, so the workflow runs against its own sour
   as prose. See [tool-based-skills.md](tool-based-skills.md).
 - **Harness testing** (built): `scripts/check.sh` runs on every push. It checks consistency,
   rejects `@`-include lines, resolves file links and citations, and fails a citation directory one
-  edit from a real one. It requires one "Read first" line per command playbook, holds each
+  edit from a real one. It holds each CHANGELOG release heading to its version alone, rejects
+  CHANGELOG link definitions, and requires each marathon extension to declare
+  `user-invocable: false`. It requires one "Read first" line per command playbook, holds each
   command's read-first set and each agent profile to a word budget, caps skill descriptions at
   1,024 characters, and runs `claude plugin validate`. It also runs marathon's `lint-context` from
-  the working tree, with its tests. Each failure message names its fix. Before each tag, the
-  release gate, `scripts/gate.sh`, runs the check and the plugin's `claude plugin eval` suite.
-  marathon's suite has one case, drawn from an observed failure. See [harness-testing.md](harness-testing.md).
+  the working tree, and the tests of `lint-context`, `marathon`, and the check itself. Each failure
+  message names its fix. Before each tag, the release gate, `scripts/gate.sh`, runs the check and
+  the plugin's `claude plugin eval` suite. marathon's suite has one case, drawn from an observed
+  failure. See [harness-testing.md](harness-testing.md).
 - **Marketplace host** (built): the marketplace manifest,
   [.claude-plugin/marketplace.json](../.claude-plugin/marketplace.json), with each plugin
   versioned and released on its own.

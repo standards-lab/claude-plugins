@@ -4,10 +4,11 @@
 # The task's note leaves two decisions open, the publishing format and the audience, so a
 # correct PLAN round 1 asks at least two questions. Offline: it runs only bash, git, and
 # coreutils. The harness runs it with the working directory as cwd and a scratch HOME whose
-# .gitconfig names the committer.
+# .gitconfig names the committer. The project's goal names its repository by the working
+# directory, as a standalone project's does. Its .claude/settings.json is there for the planner
+# and the fixture's realism: eval runs with --setting-sources user, so the session never loads it.
 set -euo pipefail
 
-# A standalone project's repository is the project itself, named by its directory.
 repo=$(basename "$PWD")
 
 mkdir -p .claude context/roadmap runbooks scripts
@@ -30,15 +31,10 @@ Judgement calls the check can't enforce, one line each.
 EOF
 
 cat >.gitignore <<'EOF'
-# Marathon session plan files.
 .claude/plans/
-
-# The session brief.
 .claude/briefs/
 EOF
 
-# What a marathon project carries. Eval runs with --setting-sources user, so the session never
-# loads this file; it is here for the planner and the fixture's realism, not to set the mode.
 cat >.claude/settings.json <<'EOF'
 {
   "plansDirectory": "./.claude/plans",
@@ -49,10 +45,8 @@ cat >.claude/settings.json <<'EOF'
 EOF
 
 cat >.claude/marathon.toml <<'EOF'
-# Project kind: this repository is context (runbooks and prose), not production source code.
 [project]
 kind = "context"
-# The repository's one deterministic check, which every slice and review runs.
 check = "scripts/check.sh"
 EOF
 

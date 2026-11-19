@@ -1,7 +1,6 @@
 ---
 type: llm
 focus: last_message
-# Judges only the round text in the final reply; the deterministic graders check its shape.
 ---
 Judge only the plan round in the response: the text from the line that contains `PLAN ROUND 1`
 to the end of the round. Ignore everything else in the response. You are reading it as the

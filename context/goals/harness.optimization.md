@@ -13,99 +13,131 @@
 5. [x] retro-routes
 6. [x] evidence-artifacts
 7. [x] comment-standard
-8. [ ] harness-standards
+8. [x] harness-standards
 9. [ ] release
 
-## Task brief · harness.optimization · comment-standard
+## Task brief · harness.optimization · harness-standards
 
 **Problem**
 
-The architecture layer's only comment rule is Go's. tests-and-docs' "doc.go and godoc" section
-asks for a doc comment on every production symbol and limits nothing else, and no check enforces
-it. The web repos follow their own, looser rule, "comments only for a non-obvious why", which
-sits outside the layer. Comments are where agents write justifications, and those go stale
-(Lauren Tan). The goal settled a near-ban: source keeps package documentation, provenance lines,
-and the reasons that lint suppressions and pin holds require. Each ecosystem's stock lint rules
-enforce what they can, and review covers the rest. marathon's standards-reviewer sweeps only for
-comments that excuse a workaround. It needs to apply whatever comment rule the repository
-declares.
+claude-plugins has no STANDARDS.md, so the standards-reviewer applies nothing of harness
+programming beyond its own profile. No pointer reaches the architecture pages that govern the
+repository. The practices marathon held survive only where marathon's own files still express
+them: the harness pages the architecture diet deleted, and the Pocock practices 0.16 adopted.
+The repository's scripts and configuration carry comments the comments principle doesn't allow.
+marathon's configuration template teaches every repository to write commented TOML, and the
+coordinator's roadmap holds 229 comment lines. On retro-routes, a session retyped the configured
+merge command with `;` for `&&`, and #49 merged with CI red. No rule on main prevented it.
 
 **Behaviors**
 
-1. The architecture layer has an architecture-level comments principle. It allows exactly four
-   kinds of comment in source:
-   - package documentation: a package or module comment (a script's or module's header counts
-     as one) and a doc comment on each exported identifier
-   - the reason a lint suppression requires, on the suppression
-   - the reason a pin hold requires, beside the pin
-   - a provenance line naming the source repository and commit
+1. claude-plugins has a STANDARDS.md of one-line judgement calls:
+   - instructions state the present; removals live only in the CHANGELOG
+   - a skill programs its own mechanics, never user-scope behavior
+   - a skill's configuration and state live in declared files in the repository
+   - a command runs through the one pipeline; an extension acts only at hook points
+   - SKILL.md indexes its files and never restates them
+   - a procedural section in a skill is a candidate tool
+   - an instruction that changes no behavior is cut
+   - each change gets an Unreleased entry; an extension-contract change bumps the floor
+   - an eval case comes from an observed failure
 
-   Any other comment is removed, or the code changes so it needs none.
-2. For each ecosystem, the principle names the stock rule that requires a suppression's reason:
-   golangci-lint's nolintlint (require-explanation, require-specific), typescript-eslint's
-   ban-ts-comment, eslint-comments' require-description, and clippy's
-   allow_attributes_without_reason. It states that the standards-reviewer judges every other
-   comment. It names no custom tool.
-3. Both of architecture's indexes list the principle, and architecture's STANDARDS.md points to
-   it.
-4. go-elemental's Go pages agree with the principle without restating it. tests-and-docs keeps
-   the doc.go inventory and the one-contract-per-symbol rule, and links the principle for which
-   comments are allowed. Doc comments are required on exported identifiers, not on every
-   production symbol. No other Go page states a comment rule of its own.
-5. architecture's check carries only the comments the principle allows. It behaves as before:
-   the same failures on the same inputs, and a pass on main.
-6. marathon's standards-reviewer flags each comment that the repository's declared comment rule
-   doesn't permit. Where the repository declares no rule, it flags a comment that excuses a
-   workaround, as it does today. The implementer's rule and delegation's editor rule stay as
-   they are.
-7. marathon's CHANGELOG records the reviewer change under Unreleased, with no extension-contract
-   marker. The contract doesn't cover that profile, and marathon-architecture only gives the
-   reviewer the layer's location.
-8. Both repositories' checks pass. Every word budget holds with no budget changed, and
-   claude-plugins' currency command reports nothing.
+   It points to the architecture layer's comments page for scripts, tests, and every
+   configuration file. It also points to rolling-currency, independent-releases,
+   context-architecture, and minimal-footprint, and to marathon's "Checks come first". It
+   restates nothing the check enforces, and CLAUDE.md points to it.
+2. claude-plugins' check fails, naming the fix, when:
+   - a skill whose description says "marathon extension" doesn't declare
+     `user-invocable: false`
+   - a CHANGELOG release heading carries anything after its version
+   - a CHANGELOG holds a link definition
+3. claude-plugins' scripts and tests carry only the comments the principle allows: each script's
+   or module's header. Function doc comments and docstrings are gone, and names carry their
+   meaning. The check gives the same failures on the same inputs and passes on main.
+4. claude-plugins' configuration files carry only the comments the principle allows. Each key's
+   meaning lives in marathon's configuration reference or a script's header. The eval case's
+   comments go; its description already gives their reasons.
+5. marathon's and marathon-architecture's TOML examples carry no comments, except the roadmap
+   index's pointer to its format. init therefore writes an uncommented configuration, and the
+   eval fixture's `marathon.toml` and `.gitignore` match it.
+6. `marathon <key> [args]` runs the named command from the current repository's marathon
+   configuration. The key is one of check, currency, gate, publish, merge, or ci.
+   - It runs the command through bash exactly as declared. A single-line value gets any
+     arguments appended, shell-quoted; a multi-line value runs as one script and gets them as
+     positional parameters.
+   - It exits with the command's status.
+   - It runs only declared commands. An unset key, an unknown key, or a missing configuration
+     fails and names the fix.
+   - It ships in marathon's `bin/` and uses only Python's standard library.
+7. marathon's pipeline Invariants state that every configured command runs through `marathon`,
+   never retyped. The steps that run a configured command call it, and the configuration
+   reference documents it. No word budget rises.
+8. lint-context fails on a comment in a roadmap goal file, naming the fix.
+9. marathon's Unreleased section records:
+    - the `marathon` command, as Added
+    - the uncommented examples
+    - the goal-file rule
+    - this repository's new check rules
+
+    None carries an extension-contract marker. marathon-architecture's Unreleased section
+    records its uncommented example.
+10. The goal record gains a pending edit for release's sync:
+    - the coordinator roadmap's header narrative goes to notes
+    - its dividers go
+    - each goal-attached comment moves to the note it cites, or to its goal's note when it
+      cites none
+11. The check passes, every word budget holds with none changed, and claude-plugins' currency
+    command reports nothing.
 
 **Test seams**
 
-- Each repository's check: links, front matter, citations, and budgets.
-- architecture's check, run on a scratch copy with a broken link and a page missing front
-  matter. It reports the same failures before and after the comment trim.
-- The branch's standards-reviewer, engaged through `claude -p --plugin-dir` on a fixture diff
-  with one disallowed comment. Run it twice: in a repository whose STANDARDS.md declares the
-  principle, and in one that declares no rule. It flags the comment in the first and leaves it
-  alone in the second, unless the comment excuses a workaround.
+- claude-plugins' check and its unit tests:
+  - the two new check rules, each on a fixture tree that breaks it
+  - lint-context's goal-file rule
+  - `marathon` against scratch repositories whose configuration holds a chained merge, a
+    multi-line ci, and a publish that takes arguments
+- The check on a scratch copy seeded with each failure it reports: identical output and exit
+  code before and after the comment trim.
+- This task's own standards review, which applies the branch's STANDARDS.md; its commits cite
+  the lines they apply.
 
 **Slices**
 
-The slices follow the coordinator's order: claude-plugins first, architecture last. There is no
-upgrade slice.
+claude-plugins only, with no upgrade slice.
 
-1. claude-plugins: the standards-reviewer applies the repository's declared comment rule, and
-   the CHANGELOG gets its Unreleased entry. Demo: the two-repository reviewer fixture, with the
-   check passing within budget.
-2. architecture: the comments principle, listed in both indexes and pointed to from
-   STANDARDS.md. Demo: the page reads on its own, and the check passes.
-3. architecture: go-elemental's Go comment wording aligned with the principle by linking it,
-   with doc comments narrowed to exported identifiers. Demo: no Go page restates the near-ban,
-   and the check passes.
-4. architecture: the check script brought under the principle. Demo: the scratch copy's failures
-   match before and after, and main passes.
+1. STANDARDS.md and CLAUDE.md's pointer to it.
+   Demo: each line is one judgement call or pointer, each pointed-to page exists, and the
+   check passes.
+2. Scripts and tests brought under the comments principle.
+   Demo: the scratch copy's failures match before and after, and main passes.
+3. Configuration files, the two plugins' TOML examples, and the eval fixture without comments,
+   with their CHANGELOG entries.
+   Demo: no comment outside the allowed kinds, and init's read-first set is about 190 words
+   smaller.
+4. The two check rules and lint-context's goal-file rule, with tests and a CHANGELOG entry.
+   Demo: each fixture fails with its fix named, and main passes.
+5. `marathon`, the Invariants line, the step edits, and its configuration entry, with tests and
+   an Added entry.
+   Demo: the merge fixture runs exactly as declared, a chained value keeps its `&&`, and every
+   read-first set stays within budget.
 
 **Out of scope**
 
-- Everything harness.adoption owns:
-  - each Go and web repository's STANDARDS.md and comments
-  - enabling the named rules in `.golangci.yml` and the ESLint configs
-  - docproc's hold list and hold comments
-  - web-tooling's `eslint-disable` that gives no reason
-- claude-plugins' own scripts and lint-context, which go to task harness-standards.
-- Any custom comment checker or Go analyzer (round 1, question 6).
-- Releasing or tagging, which is task `release`.
+- A hook that refuses a chained `gh pr merge` or `git push`: deferred to the backlog.
+- A required `check` status on main: dropped at slice 6 (Decisions).
+- A rule to run each git and gh command in its own call: left to the architect's user-scope
+  configuration.
+- Folding lint-context or other tools under `marathon` as subcommands: `v1.harness.tooling`.
+- Any change to architecture's comments page, and the comments in other repositories'
+  configuration: both go to harness.adoption.
+- The coordinator roadmap itself, which changes only at release's sync.
+- A 100-column wrap check and the read-first budget ratchet: both left for a retro.
+- Releasing or tagging: task `release`.
 
 **Door**
 
-Two-way. Nothing is released, and each change is a page or profile edit that can be reverted.
-The reviewer change reaches no session until `release`. Once the architecture pages merge, they
-apply to new Go diffs at once, through tests-and-docs (round 2).
+Two-way. Nothing is released, every change is a revertible commit, and `marathon` reaches no
+session until `release`.
 
 ## Decisions
 
@@ -143,8 +175,50 @@ apply to new Go diffs at once, through tests-and-docs (round 2).
 - comment-standard: making the near-ban marathon's default in every repository was rejected; the
   standards-reviewer applies the repository's declared rule (plan).
 - comment-standard: claude-plugins' scripts adopt the near-ban in harness-standards (plan).
+- harness-standards: claude-plugins only; STANDARDS.md points to architecture's pages without
+  editing them (plan).
+- harness-standards: STANDARDS.md is one line per judgement call or pointer; rationale sections
+  were rejected as the prose that goes stale (plan).
+- harness-standards: staged execution and `@`-loading were dropped from the old harness pages as
+  superseded (plan).
+- harness-standards: the comment near-ban covers TOML and YAML configuration, which drifts like
+  source. The convention lives in the STANDARDS pointer; amending architecture's comments page
+  was deferred to harness.adoption (plan).
+- harness-standards: `[remote] merge` keeps `gh pr checks --watch &&`; `--auto` was rejected
+  because auto-merge is off and it returns before the merge (plan).
+- harness-standards: a required `check` status on main was dropped: with no bypass it rejects the
+  goal-record bookkeeping commits marathon pushes to main, and with the admin bypass it may not
+  stop an admin's merge; `marathon merge` ends the retyping that merged #49 red (escalation).
+- harness-standards: configured commands run through `marathon <key>`, built here rather than
+  deferred to v1.harness.tooling. `marathon-run`, `marathon-exec`, `marathon-command`, and
+  per-table tools were rejected; the root command takes the key as its subcommand (plan).
+- harness-standards: the command runs all six keys through bash with appended arguments; refusing
+  multi-line values and arguments was rejected (plan).
+- harness-standards: a hook refusing chained merges was deferred; a marathon hook fires in every
+  session (plan).
+- harness-standards: the one-command-per-call rule stays out of marathon as user-scope
+  behavior (plan).
+- harness-standards: the comment-standard Decision stands; lint-context's goal-file rule shapes
+  the manifest and is not a comment checker for source (plan).
+- harness-standards: release's sync moves goal-attached roadmap comments into the note each cites;
+  a block-by-block judgement pass was rejected (plan).
+- harness-standards: `marathon` reads `.claude/marathon.toml` at the git top-level and runs the
+  command from there, so a step can call it from any subdirectory (build).
+- harness-standards: `marathon` exits 2 on a usage or configuration failure; otherwise it exits
+  with the command's status, or 128 plus the signal number when a signal ends the command (build).
+- harness-standards: a multi-line value gets the arguments as positional parameters, not appended.
+  Any value that holds a newline is multi-line, including one written with a TOML `\n` escape
+  (build).
+- harness-standards: an eval case's description says what each grader matches, because a
+  grader's body is its pattern or criteria and its front matter carries no comments (build).
 
 ## Pending edits
 
 - standards-lab · `.claude/marathon.toml`: set `[project] check` to `lint-context`, applied at
   `release`'s sync after the roadmap split (content-budgets).
+- standards-lab · `context/roadmap.toml`: at release's sync, move the header narrative into
+  notes, drop the section dividers, and move each goal-attached comment into the note it cites,
+  or its goal's note when it cites none (harness-standards).
+- standards-lab · `context/roadmap.toml`: backlog notes on `v1.harness.tooling`: a hook refusing a
+  chained `gh pr merge` or `git push`, and a required `check` status on claude-plugins' main once
+  bookkeeping lands by pull request (harness-standards).

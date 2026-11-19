@@ -71,7 +71,7 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
 2. Run plan rounds with the architect, each presented as `behavior/planning.md`, "Ask for
    decisions, never for facts", says, in the format of `references/briefs.md`. The planner
    profile finds the facts and drafts each round, then the task brief and its slices
-   (`behavior/delegation.md`). Before round 1, the planner runs `[project] currency` on the
+   (`behavior/delegation.md`). Before round 1, the planner runs `marathon currency` on the
    default branch of each repository the task touches that declares it
    (`mechanics/configuration.md`), and reads the release notes of what trails. Round 1 notes each
    touched repository with no currency command, and reports a command that failed as a fact; a
@@ -117,11 +117,11 @@ coordinator during BUILD. When the context fills, hand off (`references/build.md
 2. Update the goal record: check the task, add its decisions, set State to `idle` and Task to
    none, and clear Progress.
 3. Fire `on-record` (`mechanics/hooks.md`), then commit the record on the task's branch.
-4. Publish each touched repository's branch with its `[remote] publish` command, lowest layer
-   first, using the brief file as the body (for GitHub, `--body-file`). A repository with no
+4. Publish each touched repository's branch with `marathon publish`, lowest layer first, using
+   the brief file as the body (for GitHub, `--body-file`). A repository with no
    `[remote] publish` merges its branch locally instead ("Branches and pull requests").
-5. Merge each one with its `[remote] merge` command, lowest layer first, once its checks pass.
-   Without a merge command, or when a check fails, set State to `handoff` with the next move
+5. Merge each one with `marathon merge`, lowest layer first, once its checks pass. Without a
+   merge command, or when a check fails, set State to `handoff` with the next move
    ("merge" or the failing check), commit it on the branch, tell the architect, and stop. When
    the task brief has a Release line, merge and tag one repository at a time instead
    (`mechanics/releasing.md`).
@@ -151,9 +151,9 @@ request, in each repository it changes.
 
 Each branch starts from the freshly pulled default branch. The architect's approval of the
 outcome, the session brief, or the ticked findings authorizes publishing and merging. Each
-repository publishes with its `[remote] publish` command and merges with its `[remote] merge`
-command once its checks pass, lowest layer first, then switches back to its default branch,
-pulls, and deletes the local branch. A merge that can't happen leaves the branch checked out,
+repository publishes with `marathon publish` and merges with `marathon merge` once its checks
+pass, lowest layer first, then switches back to its default branch, pulls, and deletes the local
+branch. A merge that can't happen leaves the branch checked out,
 which holds the repository until it merges: tell the architect and stop.
 
 A project with no `[remote] publish` branches the same way and, once the architect approves,
@@ -198,6 +198,7 @@ and reports. Each commit stages explicit paths, never everything.
 - Nothing changes before the architect approves the task brief, or the round outcome for `plan`,
   `experiment`, and `intake`, except a RESUME of an approved brief.
 - Nothing is published before the architect accepts the session brief.
+- Every configured command runs through `marathon <key>`, never retyped.
 - No tag is pushed while its repository's default branch is red or its gate fails, and a
   released tag is never re-cut.
 - The coordinator changes only through `plan`, `experiment`, `intake`, `retro`, and sync, each

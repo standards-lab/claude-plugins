@@ -1,8 +1,9 @@
 # Tool-based skills: the tooling layer beneath the plugins
 
-The tooling layer is planned work, tracked as `v1.harness.tooling`. No code expresses it yet:
-marathon and its extensions carry their procedure in prose, and no plugin calls a tool of its
-own.
+The tooling layer is planned work, tracked as `v1.harness.tooling`. marathon ships two tools in
+its `bin/`, on PATH in a session: `lint-context`, which checks a repository's `context/`, and
+`marathon`, which runs a configured command by its key. The rest of marathon's procedure, and its
+extensions', is prose, and no schema or `spec/` directory exists.
 
 ## The idea
 
@@ -26,8 +27,8 @@ runs; a tool is tested, versioned, and the same on every call. So the plan is:
   configuration, an adapter, or a document.
 
 The first consumers are marathon's roadmap manifest and goal records, whose formats the skill
-documents only in prose today, and marathon-extraction's deterministic checks
-(`marathon-extraction.md`, "Tooling").
+documents in prose and `lint-context` checks only for shape and budgets, and
+marathon-extraction's deterministic checks (`marathon-extraction.md`, "Tooling").
 
 ## Assumptions
 

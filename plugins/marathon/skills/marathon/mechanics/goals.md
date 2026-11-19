@@ -95,7 +95,7 @@ proposes is the next planned spike of the same experiment, or, with none left, t
 intake (`references/briefs.md`, "Session brief"). The experiment stays until its intake,
 which takes in the spikes' answers and archives their remotes (`commands/intake.md`).
 
-If the task's merge can't happen, because there is no `[remote] merge` command or a check fails,
+If the task's merge can't happen, because `[remote] merge` is unset or a check fails,
 nothing is synced and the record stays: set State to `handoff` with the next move "merge, then
 sync", and stop. If the context fills while the release is unfinished, the next move is "tag
 <names>, then sync". If a sync pull request can't merge, the record stays too: set State to

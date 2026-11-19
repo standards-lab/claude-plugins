@@ -19,6 +19,13 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   `references/manifest.md` gives it, the context README's capability map lists each entry as
   built or planned, and every relative link in the root README, `context/`, and `docs/`
   resolves. This repository's check runs it and its tests.
+- **`marathon`** (`bin/marathon`, `mechanics/configuration.md`): a stdlib Python 3.11 command, on
+  PATH in a session, that runs a `.claude/marathon.toml` command by its key, as `marathon merge`
+  or `marathon gate v1.4.0`. It reads the configuration at the git top-level, runs the value with
+  bash from there exactly as declared, appends a single-line value's arguments shell-quoted or
+  passes them to a multi-line value as positional parameters, and exits with the command's
+  status. An unknown or unset key, a missing configuration, or no key fails with the fix. Every
+  step that runs a configured command now calls it (`mechanics/pipeline.md`, "Invariants").
 
 ### Changed
 
@@ -145,6 +152,20 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   Its Comments sweep flags and fixes each comment that the comment rule declared in the
   repository's `STANDARDS.md`, or an architecture page it points to, doesn't permit. Where the
   repository declares no comment rule, it flags a comment that excuses a workaround, as before.
+- **Goal files carry no comments** (`bin/lint-context`): `lint-context` fails on each comment in
+  a `context/roadmap/<goal>.toml`, outside its strings, and says to move the note into the goal's
+  context note. To migrate, move each goal-file comment into that note.
+- **This repository's check holds CHANGELOGs and extensions to form.** `scripts/check.sh` fails
+  when a plugin CHANGELOG's release heading carries anything after `## vX.Y.Z` or
+  `## Unreleased`, such as a date, link, or suffix, or when a CHANGELOG holds a link reference
+  definition. It also fails when a skill whose description calls it a marathon extension doesn't
+  declare `user-invocable: false` in its front matter.
+- **Configuration examples carry no comments** (`mechanics/configuration.md`,
+  `references/extensions.md`), so `init` writes an uncommented `marathon.toml`. Each key's meaning
+  lives in the Keys list, which now says why the `[remote] ci` example polls for the merge
+  commit's runs. The `plan-round-in-reply` fixture writes the same uncommented `marathon.toml`
+  and `.gitignore`, and its graders' front matter carries no comments: what each regex matches
+  moves into the case's description, and the AskUserQuestion grader's note into its body.
 
 ## v0.18.0
 

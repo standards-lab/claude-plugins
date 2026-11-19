@@ -23,9 +23,9 @@ Read these sizes, in words, to judge the work:
 
 - The skill: SKILL.md links each file instead of `@`-including it, and each command's playbook
   opens with a "Read first" list of the files it needs. `start`'s read-first set, SKILL.md and the
-  playbook included, is 8,247 words against a budget of 8,300. `mechanics/pipeline.md` is about
+  playbook included, is 8,246 words against a budget of 8,300. `mechanics/pipeline.md` is about
   1,980 words, down from 2,715, since Releasing and RESUME moved to their own files.
-- The planner profile: 273 words, down from 554, since profiles cite the skill's rules instead of
+- The planner profile: 272 words, down from 554, since profiles cite the skill's rules instead of
   restating them.
 - The coordinator's `context/roadmap.toml`: one file of 13,353 words over 61 goals and 74 tasks,
   with no task order and dated lines its format forbids. It stays one file until `release`.
@@ -38,15 +38,16 @@ Read these sizes, in words, to judge the work:
 
 - **Budgets are checks** (built). marathon's `bin/lint-context` holds `context/` to its file
   kinds, the READMEs, notes, and goal-record sections to word budgets, and the roadmap and
-  capability map to their shapes, and it resolves relative links. Each repository's
-  `[project] check` calls it (marathon's `mechanics/configuration.md`). The installed 0.18.0
-  lacks it, so the coordinator adopts it at `release`'s sync.
+  capability map to their shapes. It fails on a comment in a goal file and resolves relative
+  links. Each repository's `[project] check` calls it (marathon's `mechanics/configuration.md`).
+  The installed 0.18.0 lacks it, so the coordinator adopts it at `release`'s sync.
 - **Comments** (built). The architecture layer's `principles/comments.md` allows four kinds of
   comment in source: package documentation, a lint suppression's reason, a pin hold's reason, and
   provenance. Each ecosystem's stock lint rule requires a suppression's reason, the
   standards-reviewer judges every other comment, and no custom tool enforces the principle.
   marathon's standards-reviewer applies the comment rule a repository's `STANDARDS.md` declares.
-  claude-plugins' scripts adopt the principle in task `harness-standards`, and code repositories
+  claude-plugins' scripts, tests, and configuration files follow it, as its `STANDARDS.md`
+  declares, and marathon's configuration examples carry no comments. Code repositories adopt it
   in `harness.adoption`.
 - **One release at the end.** Nothing releases until the last task, so sessions keep running the
   installed 0.18.0 until then. The sync then cleans the coordinator's roadmap and notes under the
@@ -56,16 +57,18 @@ Read these sizes, in words, to judge the work:
   `order` array, and its tasks (marathon's `references/manifest.md`). The installed 0.18.0 still
   reads the coordinator's single file, so `release`'s sync splits it and moves its dated header
   into notes.
-- **Harness standards** (task `harness-standards`). claude-plugins gains a `STANDARDS.md` for the
-  judgement calls of harness programming, which the standards-reviewer applies. The architecture
-  layer's `harness/` pages left in its architecture-diet because one repository can't promote a
-  page; their history (`b927dd8^:harness/`) and the Pocock practices of 0.16 are inputs.
-  The task also explores and designs small, sequential shell operations over composed scripts.
-  Sessions often chain many commands in one Bash call, which permission checks block. On
-  retro-routes, the configured `[remote] merge` was retyped with `;` for its `&&`, so #49 merged
-  with CI red. The design runs in order: a tool that runs configured commands verbatim (a
-  candidate for `v1.harness.tooling`), a hook that refuses a chained `gh pr merge` or `git push`,
-  and a one-line rule to run each git and `gh` command on its own call.
+- **Harness standards** (built). claude-plugins' `STANDARDS.md` lists the judgement calls of
+  harness programming, one line each, with pointers to the architecture pages that govern the
+  repository, and the standards-reviewer applies it. `scripts/check.sh` enforces the mechanical
+  rules: a CHANGELOG release heading carries only its version, a CHANGELOG holds no link
+  definitions, and a marathon extension declares `user-invocable: false`.
+- **Configured commands run through `marathon`** (built). marathon's `bin/marathon` runs a
+  `.claude/marathon.toml` command by its key, exactly as declared, and every pipeline step that
+  runs one calls it (marathon's `mechanics/configuration.md`, "Running a command"), so a session
+  runs `[remote] merge` with its `&&` instead of retyping it. A hook that refuses a chained
+  `gh pr merge` or `git push`, and a required `check` status on main, wait on
+  `v1.harness.tooling`'s backlog. The rule to run each git and `gh` command on its own call stays
+  in the architect's user-scope configuration.
 - **Verification artifacts** (task `evidence-artifacts`). Following Lauren Tan, review reads
   verification artifacts. The session brief's Verify section gives the steps the architect can
   run to see the work behave, and what they should see, or "none" for a prose-only change. The
@@ -76,16 +79,13 @@ Read these sizes, in words, to judge the work:
 
 A retro can take these up.
 
-- claude-plugins has no `STANDARDS.md`, so nothing points to the architecture pages the standards
-  review applies: `principles/rolling-currency.md`, `principles/independent-releases.md`, and
-  `principles/context-architecture.md` in the architecture repository.
 - marathon's manifest reference says `repos = []` means "only `plan` works on it", but `intake`
   runs on experiment goals, which write `repos = []`. This predates `roadmap-layout`.
 - The plan-round eval fails the release gate's 1.0 threshold on `main`, scoring 0.83–0.89
   because the model's reply lines run past 100 characters. `release` needs it fixed, or the
   threshold settled, before tagging.
 - A spike's `docs/` pages that link to its goal record break when sync deletes the record.
-- `start`'s and `intake`'s read-first sets sit 53 and 24 words under their budgets, so most edits
+- `start`'s and `intake`'s read-first sets sit 54 and 26 words under their budgets, so most edits
   to either need a budget change.
 - Read-first budgets rise with every task: `start`'s went from 7,900 to 8,300 and `retro`'s from
   6,400 to 6,700. A fixed ceiling that only the architect raises would stop the ratchet.
@@ -96,3 +96,11 @@ A retro can take these up.
   only the decisions the brief didn't cover and the dropped Decisions. One of them should give way.
 - The standards-reviewer rewraps markdown to 100 columns by hand; a check could enforce the
   width instead.
+- `marathon` treats any value that holds a newline as multi-line, so a one-line TOML string with
+  a `\n` escape gets its arguments as positional parameters, which the command ignores unless it
+  reads `$1`.
+- `scripts/check.sh`'s header lists every check it runs, so each new check must be added there by
+  hand, and nothing checks that it is.
+- `scripts/check.sh`'s `unreleased_path_citations_with_owner` reads every markdown file whole and
+  stops only a CHANGELOG at its first release heading, so "unreleased" describes only part of
+  what it returns.
