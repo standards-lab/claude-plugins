@@ -1,8 +1,8 @@
 # goal · harness.optimization
 
-- **State:** idle
-- **Task:** none
-- **Branch:** none
+- **State:** building
+- **Task:** release
+- **Branch:** release
 
 ## Tasks
 
@@ -16,128 +16,80 @@
 8. [x] harness-standards
 9. [ ] release
 
-## Task brief · harness.optimization · harness-standards
+## Task brief · harness.optimization · release
 
 **Problem**
 
-claude-plugins has no STANDARDS.md, so the standards-reviewer applies nothing of harness
-programming beyond its own profile. No pointer reaches the architecture pages that govern the
-repository. The practices marathon held survive only where marathon's own files still express
-them: the harness pages the architecture diet deleted, and the Pocock practices 0.16 adopted.
-The repository's scripts and configuration carry comments the comments principle doesn't allow.
-marathon's configuration template teaches every repository to write commented TOML, and the
-coordinator's roadmap holds 229 comment lines. On retro-routes, a session retyped the configured
-merge command with `;` for `&&`, and #49 merged with CI red. No rule on main prevented it.
+marathon 0.19.0's changes, and marathon-architecture's floor that depends on them, reach no
+session until they are tagged. The coordinator still holds the single-file roadmap 0.19.0 can't
+read, its check doesn't run lint-context, and the plan-round eval fails the release gate.
 
 **Behaviors**
 
-1. claude-plugins has a STANDARDS.md of one-line judgement calls:
-   - instructions state the present; removals live only in the CHANGELOG
-   - a skill programs its own mechanics, never user-scope behavior
-   - a skill's configuration and state live in declared files in the repository
-   - a command runs through the one pipeline; an extension acts only at hook points
-   - SKILL.md indexes its files and never restates them
-   - a procedural section in a skill is a candidate tool
-   - an instruction that changes no behavior is cut
-   - each change gets an Unreleased entry; an extension-contract change bumps the floor
-   - an eval case comes from an observed failure
-
-   It points to the architecture layer's comments page for scripts, tests, and every
-   configuration file. It also points to rolling-currency, independent-releases,
-   context-architecture, and minimal-footprint, and to marathon's "Checks come first". It
-   restates nothing the check enforces, and CLAUDE.md points to it.
-2. claude-plugins' check fails, naming the fix, when:
-   - a skill whose description says "marathon extension" doesn't declare
-     `user-invocable: false`
-   - a CHANGELOG release heading carries anything after its version
-   - a CHANGELOG holds a link definition
-3. claude-plugins' scripts and tests carry only the comments the principle allows: each script's
-   or module's header. Function doc comments and docstrings are gone, and names carry their
-   meaning. The check gives the same failures on the same inputs and passes on main.
-4. claude-plugins' configuration files carry only the comments the principle allows. Each key's
-   meaning lives in marathon's configuration reference or a script's header. The eval case's
-   comments go; its description already gives their reasons.
-5. marathon's and marathon-architecture's TOML examples carry no comments, except the roadmap
-   index's pointer to its format. init therefore writes an uncommented configuration, and the
-   eval fixture's `marathon.toml` and `.gitignore` match it.
-6. `marathon <key> [args]` runs the named command from the current repository's marathon
-   configuration. The key is one of check, currency, gate, publish, merge, or ci.
-   - It runs the command through bash exactly as declared. A single-line value gets any
-     arguments appended, shell-quoted; a multi-line value runs as one script and gets them as
-     positional parameters.
-   - It exits with the command's status.
-   - It runs only declared commands. An unset key, an unknown key, or a missing configuration
-     fails and names the fix.
-   - It ships in marathon's `bin/` and uses only Python's standard library.
-7. marathon's pipeline Invariants state that every configured command runs through `marathon`,
-   never retyped. The steps that run a configured command call it, and the configuration
-   reference documents it. No word budget rises.
-8. lint-context fails on a comment in a roadmap goal file, naming the fix.
-9. marathon's Unreleased section records:
-    - the `marathon` command, as Added
-    - the uncommented examples
-    - the goal-file rule
-    - this repository's new check rules
-
-    None carries an extension-contract marker. marathon-architecture's Unreleased section
-    records its uncommented example.
-10. The goal record gains a pending edit for release's sync:
-    - the coordinator roadmap's header narrative goes to notes
-    - its dividers go
-    - each goal-attached comment moves to the note it cites, or to its goal's note when it
-      cites none
-11. The check passes, every word budget holds with none changed, and claude-plugins' currency
-    command reports nothing.
+1. marathon's eval suite scores 1.0 over three runs at the gate's settings, with no threshold or
+   grader relaxed.
+2. marathon's Unreleased section releases as `## v0.19.0`, with a `### Migrating from 0.18.0`
+   section of ordered steps; marathon-architecture's releases as `## v0.4.0`. Each manifest's
+   version matches its heading, and the check passes.
+3. The goal note states what the goal built; its findings for later stay, and every pointer to it
+   resolves. The tooling task's context note records the two deferred guards.
+4. `marathon/v0.19.0`, then `marathon-architecture/v0.4.0`, are pushed after the gate passes on
+   the merge commit. Each release run succeeds, and the pinned-tag fetch of lint-context passes
+   on claude-plugins.
+5. The coordinator's roadmap is an index of the three arrays plus a format pointer, and one goal
+   file per goal with explicit `repos` and `root`, an `order` for each goal with tasks, and no
+   comments. harness.optimization is gone from it and from `active`.
+6. The header's plan survives as an undated coordinator note, and the dividers are gone. Each
+   goal-attached comment block sits in the note it cites, or in its goal's coordinator note.
+7. The coordinator's `[project] check` runs lint-context. Its only failures are the over-budget
+   notes and entries and the missing capability map, which the Sync section lists for
+   harness.adoption.
+8. The Sync section proposes harness.adoption for a plan to stage. The session merges the
+   coordinator's `sync-harness.optimization` pull request itself, then deletes the goal record;
+   reinstalling 0.19.0 and stopping and resuming other sessions is the architect's.
 
 **Test seams**
 
-- claude-plugins' check and its unit tests:
-  - the two new check rules, each on a fixture tree that breaks it
-  - lint-context's goal-file rule
-  - `marathon` against scratch repositories whose configuration holds a chained merge, a
-    multi-line ci, and a publish that takes arguments
-- The check on a scratch copy seeded with each failure it reports: identical output and exit
-  code before and after the comment trim.
-- This task's own standards review, which applies the branch's STANDARDS.md; its commits cite
-  the lines they apply.
+- claude-plugins' check, and `scripts/gate.sh <tag>` on the merge commit.
+- lint-context on the coordinator's sync branch, its output matching Behavior 7 exactly.
+- A TOML parse of the old roadmap compared with the index and goal files: the same goals, tasks,
+  fields, and arrays.
 
 **Slices**
 
-claude-plugins only, with no upgrade slice.
+claude-plugins, then the coordinator, with no upgrade slice.
 
-1. STANDARDS.md and CLAUDE.md's pointer to it.
-   Demo: each line is one judgement call or pointer, each pointed-to page exists, and the
-   check passes.
-2. Scripts and tests brought under the comments principle.
-   Demo: the scratch copy's failures match before and after, and main passes.
-3. Configuration files, the two plugins' TOML examples, and the eval fixture without comments,
-   with their CHANGELOG entries.
-   Demo: no comment outside the allowed kinds, and init's read-first set is about 190 words
-   smaller.
-4. The two check rules and lint-context's goal-file rule, with tests and a CHANGELOG entry.
-   Demo: each fixture fails with its fix named, and main passes.
-5. `marathon`, the Invariants line, the step edits, and its configuration entry, with tests and
-   an Added entry.
-   Demo: the merge fixture runs exactly as declared, a chained value keeps its `&&`, and every
-   read-first set stays within budget.
+1. The plan-round width fix. Demo: the eval suite at the gate's settings scores 1.0.
+2. The CHANGELOG releases, manifest versions, goal note, and tooling note. Demo: the check
+   passes and both versions match their headings.
+3. Ship and release. Demo: both tags pushed in order, both runs green, the fetched lint-context
+   passes.
+4. The coordinator sync branch: split, header, dividers, comments, check. Demo: the parse
+   comparison is identical, and lint-context prints only the expected failures.
+5. Merge the coordinator's sync pull request and delete the goal record. Demo: standards-lab's
+   main holds the split roadmap, and the record is gone.
 
 **Out of scope**
 
-- A hook that refuses a chained `gh pr merge` or `git push`: deferred to the backlog.
-- A required `check` status on main: dropped at slice 6 (Decisions).
-- A rule to run each git and gh command in its own call: left to the architect's user-scope
-  configuration.
-- Folding lint-context or other tools under `marathon` as subcommands: `v1.harness.tooling`.
-- Any change to architecture's comments page, and the comments in other repositories'
-  configuration: both go to harness.adoption.
-- The coordinator roadmap itself, which changes only at release's sync.
-- A 100-column wrap check and the read-first budget ratchet: both left for a retro.
-- Releasing or tagging: task `release`.
+- Trimming the coordinator's notes and entries, and its capability map: harness.adoption.
+- Committing the one-off split script.
+- Staging harness.adoption.
+- The goal-record order mismatches in v1.ai.processing and v1.client.stack.
+- Any change to architecture.
 
 **Door**
 
-Two-way. Nothing is released, every change is a revertible commit, and `marathon` reaches no
-session until `release`.
+One-way for the two tags. The coordinator split is a revertible merge, but 0.18.0 sessions can't
+read the roadmap once it lands; the architect coordinates the reinstall. The rest is revertible
+commits.
+
+**Release**
+
+`marathon/v0.19.0`, then `marathon-architecture/v0.4.0`.
+
+## Progress
+
+slices 0/2 committed (slices 3–5 run at SHIP and sync) · standards — · spec — · editor —
 
 ## Decisions
 
@@ -211,6 +163,16 @@ session until `release`.
   (build).
 - harness-standards: an eval case's description says what each grader matches, because a
   grader's body is its pattern or criteria and its front matter carries no comments (build).
+
+- release: the plan-round eval's line-width failures are fixed in the skill; lowering the gate's
+  threshold was rejected (plan).
+- release: the coordinator's over-budget notes and entries and its missing capability map go to
+  harness.adoption; its check runs lint-context with those failures showing (plan).
+- release: the release session merges the coordinator's sync pull request itself; a handoff for
+  the architect to merge was rejected. The architect reinstalls 0.19.0 and stops and resumes the
+  other sessions (plan).
+- release: the roadmap header survives only as its undated plan in a coordinator note (plan).
+- release: the two deferred guards are recorded in `tool-based-skills.md`, not the roadmap (plan).
 
 ## Pending edits
 
