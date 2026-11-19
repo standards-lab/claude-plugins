@@ -13,6 +13,9 @@ GitHub releases the tags cut.
   `references/extensions.md`, Compatibility, defines from 0.19.0.
 - **`mechanics/pipeline.md` loads through a link.** SKILL.md's `@`-include line was never
   expanded; it now links the file and says to read it when the extension loads.
+- **The README's configuration examples carry no comments.** What the comments said, where a
+  standalone project keeps the layer and what `.claude/marathon-architecture.toml`'s `repo`
+  names, moves into the prose around them.
 
 ## v0.3.0
 

@@ -5,23 +5,15 @@ every session reads it.
 
 ```toml
 [project]
-kind     = "code"      # production source with a build-and-test loop
-# kind = "context"     # the whole repository is context, which the agent writes directly
+kind     = "code"
 check    = "mise run check"
-# Optional: reports what trails its latest release; PLAN runs it, CI never does.
 currency = "mise run currency"
-# Optional: decides whether a Release tag may be pushed; SHIP runs it, CI never does.
 gate     = "mise run gate"
-# Optional: marathon extensions enabled for this project, by skill name.
-# extensions = ["<extension>"]
 
 [remote]
-platform = "github"    # the platform the project publishes to
+platform = "github"
 publish  = "gh pr create"
-# Optional: without it, SHIP stops at the open pull request.
 merge    = "gh pr checks --watch && gh pr merge --merge --delete-branch"
-# Optional: waits for the default branch's CI on the merge commit, and fails if it fails.
-# The runs can take a few seconds to appear after the merge, so it polls for them first.
 ci       = '''
 sha=$(git rev-parse HEAD)
 for _ in $(seq 30); do
@@ -32,7 +24,6 @@ done
 for run in $runs; do gh run watch --exit-status "$run" || exit 1; done
 '''
 
-# Optional: only a workspace coordinator declares this table.
 [workspace]
 role  = "coordinator"
 order = [
@@ -40,16 +31,10 @@ order = [
   ["service-a", "service-b"],
   "gateway",
 ]
-# Optional: groups of repositories at most one active goal may touch at a time.
-# exclusive = [["core-lib", "service-a", "service-b", "gateway"]]
-# Optional: marathon extensions enabled for every project in the workspace.
-# extensions = ["<extension>"]
 
-# Optional: the location of an order key that isn't a sibling directory.
 [workspace.paths]
 core-lib = "~/code/core-lib"
 
-# Optional: the hosting convention `experiment` and `plan` propose for a new spike.
 [workspace.experiments]
 path   = "~/experiments/spike-<slug>"
 remote = "https://github.com/<owner>/spike-<slug>.git"
@@ -94,8 +79,9 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
 - **`[remote] ci`**: optional. A command that waits for the default branch's CI runs on the merge
   commit, with that commit checked out, and exits nonzero if one fails or none starts. CI often
   runs more after a merge than on the pull request, such as integration tests only on the default
-  branch, so the merge command's wait on the pull request's checks isn't enough. SHIP runs it
-  before tagging a release; without it, tagging follows the merge directly
+  branch, so the merge command's wait on the pull request's checks isn't enough. The runs can take
+  a few seconds to appear after the merge, so the command polls for them first, as the example's
+  does. SHIP runs it before tagging a release; without it, tagging follows the merge directly
   (`mechanics/releasing.md`).
 - **`[workspace]`**: for the coordinator only. `order` lists layers, lowest first, and an array
   entry is a layer of peers. `exclusive` lists groups of repositories that at most one active goal

@@ -29,10 +29,7 @@ Judgement calls the check can't enforce, one line each.
 EOF
 
 cat >.gitignore <<'EOF'
-# Marathon session plan files.
 .claude/plans/
-
-# The session brief.
 .claude/briefs/
 EOF
 
@@ -47,10 +44,8 @@ cat >"$settings_never_loaded_under_setting_sources_user" <<'EOF'
 EOF
 
 cat >.claude/marathon.toml <<'EOF'
-# Project kind: this repository is context (runbooks and prose), not production source code.
 [project]
 kind = "context"
-# The repository's one deterministic check, which every slice and review runs.
 check = "scripts/check.sh"
 EOF
 

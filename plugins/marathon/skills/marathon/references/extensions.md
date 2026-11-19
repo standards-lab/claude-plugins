@@ -18,10 +18,10 @@ is missing, tell the architect, and name the plugin to install.
 
 ```toml
 [project]
-extensions = ["<extension>"]   # this project
+extensions = ["<extension>"]
 
 [workspace]
-extensions = ["<extension>"]   # coordinator only: every project in the workspace
+extensions = ["<extension>"]
 ```
 
 Removing the entry disables the extension. The architect decides whether its files stay.

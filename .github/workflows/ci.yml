@@ -12,10 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
 
-      # check.sh runs claude plugin validate, and the runner has no claude. The
-      # exact version is the latest release, npm's latest dist-tag;
-      # scripts/currency.sh reports it when it trails.
-      - name: Install Claude Code
+      - name: Install Claude Code, which check.sh's plugin validation needs
         run: npm install -g @anthropic-ai/claude-code@2.1.328
 
       - name: Repository consistency checks

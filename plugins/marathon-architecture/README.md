@@ -21,11 +21,12 @@ claude plugin install marathon-architecture@standards-lab
 
 ## Enable
 
-Installing makes the extension available. A repository enables it in `.claude/marathon.toml`:
+Installing makes the extension available. A repository enables it in `.claude/marathon.toml`, and
+keeps the layer in a top-level `architecture/` directory:
 
 ```toml
 [project]
-extensions = ["marathon-architecture"]   # a top-level architecture/ directory in this repository
+extensions = ["marathon-architecture"]
 ```
 
 A workspace coordinator enables it for every member project, and the members share one layer:
@@ -35,12 +36,12 @@ A workspace coordinator enables it for every member project, and the members sha
 extensions = ["marathon-architecture"]
 ```
 
-The coordinator also keeps a second file next to `marathon.toml`. The extension owns that file,
-and marathon never reads or writes it:
+The coordinator also keeps a second file, `.claude/marathon-architecture.toml`, whose `repo` is the
+order key of the member repository that holds the layer. The extension owns that file, and
+marathon never reads or writes it:
 
 ```toml
-# .claude/marathon-architecture.toml
-repo = "architecture"   # the order key of the member repository that holds the layer
+repo = "architecture"
 ```
 
 A workspace keeps one layer, so the extension is enabled at the coordinator. A member that enables

@@ -145,6 +145,11 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   Its Comments sweep flags and fixes each comment that the comment rule declared in the
   repository's `STANDARDS.md`, or an architecture page it points to, doesn't permit. Where the
   repository declares no comment rule, it flags a comment that excuses a workaround, as before.
+- **Configuration examples carry no comments** (`mechanics/configuration.md`,
+  `references/extensions.md`), so `init` writes an uncommented `marathon.toml`. Each key's meaning
+  lives in the Keys list, which now says why the `[remote] ci` example polls for the merge
+  commit's runs. The `plan-round-in-reply` fixture writes the same uncommented `marathon.toml`
+  and `.gitignore`.
 
 ## v0.18.0
 
