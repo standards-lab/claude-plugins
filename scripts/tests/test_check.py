@@ -18,6 +18,8 @@ SKILL = "plugins/marathon/skills/marathon"
 # word budget.
 SEEDED = f"{SKILL}/references/seeded.md"
 READ_FIRST_FIX = 'give it exactly one "Read first, before acting:" list'
+RERUN = "fix the lines above, then rerun"
+EXTENSION = "plugins/marathon-architecture"
 
 
 class CheckTest(unittest.TestCase):
@@ -91,7 +93,8 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(
             lines,
             [
-                f"FAIL: {SEEDED}:3: citation agents/nobody.md does not resolve"
+                f"FAIL: {SEEDED}:3: citation agents/nobody.md does not resolve; "
+                "cite an existing file or remove the citation"
             ],
         )
 
@@ -101,6 +104,103 @@ class CheckTest(unittest.TestCase):
             "# Seeded\n\nSee `context/roadmap.toml`, `scripts/check.sh`, and `src/app/main.py`.\n",
         )
         self.assertEqual(self.check(), (0, []))
+
+    def test_version_mismatch_names_the_files_to_align(self):
+        self.replace(f"{EXTENSION}/.claude-plugin/plugin.json", '"0.3.0"', '"9.9.9"')
+        code, lines = self.check()
+        self.assertEqual(code, 1)
+        skill = f"{EXTENSION}/skills/marathon-architecture/SKILL.md"
+        self.assertEqual(
+            lines,
+            [
+                "FAIL: marathon-architecture: plugin.json version 9.9.9 != CHANGELOG top "
+                f"heading 0.3.0; give {EXTENSION}/CHANGELOG.md a top '## v9.9.9' heading "
+                "or correct plugin.json",
+                f"FAIL: marathon-architecture: plugin.json version 9.9.9 != {skill} "
+                "Version: 0.3.0; set its Version: line to 9.9.9 or correct plugin.json",
+            ],
+        )
+
+    def test_marketplace_source_must_be_a_plugin(self):
+        self.replace(".claude-plugin/marketplace.json", f"./{EXTENSION}", "./plugins/gone")
+        code, lines = self.check()
+        self.assertEqual(code, 1)
+        self.assertEqual(
+            lines,
+            [
+                "FAIL: marketplace source ./plugins/gone does not resolve to a plugin; "
+                "point it at a directory holding .claude-plugin/plugin.json"
+            ],
+        )
+
+    def test_unresolved_link_fails(self):
+        self.write(SEEDED, "# Seeded\n\nSee [gone](./gone.md).\n")
+        code, lines = self.check()
+        self.assertEqual(code, 1)
+        self.assertEqual(
+            lines,
+            [
+                f"FAIL: {SEEDED}: link ./gone.md does not resolve; "
+                "point the link at an existing file or remove it"
+            ],
+        )
+
+    def test_budget_messages_give_the_budget_to_record(self):
+        implementer = "plugins/marathon/agents/implementer.md"
+        planner = "plugins/marathon/agents/planner.md"
+        self.replace("scripts/budgets.txt", f"{implementer} 300\n", f"{implementer} 100\n")
+        self.replace("scripts/budgets.txt", f"{planner} 300\n", "")
+        sizes = {
+            rel: len((self.root / rel).read_text().split()) for rel in (implementer, planner)
+        }
+        rounded = {rel: -(-size // 100) * 100 for rel, size in sizes.items()}
+        code, lines = self.check()
+        self.assertEqual(code, 1)
+        self.assertEqual(
+            lines,
+            [
+                f"FAIL: {implementer}: {sizes[implementer]} words, over its budget of 100 "
+                f"in scripts/budgets.txt; trim it or raise the budget to {rounded[implementer]}",
+                f"FAIL: {planner}: {sizes[planner]} words, no budget in scripts/budgets.txt; "
+                f"add the line '{planner} {rounded[planner]}' to it",
+            ],
+        )
+
+    def test_long_description_fails(self):
+        skill = f"{EXTENSION}/skills/marathon-architecture/SKILL.md"
+        self.replace(skill, "description: >\n", "description: >\n  " + "x" * 1024 + "\n")
+        code, lines = self.check()
+        self.assertEqual(code, 1)
+        self.assertEqual(len(lines), 1, lines)
+        self.assertRegex(
+            lines[0],
+            rf"^FAIL: {skill}: description is \d+ characters, over the 1024 limit; "
+            "shorten it to 1024 characters or fewer$",
+        )
+
+    def test_wrapped_tools_point_at_their_output(self):
+        stub = Path(self.env["PATH"].split(os.pathsep)[0]) / "claude"
+        stub.write_text("#!/bin/sh\necho invalid\nexit 1\n")
+        self.write(".claude-plugin/marketplace.json", "{")
+        self.write("context/seeded.md", "[gone](gone.md)\n")
+        self.write(
+            "scripts/tests/test_seeded.py",
+            "import unittest\n\n\nclass T(unittest.TestCase):\n"
+            "    def test_errs(self):\n        raise RuntimeError\n",
+        )
+        code, lines = self.check()
+        self.assertEqual(code, 1)
+        self.assertEqual(
+            [line for line in lines if line.startswith("FAIL: ")],
+            [
+                f"FAIL: .claude-plugin/marketplace.json does not parse; {RERUN}",
+                f"FAIL: claude plugin validate failed for plugins/marathon/; {RERUN}",
+                f"FAIL: claude plugin validate failed for {EXTENSION}/; {RERUN}",
+                f"FAIL: claude plugin validate failed for .; {RERUN}",
+                f"FAIL: lint-context failed; {RERUN}",
+                f"FAIL: scripts/tests failed; {RERUN}",
+            ],
+        )
 
 
 if __name__ == "__main__":

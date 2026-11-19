@@ -18,6 +18,7 @@ TASK = 'order = ["a"]\n\n[tasks.a]\n'
 CONTEXT_README = "# Repo\n\n## Capability map\n\n- **Note** (built): see [note](note.md).\n"
 ENTRY_FORM = "open it as '- **Name** (built): text' or '- **Name** (planned): text'"
 ENTRY_FIX = "move detail to the goal's context note"
+LINK_FIX = "point the link at an existing file or remove it"
 
 
 def phrase(count):
@@ -207,7 +208,10 @@ class LintContextTest(unittest.TestCase):
             "the index holds only the three arrays"
         )
         self.write("context/roadmap.toml", 'active = "goal"\n')
-        self.assert_fails("context/roadmap.toml: 'active' is not an array")
+        self.assert_fails(
+            "context/roadmap.toml: 'active' is not an array; "
+            "write it as an array of goal slugs, [] for none"
+        )
 
     def test_index_comment_lines(self):
         self.write("context/roadmap.toml", "# one\n# two\n" + INDEX.split("\n", 1)[1])
@@ -231,13 +235,28 @@ class LintContextTest(unittest.TestCase):
         cases = (
             ('order = ["a", "b"]\n', []),
             ("", [f"{rel}: order is missing; list each task slug once, in run order"]),
-            ('order = ["a", "b", "a"]\n', [f"{rel}: order lists 'a' more than once"]),
+            (
+                'order = ["a", "b", "a"]\n',
+                [f"{rel}: order lists 'a' more than once; list it once"],
+            ),
             (
                 'order = ["a", "b", "c"]\n',
-                [f"{rel}: order lists 'c', which has no [tasks.c] table"],
+                [
+                    f"{rel}: order lists 'c', which has no [tasks.c] table; "
+                    "add a [tasks.c] table or drop it from order"
+                ],
             ),
-            ('order = ["b"]\n', [f"{rel}: order lacks task 'a'"]),
-            ('order = "a b"\n', [f"{rel}: order is not an array of task slugs"]),
+            (
+                'order = ["b"]\n',
+                [f"{rel}: order lacks task 'a'; add it to order or drop its [tasks.a] table"],
+            ),
+            (
+                'order = "a b"\n',
+                [
+                    f"{rel}: order is not an array of task slugs; "
+                    "write it as an array of the task slugs, in run order"
+                ],
+            ),
         )
         for order, lines in cases:
             with self.subTest(order=order):
@@ -247,7 +266,8 @@ class LintContextTest(unittest.TestCase):
     def test_order_without_tasks_lists_nothing(self):
         self.goal('order = ["a"]\n')
         self.assert_fails(
-            "context/roadmap/goal.toml: order lists 'a', which has no [tasks.a] table"
+            "context/roadmap/goal.toml: order lists 'a', which has no [tasks.a] table; "
+            "add a [tasks.a] table or drop it from order"
         )
 
     def test_record_tasks_mirror_order(self):
@@ -282,6 +302,7 @@ class LintContextTest(unittest.TestCase):
                 self.assertEqual(code, 1)
                 self.assertEqual(len(lines), 1)
                 self.assertTrue(lines[0].startswith(f"{rel}: does not parse: "), lines)
+                self.assertTrue(lines[0].endswith("; fix the TOML at that position"), lines)
 
     def test_missing_roadmap_is_clean(self):
         (self.root / "context/roadmap.toml").unlink()
@@ -353,7 +374,9 @@ class LintContextTest(unittest.TestCase):
         for status in ("built", "planned"):
             with self.subTest(status=status):
                 self.capability_map(f"- **A** ({status}): see [gone](gone.md).\n")
-                self.assert_fails("context/README.md:7: link gone.md does not resolve")
+                self.assert_fails(
+                    f"context/README.md:7: link gone.md does not resolve; {LINK_FIX}"
+                )
 
     def test_links_resolve(self):
         self.write("docs/guide.md", "# Guide\n")
@@ -379,12 +402,12 @@ class LintContextTest(unittest.TestCase):
         self.write("docs/page.md", "[e](/docs/missing.md \"title\")\n")
         self.write("context/goals/goal.md", "[f](note.md)\n")
         self.assert_fails(
-            "README.md:3: link missing.md does not resolve",
-            "README.md:3: link <gone dir/> does not resolve",
-            "context/goals/goal.md:1: link note.md does not resolve",
-            "context/note.md:1: link gone.md#x does not resolve",
-            "context/note.md:3: link ../nowhere.md does not resolve",
-            "docs/page.md:1: link /docs/missing.md does not resolve",
+            f"README.md:3: link missing.md does not resolve; {LINK_FIX}",
+            f"README.md:3: link <gone dir/> does not resolve; {LINK_FIX}",
+            f"context/goals/goal.md:1: link note.md does not resolve; {LINK_FIX}",
+            f"context/note.md:1: link gone.md#x does not resolve; {LINK_FIX}",
+            f"context/note.md:3: link ../nowhere.md does not resolve; {LINK_FIX}",
+            f"docs/page.md:1: link /docs/missing.md does not resolve; {LINK_FIX}",
         )
 
     def test_links_outside_scanned_files_are_unchecked(self):

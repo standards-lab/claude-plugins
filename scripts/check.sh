@@ -17,12 +17,14 @@ for plugin in plugins/*/; do
 
   top=$(grep -m1 -oP '^## v\K[0-9]+\.[0-9]+\.[0-9]+$' "${plugin}CHANGELOG.md")
   [ "$version" = "$top" ] ||
-    err "$name: plugin.json version $version != CHANGELOG top heading ${top:-<none>}"
+    err "$name: plugin.json version $version != CHANGELOG top heading ${top:-<none>};" \
+      "give ${plugin}CHANGELOG.md a top '## v$version' heading or correct plugin.json"
 
   for skill in "$plugin"skills/*/SKILL.md; do
     skill_version=$(grep -m1 -oP '^Version: \K[0-9]+\.[0-9]+\.[0-9]+$' "$skill")
     [ "$version" = "$skill_version" ] ||
-      err "$name: plugin.json version $version != $skill Version: ${skill_version:-<none>}"
+      err "$name: plugin.json version $version != $skill Version: ${skill_version:-<none>};" \
+        "set its Version: line to $version or correct plugin.json"
   done
 done
 
@@ -32,10 +34,11 @@ done
 if sources=$(jq -r '.plugins[].source' .claude-plugin/marketplace.json); then
   while read -r source; do
     [ -f "$source/.claude-plugin/plugin.json" ] ||
-      err "marketplace source $source does not resolve to a plugin"
+      err "marketplace source $source does not resolve to a plugin;" \
+        "point it at a directory holding .claude-plugin/plugin.json"
   done <<<"$sources"
 else
-  err ".claude-plugin/marketplace.json does not parse"
+  err ".claude-plugin/marketplace.json does not parse; fix the lines above, then rerun"
 fi
 
 # Claude Code validates each plugin and the marketplace. CI installs claude at
@@ -48,11 +51,12 @@ if command -v claude >/dev/null; then
     # The report is printed only on failure, so a passing run stays quiet.
     if ! report=$(claude plugin validate --strict "$target" 2>&1); then
       echo "$report" >&2
-      err "claude plugin validate failed for $target"
+      err "claude plugin validate failed for $target; fix the lines above, then rerun"
     fi
   done
 else
-  err "claude is not on PATH, so the plugins and marketplace were not validated"
+  err "claude is not on PATH, so the plugins and marketplace were not validated;" \
+    "install claude or put it on PATH, then rerun"
 fi
 
 # Claude Code expands an @-include line only in CLAUDE.md, never in a skill's
@@ -64,7 +68,8 @@ while read -r file; do
     err "$file:$line: @-include line; link the file instead"
   done < <(grep -nP '^\s*@\S+\s*$' "$file")
   while read -r target; do
-    [ -e "$dir/$target" ] || err "$file: link $target does not resolve"
+    [ -e "$dir/$target" ] ||
+      err "$file: link $target does not resolve; point the link at an existing file or remove it"
   done < <(grep -oP '\]\(\K\.\.?/[^)#]+' "$file")
 done < <(find plugins -name '*.md')
 
@@ -136,6 +141,7 @@ near_dir() {
 # A first segment one edit away from a directory in those roots is a typo,
 # such as refrences/ for references/, rather than a consumer path, so it fails
 # instead of being skipped.
+cite_fix="cite an existing file or remove the citation"
 while read -r file; do
   plugin=$(echo "$file" | cut -d/ -f1-2)
   if [[ $file == "$plugin"/skills/*/* ]]; then
@@ -150,10 +156,12 @@ while read -r file; do
     fi
     case $cite in
       '${CLAUDE_PLUGIN_ROOT}/'*)
-        [ -f "$plugin/${cite#*/}" ] || err "$file:$line: citation $cite does not resolve"
+        [ -f "$plugin/${cite#*/}" ] ||
+          err "$file:$line: citation $cite does not resolve; $cite_fix"
         continue ;;
       ./* | ../*)
-        [ -f "$(dirname "$file")/$cite" ] || err "$file:$line: citation $cite does not resolve"
+        [ -f "$(dirname "$file")/$cite" ] ||
+          err "$file:$line: citation $cite does not resolve; $cite_fix"
         continue ;;
     esac
     cited=0
@@ -163,7 +171,7 @@ while read -r file; do
       [ -f "$root/$cite" ] && continue 2
     done
     if [ "$cited" -eq 1 ]; then
-      err "$file:$line: citation $cite does not resolve"
+      err "$file:$line: citation $cite does not resolve; $cite_fix"
     elif near=$(near_dir "${cite%%/*}" "${bases[@]}"); then
       read -r root dir <<<"$near"
       err "$file:$line: citation $cite: directory '${cite%%/*}' is not in $root; did you mean '$dir'?"
@@ -195,15 +203,19 @@ read_first() {
   ' "$1"
 }
 
-# Fails when the words in a file or files exceed the budget for key.
+# Fails when the words in a file or files exceed the budget for key. The
+# message gives the budget to record: the size rounded up to the next 100.
 within_budget() {
-  local key=$1 words
+  local key=$1 words rounded
   shift
   words=$(cat "$@" | wc -w)
+  rounded=$(((words + 99) / 100 * 100))
   if [ -z "${budget[$key]:-}" ]; then
-    err "$key: $words words, no budget in scripts/budgets.txt"
+    err "$key: $words words, no budget in scripts/budgets.txt;" \
+      "add the line '$key $rounded' to it"
   elif [ "$words" -gt "${budget[$key]}" ]; then
-    err "$key: $words words, over its budget of ${budget[$key]}"
+    err "$key: $words words, over its budget of ${budget[$key]} in scripts/budgets.txt;" \
+      "trim it or raise the budget to $rounded"
   fi
 }
 
@@ -254,16 +266,17 @@ for skill in plugins/*/skills/*/SKILL.md; do
     END { gsub(/^["\047]|["\047]$/, "", text); printf "%s", text }
   ' "$skill" | LC_ALL=C.UTF-8 wc -m)
   [ "$length" -le 1024 ] ||
-    err "$skill: description is $length characters, over the 1024 limit"
+    err "$skill: description is $length characters, over the 1024 limit;" \
+      "shorten it to 1024 characters or fewer"
 done
 
 # lint-context runs from the working tree, not the installed plugin, so the
 # check tests the copy being changed. -B keeps the tests from writing bytecode
 # into the tree.
-plugins/marathon/bin/lint-context || err "lint-context failed"
+plugins/marathon/bin/lint-context || err "lint-context failed; fix the lines above, then rerun"
 if ! report=$(python3 -B -m unittest discover -s scripts/tests 2>&1); then
   echo "$report" >&2
-  err "scripts/tests failed"
+  err "scripts/tests failed; fix the lines above, then rerun"
 fi
 
 if [ "$fail" -ne 0 ]; then
