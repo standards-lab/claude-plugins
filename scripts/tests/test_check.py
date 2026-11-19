@@ -222,7 +222,8 @@ class CheckTest(unittest.TestCase):
         )
         code, lines = self.check()
         self.assertEqual(code, 1)
-        self.assertEqual(
+        # The shell's glob order over plugins/ follows the locale, so compare without order.
+        self.assertCountEqual(
             [line for line in lines if line.startswith("FAIL: ")],
             [
                 f"FAIL: .claude-plugin/marketplace.json does not parse; {RERUN}",
