@@ -24,7 +24,7 @@ program, or a walkthrough of changed prose on a context project. Report:
 
 A numbered list of gaps, each with the behavior it concerns, what you observed, and the command that
 shows it. Return "no gaps" when the work matches the brief. Also return the commands you ran and
-what they showed; the session uses them as the session brief's Evidence.
+what they showed; the session uses them as the session brief's Verify.
 
 ## Limits
 

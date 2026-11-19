@@ -146,9 +146,9 @@ carries the standards that bear on the slice, quoted, in place of the whole `STA
 ## Session brief
 
 The session brief is the architect's view of the finished task, and the body of its pull request.
-The diff is already committed when the architect reads it and isn't visible in the terminal, so
-Core changes carries the code that matters. The session writes it to `.claude/briefs/<goal>.md` in
-the goal's root, which gitignores `.claude/briefs/`.
+It opens with what changed, then how to verify each behavior: the architect judges outcomes, not
+code. The session writes it to `.claude/briefs/<goal>.md` in the goal's root, which gitignores
+`.claude/briefs/`.
 
 > ## experiment.ai.spike-harness-driver · task 3/5 · harness-adapters
 >
@@ -168,26 +168,22 @@ the goal's root, which gitignores `.claude/briefs/`.
 >    ```go
 >    type Session interface { Send(ctx, Turn) (Reply, error); Close() error }
 >    ```
-> 2. **pi.New**: RPC over stdin/stdout JSONL. Why: plan round 2, question 1 chose it.
->    ```go
->    func New(cfg Config) (*Session, error)
->    ```
 >
-> ### Evidence
+> ### Verify
 >
-> - `mise run check`: ✓ 214 tests, lint, split
-> - `clutch demo adapters`: transcript excerpt
+> `mise run check`: ✓ 214 tests, lint, split
+>
+> 1. **Every harness answers.** `clutch run --harness=pi "hi"` → reply streams, exit 0.
+> 2. **A closed session refuses turns.** Tests only: `TestSendAfterClose`.
 >
 > ### Decided without you
 >
 > 1. Kept stdin JSONL over SSE: simpler, and a spike needs one transport.
-> 2. Standards-reviewer: 4 fixes, 2 tautological tests cut.
-> 3. Dropped decision "harness: a Session closes on EOF": the `driver` package docs state it.
+> 2. Dropped decision "harness: a Session closes on EOF": the `driver` package docs state it.
 >
 > ### Redirects and escalations
 >
 > 1. Escalation, slice 2: raise pi's floor to 0.9 for RPC mode? Answer: yes.
-> 2. Redirect, first brief: "Evidence needs an OpenCode run." The demo now runs all three.
 >
 > **Merge danger:** two-way door · blast radius: the spike repository only
 >
@@ -195,12 +191,15 @@ the goal's root, which gitignores `.claude/briefs/`.
 
 - **Summary** is the smallest visual that makes the change clear: CLI usage, a tree, or
   pseudocode, fenced as code.
-- **Core changes** lists one to five entries. Each gives a short excerpt or a before-and-after
-  signature, fenced as code, and one line on why.
-- **Evidence** comes from commands the architect can rerun.
-- **Decided without you** lists the decisions the brief didn't cover, what the reviewers
-  changed, and each Decision the editor dropped (`mechanics/goal-record.md`). A drop the
-  architect rejects is a redirect, and the session restores the line.
+- **Core changes** lists one to five entries, each with one line on why and, where the code is
+  the change, a short excerpt or signature fenced as code.
+- **Verify** opens with the check's one-line result. Then one item per task-brief behavior,
+  numbered alike: the steps the architect can follow, outside the check and tests, and what
+  they should see. The spec-reviewer followed each. "Tests only", naming the test, is the
+  exception, when no such step exists.
+- **Decided without you** lists the decisions the brief didn't cover and each Decision the
+  editor dropped (`mechanics/goal-record.md`). A drop the architect rejects is a redirect, and
+  the session restores the line.
 - **Redirects and escalations** lists each BUILD escalation and each BRIEF redirect in the task,
   one line each with the architect's answer, or reads "none". Progress holds them
   (`mechanics/goal-record.md`).
@@ -228,7 +227,7 @@ the goal's root, which gitignores `.claude/briefs/`.
 > - **next:** experiment.ai.spike-local-subagents · staged on accept
 
 On a spike's last task, the brief gives the spike's answer: Summary states the question and the
-one-line answer, Evidence carries the numbered evidence, and Sync lists the answer section among
+one-line answer, Verify carries the numbered evidence, and Sync lists the answer section among
 the coordinator's edits.
 
 ## Answer section
