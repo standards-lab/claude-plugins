@@ -290,23 +290,25 @@ yet shows `no record`.
 
 ## Retro
 
-`retro` reviews a task, a goal, or a date range. It groups its findings under one heading per
-layer that should catch them next time, one checkbox each with a proposed change, and the
-architect ticks the ones to apply.
+`retro` groups its findings under one heading per layer that should catch them next time, one
+checkbox each with a proposed change, and the architect ticks the ones to apply.
 
 > ## Retro · goal v1.storage · 2026-09-14..09-24
 >
+> ### design
+> - [ ] 1. new goal v1.config: one typed config loader (go-web-service)
+>
 > ### check/eval
-> - [ ] 1. depguard rule: providers only in internal/app (go-web-service)
+> - [ ] 2. depguard rule: providers only in internal/app (go-web-service)
 >
 > ### standard
-> - [ ] 2. STANDARDS.md: one contract, one home — doc.go inventory
+> - [ ] 3. STANDARDS.md: one contract, one home — doc.go inventory
 >
 > ### skill/profile
-> - [ ] 3. implementer brief: name the check command explicitly
+> - [ ] 4. implementer brief: name the check command explicitly
 >
 > ### context
-> - [ ] 4. cull blobfs-composition.md — expressed in blobfs/docs
+> - [ ] 5. cull blobfs-composition.md — expressed in blobfs/docs
 
 ## Intake round
 

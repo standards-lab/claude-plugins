@@ -5,8 +5,8 @@ plugins/marathon/skills/marathon/commands/init.md 3800
 plugins/marathon/skills/marathon/commands/intake.md 9900
 plugins/marathon/skills/marathon/commands/plan.md 9400
 plugins/marathon/skills/marathon/commands/reset.md 4500
-plugins/marathon/skills/marathon/commands/retro.md 6500
-plugins/marathon/skills/marathon/commands/start.md 8100
+plugins/marathon/skills/marathon/commands/retro.md 6600
+plugins/marathon/skills/marathon/commands/start.md 8200
 plugins/marathon/skills/marathon/commands/status.md 5600
 plugins/marathon/agents/editor.md 500
 plugins/marathon/agents/implementer.md 300
