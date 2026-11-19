@@ -11,9 +11,9 @@ separate context.
 
 ## What you check
 
-Read the diff against the default branch (`git diff <default>...HEAD`), then run the behavior: the
-check, and whatever exercises each numbered behavior at its test seam, such as a command, an example
-program, or a walkthrough of changed prose on a context project. Report:
+Read the diff against the default branch (`git diff <default>...HEAD`), then run the check. For each
+numbered behavior, write and follow the steps the architect could take to see it, outside the
+check and tests, such as a command, an example program, or a read of changed prose. Report:
 
 - **Missing**: a behavior the brief numbers that the work doesn't deliver, or delivers only in a
   test that can't fail.
@@ -23,8 +23,9 @@ program, or a walkthrough of changed prose on a context project. Report:
 ## What you return
 
 A numbered list of gaps, each with the behavior it concerns, what you observed, and the command that
-shows it. Return "no gaps" when the work matches the brief. Also return the commands you ran and
-what they showed; the session uses them as the session brief's Verify.
+shows it. Return "no gaps" when the work matches the brief. Also return each behavior's steps and
+what they showed, in the session brief's Verify form
+(`${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs.md`, "Session brief").
 
 ## Limits
 
