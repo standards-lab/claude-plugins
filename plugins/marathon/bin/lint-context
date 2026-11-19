@@ -105,8 +105,9 @@ def check_kinds(root, files):
     for rel in files:
         if classify(rel) is None:
             yield (
-                f"{rel}: not a context file; context/ holds only README.md, "
-                "notes (*.md), goals/*.md, roadmap.toml, and roadmap/*.toml"
+                f"{rel}: not a context file, which is README.md, a note (*.md), "
+                "goals/*.md, roadmap.toml, or roadmap/*.toml; "
+                "move it to docs/ or rename it to one of those kinds"
             )
 
 
@@ -170,7 +171,7 @@ def check_toml_parses(root, files):
         try:
             tomllib.loads(read(root / rel))
         except PARSE_ERRORS as error:
-            yield f"{rel}: does not parse: {error}"
+            yield f"{rel}: does not parse: {error}; fix the TOML at that position"
 
 
 def check_index(root, files):
@@ -191,10 +192,13 @@ def check_index(root, files):
             if key not in INDEX_ARRAYS:
                 yield (
                     f"{rel}: '{key}' is not one of active, planned, backlog; "
-                    "the index holds only the three arrays"
+                    "move it into a goal file under context/roadmap/ or remove it"
                 )
             elif not isinstance(value, list):
-                yield f"{rel}: '{key}' is not an array"
+                yield (
+                    f"{rel}: '{key}' is not an array; "
+                    "write it as an array of goal slugs, [] for none"
+                )
 
 
 def criteria_statements(criteria):
@@ -246,18 +250,27 @@ def check_order(root, files):
             continue
         order = data["order"]
         if not is_slug_list(order):
-            yield f"{rel}: order is not an array of task slugs"
+            yield (
+                f"{rel}: order is not an array of task slugs; "
+                "write it as an array of the task slugs, in run order"
+            )
             continue
         seen = set()
         for slug in order:
             if slug in seen:
-                yield f"{rel}: order lists '{slug}' more than once"
+                yield f"{rel}: order lists '{slug}' more than once; list it once"
             elif slug not in slugs:
-                yield f"{rel}: order lists '{slug}', which has no [tasks.{slug}] table"
+                yield (
+                    f"{rel}: order lists '{slug}', which has no [tasks.{slug}] table; "
+                    f"add a [tasks.{slug}] table or drop it from order"
+                )
             seen.add(slug)
         for slug in slugs:
             if slug not in seen:
-                yield f"{rel}: order lacks task '{slug}'"
+                yield (
+                    f"{rel}: order lacks task '{slug}'; "
+                    f"add it to order or drop its [tasks.{slug}] table"
+                )
 
 
 def record_tasks(text):
@@ -342,7 +355,10 @@ def check_links(root, files):
         for number, target in link_targets(read(root / rel)):
             path = link_path(target)
             if path is not None and not resolves(root, rel, path):
-                yield f"{rel}:{number}: link {target} does not resolve"
+                yield (
+                    f"{rel}:{number}: link {target} does not resolve; "
+                    "point the link at an existing file or remove it"
+                )
 
 
 def capability_entries(lines, start):

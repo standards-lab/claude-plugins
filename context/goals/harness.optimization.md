@@ -10,114 +10,115 @@
 2. [x] skill-footprint
 3. [x] roadmap-layout
 4. [x] content-budgets
-5. [ ] retro-routes
+5. [x] retro-routes
 6. [ ] evidence-artifacts
 7. [ ] comment-standard
 8. [ ] harness-standards
 9. [ ] release
 
-## Task brief · content-budgets
+## Task brief · retro-routes
 
 **Problem**
 
-marathon states the size and shape of what it writes as prose, nothing checks it, and the content
-has outgrown it. docproc's `v1.ai.processing` record holds 12,334 words of Decisions. A spike
-README runs to 24,678 words, and a note to 24,934. Decisions only accumulate. Spikes keep their
-answer in either README, in both, or in neither, and the capability map is unstructured prose.
-`roadmap-layout` also left the roadmap's layout rules unchecked. Each rule should be a
-deterministic check that every repository's check runs, and the skill should point to that check
-instead of restating it.
+`retro` gathers the architect's redirects and escalations from goal-record Decisions, which the
+editor now prunes. Redirects never reach a lasting record at all: a redirected brief is
+overwritten, and only the final one becomes the pull request body. retro's routes start at a
+check, so a mistake that a design change could make impossible gets a check instead. It has no
+route for costly tool calls or for instructions that change nothing, both of which Pocock's retro
+covers. A check message that doesn't name its fix leaves the agent to guess: 7 of lint-context's
+messages don't, and about 14 of the repository check's don't. The repository check also has two
+silent gaps. A renamed "Read first" line shrinks a command's budgeted set without failing, and a
+typo in a bare citation's first directory goes uncaught.
 
 **Behaviors**
 
-1. marathon ships `lint-context`, one executable on the plugin's PATH. It needs only Python 3.11
-   or later and its standard library. It takes no arguments and checks the repository at the
-   current directory. It prints one line per failure, naming the file, the rule, and the measured
-   size against the limit where there is one. It exits nonzero when anything fails, and exits 0
-   silently otherwise. A word is a whitespace-separated token.
-2. A file in the context directory is the context README, a note directly in that directory, a
-   goal record in its goals directory, or the roadmap index or a goal file in its roadmap
-   directory. Any other file there fails.
-3. Word budgets are fixed, with no configuration:
-   - a goal record's Task brief 1,200, Decisions 2,000, and Pending edits 1,000, with its other
-     sections unbudgeted;
-   - each note 1,500;
-   - the context README 1,000;
-   - the root README 1,500.
+1. The session brief has a "Redirects and escalations" section after Decided without you. It
+   lists each BUILD escalation and each BRIEF redirect in the task, one line each with the
+   architect's answer, or reads "none". The session records each one in the goal record's
+   Progress as it happens, so a handoff loses none. A brief written after a redirect lists the
+   earlier ones.
+2. `retro` gathers from four sources:
+   - the merged pull request bodies in the range, including their Redirects and escalations and
+     their Decided without you
+   - the standards-reviewer's commits
+   - the touched notes, for drift
+   - the touched docs, for drift
 
-   Documentation pages are unbudgeted. A spike repository gets the same rules.
-4. In the roadmap:
-   - each goal's and task's summary is at most 100 words, each proof 40, and each criteria
-     statement 60;
-   - the index holds only the three arrays and a comment of at most two lines;
-   - every goal file writes `repos`;
-   - a goal file with tasks has an `order` that lists each task table exactly once;
-   - a goal record's task list matches its goal file's `order` when that file is in the same
-     repository.
-5. The context README has a `## Capability map` heading. Each entry under it is a list item that
-   opens with a bold feature name, then `(built)` or `(planned)`. A built entry carries at least
-   one relative link, and every link it carries resolves. A planned entry may carry none.
-6. Every relative link outside code in the root README, the context directory, and the
-   documentation pages resolves.
-7. claude-plugins' check runs `lint-context` from the working tree and runs its tests, and both
-   pass on this repository: its map has the new shape, and this goal's record fits its budgets.
-8. The skill says each repository's check calls `lint-context`. A repository whose CI lacks the
-   plugin fetches the script from the pinned `marathon/vX.Y.Z` tag by its tag URL. `init` writes
-   a check that calls it, and describes the map as built and planned entries.
-9. Decisions keep only what binds later tasks: settlements they rely on, rejected alternatives,
-   holds, and falsified assumptions. At BUILD the editor drops the Decisions that no longer bind,
-   on the task's branch, and the session brief lists each drop.
-10. A spike keeps its question, evidence, and answer in its context README. Each survey or result
-    gets its own documentation page, linked from its evidence item. The answer section links to
-    the context README's answer, and spike setup, `experiment`, and the answer section all say so.
-11. The skill's prose for each rule `lint-context` checks is cut to a pointer to it. Each
-    read-first set a trim shrinks gets a lowered budget, and each set pushed over gets a raised
-    one. Either way the new budget is the set's size at task end, rounded up to the next 100
-    words. The session brief lists each change.
-12. marathon's CHANGELOG records the change under Unreleased, with no extension-contract marker.
-    Its migration step says to call `lint-context` from the check, reshape the map, move a
-    spike's answer into its context README, and trim whatever fails.
-13. The goal record's pending edits include setting standards-lab's check to `lint-context` at
-    `release`'s sync.
-14. The repository check passes, and the currency command reports nothing.
+   It no longer reads goal-record Decisions or pull request comments.
+3. `retro` also reads the local session transcripts of the range's sessions when they are
+   present. The retro's header names each repository whose transcripts were missing, and the
+   retro continues without them.
+4. `retro` routes in this order: design, check/eval, standard, skill/profile, context.
+   - A design finding changes the work so the mistake can't be made.
+   - A ticked design finding becomes a task, written on the coordinator's branch, in the goal
+     that owns the work. When no active goal owns the repository, the finding line proposes a
+     goal, and the tick confirms it.
+   - `retro` doesn't make the change itself.
+5. `retro` looks for two more kinds of finding and routes each to the existing layers:
+   - tool economy: a costly tool call that a cheaper call or a tool could replace
+   - instruction trim: an instruction that changes no behavior
+6. The skill says a check's failure message names its fix. Each check that `retro` proposes
+   carries its message.
+7. Every failure message of `lint-context` and of the repository check names what to change for
+   it to pass. The tests assert the new lines.
+8. The repository check fails a command playbook that has no "Read first" line, or more than
+   one. The failure names the playbook and the fix.
+9. The repository check fails a bare citation whose first directory is one edit away from a
+   directory in its plugin's root or a skill's root. A citation inside a skill also resolves
+   against its plugin's root, so citations to `agents/*.md` are checked.
+10. Each read-first set a trim shrinks gets a lowered budget, and each set pushed over gets a
+    raised one. Either way, the new budget is the set's size at task end, rounded up to the next
+    100 words. The session brief lists each change.
+11. marathon's CHANGELOG records the change under Unreleased. It carries no extension-contract
+    marker, because no extension reads the session brief or `retro`'s sources and routes. Its
+    migration step says to expect the new session-brief section.
+12. The goal record's Decision that left `retro`'s source to this task is retired. The goal
+    note's Findings for later loses that item and the two check gaps.
+13. The repository check passes, and the currency command reports nothing.
 
 **Test seams**
 
-- `lint-context` run on fixture trees by stdlib `unittest` tests, which assert its exit status and
-  its failure lines
-- The repository check
+- `lint-context`: stdlib `unittest` tests run it on fixture trees and assert its exit status and
+  its failure lines.
+- The repository check: stdlib `unittest` tests run it on seeded copies of the repository and
+  assert its failure lines. It also runs on the repository itself.
+- A dry retro over this goal's merged pull requests, shown in the session brief's Evidence.
 
 **Slices**
 
-1. `lint-context` classifies the files in the context directory and holds the READMEs, the notes,
-   and the record sections to their budgets. claude-plugins' check runs it from the working tree,
-   along with the tests. This goal's Decisions are pruned to what binds later tasks, so the
-   record passes with this task's approved Decisions in it.
-2. The roadmap checks: entry budgets, the index's contents, `repos`, `order`, and the record's
-   task list.
-3. The capability map's shape and the relative links. This repository's map takes the new shape.
-4. The skill: the check calls `lint-context`, CI fetches it by tag, and `init` writes both. The
-   prose of each checked rule becomes a pointer, and the budgets are measured.
-5. The Decisions rule and the spike layout in the skill. The editor's pass applies the rule to
-   this task's own Decisions.
-6. The CHANGELOG entry, the standards-lab pending edit, and a final budget measure.
+1. The repository check's two gaps. Each playbook has exactly one "Read first" line. A citation
+   directory one edit away from a real one fails. Citations inside a skill also resolve against
+   the plugin's root.
+2. Messages that name their fix: lint-context's seven and the repository check's own, with their
+   tests.
+3. `retro`'s routes:
+   - design first, and a ticked design finding becomes a task, with a proposed goal when no goal
+     owns the repository
+   - the tool economy and instruction trim kinds
+   - proposed checks carry their messages, and the skill states the message rule
+   - the retro format shows a design finding
+4. `retro`'s sources: the session brief's Redirects and escalations section, recorded in
+   Progress as each one happens. The gather reads pull request bodies, and transcripts when
+   present, instead of Decisions and comments.
+5. The CHANGELOG entry, the retired Decision, the goal note's findings, and a final budget
+   measure.
 
 Each slice adjusts the budgets its own edits move, so the check passes after every slice.
 
 **Out of scope**
 
-- Running `lint-context` on other repositories or trimming their content. Each repository does
-  that when it adopts the script, and `release`'s sync does it for the coordinator.
-- Checks across repositories, such as a member's record against the coordinator's goal file
-- Budget options or per-repository overrides, and budgets on documentation pages or other record
-  sections
-- CLAUDE.md, and STANDARDS.md (task `harness-standards`)
-- Releasing or tagging either plugin (task `release`)
+- Applying any finding the dry retro turns up. A later `retro` proposes them.
+- A `retro` eval case
+- A tool to search transcripts. `retro` reads them as they are stored.
+- The manifest's `repos = []` wording, and spike `docs/` links to a goal record that sync
+  deletes. Both stay in Findings for later.
+- STANDARDS.md (task `harness-standards`), and releasing or tagging either plugin (task
+  `release`)
 
 **Door**
 
-Two-way. Nothing is released. Sessions keep running the installed 0.18.0 until `release`, and
-consumers adopt `lint-context` only after it.
+Two-way. Nothing is released. Sessions keep running the installed 0.18.0 until `release`, so the
+new section and routes reach no session before then.
 
 ## Decisions
 
@@ -142,23 +143,22 @@ consumers adopt `lint-context` only after it.
   `v1.harness.tooling` (plan).
 - roadmap-layout: the coordinator's roadmap is split during this goal's final sync, which also
   moves the index's narrative header into notes; marathon 0.19.0 reads only the split layout (plan).
-- roadmap-layout: the plan-round eval scores 0.83–0.89 against the gate's 1.0 threshold on both
-  `main` and this branch, because the model's reply lines run past 100 characters; that predates
-  this task.
 - content-budgets: CI without the plugin fetches `lint-context` from the pinned `marathon/vX.Y.Z`
   tag; skipping when absent was rejected. The fetch can't be verified until `release` tags (plan).
 - content-budgets: budget options and per-repository overrides were rejected (plan).
-- content-budgets: standards-lab's check becomes `lint-context` at `release`'s sync, after the
-  roadmap split (plan).
-- content-budgets: no extension-contract marker, because no extension reads the files `lint-context`
-  checks.
-- content-budgets: `lint-context` skips dotfiles and dot directories under `context/`, looser than
-  the brief's "any other file fails".
-- content-budgets: a capability-map entry requires `: text` after its status, and the map section
-  allows no lead-in prose.
-- content-budgets: the editor's drops are listed under the session brief's "Decided without you".
-- content-budgets: `commands/retro.md` still reads redirects and escalations from Decisions, which
-  pruning removes; `retro-routes` decides where retro gets them.
+- retro-routes: retro reads redirects and escalations from the session brief in the pull request
+  body; a goal-record section, which sync deletes, and transcripts alone were rejected (plan).
+- retro-routes: tool economy and instruction trim are finding kinds, not route layers (plan).
+- retro-routes: a citation's first directory fails only when one edit from a real one; an
+  allowlist and owner-marking were rejected. No retro eval case (plan).
+- retro-routes: the rule that Progress records each redirect and escalation lives in
+  `mechanics/goal-record.md`; `references/briefs.md`, `mechanics/pipeline.md`, and
+  `references/build.md` point to it rather than restate it.
+- retro-routes: `near_dir` in `scripts/check.sh` catches one insertion, deletion, or
+  substitution, not a transposition, which is two edits.
+- retro-routes: `scripts/tests/test_check.py` runs the check on seeded copies of the repository,
+  with `claude` stubbed on PATH.
+- retro-routes: CI's Claude Code pin moved to 2.1.328 mid-task.
 
 ## Pending edits
 

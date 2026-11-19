@@ -14,7 +14,8 @@ and the content it produces outgrows them.
   first-class, and humans review what is hard to reverse. The second point is the backlog task
   `v1.harness.door-scaled-review`.
 - **Matt Pocock, "Fixing the PR Bottleneck"** is the baseline marathon 0.16 adopted. Its retro
-  routes for tool economy and bloat are not adopted yet.
+  checks for tool economy and bloat are now marathon `retro`'s tool-economy and instruction-trim
+  findings (task `retro-routes`).
 
 ## What the goal measures against
 
@@ -22,7 +23,7 @@ Read these sizes, in words, to judge the work:
 
 - The skill: SKILL.md links each file instead of `@`-including it, and each command's playbook
   opens with a "Read first" list of the files it needs. `start`'s read-first set, SKILL.md and the
-  playbook included, is 8,098 words against a budget of 8,100. `mechanics/pipeline.md` is about
+  playbook included, is 8,245 words against a budget of 8,300. `mechanics/pipeline.md` is about
   1,970 words, down from 2,715, since Releasing and RESUME moved to their own files.
 - The planner profile: 273 words, down from 554, since profiles cite the skill's rules instead of
   restating them.
@@ -61,23 +62,22 @@ Read these sizes, in words, to judge the work:
 
 ## Findings for later
 
-A retro or `retro-routes` can take these up.
+A retro can take these up.
 
 - claude-plugins has no `STANDARDS.md`, so nothing points to the architecture pages the standards
   review applies: `principles/rolling-currency.md`, `principles/independent-releases.md`, and
   `principles/context-architecture.md` in the architecture repository.
-- The check finds a command's read-first set by the "Read first" line. A playbook whose line is
-  renamed silently yields a smaller set that still passes its budget. The check could require one
-  "Read first" line per playbook.
-- The check skips a bare citation whose first directory exists in no plugin or skill root, so a
-  typo in that directory goes uncaught.
 - marathon's manifest reference says `repos = []` means "only `plan` works on it", but `intake`
   runs on experiment goals, which write `repos = []`. This predates `roadmap-layout`.
 - The plan-round eval fails the release gate's 1.0 threshold on `main`, scoring 0.83–0.89
   because the model's reply lines run past 100 characters. `release` needs it fixed, or the
   threshold settled, before tagging.
 - A spike's `docs/` pages that link to its goal record break when sync deletes the record.
-- `retro` reads the redirects and escalations recorded in a goal record's Decisions, which the
-  editor now prunes once the built work expresses them.
-- `start`'s and `intake`'s read-first sets sit 2 and 8 words under their budgets, so almost any
-  edit to either needs a budget change.
+- `start`'s and `intake`'s read-first sets sit 55 and 25 words under their budgets, so most edits
+  to either need a budget change.
+- Read-first budgets rise with every task: `start`'s went from 7,900 to 8,300 and `retro`'s from
+  6,400 to 6,700. A fixed ceiling that only the architect raises would stop the ratchet.
+- Reviewers read the whole diff and the whole goal record. They could read `git diff --stat`
+  first and receive excerpts of the brief.
+- The standards-reviewer rewraps markdown to 100 columns by hand; a check could enforce the
+  width instead.

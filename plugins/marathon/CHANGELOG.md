@@ -114,6 +114,22 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   `context/README.md` holds the question, the numbered evidence list, and "The answer", which its
   last task fills, and each survey or result gets its own `docs/` page linked from its evidence
   item. The answer section's link points to "The answer" in that README (`references/briefs.md`).
+- **Retro routes design first** (`commands/retro.md`): a design change that makes the mistake
+  impossible now ranks ahead of a check that catches it. A ticked design finding becomes a task in
+  the goal that owns the work, never a change on the retro branch, and proposes a goal when no
+  active goal owns the repository. Two new kinds of finding join the routes: tool economy, a costly
+  call that a cheaper one could replace, and instruction trim, an instruction that changes no
+  behavior.
+- **A check's failure message names its fix** (`references/build.md`, "Checks come first"), and a
+  proposed check carries its message. `lint-context`'s messages now say what to change.
+- **The session brief records redirects and escalations** (`references/briefs.md`, Session
+  brief): a "Redirects and escalations" section lists each one with the architect's answer, or
+  reads "none". Progress records each as it happens (`mechanics/goal-record.md`), so a handoff
+  loses none. To migrate, expect the new section in session briefs.
+- **Retro reads the session briefs** (`commands/retro.md`): it gathers redirects and escalations
+  from the merged pull requests' bodies and, when present, the sessions' local Claude Code
+  transcripts. It no longer reads goal-record Decisions, which the editor prunes, or pull request
+  comments.
 
 ## v0.18.0
 
