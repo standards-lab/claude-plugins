@@ -7,7 +7,11 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
-## Unreleased
+## v0.19.0
+
+marathon's rules become checks. `lint-context` holds each repository's `context/` to its file
+kinds, word budgets, and shapes, `marathon` runs a configured command by its key, and the roadmap
+becomes an index plus one file per goal. Every repository migrates; see Migrating below.
 
 ### Added
 
@@ -93,25 +97,11 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   top level and its tasks as `[tasks.<slug>]` tables. Every goal file writes `repos`, with `[]`
   for a coordinator-only goal, and writes `root` once known; no goal inherits either from an
   ancestor. A file that holds tasks has an `order` array of every task slug, in run order, and
-  `status <goal>` prints a goal's tasks in that order. To migrate an existing single-file roadmap:
-  1. Split it into the index and one goal file per goal, container goals included, each named by
-     the goal's full dotted path.
-  2. Write `root` and `repos` in each goal file, including values a goal used to inherit from an
-     ancestor, with `repos = []` for a coordinator-only goal.
-  3. Add an `order` array to each goal that has tasks, listing its task slugs in run order.
-  4. Move any narrative comments out of the index into notes under `context/`, leaving only the
-     arrays and the format pointer.
+  `status <goal>` prints a goal's tasks in that order.
 - **Every repository's check calls `lint-context`** (`mechanics/configuration.md`,
   `references/build.md`, `commands/init.md`), and the skill points to it for what it checks
   rather than restating the rules. The capability map sits under `## Capability map` in
-  `context/README.md`, each entry marked built or planned. To migrate:
-  1. Call `lint-context` from the repository's `[project] check`. A CI without the plugin fetches
-     it from a pinned `marathon/vX.Y.Z` tag, as `mechanics/configuration.md` shows.
-  2. Reshape the capability map into `- **Name** (built): ...` and `- **Name** (planned): ...`
-     entries under `## Capability map`.
-  3. In a spike, move its answer under "The answer" in its `context/README.md`, and each survey or
-     result into its own `docs/` page linked from its evidence item.
-  4. Run `lint-context` and trim, or move to `docs/`, whatever it reports over budget.
+  `context/README.md`, each entry marked built or planned.
 - **Decisions keep only what binds later tasks** (`mechanics/goal-record.md`): a settled question
   a later task relies on, a rejected alternative, a hold, or a falsified assumption. At BUILD the
   editor drops a Decision the merged code or its documentation now expresses
@@ -132,7 +122,7 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 - **The session brief records redirects and escalations** (`references/briefs.md`, Session
   brief): a "Redirects and escalations" section lists each one with the architect's answer, or
   reads "none". Progress records each as it happens (`mechanics/goal-record.md`), so a handoff
-  loses none. To migrate, expect the new section in session briefs.
+  loses none.
 - **Retro reads the session briefs** (`commands/retro.md`): it gathers redirects and escalations
   from the merged pull requests' bodies and, when present, the sessions' local Claude Code
   transcripts. It no longer reads goal-record Decisions, which the editor prunes, or pull request
@@ -145,16 +135,14 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   numbered evidence moves to Summary. The spec-reviewer writes and follows those steps and
   returns them in Verify's form, and Validate follows them, blocking BRIEF on a failing step
   (`references/build.md`). Decided without you no
-  longer lists what the reviewers changed; `retro` reads that from their commits. To migrate,
-  expect Verify in place of Evidence in session briefs, and no reviewers' changes in Decided
-  without you.
+  longer lists what the reviewers changed; `retro` reads that from their commits.
 - **The standards-reviewer applies the repository's comment rule** (`agents/standards-reviewer.md`).
   Its Comments sweep flags and fixes each comment that the comment rule declared in the
   repository's `STANDARDS.md`, or an architecture page it points to, doesn't permit. Where the
   repository declares no comment rule, it flags a comment that excuses a workaround, as before.
 - **Goal files carry no comments** (`bin/lint-context`): `lint-context` fails on each comment in
   a `context/roadmap/<goal>.toml`, outside its strings, and says to move the note into the goal's
-  context note. To migrate, move each goal-file comment into that note.
+  context note.
 - **This repository's check holds CHANGELOGs and extensions to form.** `scripts/check.sh` fails
   when a plugin CHANGELOG's release heading carries anything after `## vX.Y.Z` or
   `## Unreleased`, such as a date, link, or suffix, or when a CHANGELOG holds a link reference
@@ -173,6 +161,32 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   and **rec:** lines unwrapped, failing `plan-round-in-reply`'s line-width grader in four of six
   runs. A question also restates any fact it leans on, never pointing back with a phrase like
   "the three files above", and its **rec:** gives its reason.
+
+### Migrating from 0.18.0
+
+Install 0.19.0 first, and marathon-architecture 0.4.0 where it is enabled, since that release
+requires marathon 0.19.0. Session briefs now carry a "Redirects and escalations" section and
+Verify in place of Evidence, and Decided without you no longer lists the reviewers' changes;
+nothing needs migrating for them. Each repository then migrates through its own pull request:
+
+1. **Split the roadmap.** At the coordinator, split the single-file `context/roadmap.toml` into
+   the index, which keeps only the `active`, `planned`, and `backlog` arrays and a comment of at
+   most two lines that points to the format, and one `context/roadmap/<goal>.toml` per goal,
+   container goals and `experiment` included, each named by the goal's full dotted path.
+2. **Give each goal file its own fields.** Write `root` and `repos` in each goal file, including
+   values a goal used to inherit from an ancestor, with `repos = []` for a coordinator-only goal.
+   Add an `order` array to each goal that has tasks, listing its task slugs in run order.
+3. **Move comments into notes.** Move the index's narrative comments, and each comment in a goal
+   file, into notes under `context/`, leaving the index only its arrays and the format pointer.
+4. **Call `lint-context` from the check.** Add it to the repository's `[project] check`. A CI
+   without the plugin fetches it from a pinned `marathon/v0.19.0` tag or later, as
+   `mechanics/configuration.md` shows.
+5. **Reshape the capability map** into `- **Name** (built): ...` and `- **Name** (planned): ...`
+   entries under `## Capability map` in `context/README.md`.
+6. **Move a spike's evidence.** In a spike, move its answer under "The answer" in its
+   `context/README.md`, and each survey or result into its own `docs/` page linked from its
+   evidence item.
+7. **Run `lint-context`** and trim, or move to `docs/`, whatever it reports over budget.
 
 ## v0.18.0
 

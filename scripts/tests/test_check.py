@@ -208,7 +208,7 @@ class CheckTest(unittest.TestCase):
         changelog = f"{EXTENSION}/CHANGELOG.md"
         self.replace(changelog, "## v0.2.2\n", "## v0.2.2 - 2026-01-02\n")
         self.replace(changelog, "## v0.2.1\n", "## [v0.2.1](https://example.com/v0.2.1)\n")
-        self.replace(changelog, "## Unreleased\n", "## Unreleased (next)\n")
+        self.replace(changelog, "## v0.4.0\n", "## Unreleased (next)\n\n## v0.4.0\n")
         numbered = {
             heading: number
             for number, heading in enumerate((self.root / changelog).read_text().splitlines(), 1)
