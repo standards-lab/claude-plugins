@@ -130,13 +130,14 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   from the merged pull requests' bodies and, when present, the sessions' local Claude Code
   transcripts. It no longer reads goal-record Decisions, which the editor prunes, or pull request
   comments.
-- **The session brief shows how to verify each behavior** (`references/briefs.md`, Session
-  brief). It opens with what changed, and a Core change carries a code excerpt only where the code
-  is the change. Verify replaces Evidence: the check's one-line result, then one item per
-  task-brief behavior, numbered alike, giving the steps the architect can follow outside the
-  check and tests and what they should see. "Tests only", naming the test, is the exception. The
-  spec-reviewer writes and follows those steps and returns them in Verify's form, and Validate
-  follows them, blocking BRIEF on a failing step (`references/build.md`). Decided without you no
+- **The session brief shows how to see the work behave** (`references/briefs.md`, Session
+  brief). Summary gives the details of what changed as markdown, never a fenced block, and a Core
+  change carries a code excerpt only where the code is the change. Verify replaces Evidence: the
+  check's one-line result, then the steps the architect can run outside the check and tests to
+  see the behavior, each with what they should see, or "none" for a prose-only change. A spike's
+  numbered evidence moves to Summary. The spec-reviewer writes and follows those steps and
+  returns them in Verify's form, and Validate follows them, blocking BRIEF on a failing step
+  (`references/build.md`). Decided without you no
   longer lists what the reviewers changed; `retro` reads that from their commits. To migrate,
   expect Verify in place of Evidence in session briefs, and no reviewers' changes in Decided
   without you.

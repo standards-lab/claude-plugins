@@ -65,10 +65,9 @@ Read these sizes, in words, to judge the work:
   candidate for `v1.harness.tooling`), a hook that refuses a chained `gh pr merge` or `git push`,
   and a one-line rule to run each git and `gh` command on its own call.
 - **Verification artifacts** (task `evidence-artifacts`). Following Lauren Tan, review reads
-  verification artifacts. The session brief's Verify section gives, for each behavior, the steps
-  the architect follows to see it and what they should see, and the spec-reviewer has already
-  followed them (marathon's `references/briefs.md`). A check that every behavior has an item
-  waits until a retro finds one missing.
+  verification artifacts. The session brief's Verify section gives the steps the architect can
+  run to see the work behave, and what they should see, or "none" for a prose-only change. The
+  spec-reviewer has already followed them (marathon's `references/briefs.md`).
 - **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
 
 ## Findings for later

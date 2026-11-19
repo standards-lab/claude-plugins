@@ -50,7 +50,7 @@ first, so each higher layer builds against the real change below it.
 4. **Edit.** Engage the editor once. It updates the goal record, dropping the Decisions that no
    longer bind (`mechanics/goal-record.md`), tends the notes, and edits the changed prose. Read
    its edits and commit them.
-5. **Validate.** Run the check in every touched repository, and follow each behavior's steps the
+5. **Validate.** Run the check in every touched repository, and follow the Verify steps the
    spec-reviewer returned. The results are the session brief's Verify. Don't go on to BRIEF with
    a failing check or step.
 

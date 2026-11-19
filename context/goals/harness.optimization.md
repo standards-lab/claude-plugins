@@ -121,8 +121,6 @@ Verify reaches no session before then.
   allowlist and owner-marking were rejected. No retro eval case (plan).
 - evidence-artifacts: an artifact is text in the session brief; stored files were rejected
   because the brief is gitignored and deleted at SHIP (plan).
-- evidence-artifacts: one item per behavior is a skill rule; a lint-context check and an eval case
-  wait for a retro finding (plan).
 
 ## Pending edits
 
