@@ -4,6 +4,8 @@ The Standards Lab organization's Claude Code plugin marketplace: independently v
 codify the organization's development processes. Managed with the marathon workflow; start from
 `context/README.md`.
 
+- [`STANDARDS.md`](STANDARDS.md): the judgement calls the standards-reviewer applies.
+
 ## Plugin design lives in the skill
 
 Each plugin's design and behavior is expressed in its own files under `plugins/<name>/` — that is the
