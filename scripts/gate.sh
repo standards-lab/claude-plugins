@@ -28,30 +28,24 @@ dir="plugins/$plugin"
 
 scripts/check.sh || fail "scripts/check.sh failed, so $tag is held"
 
-# A case is what claude plugin eval runs: a case.yaml, or a prompt.md with its
-# graders, anywhere below the eval directory, which is the manifest's
-# experimental.evals or else evals/, as eval resolves it. The results/
-# directory eval writes there holds no case, so a suite with only past results
-# still counts as none. A find that fails holds the tag rather than reading as
-# no cases.
-evals="$dir/$(jq -r '.experimental.evals // "evals"' "$dir/.claude-plugin/plugin.json")" ||
+eval_dir="$dir/$(jq -r '.experimental.evals // "evals"' "$dir/.claude-plugin/plugin.json")" ||
   fail "$dir/.claude-plugin/plugin.json does not parse"
-cases=
-if [ -d "$evals" ]; then
-  cases=$(find "$evals" -path "$evals/results" -prune -o \
+cases_outside_results=
+if [ -d "$eval_dir" ]; then
+  cases_outside_results=$(find "$eval_dir" -path "$eval_dir/results" -prune -o \
     \( -name case.yaml -o -name prompt.md \) -print) ||
-    fail "could not list the cases in $evals"
+    fail "could not list the cases in $eval_dir"
 fi
-if [ -z "$cases" ]; then
+if [ -z "$cases_outside_results" ]; then
   echo "gate: $plugin has no eval cases, so $tag passes on scripts/check.sh alone" >&2
   exit 0
 fi
 
-# Every case must score 1.0 over its three runs (--threshold 1.0 --runs 3),
-# against the plugin alone (--ablation none). --scaffold and --trust-plugin let the
-# suite build its fixtures without a prompt, and --no-publish keeps the results
-# local.
-claude plugin eval "$dir" --threshold 1.0 --runs 3 --ablation none --scaffold \
-  --trust-plugin --no-publish ||
+every_case_perfect_over_three_runs=(--threshold 1.0 --runs 3)
+against_the_plugin_alone=(--ablation none)
+scaffold_without_prompting=(--scaffold --trust-plugin)
+keep_results_local=(--no-publish)
+claude plugin eval "$dir" "${every_case_perfect_over_three_runs[@]}" \
+  "${against_the_plugin_alone[@]}" "${scaffold_without_prompting[@]}" "${keep_results_local[@]}" ||
   fail "the $plugin eval suite failed, so $tag is held"
 echo "gate: $tag passes."

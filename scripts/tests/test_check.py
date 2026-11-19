@@ -15,14 +15,11 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 SKILL = "plugins/marathon/skills/marathon"
-# A new file in the skill, outside every read-first set, so seeding it moves no
-# word budget.
-SEEDED = f"{SKILL}/references/seeded.md"
+UNBUDGETED_SEED = f"{SKILL}/references/seeded.md"
 READ_FIRST_FIX = 'give it exactly one "Read first, before acting:" list'
 RERUN = "fix the lines above, then rerun"
 EXTENSION = "plugins/marathon-architecture"
-# The commands scripts/check.sh and lint-context run, other than claude.
-TOOLS = (
+CHECK_TOOLS_EXCEPT_CLAUDE = (
     "awk", "bash", "cat", "cut", "dirname", "find", "grep", "jq", "python3",
     "realpath", "sort", "wc",
 )
@@ -64,6 +61,9 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(text.count(old), 1)
         path.write_text(text.replace(old, new))
 
+    def assert_equal_ignoring_locale_glob_order(self, actual, expected):
+        self.assertCountEqual(actual, expected)
+
     def check(self):
         result = subprocess.run(
             ["scripts/check.sh"], cwd=self.root, env=self.env, capture_output=True, text=True
@@ -84,32 +84,32 @@ class CheckTest(unittest.TestCase):
         )
 
     def test_typo_in_first_directory_fails(self):
-        self.write(SEEDED, "# Seeded\n\nSee `refrences/build.md`.\n")
+        self.write(UNBUDGETED_SEED, "# Seeded\n\nSee `refrences/build.md`.\n")
         code, lines = self.check()
         self.assertEqual(code, 1)
         self.assertEqual(
             lines,
             [
-                f"FAIL: {SEEDED}:3: citation refrences/build.md: "
+                f"FAIL: {UNBUDGETED_SEED}:3: citation refrences/build.md: "
                 f"directory 'refrences' is not in {SKILL}; did you mean 'references'?"
             ],
         )
 
     def test_skill_cites_plugin_agents(self):
-        self.write(SEEDED, "# Seeded\n\nSee `agents/planner.md` and `agents/nobody.md`.\n")
+        self.write(UNBUDGETED_SEED, "# Seeded\n\nSee `agents/planner.md` and `agents/nobody.md`.\n")
         code, lines = self.check()
         self.assertEqual(code, 1)
         self.assertEqual(
             lines,
             [
-                f"FAIL: {SEEDED}:3: citation agents/nobody.md does not resolve; "
+                f"FAIL: {UNBUDGETED_SEED}:3: citation agents/nobody.md does not resolve; "
                 "cite an existing file or remove the citation"
             ],
         )
 
     def test_consumer_paths_pass(self):
         self.write(
-            SEEDED,
+            UNBUDGETED_SEED,
             "# Seeded\n\nSee `context/roadmap.toml`, `scripts/check.sh`, and `src/app/main.py`.\n",
         )
         self.assertEqual(self.check(), (0, []))
@@ -146,13 +146,13 @@ class CheckTest(unittest.TestCase):
         )
 
     def test_unresolved_link_fails(self):
-        self.write(SEEDED, "# Seeded\n\nSee [gone](./gone.md).\n")
+        self.write(UNBUDGETED_SEED, "# Seeded\n\nSee [gone](./gone.md).\n")
         code, lines = self.check()
         self.assertEqual(code, 1)
         self.assertEqual(
             lines,
             [
-                f"FAIL: {SEEDED}: link ./gone.md does not resolve; "
+                f"FAIL: {UNBUDGETED_SEED}: link ./gone.md does not resolve; "
                 "point the link at an existing file or remove it"
             ],
         )
@@ -190,14 +190,12 @@ class CheckTest(unittest.TestCase):
             "shorten it to 1024 characters or fewer$",
         )
 
-    def test_missing_claude_fails(self):
-        # PATH holds every other tool the check runs, so the only failure is
-        # the missing claude.
-        bin_dir = self.root.parent / "tools"
-        bin_dir.mkdir()
-        for tool in TOOLS:
-            (bin_dir / tool).symlink_to(shutil.which(tool))
-        self.env["PATH"] = str(bin_dir)
+    def test_missing_claude_is_the_only_failure(self):
+        path_without_claude = self.root.parent / "tools"
+        path_without_claude.mkdir()
+        for tool in CHECK_TOOLS_EXCEPT_CLAUDE:
+            (path_without_claude / tool).symlink_to(shutil.which(tool))
+        self.env["PATH"] = str(path_without_claude)
         code, lines = self.check()
         self.assertEqual(
             (code, lines),
@@ -222,8 +220,7 @@ class CheckTest(unittest.TestCase):
         )
         code, lines = self.check()
         self.assertEqual(code, 1)
-        # The shell's glob order over plugins/ follows the locale, so compare without order.
-        self.assertCountEqual(
+        self.assert_equal_ignoring_locale_glob_order(
             [line for line in lines if line.startswith("FAIL: ")],
             [
                 f"FAIL: .claude-plugin/marketplace.json does not parse; {RERUN}",

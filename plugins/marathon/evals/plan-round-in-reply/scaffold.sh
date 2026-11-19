@@ -7,8 +7,7 @@
 # .gitconfig names the committer.
 set -euo pipefail
 
-# A standalone project's repository is the project itself, named by its directory.
-repo=$(basename "$PWD")
+standalone_repo_named_by_its_directory=$(basename "$PWD")
 
 mkdir -p .claude context/roadmap runbooks scripts
 
@@ -37,9 +36,8 @@ cat >.gitignore <<'EOF'
 .claude/briefs/
 EOF
 
-# What a marathon project carries. Eval runs with --setting-sources user, so the session never
-# loads this file; it is here for the planner and the fixture's realism, not to set the mode.
-cat >.claude/settings.json <<'EOF'
+settings_never_loaded_under_setting_sources_user=.claude/settings.json
+cat >"$settings_never_loaded_under_setting_sources_user" <<'EOF'
 {
   "plansDirectory": "./.claude/plans",
   "permissions": {
@@ -135,8 +133,8 @@ EOF
 cat >context/roadmap/publish.toml <<EOF
 name = "The handbook published"
 summary = "Readers reach the current runbooks during an incident without cloning the repository."
-repos = ["$repo"]
-root = "$repo"
+repos = ["$standalone_repo_named_by_its_directory"]
+root = "$standalone_repo_named_by_its_directory"
 order = ["first-edition"]
 criteria = ["A first edition is published in the chosen format to the chosen audience."]
 context = ["context/publishing.md"]

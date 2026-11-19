@@ -158,8 +158,7 @@ class LintContextTest(unittest.TestCase):
         self.write("context/.cache/x.bin", "")
         self.assert_clean()
 
-    def goal(self, body):
-        """Writes the goal file alone; a test that wants its record writes it after."""
+    def write_goal_file_without_record(self, body):
         (self.root / "context/goals/goal.md").unlink(missing_ok=True)
         self.write("context/roadmap/goal.toml", "repos = []\n" + body)
 
@@ -171,27 +170,27 @@ class LintContextTest(unittest.TestCase):
         )
         for entry, budget, body in cases:
             with self.subTest(entry=entry):
-                self.goal(body(phrase(budget)))
+                self.write_goal_file_without_record(body(phrase(budget)))
                 self.assert_clean()
-                self.goal(body(phrase(budget + 1)))
+                self.write_goal_file_without_record(body(phrase(budget + 1)))
                 self.assert_fails(
                     f"context/roadmap/goal.toml: {entry} is {budget + 1:,} words, "
                     f"budget {budget:,}; {ENTRY_FIX}"
                 )
 
     def test_criteria_list_counted_per_statement(self):
-        self.goal(f'criteria = ["{phrase(60)}", "{phrase(60)}"]\n')
+        self.write_goal_file_without_record(f'criteria = ["{phrase(60)}", "{phrase(60)}"]\n')
         self.assert_clean()
-        self.goal(f'criteria = ["{phrase(60)}", "{phrase(61)}"]\n')
+        self.write_goal_file_without_record(f'criteria = ["{phrase(60)}", "{phrase(61)}"]\n')
         self.assert_fails(
             "context/roadmap/goal.toml: goal criteria[1] is 61 words, budget 60; "
             + ENTRY_FIX
         )
 
     def test_criteria_string_is_one_statement(self):
-        self.goal(f'criteria = "{phrase(60)}"\n')
+        self.write_goal_file_without_record(f'criteria = "{phrase(60)}"\n')
         self.assert_clean()
-        self.goal(f'criteria = "{phrase(61)}"\n')
+        self.write_goal_file_without_record(f'criteria = "{phrase(61)}"\n')
         self.assert_fails(
             "context/roadmap/goal.toml: goal criteria is 61 words, budget 60; "
             + ENTRY_FIX
@@ -261,18 +260,20 @@ class LintContextTest(unittest.TestCase):
         )
         for order, lines in cases:
             with self.subTest(order=order):
-                self.goal(order + tasks)
+                self.write_goal_file_without_record(order + tasks)
                 self.assertEqual(self.lint(), (1 if lines else 0, lines))
 
     def test_order_without_tasks_lists_nothing(self):
-        self.goal('order = ["a"]\n')
+        self.write_goal_file_without_record('order = ["a"]\n')
         self.assert_fails(
             "context/roadmap/goal.toml: order lists 'a', which has no [tasks.a] table; "
             "add a [tasks.a] table or drop it from order"
         )
 
     def test_record_tasks_mirror_order(self):
-        self.goal('order = ["a", "b"]\n\n[tasks.a]\nname = "A"\n\n[tasks.b]\nname = "B"\n')
+        self.write_goal_file_without_record(
+            'order = ["a", "b"]\n\n[tasks.a]\nname = "A"\n\n[tasks.b]\nname = "B"\n'
+        )
         self.write(
             "context/goals/goal.md",
             "# Goal\n\n## Tasks\n\n1. [x] a\n2. [ ] b\n\n## Decisions\n\nNone.\n",

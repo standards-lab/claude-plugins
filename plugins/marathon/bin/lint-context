@@ -54,8 +54,7 @@ def over(path, kind, count, budget, fix):
     return f"{path}: {kind} is {count:,} words, budget {budget:,}; {fix}"
 
 
-def classify(rel):
-    """Returns the kind of a path relative to the root, or None if it has none."""
+def context_kind(rel):
     parts = rel.parts
     if parts == ("context", "README.md"):
         return "context-readme"
@@ -74,11 +73,7 @@ def read(path):
     return path.read_text(encoding="utf-8")
 
 
-def tree_files(root, top, pattern="*"):
-    """Yields each file under top matching pattern, relative to root.
-
-    Dotfiles and dot directories are skipped.
-    """
+def non_dot_files(root, top, pattern="*"):
     if not (root / top).is_dir():
         return
     for path in sorted((root / top).rglob(pattern)):
@@ -87,8 +82,7 @@ def tree_files(root, top, pattern="*"):
             yield rel
 
 
-def record_sections(text):
-    """Yields (heading, body) for each ## section; the heading is not in the body."""
+def heading_and_body_per_section(text):
     heading, body = None, []
     for line in text.splitlines():
         if line.startswith("## "):
@@ -103,7 +97,7 @@ def record_sections(text):
 
 def check_kinds(root, files):
     for rel in files:
-        if classify(rel) is None:
+        if context_kind(rel) is None:
             yield (
                 f"{rel}: not a context file, which is README.md, a note (*.md), "
                 "goals/*.md, roadmap.toml, or roadmap/*.toml; "
@@ -118,7 +112,7 @@ def check_budgets(root, files):
         if count > ROOT_README_BUDGET:
             yield over("README.md", "README", count, ROOT_README_BUDGET, PROSE_FIX)
     for rel in files:
-        kind = classify(rel)
+        kind = context_kind(rel)
         if kind == "context-readme":
             count = words(read(root / rel))
             if count > CONTEXT_README_BUDGET:
@@ -128,7 +122,7 @@ def check_budgets(root, files):
             if count > NOTE_BUDGET:
                 yield over(rel, "note", count, NOTE_BUDGET, PROSE_FIX)
         elif kind == "record":
-            for heading, body in record_sections(read(root / rel)):
+            for heading, body in heading_and_body_per_section(read(root / rel)):
                 for prefix, budget, fix in RECORD_SECTION_BUDGETS:
                     if heading == prefix or heading.startswith(prefix + " "):
                         count = words(body)
@@ -137,22 +131,17 @@ def check_budgets(root, files):
                             yield over(rel, f"section '{name}'", count, budget, fix)
 
 
-def parse(root, rel):
-    """Returns the TOML file's table, or None if it does not parse.
-
-    check_toml_parses reports the error once; every other check skips the file.
-    """
+def parsed_or_none(root, rel):
     try:
         return tomllib.loads(read(root / rel))
     except PARSE_ERRORS:
         return None
 
 
-def goal_files(root, files):
-    """Yields (rel, table) for each goal file that parses."""
+def parsed_goal_files(root, files):
     for rel in files:
-        if classify(rel) == "goal-file":
-            data = parse(root, rel)
+        if context_kind(rel) == "goal-file":
+            data = parsed_or_none(root, rel)
             if data is not None:
                 yield rel, data
 
@@ -166,7 +155,7 @@ def task_tables(data):
 
 def check_toml_parses(root, files):
     for rel in files:
-        if classify(rel) not in ("roadmap-index", "goal-file"):
+        if context_kind(rel) not in ("roadmap-index", "goal-file"):
             continue
         try:
             tomllib.loads(read(root / rel))
@@ -176,7 +165,7 @@ def check_toml_parses(root, files):
 
 def check_index(root, files):
     for rel in files:
-        if classify(rel) != "roadmap-index":
+        if context_kind(rel) != "roadmap-index":
             continue
         text = read(root / rel)
         comments = sum(1 for line in text.splitlines() if line.lstrip().startswith("#"))
@@ -185,7 +174,7 @@ def check_index(root, files):
                 f"{rel}: {comments} comment lines, at most {INDEX_COMMENT_LINES}; "
                 "keep one comment that points to the format"
             )
-        data = parse(root, rel)
+        data = parsed_or_none(root, rel)
         if data is None:
             continue
         for key, value in data.items():
@@ -201,8 +190,7 @@ def check_index(root, files):
                 )
 
 
-def criteria_statements(criteria):
-    """Yields (label, statement); a string is one statement, a list is several."""
+def labeled_criteria_statements(criteria):
     if isinstance(criteria, str):
         yield "criteria", criteria
     elif isinstance(criteria, list):
@@ -221,9 +209,9 @@ def entry_budgets(rel, entry, table, budgets):
 
 
 def check_entry_budgets(root, files):
-    for rel, data in goal_files(root, files):
+    for rel, data in parsed_goal_files(root, files):
         yield from entry_budgets(rel, "goal", data, GOAL_ENTRY_BUDGETS)
-        for label, statement in criteria_statements(data.get("criteria")):
+        for label, statement in labeled_criteria_statements(data.get("criteria")):
             count = words(statement)
             if count > CRITERION_BUDGET:
                 yield over(rel, f"goal {label}", count, CRITERION_BUDGET, ENTRY_FIX)
@@ -232,7 +220,7 @@ def check_entry_budgets(root, files):
 
 
 def check_repos(root, files):
-    for rel, data in goal_files(root, files):
+    for rel, data in parsed_goal_files(root, files):
         if "repos" not in data:
             yield f"{rel}: repos is missing; every goal file writes it, [] for none"
 
@@ -242,7 +230,7 @@ def is_slug_list(value):
 
 
 def check_order(root, files):
-    for rel, data in goal_files(root, files):
+    for rel, data in parsed_goal_files(root, files):
         slugs = task_tables(data)
         if "order" not in data:
             if slugs:
@@ -273,9 +261,8 @@ def check_order(root, files):
                 )
 
 
-def record_tasks(text):
-    """Returns the slugs of the record's ## Tasks list, in order."""
-    for heading, body in record_sections(text):
+def record_task_slugs(text):
+    for heading, body in heading_and_body_per_section(text):
         if heading == "## Tasks":
             return [
                 match.group(1)
@@ -287,14 +274,14 @@ def record_tasks(text):
 
 def check_record_tasks(root, files):
     present = set(files)
-    for rel, data in goal_files(root, files):
+    for rel, data in parsed_goal_files(root, files):
         record = Path("context", "goals", rel.stem + ".md")
         if record not in present:
             continue
         order = data.get("order", [])
         if not is_slug_list(order):
             continue
-        listed = record_tasks(read(root / record))
+        listed = record_task_slugs(read(root / record))
         if listed != order:
             yield (
                 f"{record}: ## Tasks lists [{', '.join(listed)}], but {rel} "
@@ -302,8 +289,7 @@ def check_record_tasks(root, files):
             )
 
 
-def outside_code(text):
-    """Yields (line number, line) for lines outside fenced code, code spans blanked."""
+def lines_outside_code_without_spans(text):
     fence = None
     for number, line in enumerate(text.splitlines(), 1):
         match = FENCE.match(line)
@@ -316,9 +302,8 @@ def outside_code(text):
             yield number, CODE_SPAN.sub("", line)
 
 
-def link_targets(text):
-    """Yields (line number, target) for each inline link and link definition."""
-    for number, line in outside_code(text):
+def numbered_link_targets(text):
+    for number, line in lines_outside_code_without_spans(text):
         definition = LINK_DEFINITION.match(line)
         if definition:
             yield number, definition.group(1)
@@ -326,8 +311,7 @@ def link_targets(text):
             yield number, match.group(1)
 
 
-def link_path(target):
-    """Returns the target's path part, or None if the link is not to a repo path."""
+def repo_path_or_none(target):
     if target.startswith("<") and target.endswith(">"):
         target = target[1:-1]
     if URL_SCHEME.match(target) or target.startswith("#"):
@@ -336,24 +320,23 @@ def link_path(target):
 
 
 def resolves(root, rel, path):
-    """Whether a link path resolves; a /-rooted path is relative to the repo root."""
-    if path.startswith("/"):
+    repo_rooted = path.startswith("/")
+    if repo_rooted:
         return (root / path.lstrip("/")).exists()
     return (root / rel).parent.joinpath(path).exists()
 
 
-def linking_files(root):
-    """Yields the root README and every .md under context/ and docs/, relative."""
+def readme_context_and_docs_markdown(root):
     if (root / "README.md").is_file():
         yield Path("README.md")
     for top in ("context", "docs"):
-        yield from tree_files(root, top, "*.md")
+        yield from non_dot_files(root, top, "*.md")
 
 
 def check_links(root, files):
-    for rel in linking_files(root):
-        for number, target in link_targets(read(root / rel)):
-            path = link_path(target)
+    for rel in readme_context_and_docs_markdown(root):
+        for number, target in numbered_link_targets(read(root / rel)):
+            path = repo_path_or_none(target)
             if path is not None and not resolves(root, rel, path):
                 yield (
                     f"{rel}:{number}: link {target} does not resolve; "
@@ -361,19 +344,14 @@ def check_links(root, files):
                 )
 
 
-def capability_entries(lines, start):
-    """Yields (line number, opening line, entry lines) for each top-level list item.
-
-    Lines from start up to the next ## heading are the section. A line that is
-    neither blank, indented, nor a list item comes back as an entry of its own
-    with no opening "- ", so the check reports it as not an entry.
-    """
+def capability_section_entries(lines, start):
     entry = None
     for number in range(start, len(lines) + 1):
         line = lines[number - 1]
         if line.startswith("## "):
             break
-        if line.startswith("- ") or (line.strip() and not line[0].isspace()):
+        unindented_prose = line.strip() and not line[0].isspace()
+        if line.startswith("- ") or unindented_prose:
             if entry is not None:
                 yield entry
             entry = (number, line, [number])
@@ -398,11 +376,11 @@ def check_capability_map(root, files):
         )
         return
     targets = {}
-    for number, target in link_targets(text):
-        if link_path(target) is not None:
+    for number, target in numbered_link_targets(text):
+        if repo_path_or_none(target) is not None:
             targets.setdefault(number, []).append(target)
     start = lines.index(CAPABILITY_MAP) + 2
-    for number, line, entry_lines in capability_entries(lines, start):
+    for number, line, entry_lines in capability_section_entries(lines, start):
         if not line.startswith("- "):
             yield f"{rel}:{number}: capability map line is not an entry; {ENTRY_FORM}"
             continue
@@ -436,7 +414,7 @@ CHECKS = (
 
 def main():
     root = Path.cwd()
-    files = list(tree_files(root, "context"))
+    files = list(non_dot_files(root, "context"))
     failures = [line for check in CHECKS for line in check(root, files)]
     for line in failures:
         print(line)
