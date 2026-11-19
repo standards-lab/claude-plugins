@@ -41,11 +41,13 @@ Read these sizes, in words, to judge the work:
   capability map to their shapes, and it resolves relative links. Each repository's
   `[project] check` calls it (marathon's `mechanics/configuration.md`). The installed 0.18.0
   lacks it, so the coordinator adopts it at `release`'s sync.
-- **Comments** (task `comment-standard`). The architecture layer's comment standard becomes a
-  near-ban: package documentation, plus the reasons that lint suppressions and pin holds require.
-  That task needs the architecture lock. marathon's implementer and standards-reviewer profiles
-  hold marathon's own comment rules, and marathon's `behavior/delegation.md` keeps the editor out
-  of source files.
+- **Comments** (built). The architecture layer's `principles/comments.md` allows four kinds of
+  comment in source: package documentation, a lint suppression's reason, a pin hold's reason, and
+  provenance. Each ecosystem's stock lint rule requires a suppression's reason, the
+  standards-reviewer judges every other comment, and no custom tool enforces the principle.
+  marathon's standards-reviewer applies the comment rule a repository's `STANDARDS.md` declares.
+  claude-plugins' scripts adopt the principle in task `harness-standards`, and code repositories
+  in `harness.adoption`.
 - **One release at the end.** Nothing releases until the last task, so sessions keep running the
   installed 0.18.0 until then. The sync then cleans the coordinator's roadmap and notes under the
   new check.
