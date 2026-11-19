@@ -1,6 +1,6 @@
 # goal · harness.optimization
 
-- **State:** building
+- **State:** brief ready
 - **Task:** retro-routes
 - **Branch:** retro-routes
 
