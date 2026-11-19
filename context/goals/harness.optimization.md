@@ -122,7 +122,7 @@ new section and routes reach no session before then.
 
 ## Progress
 
-slices 2/5 committed · standards — · spec — · editor —
+slices 3/5 committed · standards — · spec — · editor —
 
 ## Decisions
 
