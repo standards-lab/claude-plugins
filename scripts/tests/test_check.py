@@ -1,10 +1,11 @@
 """Tests for scripts/check.sh, run against a seeded copy of the repository.
 
-The copy leaves out this file, so the check it runs doesn't recurse into
-these tests, and puts a stub claude first on PATH, so plugin validation is
-the outer check's job rather than this one's.
+The outer check runs the real test suite and validates the plugins, so the
+copy's scripts/tests holds one passing test in their place, which keeps the
+check from recursing into these tests, and a stub claude goes first on PATH.
 """
 
+import json
 import os
 import shutil
 import subprocess
@@ -32,7 +33,13 @@ class CheckTest(unittest.TestCase):
             self.root,
             ignore=shutil.ignore_patterns(".git", "__pycache__"),
         )
-        (self.root / "scripts/tests" / Path(__file__).name).unlink()
+        tests = self.root / "scripts/tests"
+        shutil.rmtree(tests)
+        tests.mkdir()
+        (tests / "test_passes.py").write_text(
+            "import unittest\n\n\nclass T(unittest.TestCase):\n"
+            "    def test_passes(self):\n        pass\n"
+        )
         stub = Path(tmp.name) / "bin/claude"
         stub.parent.mkdir()
         stub.write_text("#!/bin/sh\nexit 0\n")
@@ -57,9 +64,6 @@ class CheckTest(unittest.TestCase):
             ["scripts/check.sh"], cwd=self.root, env=self.env, capture_output=True, text=True
         )
         return result.returncode, result.stderr.splitlines()
-
-    def test_unseeded_copy_passes(self):
-        self.assertEqual(self.check(), (0, []))
 
     def test_playbook_needs_exactly_one_read_first_line(self):
         self.append(f"{SKILL}/commands/status.md", "\nRead first, before acting:\n")
@@ -87,7 +91,7 @@ class CheckTest(unittest.TestCase):
         )
 
     def test_skill_cites_plugin_agents(self):
-        self.write(SEEDED, "# Seeded\n\nSee `agents/nobody.md`.\n")
+        self.write(SEEDED, "# Seeded\n\nSee `agents/planner.md` and `agents/nobody.md`.\n")
         code, lines = self.check()
         self.assertEqual(code, 1)
         self.assertEqual(
@@ -98,7 +102,7 @@ class CheckTest(unittest.TestCase):
             ],
         )
 
-    def test_consumer_paths_stay_skipped(self):
+    def test_consumer_paths_pass(self):
         self.write(
             SEEDED,
             "# Seeded\n\nSee `context/roadmap.toml`, `scripts/check.sh`, and `src/app/main.py`.\n",
@@ -106,7 +110,10 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(self.check(), (0, []))
 
     def test_version_mismatch_names_the_files_to_align(self):
-        self.replace(f"{EXTENSION}/.claude-plugin/plugin.json", '"0.3.0"', '"9.9.9"')
+        manifest = self.root / EXTENSION / ".claude-plugin/plugin.json"
+        data = json.loads(manifest.read_text())
+        version, data["version"] = data["version"], "9.9.9"
+        manifest.write_text(json.dumps(data))
         code, lines = self.check()
         self.assertEqual(code, 1)
         skill = f"{EXTENSION}/skills/marathon-architecture/SKILL.md"
@@ -114,10 +121,10 @@ class CheckTest(unittest.TestCase):
             lines,
             [
                 "FAIL: marathon-architecture: plugin.json version 9.9.9 != CHANGELOG top "
-                f"heading 0.3.0; give {EXTENSION}/CHANGELOG.md a top '## v9.9.9' heading "
+                f"heading {version}; give {EXTENSION}/CHANGELOG.md a top '## v9.9.9' heading "
                 "or correct plugin.json",
                 f"FAIL: marathon-architecture: plugin.json version 9.9.9 != {skill} "
-                "Version: 0.3.0; set its Version: line to 9.9.9 or correct plugin.json",
+                f"Version: {version}; set its Version: line to 9.9.9 or correct plugin.json",
             ],
         )
 

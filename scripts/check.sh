@@ -104,39 +104,38 @@ citations() {
   ' "$1"
 }
 
-# Prints "root<TAB>dir" for the first directory in the given roots whose name
-# is exactly one edit (an insertion, deletion, or substitution) away from
-# name, and fails when there is none.
+# Prints "root<TAB>dir" for the first directory in the given roots, taken in
+# order and sorted within each, whose name is exactly one edit (an insertion,
+# deletion, or substitution) away from name, and fails when there is none.
 near_dir() {
-  local name=$1 root dir
+  local name=$1 root
   shift
   for root in "$@"; do
-    while read -r dir; do
-      awk -v a="$name" -v b="$dir" '
-        BEGIN {
-          if (length(a) < length(b)) { t = a; a = b; b = t }
-          if (length(a) - length(b) > 1 || a == b) exit 1
-          i = 1
-          while (i <= length(b) && substr(a, i, 1) == substr(b, i, 1)) i++
-          skip = length(a) > length(b) ? 0 : 1
-          exit !(substr(a, i + 1) == substr(b, i + skip))
-        }' && { printf '%s\t%s\n' "$root" "$dir"; return 0; }
-    done < <(find "$root" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
-  done
-  return 1
+    find "$root" -mindepth 1 -maxdepth 1 -type d -printf '%H\t%f\n' | sort
+  done | awk -F '\t' -v name="$name" '
+    # Past the first mismatch the names agree once the longer drops its extra
+    # character, or, with equal lengths, once both drop the substituted one.
+    function near(a, b, t, i) {
+      if (length(a) < length(b)) { t = a; a = b; b = t }
+      if (length(a) - length(b) > 1 || a == b) return 0
+      for (i = 1; i <= length(b) && substr(a, i, 1) == substr(b, i, 1); i++) {}
+      return substr(a, i + 1) == substr(b, i + (length(a) == length(b)))
+    }
+    !found && near(name, $2) { print; found = 1 }
+    END { exit !found }
+  '
 }
 
 # Every backtick file citation in the plugins' markdown names a real file.
 # ${CLAUDE_PLUGIN_ROOT}/ paths resolve against the plugin, and ./ and ../ paths
-# against the citing file. A bare path resolves against the skill root inside a
-# skill, and outside one (profiles, README, CHANGELOG) against the plugin root
-# or any of its skill roots. A path another plugin owns, written as
+# against the citing file. A bare path resolves inside a skill against the
+# skill root and then the plugin root, so a skill can cite the plugin's agents/
+# profiles, and outside one (profiles, README, CHANGELOG) against the plugin
+# root or any of its skill roots. A path another plugin owns, written as
 # marathon's `references/briefs.md`, resolves against that plugin's roots. A
 # bare path is a plugin citation only when its first segment is a directory in
 # one of those roots; anything else, such as context/roadmap.toml or
-# .claude/marathon.toml, is a path in the consumer's repository. A bare
-# path is also checked inside a skill against its plugin root, so a skill can
-# cite the plugin's agents/ profiles.
+# .claude/marathon.toml, is a path in the consumer's repository.
 #
 # A first segment one edit away from a directory in those roots is a typo,
 # such as refrences/ for references/, rather than a consumer path, so it fails
@@ -173,7 +172,7 @@ while read -r file; do
     if [ "$cited" -eq 1 ]; then
       err "$file:$line: citation $cite does not resolve; $cite_fix"
     elif near=$(near_dir "${cite%%/*}" "${bases[@]}"); then
-      read -r root dir <<<"$near"
+      IFS=$'\t' read -r root dir <<<"$near"
       err "$file:$line: citation $cite: directory '${cite%%/*}' is not in $root; did you mean '$dir'?"
     fi
   done < <(citations "$file")
