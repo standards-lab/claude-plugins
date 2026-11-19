@@ -193,9 +193,9 @@ code. The session writes it to `.claude/briefs/<goal>.md` in the goal's root, wh
   pseudocode, fenced as code.
 - **Core changes** lists one to five entries, each with one line on why and, where the code is
   the change, a short excerpt or signature fenced as code.
-- **Verify** opens with the check's one-line result. Then one item per task-brief behavior,
-  numbered alike: the steps the architect can follow, outside the check and tests, and what
-  they should see. The spec-reviewer followed each. "Tests only", naming the test, is the
+- **Verify** opens with the check's one-line result. Then comes one item per task-brief
+  behavior, numbered alike: the steps the architect can follow, outside the check and tests, and
+  what they should see. The spec-reviewer followed each. "Tests only", naming the test, is the
   exception, when no such step exists.
 - **Decided without you** lists the decisions the brief didn't cover and each Decision the
   editor dropped (`mechanics/goal-record.md`). A drop the architect rejects is a redirect, and

@@ -1,8 +1,8 @@
 # goal · harness.optimization
 
-- **State:** idle
-- **Task:** none
-- **Branch:** none
+- **State:** building
+- **Task:** evidence-artifacts
+- **Branch:** evidence-artifacts
 
 ## Tasks
 
@@ -16,109 +16,84 @@
 8. [ ] harness-standards
 9. [ ] release
 
-## Task brief · retro-routes
+## Task brief · evidence-artifacts
 
 **Problem**
 
-`retro` gathers the architect's redirects and escalations from goal-record Decisions, which the
-editor now prunes. Redirects never reach a lasting record at all: a redirected brief is
-overwritten, and only the final one becomes the pull request body. retro's routes start at a
-check, so a mistake that a design change could make impossible gets a check instead. It has no
-route for costly tool calls or for instructions that change nothing, both of which Pocock's retro
-covers. A check message that doesn't name its fix leaves the agent to guess: 7 of lint-context's
-messages don't, and about 14 of the repository check's don't. The repository check also has two
-silent gaps. A renamed "Read first" line shrinks a command's budgeted set without failing, and a
-typo in a bare citation's first directory goes uncaught.
+The architect reviews the session brief for outcomes: what changed, and whether each new
+behavior works. Today Evidence is a loose list of commands with no tie to the task brief's
+behaviors. It mostly repeats the check and the tests, which leaves the architect to work out how
+to see each behavior. The spec-reviewer already exercises each behavior but returns only "the
+commands you ran". The brief also carries detail the architect doesn't review by: what each
+reviewer changed, and a code excerpt for every Core change. The read-first sets that hold the
+brief's format have 13 to 59 words of room, so this change has to replace text, not add it.
 
 **Behaviors**
 
-1. The session brief has a "Redirects and escalations" section after Decided without you. It
-   lists each BUILD escalation and each BRIEF redirect in the task, one line each with the
-   architect's answer, or reads "none". The session records each one in the goal record's
-   Progress as it happens, so a handoff loses none. A brief written after a redirect lists the
-   earlier ones.
-2. `retro` gathers from four sources:
-   - the merged pull request bodies in the range, including their Redirects and escalations and
-     their Decided without you
-   - the standards-reviewer's commits
-   - the touched notes, for drift
-   - the touched docs, for drift
-
-   It no longer reads goal-record Decisions or pull request comments.
-3. `retro` also reads the local session transcripts of the range's sessions when they are
-   present. The retro's header names each repository whose transcripts were missing, and the
-   retro continues without them.
-4. `retro` routes in this order: design, check/eval, standard, skill/profile, context.
-   - A design finding changes the work so the mistake can't be made.
-   - A ticked design finding becomes a task, written on the coordinator's branch, in the goal
-     that owns the work. When no active goal owns the repository, the finding line proposes a
-     goal, and the tick confirms it.
-   - `retro` doesn't make the change itself.
-5. `retro` looks for two more kinds of finding and routes each to the existing layers:
-   - tool economy: a costly tool call that a cheaper call or a tool could replace
-   - instruction trim: an instruction that changes no behavior
-6. The skill says a check's failure message names its fix. Each check that `retro` proposes
-   carries its message.
-7. Every failure message of `lint-context` and of the repository check names what to change for
-   it to pass. The tests assert the new lines.
-8. The repository check fails a command playbook that has no "Read first" line, or more than
-   one. The failure names the playbook and the fix.
-9. The repository check fails a bare citation whose first directory is one edit away from a
-   directory in its plugin's root or a skill's root. A citation inside a skill also resolves
-   against its plugin's root, so citations to `agents/*.md` are checked.
-10. Each read-first set a trim shrinks gets a lowered budget, and each set pushed over gets a
-    raised one. Either way, the new budget is the set's size at task end, rounded up to the next
-    100 words. The session brief lists each change.
-11. marathon's CHANGELOG records the change under Unreleased. It carries no extension-contract
-    marker, because no extension reads the session brief or `retro`'s sources and routes. Its
-    migration step says to expect the new session-brief section.
-12. The goal record's Decision that left `retro`'s source to this task is retired. The goal
-    note's Findings for later loses that item and the two check gaps.
-13. The repository check passes, and the currency command reports nothing.
+1. The session brief opens with what changed: Summary, then Core changes. A Core change carries a
+   code excerpt only where the code is the change, and every entry keeps its one line on why.
+2. A Verify section replaces Evidence. It opens with the check's one-line result. Then comes one
+   item per task-brief behavior, numbered as the brief numbers them. Each item gives the steps the
+   architect can follow, outside the check and the tests, and what they should see. The check and
+   the tests aren't repeated per behavior.
+3. An item reads "tests only", naming the test, only when no step outside the tests shows the
+   behavior. It is the exception, not the default.
+4. Decided without you lists the decisions the brief didn't cover and each Decision the editor
+   dropped. It no longer lists what the reviewers changed.
+5. The spec-reviewer runs the check, then writes and follows the steps for each numbered
+   behavior. It returns the steps and what it saw in Verify's form, citing the session-brief
+   format rather than restating it. Its gap report is unchanged.
+6. Validate runs the check and follows each behavior's steps that the spec-reviewer returned. A
+   failing step blocks BRIEF the same way a failing check does. The results are Verify.
+7. On a spike's last task, Verify carries the spike's numbered evidence.
+8. No read-first budget or profile budget changes. The session brief lists each set's size at
+   task end.
+9. marathon's CHANGELOG records the change under Unreleased. It carries no extension-contract
+   marker, because no extension reads the session brief. Its migration step says to expect Verify
+   in place of Evidence, and reviewers' changes no longer in Decided without you.
+10. The goal note records verification artifacts as settled, citing the Lauren Tan source.
+11. The repository check passes, and the currency command reports nothing.
 
 **Test seams**
 
-- `lint-context`: stdlib `unittest` tests run it on fixture trees and assert its exit status and
-  its failure lines.
-- The repository check: stdlib `unittest` tests run it on seeded copies of the repository and
-  assert its failure lines. It also runs on the repository itself.
-- A dry retro over this goal's merged pull requests, shown in the session brief's Evidence.
+- The repository check: citations resolve and every budget holds.
+- The branch's spec-reviewer, engaged through `claude -p --plugin-dir` on this task's branch. It
+  returns one Verify item per behavior of this brief. This is needed because the session itself
+  runs the installed 0.18.0, whose profile doesn't know the Verify form.
+- This task's own session brief, written in the new form.
 
 **Slices**
 
-1. The repository check's two gaps. Each playbook has exactly one "Read first" line. A citation
-   directory one edit away from a real one fails. Citations inside a skill also resolve against
-   the plugin's root.
-2. Messages that name their fix: lint-context's seven and the repository check's own, with their
-   tests.
-3. `retro`'s routes:
-   - design first, and a ticked design finding becomes a task, with a proposed goal when no goal
-     owns the repository
-   - the tool economy and instruction trim kinds
-   - proposed checks carry their messages, and the skill states the message rule
-   - the retro format shows a design finding
-4. `retro`'s sources: the session brief's Redirects and escalations section, recorded in
-   Progress as each one happens. The gather reads pull request bodies, and transcripts when
-   present, instead of Decisions and comments.
-5. The CHANGELOG entry, the retired Decision, the goal note's findings, and a final budget
-   measure.
+1. The session-brief format:
+   - the opening line
+   - Core changes' excerpt rule
+   - Verify, with its "tests only" exception
+   - the trimmed Decided without you and its examples
+   - the spike line
 
-Each slice adjusts the budgets its own edits move, so the check passes after every slice.
+   Every mention of Evidence as the brief's section becomes Verify.
+2. The spec-reviewer writes, follows, and returns each behavior's steps. Validate follows them and
+   blocks BRIEF on a failing step.
+3. The CHANGELOG entry, the goal note's settled line, and a final budget measure.
+
+Each slice keeps every budget and passes the check.
 
 **Out of scope**
 
-- Applying any finding the dry retro turns up. A later `retro` proposes them.
-- A `retro` eval case
-- A tool to search transcripts. `retro` reads them as they are stored.
-- The manifest's `repos = []` wording, and spike `docs/` links to a goal record that sync
-  deletes. Both stay in Findings for later.
-- STANDARDS.md (task `harness-standards`), and releasing or tagging either plugin (task
-  `release`)
+- A check or eval that enforces one item per behavior (round 1, question 3). A retro proposes one
+  once a brief misses an item.
+- Stored artifact files such as screenshots and logs (round 1, question 1).
+- Budget ceilings, and reviewers reading `git diff --stat` first. Both stay in Findings for later.
+- Releasing or tagging, which is task `release`.
 
 **Door**
 
-Two-way. Nothing is released. Sessions keep running the installed 0.18.0 until `release`, so the
-new section and routes reach no session before then.
+Two-way. Nothing is released. Sessions keep running the installed 0.18.0 until `release`, so
+Verify reaches no session before then.
+
+## Progress
+
+slices 3/3 committed · standards ✓ (no fixes) · spec ✓ (1 gap closed, round 2 clean) · editor ✓
 
 ## Decisions
 
@@ -132,8 +107,6 @@ new section and routes reach no session before then.
 - version-floor: unreleased changes sit under `## Unreleased` in each CHANGELOG; `release` renames
   them to marathon v0.19.0 and marathon-architecture's next version and releases both together,
   which satisfies the 0.19.0 floor.
-- skill-footprint: No Extension contract marker; marathon-architecture keeps its 0.19.0 floor
-  (plan).
 - roadmap-layout: GitHub Issues were rejected for the roadmap, for losing PR-reviewed planning,
   offline sessions, and checks; Markdown and HTML were rejected because the roadmap is data that
   LOCATE, staging, lint-context, and the planned CLI parse (plan).
@@ -148,17 +121,12 @@ new section and routes reach no session before then.
 - content-budgets: budget options and per-repository overrides were rejected (plan).
 - retro-routes: retro reads redirects and escalations from the session brief in the pull request
   body; a goal-record section, which sync deletes, and transcripts alone were rejected (plan).
-- retro-routes: tool economy and instruction trim are finding kinds, not route layers (plan).
 - retro-routes: a citation's first directory fails only when one edit from a real one; an
   allowlist and owner-marking were rejected. No retro eval case (plan).
-- retro-routes: the rule that Progress records each redirect and escalation lives in
-  `mechanics/goal-record.md`; `references/briefs.md`, `mechanics/pipeline.md`, and
-  `references/build.md` point to it rather than restate it.
-- retro-routes: `near_dir` in `scripts/check.sh` catches one insertion, deletion, or
-  substitution, not a transposition, which is two edits.
-- retro-routes: `scripts/tests/test_check.py` runs the check on seeded copies of the repository,
-  with `claude` stubbed on PATH.
-- retro-routes: CI's Claude Code pin moved to 2.1.328 mid-task.
+- evidence-artifacts: an artifact is text in the session brief; stored files were rejected
+  because the brief is gitignored and deleted at SHIP (plan).
+- evidence-artifacts: one item per behavior is a skill rule; a lint-context check and an eval case
+  wait for a retro finding (plan).
 
 ## Pending edits
 

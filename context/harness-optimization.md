@@ -23,8 +23,8 @@ Read these sizes, in words, to judge the work:
 
 - The skill: SKILL.md links each file instead of `@`-including it, and each command's playbook
   opens with a "Read first" list of the files it needs. `start`'s read-first set, SKILL.md and the
-  playbook included, is 8,245 words against a budget of 8,300. `mechanics/pipeline.md` is about
-  1,970 words, down from 2,715, since Releasing and RESUME moved to their own files.
+  playbook included, is 8,247 words against a budget of 8,300. `mechanics/pipeline.md` is about
+  1,980 words, down from 2,715, since Releasing and RESUME moved to their own files.
 - The planner profile: 273 words, down from 554, since profiles cite the skill's rules instead of
   restating them.
 - The coordinator's `context/roadmap.toml`: one file of 13,353 words over 61 goals and 74 tasks,
@@ -64,11 +64,11 @@ Read these sizes, in words, to judge the work:
   with CI red. The design runs in order: a tool that runs configured commands verbatim (a
   candidate for `v1.harness.tooling`), a hook that refuses a chained `gh pr merge` or `git push`,
   and a one-line rule to run each git and `gh` command on its own call.
-- **Verification artifacts** (task `evidence-artifacts`). Review reads verification artifacts,
-  after Lauren Tan: the session brief's Verify gives, for each behavior, the steps the architect
-  follows to see it and what they should see, which the spec-reviewer has already followed
-  (marathon's `references/briefs.md`). A check that every behavior has an item waits until a retro
-  finds one missing.
+- **Verification artifacts** (task `evidence-artifacts`). Following Lauren Tan, review reads
+  verification artifacts. The session brief's Verify section gives, for each behavior, the steps
+  the architect follows to see it and what they should see, and the spec-reviewer has already
+  followed them (marathon's `references/briefs.md`). A check that every behavior has an item
+  waits until a retro finds one missing.
 - **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
 
 ## Findings for later
@@ -84,11 +84,14 @@ A retro can take these up.
   because the model's reply lines run past 100 characters. `release` needs it fixed, or the
   threshold settled, before tagging.
 - A spike's `docs/` pages that link to its goal record break when sync deletes the record.
-- `start`'s and `intake`'s read-first sets sit 55 and 25 words under their budgets, so most edits
+- `start`'s and `intake`'s read-first sets sit 53 and 24 words under their budgets, so most edits
   to either need a budget change.
 - Read-first budgets rise with every task: `start`'s went from 7,900 to 8,300 and `retro`'s from
   6,400 to 6,700. A fixed ceiling that only the architect raises would stop the ratchet.
 - Reviewers read the whole diff and the whole goal record. They could read `git diff --stat`
   first and receive excerpts of the brief.
+- marathon's `references/context-engineering.md` says the session lists the editor's note
+  operations in the session brief's Decided without you, but `references/briefs.md` lists there
+  only the decisions the brief didn't cover and the dropped Decisions. One of them should give way.
 - The standards-reviewer rewraps markdown to 100 columns by hand; a check could enforce the
   width instead.
