@@ -12,91 +12,105 @@
 4. [x] content-budgets
 5. [x] retro-routes
 6. [x] evidence-artifacts
-7. [ ] comment-standard
+7. [x] comment-standard
 8. [ ] harness-standards
 9. [ ] release
 
-## Task brief · evidence-artifacts
+## Task brief · harness.optimization · comment-standard
 
 **Problem**
 
-The architect reviews the session brief for outcomes: what changed, and whether each new
-behavior works. Today Evidence is a loose list of commands with no tie to the task brief's
-behaviors. It mostly repeats the check and the tests, which leaves the architect to work out how
-to see each behavior. The spec-reviewer already exercises each behavior but returns only "the
-commands you ran". The brief also carries detail the architect doesn't review by: what each
-reviewer changed, and a code excerpt for every Core change. The read-first sets that hold the
-brief's format have 13 to 59 words of room, so this change has to replace text, not add it.
+The architecture layer's only comment rule is Go's. tests-and-docs' "doc.go and godoc" section
+asks for a doc comment on every production symbol and limits nothing else, and no check enforces
+it. The web repos follow their own, looser rule, "comments only for a non-obvious why", which
+sits outside the layer. Comments are where agents write justifications, and those go stale
+(Lauren Tan). The goal settled a near-ban: source keeps package documentation, provenance lines,
+and the reasons that lint suppressions and pin holds require. Each ecosystem's stock lint rules
+enforce what they can, and review covers the rest. marathon's standards-reviewer sweeps only for
+comments that excuse a workaround. It needs to apply whatever comment rule the repository
+declares.
 
 **Behaviors**
 
-1. The session brief opens with what changed: Summary, then Core changes. A Core change carries a
-   code excerpt only where the code is the change, and every entry keeps its one line on why.
-2. A Verify section replaces Evidence. It opens with the check's one-line result. Then comes one
-   item per task-brief behavior, numbered as the brief numbers them. Each item gives the steps the
-   architect can follow, outside the check and the tests, and what they should see. The check and
-   the tests aren't repeated per behavior.
-3. An item reads "tests only", naming the test, only when no step outside the tests shows the
-   behavior. It is the exception, not the default.
-4. Decided without you lists the decisions the brief didn't cover and each Decision the editor
-   dropped. It no longer lists what the reviewers changed.
-5. The spec-reviewer runs the check, then writes and follows the steps for each numbered
-   behavior. It returns the steps and what it saw in Verify's form, citing the session-brief
-   format rather than restating it. Its gap report is unchanged.
-6. Validate runs the check and follows each behavior's steps that the spec-reviewer returned. A
-   failing step blocks BRIEF the same way a failing check does. The results are Verify.
-7. On a spike's last task, Verify carries the spike's numbered evidence.
-8. No read-first budget or profile budget changes. The session brief lists each set's size at
-   task end.
-9. marathon's CHANGELOG records the change under Unreleased. It carries no extension-contract
-   marker, because no extension reads the session brief. Its migration step says to expect Verify
-   in place of Evidence, and reviewers' changes no longer in Decided without you.
-10. The goal note records verification artifacts as settled, citing the Lauren Tan source.
-11. The repository check passes, and the currency command reports nothing.
+1. The architecture layer has an architecture-level comments principle. It allows exactly four
+   kinds of comment in source:
+   - package documentation: a package or module comment (a script's or module's header counts
+     as one) and a doc comment on each exported identifier
+   - the reason a lint suppression requires, on the suppression
+   - the reason a pin hold requires, beside the pin
+   - a provenance line naming the source repository and commit
+
+   Any other comment is removed, or the code changes so it needs none.
+2. For each ecosystem, the principle names the stock rule that requires a suppression's reason:
+   golangci-lint's nolintlint (require-explanation, require-specific), typescript-eslint's
+   ban-ts-comment, eslint-comments' require-description, and clippy's
+   allow_attributes_without_reason. It states that the standards-reviewer judges every other
+   comment. It names no custom tool.
+3. Both of architecture's indexes list the principle, and architecture's STANDARDS.md points to
+   it.
+4. go-elemental's Go pages agree with the principle without restating it. tests-and-docs keeps
+   the doc.go inventory and the one-contract-per-symbol rule, and links the principle for which
+   comments are allowed. Doc comments are required on exported identifiers, not on every
+   production symbol. No other Go page states a comment rule of its own.
+5. architecture's check carries only the comments the principle allows. It behaves as before:
+   the same failures on the same inputs, and a pass on main.
+6. marathon's standards-reviewer flags each comment that the repository's declared comment rule
+   doesn't permit. Where the repository declares no rule, it flags a comment that excuses a
+   workaround, as it does today. The implementer's rule and delegation's editor rule stay as
+   they are.
+7. marathon's CHANGELOG records the reviewer change under Unreleased, with no extension-contract
+   marker. The contract doesn't cover that profile, and marathon-architecture only gives the
+   reviewer the layer's location.
+8. Both repositories' checks pass. Every word budget holds with no budget changed, and
+   claude-plugins' currency command reports nothing.
 
 **Test seams**
 
-- The repository check: citations resolve and every budget holds.
-- The branch's spec-reviewer, engaged through `claude -p --plugin-dir` on this task's branch. It
-  returns one Verify item per behavior of this brief. This is needed because the session itself
-  runs the installed 0.18.0, whose profile doesn't know the Verify form.
-- This task's own session brief, written in the new form.
+- Each repository's check: links, front matter, citations, and budgets.
+- architecture's check, run on a scratch copy with a broken link and a page missing front
+  matter. It reports the same failures before and after the comment trim.
+- The branch's standards-reviewer, engaged through `claude -p --plugin-dir` on a fixture diff
+  with one disallowed comment. Run it twice: in a repository whose STANDARDS.md declares the
+  principle, and in one that declares no rule. It flags the comment in the first and leaves it
+  alone in the second, unless the comment excuses a workaround.
 
 **Slices**
 
-1. The session-brief format:
-   - the opening line
-   - Core changes' excerpt rule
-   - Verify, with its "tests only" exception
-   - the trimmed Decided without you and its examples
-   - the spike line
+The slices follow the coordinator's order: claude-plugins first, architecture last. There is no
+upgrade slice.
 
-   Every mention of Evidence as the brief's section becomes Verify.
-2. The spec-reviewer writes, follows, and returns each behavior's steps. Validate follows them and
-   blocks BRIEF on a failing step.
-3. The CHANGELOG entry, the goal note's settled line, and a final budget measure.
-
-Each slice keeps every budget and passes the check.
+1. claude-plugins: the standards-reviewer applies the repository's declared comment rule, and
+   the CHANGELOG gets its Unreleased entry. Demo: the two-repository reviewer fixture, with the
+   check passing within budget.
+2. architecture: the comments principle, listed in both indexes and pointed to from
+   STANDARDS.md. Demo: the page reads on its own, and the check passes.
+3. architecture: go-elemental's Go comment wording aligned with the principle by linking it,
+   with doc comments narrowed to exported identifiers. Demo: no Go page restates the near-ban,
+   and the check passes.
+4. architecture: the check script brought under the principle. Demo: the scratch copy's failures
+   match before and after, and main passes.
 
 **Out of scope**
 
-- A check or eval that enforces one item per behavior (round 1, question 3). A retro proposes one
-  once a brief misses an item.
-- Stored artifact files such as screenshots and logs (round 1, question 1).
-- Budget ceilings, and reviewers reading `git diff --stat` first. Both stay in Findings for later.
+- Everything harness.adoption owns:
+  - each Go and web repository's STANDARDS.md and comments
+  - enabling the named rules in `.golangci.yml` and the ESLint configs
+  - docproc's hold list and hold comments
+  - web-tooling's `eslint-disable` that gives no reason
+- claude-plugins' own scripts and lint-context, which go to task harness-standards.
+- Any custom comment checker or Go analyzer (round 1, question 6).
 - Releasing or tagging, which is task `release`.
 
 **Door**
 
-Two-way. Nothing is released. Sessions keep running the installed 0.18.0 until `release`, so
-Verify reaches no session before then.
+Two-way. Nothing is released, and each change is a page or profile edit that can be reverted.
+The reviewer change reaches no session until `release`. Once the architecture pages merge, they
+apply to new Go diffs at once, through tests-and-docs (round 2).
 
 ## Decisions
 
 - Nothing releases until the last task, `release`; sessions run the installed 0.18.0 until then
   (plan).
-- The architecture comment standard becomes a near-ban; `comment-standard` adds architecture to
-  the goal's repos through a plan once v1.ai.processing frees it (plan).
 - harness-standards: harness programming principles live in claude-plugins' STANDARDS.md, not the
   architecture layer, whose pages need more than one repository to express them; the task
   evaluates this goal's practices, those before it, and the Pocock practices 0.16 adopted (plan).
@@ -121,6 +135,14 @@ Verify reaches no session before then.
   allowlist and owner-marking were rejected. No retro eval case (plan).
 - evidence-artifacts: an artifact is text in the session brief; stored files were rejected
   because the brief is gitignored and deleted at SHIP (plan).
+- comment-standard: moving provenance lines into the context README was rejected (plan).
+- comment-standard: a hold list read by the currency command, docproc's form, was rejected for
+  pin-hold reasons (plan).
+- comment-standard: a portable comment checker beside lint-context and a go/ast analyzer for
+  free comments were rejected; stock lint rules and standards review enforce comments (plan).
+- comment-standard: making the near-ban marathon's default in every repository was rejected; the
+  standards-reviewer applies the repository's declared rule (plan).
+- comment-standard: claude-plugins' scripts adopt the near-ban in harness-standards (plan).
 
 ## Pending edits
 
