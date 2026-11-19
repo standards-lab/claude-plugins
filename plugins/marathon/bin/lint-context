@@ -105,8 +105,9 @@ def check_kinds(root, files):
     for rel in files:
         if classify(rel) is None:
             yield (
-                f"{rel}: not a context file; context/ holds only README.md, "
-                "notes (*.md), goals/*.md, roadmap.toml, and roadmap/*.toml"
+                f"{rel}: not a context file, which is README.md, a note (*.md), "
+                "goals/*.md, roadmap.toml, or roadmap/*.toml; "
+                "move it to docs/ or rename it to one of those kinds"
             )
 
 
@@ -191,7 +192,7 @@ def check_index(root, files):
             if key not in INDEX_ARRAYS:
                 yield (
                     f"{rel}: '{key}' is not one of active, planned, backlog; "
-                    "the index holds only the three arrays"
+                    "move it into a goal file under context/roadmap/ or remove it"
                 )
             elif not isinstance(value, list):
                 yield (

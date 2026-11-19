@@ -145,8 +145,9 @@ class LintContextTest(unittest.TestCase):
         for rel in stray:
             self.write(rel, "")
         expected = sorted(
-            f"{rel}: not a context file; context/ holds only README.md, "
-            "notes (*.md), goals/*.md, roadmap.toml, and roadmap/*.toml"
+            f"{rel}: not a context file, which is README.md, a note (*.md), "
+            "goals/*.md, roadmap.toml, or roadmap/*.toml; "
+            "move it to docs/ or rename it to one of those kinds"
             for rel in stray
         )
         code, lines = self.lint()
@@ -200,12 +201,12 @@ class LintContextTest(unittest.TestCase):
         self.write("context/roadmap.toml", INDEX + 'extra = "x"\n')
         self.assert_fails(
             "context/roadmap.toml: 'extra' is not one of active, planned, backlog; "
-            "the index holds only the three arrays"
+            "move it into a goal file under context/roadmap/ or remove it"
         )
         self.write("context/roadmap.toml", INDEX + "\n[goal]\nname = \"x\"\n")
         self.assert_fails(
             "context/roadmap.toml: 'goal' is not one of active, planned, backlog; "
-            "the index holds only the three arrays"
+            "move it into a goal file under context/roadmap/ or remove it"
         )
         self.write("context/roadmap.toml", 'active = "goal"\n')
         self.assert_fails(

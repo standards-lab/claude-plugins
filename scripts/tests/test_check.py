@@ -21,6 +21,11 @@ SEEDED = f"{SKILL}/references/seeded.md"
 READ_FIRST_FIX = 'give it exactly one "Read first, before acting:" list'
 RERUN = "fix the lines above, then rerun"
 EXTENSION = "plugins/marathon-architecture"
+# The commands scripts/check.sh and lint-context run, other than claude.
+TOOLS = (
+    "awk", "bash", "cat", "cut", "dirname", "find", "grep", "jq", "python3",
+    "realpath", "sort", "wc",
+)
 
 
 class CheckTest(unittest.TestCase):
@@ -183,6 +188,26 @@ class CheckTest(unittest.TestCase):
             lines[0],
             rf"^FAIL: {skill}: description is \d+ characters, over the 1024 limit; "
             "shorten it to 1024 characters or fewer$",
+        )
+
+    def test_missing_claude_fails(self):
+        # PATH holds every other tool the check runs, so the only failure is
+        # the missing claude.
+        bin_dir = self.root.parent / "tools"
+        bin_dir.mkdir()
+        for tool in TOOLS:
+            (bin_dir / tool).symlink_to(shutil.which(tool))
+        self.env["PATH"] = str(bin_dir)
+        code, lines = self.check()
+        self.assertEqual(
+            (code, lines),
+            (
+                1,
+                [
+                    "FAIL: claude is not on PATH, so the plugins and marketplace were "
+                    "not validated; install claude or put it on PATH, then rerun"
+                ],
+            ),
         )
 
     def test_wrapped_tools_point_at_their_output(self):
