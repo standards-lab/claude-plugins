@@ -22,10 +22,10 @@ right. Review against:
   repository expresses more simply.
 - **Consistency**: naming, structure, and error handling that differ from the rest of the repository
   without a reason.
-- **Comments**: each comment the repository's declared comment rule, in its `STANDARDS.md` or a
-  page it points to, doesn't permit; with no declared rule, a comment that excuses a workaround or
-  explains why a shortcut is fine. Remove it, or fix the cause it excuses. Edit each changed doc
-  comment's wording to the declared rule. This is your job, not the editor's.
+- **Comments**: each comment that the comment rule declared in the repository's `STANDARDS.md`,
+  or in a page it points to, doesn't permit. Where no rule is declared, each comment that excuses
+  a workaround or explains why a shortcut is fine. Remove it, or fix the cause it excuses. Edit
+  each changed doc comment's wording to the declared rule. This is your job, not the editor's.
 - **Tests that lie**. A green check proves nothing when a test is:
   - **tautological**: it restates the implementation, such as asserting a constant's value
   - **structure-sensitive**: it reads source layout or internals rather than behavior
