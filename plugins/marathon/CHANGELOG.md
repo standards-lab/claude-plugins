@@ -19,6 +19,13 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   `references/manifest.md` gives it, the context README's capability map lists each entry as
   built or planned, and every relative link in the root README, `context/`, and `docs/`
   resolves. This repository's check runs it and its tests.
+- **`marathon`** (`bin/marathon`, `mechanics/configuration.md`): a stdlib Python 3.11 command, on
+  PATH in a session, that runs a `.claude/marathon.toml` command by its key, as `marathon merge`
+  or `marathon gate v1.4.0`. It reads the configuration at the git top-level, runs the value with
+  bash from there exactly as declared, appends a single-line value's arguments shell-quoted or
+  passes them to a multi-line value as positional parameters, and exits with the command's
+  status. An unknown or unset key, a missing configuration, or no key fails with the fix. Every
+  step that runs a configured command now calls it (`mechanics/pipeline.md`, "Invariants").
 
 ### Changed
 

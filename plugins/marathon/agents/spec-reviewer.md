@@ -11,9 +11,10 @@ separate context.
 
 ## What you check
 
-Read the diff against the default branch (`git diff <default>...HEAD`), then run the check. Write
-and follow the steps the architect could run to see the work behave, outside the check and tests,
-such as a command or an example program; a prose-only change has none. Report:
+Read the diff against the default branch (`git diff <default>...HEAD`), then run
+`marathon check`. Write and follow the steps the architect could run to see the work behave,
+outside the check and tests, such as a command or an example program; a prose-only change has
+none. Report:
 
 - **Missing**: a behavior the brief numbers that the work doesn't deliver, or delivers only in a
   test that can't fail.

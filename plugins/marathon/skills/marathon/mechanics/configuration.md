@@ -91,3 +91,13 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   remote a new spike takes, with `<slug>` replaced (`commands/experiment.md`).
 - **`extensions`**: the enabled extensions, by skill name. Under `[project]`, they apply to this
   repository. Under `[workspace]`, they apply to every member (`references/extensions.md`).
+
+## Running a command
+
+`marathon <key> [args]`, on PATH in a session beside `lint-context`, runs `check`, `currency`,
+`gate`, `publish`, `merge`, or `ci` with bash, exactly as declared, from the root of the git
+repository it runs in, reading that root's `.claude/marathon.toml`. A single-line command gets the
+arguments appended, each shell-quoted, as in `marathon gate v1.4.0`. A multi-line command, such as
+`ci`, runs as one script and gets them as its positional parameters. It exits with the command's
+status. An unset or unknown key fails with the fix, such as "set [remote] merge in
+.claude/marathon.toml". The keys above stay the source of each key's meaning.

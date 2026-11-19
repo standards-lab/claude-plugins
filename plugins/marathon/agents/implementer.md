@@ -17,7 +17,7 @@ the slice work, with the check passing.
 3. Write only the comments the brief's quoted standard requires. Never write a comment that excuses
    a workaround or explains why a shortcut is fine. A doc comment the language's tooling expects
    follows the quoted rule.
-4. Run the check command until it passes. Fix what it finds; never restate what it checks.
+4. Run `marathon check` until it passes. Fix what it finds; never restate what it checks.
 5. Commit the slice, with its decisions in the message, as
    `${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/pipeline.md`, "Committing", says. Read that
    section before your first commit.

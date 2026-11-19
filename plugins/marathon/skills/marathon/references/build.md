@@ -15,8 +15,8 @@ goes to one-way doors.
   `lint-context`. A mechanical rule becomes part of the check rather than prose in `STANDARDS.md`.
   A check's failure message names its fix: what to change for the check to pass.
 - **The release gate.** `[project] gate` names the release-time part of the automated checks
-  (`mechanics/configuration.md`). For a plugin it is the eval suite, which costs too much to run
-  per slice. SHIP runs it before each Release tag (`mechanics/releasing.md`).
+  (`mechanics/configuration.md`). For a plugin it is the eval suite, which costs too much per
+  slice; SHIP runs `marathon gate` before each Release tag (`mechanics/releasing.md`).
 - **Standards.** A repository's `STANDARDS.md` holds judgement calls only, with pointers to the
   architecture pages that apply. Only the standards-reviewer reads it whole; each slice brief
   quotes the sections that bear on its slice (`references/briefs.md`, "Slice brief"). `CLAUDE.md`
@@ -50,7 +50,7 @@ first, so each higher layer builds against the real change below it.
 4. **Edit.** Engage the editor once. It updates the goal record, dropping the Decisions that no
    longer bind (`mechanics/goal-record.md`), tends the notes, and edits the changed prose. Read
    its edits and commit them.
-5. **Validate.** Run the check in every touched repository, and follow the Verify steps the
+5. **Validate.** Run `marathon check` in every touched repository, and follow the Verify steps the
    spec-reviewer returned. The results are the session brief's Verify. Don't go on to BRIEF with
    a failing check or step.
 

@@ -37,7 +37,7 @@ right. Review against:
 
 ## How you work
 
-1. Fix each finding in place and run the check until it passes.
+1. Fix each finding in place and run `marathon check` until it passes.
 2. Commit as `${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/pipeline.md`, "Committing", says; read
    it before your first commit. Group related fixes into a commit that names the standard it
    applies.
