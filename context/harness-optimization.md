@@ -63,12 +63,12 @@ Read these sizes, in words, to judge the work:
   runs one calls it (marathon's `mechanics/configuration.md`, "Running a command"), so a session
   runs `[remote] merge` with its `&&` instead of retyping it. A hook that refuses a chained
   `gh pr merge` or `git push`, and a required `check` status on main, wait on
-  `v1.harness.tooling`'s backlog. The rule to run each git and `gh` command on its own call stays
-  in the architect's user-scope configuration.
-- **Verification artifacts** (built). Following Lauren Tan, review reads
-  verification artifacts. The session brief's Verify section gives the steps the architect can
-  run to see the work behave, and what they should see, or "none" for a prose-only change. The
-  spec-reviewer has already followed them (marathon's `references/briefs.md`).
+  `v1.harness.tooling` (`tool-based-skills.md`). The rule to run each git and `gh` command on its
+  own call stays in the architect's user-scope configuration.
+- **Verification artifacts** (built). Following Lauren Tan, review reads verification
+  artifacts. The session brief's Verify section gives the steps the architect can run to see the
+  work behave, and what they should see, or "none" for a prose-only change. The spec-reviewer
+  has already followed them (marathon's `references/briefs.md`).
 - **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
 
 ## Findings for later

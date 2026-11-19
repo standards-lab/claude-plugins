@@ -167,7 +167,8 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
 Install 0.19.0 first, and marathon-architecture 0.4.0 where it is enabled, since that release
 requires marathon 0.19.0. Session briefs now carry a "Redirects and escalations" section and
 Verify in place of Evidence, and Decided without you no longer lists the reviewers' changes;
-nothing needs migrating for them. Each repository then migrates through its own pull request:
+nothing needs migrating for them. Steps 1–3 apply at the coordinator, steps 4–7 in each
+repository through its own pull request, and step 8 to each extension outside this marketplace:
 
 1. **Split the roadmap.** At the coordinator, split the single-file `context/roadmap.toml` into
    the index, which keeps only the `active`, `planned`, and `backlog` arrays and a comment of at
@@ -187,6 +188,8 @@ nothing needs migrating for them. Each repository then migrates through its own 
    `context/README.md`, and each survey or result into its own `docs/` page linked from its
    evidence item.
 7. **Run `lint-context`** and trim, or move to `docs/`, whatever it reports over budget.
+8. **Declare the extension's floor.** In the extension's SKILL.md, replace the marathon version
+   it targets with `Requires: marathon ≥ X.Y.Z`, the minimum version it requires.
 
 ## v0.18.0
 

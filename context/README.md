@@ -19,8 +19,9 @@ repository is developed with marathon, so the workflow runs against its own sour
   extension, it declares the minimum marathon version it requires (marathon's
   `references/extensions.md`). Its design lives in
   [plugins/marathon-architecture](../plugins/marathon-architecture/).
-- **harness.optimization** (planned): the active goal that holds marathon and the content it
-  produces to budgets by checks. See [harness-optimization.md](harness-optimization.md).
+- **harness.optimization** (built): marathon checks its rules instead of describing them. Its
+  `lint-context` holds each repository's `context/` to its file kinds, word budgets, and shapes.
+  See [harness-optimization.md](harness-optimization.md).
 - **marathon-extraction** (planned): carries patterns a consumer proves back to the blueprint.
   See [marathon-extraction.md](marathon-extraction.md).
 - **marathon-references** (planned): a proposed extension that holds the references catalog.

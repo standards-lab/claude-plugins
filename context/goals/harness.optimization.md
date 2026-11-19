@@ -89,7 +89,7 @@ commits.
 
 ## Progress
 
-slices 2/2 committed (slices 3–5 run at SHIP and sync) · standards — · spec — · editor —
+slices 2/2 committed (slices 3–5 run at SHIP and sync) · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
@@ -173,6 +173,15 @@ slices 2/2 committed (slices 3–5 run at SHIP and sync) · standards — · spe
   other sessions (plan).
 - release: the roadmap header survives only as its undated plan in a coordinator note (plan).
 - release: the two deferred guards are recorded in `tool-based-skills.md`, not the roadmap (plan).
+- release: a `rec:` gives its reason and a question restates the fact it leans on, because the
+  self-contained-questions grader failed runs that lacked them (build).
+- release: the 100-column wrap is stated in `behavior/planning.md` as well as
+  `references/briefs.md`, because line-width passed every run only once planning.md stated it
+  (build).
+- release: the configuration example's lint-context fetch pins `marathon/v0.19.0`, the first tag
+  that ships lint-context (build).
+- release: the release-heading test inserts its Unreleased heading above an older fixed release,
+  so it doesn't depend on the release under way (build).
 
 ## Pending edits
 
@@ -181,6 +190,3 @@ slices 2/2 committed (slices 3–5 run at SHIP and sync) · standards — · spe
 - standards-lab · `context/roadmap.toml`: at release's sync, move the header narrative into
   notes, drop the section dividers, and move each goal-attached comment into the note it cites,
   or its goal's note when it cites none (harness-standards).
-- standards-lab · `context/roadmap.toml`: backlog notes on `v1.harness.tooling`: a hook refusing a
-  chained `gh pr merge` or `git push`, and a required `check` status on claude-plugins' main once
-  bookkeeping lands by pull request (harness-standards).
