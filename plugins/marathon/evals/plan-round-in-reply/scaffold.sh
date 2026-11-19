@@ -4,10 +4,12 @@
 # The task's note leaves two decisions open, the publishing format and the audience, so a
 # correct PLAN round 1 asks at least two questions. Offline: it runs only bash, git, and
 # coreutils. The harness runs it with the working directory as cwd and a scratch HOME whose
-# .gitconfig names the committer.
+# .gitconfig names the committer. The project's goal names its repository by the working
+# directory, as a standalone project's does. Its .claude/settings.json is there for the planner
+# and the fixture's realism: eval runs with --setting-sources user, so the session never loads it.
 set -euo pipefail
 
-standalone_repo_named_by_its_directory=$(basename "$PWD")
+repo=$(basename "$PWD")
 
 mkdir -p .claude context/roadmap runbooks scripts
 
@@ -33,8 +35,7 @@ cat >.gitignore <<'EOF'
 .claude/briefs/
 EOF
 
-settings_never_loaded_under_setting_sources_user=.claude/settings.json
-cat >"$settings_never_loaded_under_setting_sources_user" <<'EOF'
+cat >.claude/settings.json <<'EOF'
 {
   "plansDirectory": "./.claude/plans",
   "permissions": {
@@ -128,8 +129,8 @@ EOF
 cat >context/roadmap/publish.toml <<EOF
 name = "The handbook published"
 summary = "Readers reach the current runbooks during an incident without cloning the repository."
-repos = ["$standalone_repo_named_by_its_directory"]
-root = "$standalone_repo_named_by_its_directory"
+repos = ["$repo"]
+root = "$repo"
 order = ["first-edition"]
 criteria = ["A first edition is published in the chosen format to the chosen audience."]
 context = ["context/publishing.md"]

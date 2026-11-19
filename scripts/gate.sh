@@ -6,6 +6,10 @@
 # when both pass. It is a development-time command and CI never runs it, since
 # the eval suite runs paid claude sessions on the caller's credential.
 #
+# The suite passes when every case scores 1.0 over its three runs, against the
+# plugin alone (--ablation none); it builds its fixtures without a prompt
+# (--scaffold --trust-plugin) and keeps its results local (--no-publish).
+#
 # A plugin with no eval directory, or one holding no case, releases on the
 # check alone, and the gate says so on stderr. A malformed tag, or one naming no
 # plugin under plugins/, fails the gate rather than passing it unchecked.
@@ -41,11 +45,7 @@ if [ -z "$cases_outside_results" ]; then
   exit 0
 fi
 
-every_case_perfect_over_three_runs=(--threshold 1.0 --runs 3)
-against_the_plugin_alone=(--ablation none)
-scaffold_without_prompting=(--scaffold --trust-plugin)
-keep_results_local=(--no-publish)
-claude plugin eval "$dir" "${every_case_perfect_over_three_runs[@]}" \
-  "${against_the_plugin_alone[@]}" "${scaffold_without_prompting[@]}" "${keep_results_local[@]}" ||
+claude plugin eval "$dir" --threshold 1.0 --runs 3 --ablation none --scaffold \
+  --trust-plugin --no-publish ||
   fail "the $plugin eval suite failed, so $tag is held"
 echo "gate: $tag passes."

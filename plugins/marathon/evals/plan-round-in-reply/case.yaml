@@ -10,6 +10,8 @@ description: >-
   under `claude plugin eval` 2.1.289 it runs as `claude -p --permission-mode dontAsk` with no
   permission-prompt tool, which drops AskUserQuestion, EnterPlanMode, and ExitPlanMode, so it can't
   reproduce the original failure. Its AskUserQuestion grader stays for when eval offers that tool.
+  It allows no Bash: the fixture declares no currency command and no remote, so round 1 needs only
+  reads.
 tags: [plan, plan-round]
 context:
   scaffold_script: scaffold.sh
