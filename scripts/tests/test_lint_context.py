@@ -222,6 +222,26 @@ class LintContextTest(unittest.TestCase):
             "keep one comment that points to the format"
         )
 
+    def test_goal_file_carries_no_comments(self):
+        strings = (
+            "repos = []\n"
+            'summary = """\n# inside a basic string\\\n"""\n'
+            "proof = '''\n# inside a literal string\n'''\n"
+            'name = "# not a comment"\n'
+        )
+        self.write("context/roadmap/goal.toml", strings)
+        self.assert_clean()
+        self.write(
+            "context/roadmap/goal.toml",
+            "# a note\n" + strings + '  # indented\nroot = "." # trailing\n',
+        )
+        fix = "comment; move the note into the goal's context note"
+        self.assert_fails(
+            f"context/roadmap/goal.toml:1: {fix}",
+            f"context/roadmap/goal.toml:10: {fix}",
+            f"context/roadmap/goal.toml:11: {fix}",
+        )
+
     def test_goal_file_writes_repos(self):
         self.write("context/roadmap/goal.toml", 'name = "Goal"\n')
         self.assert_fails(

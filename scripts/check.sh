@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Repository consistency checks, run by .github/workflows/ci.yml and runnable locally: each
-# plugin's versions agree, the marketplace sources resolve, claude validates every plugin and
+# plugin's versions agree, its CHANGELOG's release headings carry only their version and it
+# defines no link references, the marketplace sources resolve, claude validates every plugin and
 # the marketplace (a missing claude fails the check), the plugins' markdown has no @-include
 # lines and its links and backtick file citations resolve, the word budgets in
-# scripts/budgets.txt hold, every skill description fits in 1,024 characters, and lint-context
-# and scripts/tests pass.
+# scripts/budgets.txt hold, every skill description fits in 1,024 characters, every marathon
+# extension skill declares user-invocable: false, and lint-context and scripts/tests pass.
 set -uo pipefail
 
 fail=0
@@ -23,6 +24,14 @@ for plugin in plugins/*/; do
     err "$name: plugin.json version $version != CHANGELOG top heading" \
       "${changelog_top_version:-<none>};" \
       "give ${plugin}CHANGELOG.md a top '## v$version' heading or correct plugin.json"
+
+  while IFS=: read -r line heading; do
+    err "${plugin}CHANGELOG.md:$line: release heading '$heading' carries more than its version;" \
+      "write it as '## vX.Y.Z' or '## Unreleased', leaving dates and links to the GitHub release"
+  done < <(grep -nP '^## ' "${plugin}CHANGELOG.md" | grep -vP '^\d+:## (v\d+\.\d+\.\d+|Unreleased)$')
+  while IFS=: read -r line _; do
+    err "${plugin}CHANGELOG.md:$line: link reference definition; write the link inline instead"
+  done < <(grep -nP '^ {0,3}\[[^\]]+\]:' "${plugin}CHANGELOG.md")
 
   for skill in "$plugin"skills/*/SKILL.md; do
     skill_version=$(grep -m1 -oP '^Version: \K[0-9]+\.[0-9]+\.[0-9]+$' "$skill")
@@ -241,6 +250,22 @@ for skill in plugins/*/skills/*/SKILL.md; do
   [ "$description_length" -le 1024 ] ||
     err "$skill: description is $description_length characters, over the 1024 limit;" \
       "shorten it to 1024 characters or fewer"
+done
+
+front_matter_declares_not_user_invocable() {
+  awk '
+    NR == 1 { next }
+    /^---$/ { exit }
+    /^user-invocable:[ \t]*false[ \t]*$/ { found = 1 }
+    END { exit !found }
+  ' "$1"
+}
+
+for skill in plugins/*/skills/*/SKILL.md; do
+  description_as_yaml_reads_it "$skill" | grep -qF "marathon extension" || continue
+  front_matter_declares_not_user_invocable "$skill" ||
+    err "$skill: a marathon extension that users can invoke;" \
+      "add 'user-invocable: false' to its front matter"
 done
 
 working_tree_lint_context=plugins/marathon/bin/lint-context

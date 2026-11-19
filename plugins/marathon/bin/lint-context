@@ -5,7 +5,8 @@ Every file under context/ is of a known kind: the context README, a note, a
 goal record, the roadmap index, or a goal file. Notes, READMEs, goal-record
 sections, and roadmap entries stay within fixed word budgets, where a word is a
 whitespace-separated token, as wc -w counts it. The roadmap keeps the shape
-marathon's references/manifest.md gives it. The context README's capability
+marathon's references/manifest.md gives it, and its goal files carry no
+comments. The context README's capability
 map lists each feature as built or planned, and every relative markdown link in
 the root README, context/, and docs/ resolves. Prints one line per failure and
 exits nonzero if there is any.
@@ -32,6 +33,7 @@ GOAL_ENTRY_BUDGETS = (("summary", 100),)
 TASK_ENTRY_BUDGETS = (("summary", 100), ("proof", 40))
 CRITERION_BUDGET = 60
 ENTRY_FIX = "move detail to the goal's context note"
+TOML_STRING_DELIMITERS = ('"""', "'''", '"', "'")
 PARSE_ERRORS = (tomllib.TOMLDecodeError, UnicodeDecodeError)
 RECORD_TASK = re.compile(r"\d+\. \[[ x]\] (\S+)$")
 CAPABILITY_MAP = "## Capability map"
@@ -188,6 +190,44 @@ def check_index(root, files):
                     f"{rel}: '{key}' is not an array; "
                     "write it as an array of goal slugs, [] for none"
                 )
+
+
+def toml_comment_line_numbers(text):
+    number, string_delimiter, i = 1, None, 0
+    while i < len(text):
+        char = text[i]
+        if char == "\n":
+            number += 1
+        if string_delimiter is None:
+            if char == "#":
+                yield number
+                end = text.find("\n", i)
+                i = len(text) if end == -1 else end
+                continue
+            opening = next((d for d in TOML_STRING_DELIMITERS if text.startswith(d, i)), None)
+            if opening:
+                string_delimiter = opening
+                i += len(opening)
+                continue
+        elif char == "\\" and string_delimiter[0] == '"':
+            number += text.startswith("\n", i + 1)
+            i += 2
+            continue
+        elif text.startswith(string_delimiter, i):
+            i += len(string_delimiter)
+            string_delimiter = None
+            continue
+        elif char == "\n" and len(string_delimiter) == 1:
+            string_delimiter = None
+        i += 1
+
+
+def check_goal_file_comments(root, files):
+    for rel in files:
+        if context_kind(rel) != "goal-file":
+            continue
+        for number in toml_comment_line_numbers(read(root / rel)):
+            yield f"{rel}:{number}: comment; move the note into the goal's context note"
 
 
 def labeled_criteria_statements(criteria):
@@ -403,6 +443,7 @@ CHECKS = (
     check_budgets,
     check_toml_parses,
     check_index,
+    check_goal_file_comments,
     check_entry_budgets,
     check_repos,
     check_order,

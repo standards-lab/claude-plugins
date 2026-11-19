@@ -190,6 +190,61 @@ class CheckTest(unittest.TestCase):
             "shorten it to 1024 characters or fewer$",
         )
 
+    def test_extension_skill_must_not_be_user_invocable(self):
+        skill = f"{EXTENSION}/skills/marathon-architecture/SKILL.md"
+        self.assertEqual(self.check(), (0, []))
+        self.replace(skill, "user-invocable: false\n", "")
+        code, lines = self.check()
+        self.assertEqual(code, 1)
+        self.assertEqual(
+            lines,
+            [
+                f"FAIL: {skill}: a marathon extension that users can invoke; "
+                "add 'user-invocable: false' to its front matter"
+            ],
+        )
+
+    def test_release_heading_carries_only_its_version(self):
+        changelog = f"{EXTENSION}/CHANGELOG.md"
+        self.replace(changelog, "## v0.2.2\n", "## v0.2.2 - 2026-01-02\n")
+        self.replace(changelog, "## v0.2.1\n", "## [v0.2.1](https://example.com/v0.2.1)\n")
+        self.replace(changelog, "## Unreleased\n", "## Unreleased (next)\n")
+        numbered = {
+            heading: number
+            for number, heading in enumerate((self.root / changelog).read_text().splitlines(), 1)
+        }
+        fix = (
+            "carries more than its version; write it as '## vX.Y.Z' or '## Unreleased', "
+            "leaving dates and links to the GitHub release"
+        )
+        code, lines = self.check()
+        self.assertEqual(code, 1)
+        self.assertEqual(
+            lines,
+            [
+                f"FAIL: {changelog}:{numbered[heading]}: release heading '{heading}' {fix}"
+                for heading in (
+                    "## Unreleased (next)",
+                    "## v0.2.2 - 2026-01-02",
+                    "## [v0.2.1](https://example.com/v0.2.1)",
+                )
+            ],
+        )
+
+    def test_changelog_defines_no_link_references(self):
+        changelog = f"{EXTENSION}/CHANGELOG.md"
+        line = len((self.root / changelog).read_text().splitlines()) + 2
+        self.append(changelog, "\n[v0.1.0]: https://example.com/v0.1.0\n")
+        code, lines = self.check()
+        self.assertEqual(code, 1)
+        self.assertEqual(
+            lines,
+            [
+                f"FAIL: {changelog}:{line}: link reference definition; "
+                "write the link inline instead"
+            ],
+        )
+
     def test_missing_claude_is_the_only_failure(self):
         path_without_claude = self.root.parent / "tools"
         path_without_claude.mkdir()
