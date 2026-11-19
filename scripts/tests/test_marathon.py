@@ -77,6 +77,10 @@ class MarathonTest(unittest.TestCase):
             self.marathon("ci", "x y", "$z;"), (3, "ci 2,<x y><$z;>", "")
         )
 
+    def test_signaled_command_exits_as_a_shell_reports_it(self):
+        self.configure('[project]\ncheck = "kill -TERM $$"\n')
+        self.assertEqual(self.marathon("check"), (143, "", ""))
+
     def test_command_runs_from_the_repository_root(self):
         subdir = self.root / "sub/dir"
         subdir.mkdir(parents=True)
