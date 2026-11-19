@@ -72,9 +72,7 @@ merge command with `;` for `&&`, and #49 merged with CI red. No rule on main pre
    never retyped. The steps that run a configured command call it, and the configuration
    reference documents it. No word budget rises.
 8. lint-context fails on a comment in a roadmap goal file, naming the fix.
-9. claude-plugins' main requires the `check` status in a ruleset no actor can bypass, so a pull
-   request whose check is red can't merge.
-10. marathon's Unreleased section records:
+9. marathon's Unreleased section records:
     - the `marathon` command, as Added
     - the uncommented examples
     - the goal-file rule
@@ -82,12 +80,12 @@ merge command with `;` for `&&`, and #49 merged with CI red. No rule on main pre
 
     None carries an extension-contract marker. marathon-architecture's Unreleased section
     records its uncommented example.
-11. The goal record gains a pending edit for release's sync:
+10. The goal record gains a pending edit for release's sync:
     - the coordinator roadmap's header narrative goes to notes
     - its dividers go
     - each goal-attached comment moves to the note it cites, or to its goal's note when it
       cites none
-12. The check passes, every word budget holds with none changed, and claude-plugins' currency
+11. The check passes, every word budget holds with none changed, and claude-plugins' currency
     command reports nothing.
 
 **Test seams**
@@ -101,7 +99,6 @@ merge command with `;` for `&&`, and #49 merged with CI red. No rule on main pre
   code before and after the comment trim.
 - This task's own standards review, which applies the branch's STANDARDS.md; its commits cite
   the lines they apply.
-- The ruleset, read back from GitHub: `check` required, no bypass actors.
 
 **Slices**
 
@@ -122,12 +119,11 @@ claude-plugins only, with no upgrade slice.
    an Added entry.
    Demo: the merge fixture runs exactly as declared, a chained value keeps its `&&`, and every
    read-first set stays within budget.
-6. main's ruleset requires `check` with no bypass.
-   Demo: the ruleset read back, and this task's own pull request merges only once green.
 
 **Out of scope**
 
 - A hook that refuses a chained `gh pr merge` or `git push`: deferred to the backlog.
+- A required `check` status on main: dropped at slice 6 (Decisions).
 - A rule to run each git and gh command in its own call: left to the architect's user-scope
   configuration.
 - Folding lint-context or other tools under `marathon` as subcommands: `v1.harness.tooling`.
@@ -140,12 +136,11 @@ claude-plugins only, with no upgrade slice.
 **Door**
 
 Two-way. Nothing is released, every change is a revertible commit, and `marathon` reaches no
-session until `release`. The ruleset sits outside the diff and binds every claude-plugins pull
-request once set, other sessions' included. Removing it reverses it.
+session until `release`.
 
 ## Progress
 
-slices 0/6 committed · standards — · spec — · editor —
+slices 5/5 committed · standards ✓ · spec — · editor —
 
 ## Decisions
 
@@ -197,9 +192,11 @@ slices 0/6 committed · standards — · spec — · editor —
   was deferred to harness.adoption (plan).
 - harness-standards: script function doc comments and docstrings were removed; names carry
   their meaning (plan).
-- harness-standards: main requires a non-bypassable `check` status. `[remote] merge` keeps
-  `gh pr checks --watch &&`; `--auto` was rejected because auto-merge is off and it returns
-  before the merge (plan).
+- harness-standards: `[remote] merge` keeps `gh pr checks --watch &&`; `--auto` was rejected
+  because auto-merge is off and it returns before the merge (plan).
+- harness-standards: a required `check` status on main was dropped: with no bypass it rejects the
+  goal-record bookkeeping commits marathon pushes to main, and with the admin bypass it may not
+  stop an admin's merge; `marathon merge` ends the retyping that merged #49 red (escalation).
 - harness-standards: configured commands run through `marathon <key>`, built here rather than
   deferred to v1.harness.tooling. `marathon-run`, `marathon-exec`, `marathon-command`, and
   per-table tools were rejected; the root command takes the key as its subcommand (plan).
@@ -221,3 +218,6 @@ slices 0/6 committed · standards — · spec — · editor —
 - standards-lab · `context/roadmap.toml`: at release's sync, move the header narrative into notes, drop the section
   dividers, and move each goal-attached comment into the note it cites, or its goal's note when it
   cites none (harness-standards).
+- standards-lab · `context/roadmap.toml`: backlog notes on `v1.harness.tooling`: a hook refusing a
+  chained `gh pr merge` or `git push`, and a required `check` status on claude-plugins' main once
+  bookkeeping lands by pull request (harness-standards).
