@@ -2,8 +2,7 @@
 
 These are the formats marathon writes for the architect, plus the slice brief it writes for an
 implementer. Each one the architect reads is read in the terminal, fits on about one screen, and
-leads with what needs a decision. Agents look up facts themselves and never ask the architect for
-them; the architect makes the decisions.
+leads with what needs a decision. Agents look up facts; the architect makes decisions.
 
 Every format is markdown, hard-wrapped at 100 characters in the reply, and code fences appear only
 around code. Each template below is shown as a blockquote so it renders as it will in the reply;
@@ -14,8 +13,7 @@ the reply drops the `> `.
 PLAN asks its questions in rounds. A round holds every question whose prerequisites are already
 settled, and the architect answers them all at once, inline. A question that depends on the answer
 to another open question waits for the next round; it is never asked conditionally, as in "only if
-1 is yes". The round is presented as `behavior/planning.md`, "Ask for decisions, never for
-facts", says.
+1 is yes". The round is presented as `behavior/planning.md` says.
 
 > ## PLAN ROUND 1 · v1.ai · task harness-adapters
 >
@@ -45,16 +43,18 @@ facts", says.
 >
 > **reply:** "1 ok, 2 ok, 3 yes but ..."
 
+- Hard-wrap every line at 100 characters, indentation and markup included, as the template
+  does; wrap the planner's draft before printing it.
 - Number every question.
 - Name each question's subject in its own words, with the options it chooses between, so the
   architect can decide it from the question, its **rec:**, and its **changes:** alone. All three
   name the things they refer to and never point elsewhere for them: not "this", "option B",
-  "above", **Facts found**, another question, a term defined outside the question, or a file to
-  open.
-- Decide one thing per question. When two choices are coupled, ask the one that settles the
-  other; the dependent choice waits for the next round. Never bundle two decisions into lettered
-  combinations.
-- Give every question a **rec:**, and a **changes:** line saying what the answer changes.
+  "the three files above", **Facts found**, another question, a term defined outside the
+  question, or a file to open. A fact the question leans on is restated in it.
+- Decide one thing per question. When two choices are coupled, ask first the one that settles
+  the other. Never bundle two decisions into lettered combinations.
+- Give every question a **rec:** with its reason, and a **changes:** line saying what the answer
+  changes.
 - Cite each fact with its source under **Facts found**.
 - Round 1 carries a **Currency** list after **Facts found**, per repository the task touches: each
   trailing item as its currency command reports it, with a one-line summary of its release notes,
@@ -104,8 +104,7 @@ code. The goal record keeps it (`mechanics/goal-record.md`).
   command exits 0, or reports only held items, with its check passing. The task's own slices
   build on them.
 - **Door** is one-way when the task plans a release, since a pushed tag reaches people outside
-  the repositories. The rest of the task may still be two-way, and the line says which part is
-  which.
+  the repositories. The line says which parts of the task are one-way.
 - **Release** appears only when the task releases. It lists each tag in its repository's own
   naming, such as `marathon/v0.16.1`, or, in a Go repository, `v1.4.0` at the root and
   `<submodule>/v1.4.0` for a sub-module, one tag per artifact. The plan rounds settle it; it is

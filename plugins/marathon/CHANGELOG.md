@@ -166,6 +166,13 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   commit's runs. The `plan-round-in-reply` fixture writes the same uncommented `marathon.toml`
   and `.gitignore`, and its graders' front matter carries no comments: what each regex matches
   moves into the case's description, and the AskUserQuestion grader's note into its body.
+- **A plan round is wrapped before it is printed** (`references/briefs.md`, Plan round;
+  `behavior/planning.md`; `agents/planner.md`): the round's rules now say to hard-wrap every line
+  at 100 characters, indentation and markup included, and to wrap the planner's draft before
+  printing it, and the planner returns the round already wrapped. Sessions had printed long facts
+  and **rec:** lines unwrapped, failing `plan-round-in-reply`'s line-width grader in four of six
+  runs. A question also restates any fact it leans on, never pointing back with a phrase like
+  "the three files above", and its **rec:** gives its reason.
 
 ## v0.18.0
 
