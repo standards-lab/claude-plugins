@@ -117,11 +117,11 @@ coordinator during BUILD. When the context fills, hand off (`references/build.md
 2. Update the goal record: check the task, add its decisions, set State to `idle` and Task to
    none, and clear Progress.
 3. Fire `on-record` (`mechanics/hooks.md`), then commit the record on the task's branch.
-4. Publish each touched repository's branch with `marathon publish`, lowest layer
-   first, using the brief file as the body (for GitHub, `--body-file`). A repository with no
+4. Publish each touched repository's branch with `marathon publish`, lowest layer first, using
+   the brief file as the body (for GitHub, `--body-file`). A repository with no
    `[remote] publish` merges its branch locally instead ("Branches and pull requests").
-5. Merge each one with `marathon merge`, lowest layer first, once its checks pass.
-   Without a merge command, or when a check fails, set State to `handoff` with the next move
+5. Merge each one with `marathon merge`, lowest layer first, once its checks pass. Without a
+   merge command, or when a check fails, set State to `handoff` with the next move
    ("merge" or the failing check), commit it on the branch, tell the architect, and stop. When
    the task brief has a Release line, merge and tag one repository at a time instead
    (`mechanics/releasing.md`).
@@ -152,8 +152,8 @@ request, in each repository it changes.
 Each branch starts from the freshly pulled default branch. The architect's approval of the
 outcome, the session brief, or the ticked findings authorizes publishing and merging. Each
 repository publishes with `marathon publish` and merges with `marathon merge` once its checks
-pass, lowest layer first, then switches back to its default branch,
-pulls, and deletes the local branch. A merge that can't happen leaves the branch checked out,
+pass, lowest layer first, then switches back to its default branch, pulls, and deletes the local
+branch. A merge that can't happen leaves the branch checked out,
 which holds the repository until it merges: tell the architect and stop.
 
 A project with no `[remote] publish` branches the same way and, once the architect approves,

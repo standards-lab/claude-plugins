@@ -62,8 +62,9 @@ merge command with `;` for `&&`, and #49 merged with CI red. No rule on main pre
    eval fixture's `marathon.toml` and `.gitignore` match it.
 6. `marathon <key> [args]` runs the named command from the current repository's marathon
    configuration. The key is one of check, currency, gate, publish, merge, or ci.
-   - It runs the command through bash exactly as declared, appends any arguments
-     shell-quoted, and runs a multi-line value as one script.
+   - It runs the command through bash exactly as declared. A single-line value gets any
+     arguments appended, shell-quoted; a multi-line value runs as one script and gets them as
+     positional parameters.
    - It exits with the command's status.
    - It runs only declared commands. An unset key, an unknown key, or a missing configuration
      fails and names the fix.
@@ -140,7 +141,7 @@ session until `release`.
 
 ## Progress
 
-slices 5/5 committed · standards ✓ · spec — · editor —
+slices 5/5 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
@@ -184,14 +185,9 @@ slices 5/5 committed · standards ✓ · spec — · editor —
   were rejected as the prose that goes stale (plan).
 - harness-standards: staged execution and `@`-loading were dropped from the old harness pages as
   superseded (plan).
-- harness-standards: the extension `user-invocable: false` rule and the CHANGELOG heading rule
-  are checks, not STANDARDS lines (plan).
-- harness-standards: a 100-column wrap check was left for a retro (plan).
 - harness-standards: the comment near-ban covers TOML and YAML configuration, which drifts like
   source. The convention lives in the STANDARDS pointer; amending architecture's comments page
   was deferred to harness.adoption (plan).
-- harness-standards: script function doc comments and docstrings were removed; names carry
-  their meaning (plan).
 - harness-standards: `[remote] merge` keeps `gh pr checks --watch &&`; `--auto` was rejected
   because auto-merge is off and it returns before the merge (plan).
 - harness-standards: a required `check` status on main was dropped: with no bypass it rejects the
@@ -210,14 +206,23 @@ slices 5/5 committed · standards ✓ · spec — · editor —
   the manifest and is not a comment checker for source (plan).
 - harness-standards: release's sync moves goal-attached roadmap comments into the note each cites;
   a block-by-block judgement pass was rejected (plan).
+- harness-standards: `marathon` reads `.claude/marathon.toml` at the git top-level and runs the
+  command from there, so a step can call it from any subdirectory (build).
+- harness-standards: `marathon` exits 2 on a usage or configuration failure; otherwise it exits
+  with the command's status, or 128 plus the signal number when a signal ends the command (build).
+- harness-standards: a multi-line value gets the arguments as positional parameters, not appended.
+  Any value that holds a newline is multi-line, including one written with a TOML `\n` escape
+  (build).
+- harness-standards: an eval case's description says what each grader matches, because a
+  grader's body is its pattern or criteria and its front matter carries no comments (build).
 
 ## Pending edits
 
 - standards-lab · `.claude/marathon.toml`: set `[project] check` to `lint-context`, applied at
   `release`'s sync after the roadmap split (content-budgets).
-- standards-lab · `context/roadmap.toml`: at release's sync, move the header narrative into notes, drop the section
-  dividers, and move each goal-attached comment into the note it cites, or its goal's note when it
-  cites none (harness-standards).
+- standards-lab · `context/roadmap.toml`: at release's sync, move the header narrative into
+  notes, drop the section dividers, and move each goal-attached comment into the note it cites,
+  or its goal's note when it cites none (harness-standards).
 - standards-lab · `context/roadmap.toml`: backlog notes on `v1.harness.tooling`: a hook refusing a
   chained `gh pr merge` or `git push`, and a required `check` status on claude-plugins' main once
   bookkeeping lands by pull request (harness-standards).

@@ -6,10 +6,9 @@ goal record, the roadmap index, or a goal file. Notes, READMEs, goal-record
 sections, and roadmap entries stay within fixed word budgets, where a word is a
 whitespace-separated token, as wc -w counts it. The roadmap keeps the shape
 marathon's references/manifest.md gives it, and its goal files carry no
-comments. The context README's capability
-map lists each feature as built or planned, and every relative markdown link in
-the root README, context/, and docs/ resolves. Prints one line per failure and
-exits nonzero if there is any.
+comments. The context README's capability map lists each feature as built or
+planned, and every relative markdown link in the root README, context/, and
+docs/ resolves. Prints one line per failure and exits nonzero if there is any.
 """
 
 import re

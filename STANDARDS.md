@@ -11,9 +11,9 @@ The judgement calls the standards-reviewer applies to claude-plugins, beyond wha
 - An instruction that changes no behavior is cut.
 - Each change gets an Unreleased entry; a change to the extension contract bumps the floor.
 - An eval case comes from an observed failure.
-- `architecture/principles/comments.md`: scripts, tests, and every configuration file (TOML, YAML, `.gitignore`), not just source; a data file's header is its package documentation.
+- `architecture/principles/comments.md` governs scripts, tests, and every configuration file (TOML, YAML, `.gitignore`), not just source; a data file's header is its package documentation.
 - `architecture/principles/rolling-currency.md`
 - `architecture/principles/independent-releases.md`
 - `architecture/principles/context-architecture.md`
 - `architecture/principles/minimal-footprint.md`
-- `plugins/marathon/skills/marathon/references/build.md` "Checks come first": the repository's scripts; a mechanical rule goes in the check, and a failure message names its fix.
+- `plugins/marathon/skills/marathon/references/build.md`, "Checks come first", governs the repository's scripts: a mechanical rule goes in the check, and a failure message names its fix.

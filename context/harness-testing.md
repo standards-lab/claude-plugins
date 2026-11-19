@@ -8,6 +8,8 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 `scripts/check.sh` runs in CI on every push and locally. It checks that:
 
 - each plugin's manifest version, top CHANGELOG heading, and skill `Version:` lines agree
+- each CHANGELOG release heading carries only `## vX.Y.Z` or `## Unreleased`, and no CHANGELOG
+  holds a link reference definition
 - no plugin's markdown contains an `@`-include line, which Claude Code expands only in CLAUDE.md
 - the `./` and `../` links in the plugins' markdown resolve
 - the backtick file citations in the plugins' markdown resolve, including `${CLAUDE_PLUGIN_ROOT}`
@@ -20,10 +22,12 @@ and a release gate runs the check and the plugin's eval suite before each tag.
   `scripts/budgets.txt`. A command's set is its skill's SKILL.md, the playbook, and every file
   reached through "Read first" lists from there. A file with no budget fails.
 - each skill description is at most 1,024 characters
+- each skill whose description calls it a marathon extension declares `user-invocable: false`
 - each marketplace source points to a plugin
 - `claude plugin validate --strict` passes for each plugin and the marketplace
 - marathon's `lint-context`, run from the working tree, passes on this repository's `context/`,
-  READMEs, and links, and its tests in `scripts/tests/` pass
+  READMEs, and links, and the tests in `scripts/tests/` pass, for `lint-context`, `marathon`, and
+  the check itself
 
 CI installs Claude Code at an exact version, its latest release, pinned in
 `.github/workflows/ci.yml`. `scripts/currency.sh` reports the pin when it trails npm's `latest`
