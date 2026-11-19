@@ -141,6 +141,10 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   longer lists what the reviewers changed; `retro` reads that from their commits. To migrate,
   expect Verify in place of Evidence in session briefs, and no reviewers' changes in Decided
   without you.
+- **The standards-reviewer applies the repository's comment rule** (`agents/standards-reviewer.md`).
+  Its Comments sweep flags and fixes each comment that the comment rule declared in the
+  repository's `STANDARDS.md`, or an architecture page it points to, doesn't permit. Where the
+  repository declares no comment rule, it flags a comment that excuses a workaround, as before.
 
 ## v0.18.0
 
