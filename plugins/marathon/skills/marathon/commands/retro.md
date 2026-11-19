@@ -19,8 +19,8 @@ For the range, read:
 - the commits the standards-reviewer made, which show what the implementer kept missing
 - the notes, `context/README.md`, and `docs/` pages the range touched, for drift
 - when present, the local Claude Code transcripts of the range's sessions, under
-  `~/.claude/projects/`, as optional evidence. They show the tool calls and their cost, which
-  tool-economy findings cite.
+  `~/.claude/projects/`. They show the tool calls and their cost, which tool-economy findings
+  cite.
 
 A repository whose transcripts are missing is named in the retro's header, and the retro goes on
 without them.
@@ -39,9 +39,9 @@ Route each finding to the cheapest layer that would have caught it, in this orde
 4. **skill/profile**: a change to a skill or a subagent profile
 5. **context**: a note to cull, sharpen, or write, or a pointer to add
 
-Look also for two kinds of finding, routed the same way: **tool economy**, a costly tool call that
-a cheaper call or a tool could replace, and **instruction trim**, an instruction that changes no
-behavior, whose proposed change is to cut it.
+Also look for two kinds of finding and route them through the same layers: **tool economy**, a
+costly tool call that a cheaper call or a tool could replace, and **instruction trim**, an
+instruction that changes no behavior, whose proposed change is to cut it.
 
 When the architecture layer is enabled, the drift pass also checks that every pointer in each
 touched repository's `STANDARDS.md` resolves to a page in the layer; a broken pointer routes to

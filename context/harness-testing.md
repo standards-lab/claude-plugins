@@ -12,8 +12,10 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 - the `./` and `../` links in the plugins' markdown resolve
 - the backtick file citations in the plugins' markdown resolve, including `${CLAUDE_PLUGIN_ROOT}`
   paths and paths another plugin owns, as in marathon's `references/briefs.md`. A bare path counts
-  as a citation only when its first segment is a directory in a plugin or skill root, and a
-  CHANGELOG's released sections are skipped.
+  as a citation only when its first segment is a directory in a plugin or skill root; a first
+  segment one edit from such a directory fails as a typo. A citation inside a skill also resolves
+  against its plugin's root, and a CHANGELOG's released sections are skipped.
+- each command playbook has exactly one "Read first" line
 - each command's read-first set and each agent profile stay within the word budget recorded in
   `scripts/budgets.txt`. A command's set is its skill's SKILL.md, the playbook, and every file
   reached through "Read first" lists from there. A file with no budget fails.
@@ -25,7 +27,8 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 
 CI installs Claude Code at an exact version, its latest release, pinned in
 `.github/workflows/ci.yml`. `scripts/currency.sh` reports the pin when it trails npm's `latest`
-dist-tag. The check is deterministic and runs no model.
+dist-tag. The check is deterministic and runs no model. Each failure message names what to change
+for the check to pass.
 
 ## Per release: the gate
 

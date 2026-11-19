@@ -27,12 +27,13 @@ repository is developed with marathon, so the workflow runs against its own sour
 - **Tooling layer** (planned): deterministic tools the skills call in place of procedure written
   as prose. See [tool-based-skills.md](tool-based-skills.md).
 - **Harness testing** (built): `scripts/check.sh` runs on every push. It checks consistency,
-  rejects `@`-include lines, resolves file links and citations, holds each command's read-first
-  set and each agent profile to a word budget, caps skill descriptions at 1,024 characters, and
-  runs `claude plugin validate`. It also runs marathon's `lint-context` from the working tree,
-  with its tests. Before each tag, the release gate, `scripts/gate.sh`, runs the check and the
-  plugin's `claude plugin eval` suite. marathon's suite has one case, drawn from an observed
-  failure. See [harness-testing.md](harness-testing.md).
+  rejects `@`-include lines, resolves file links and citations, and fails a citation directory one
+  edit from a real one. It requires one "Read first" line per command playbook, holds each
+  command's read-first set and each agent profile to a word budget, caps skill descriptions at
+  1,024 characters, and runs `claude plugin validate`. It also runs marathon's `lint-context` from
+  the working tree, with its tests. Each failure message names its fix. Before each tag, the
+  release gate, `scripts/gate.sh`, runs the check and the plugin's `claude plugin eval` suite.
+  marathon's suite has one case, drawn from an observed failure. See [harness-testing.md](harness-testing.md).
 - **Marketplace host** (built): the marketplace manifest,
   [.claude-plugin/marketplace.json](../.claude-plugin/marketplace.json), with each plugin
   versioned and released on its own.

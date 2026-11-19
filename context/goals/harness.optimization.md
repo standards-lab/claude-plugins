@@ -122,7 +122,7 @@ new section and routes reach no session before then.
 
 ## Progress
 
-slices 5/5 committed · standards ✓ · spec ✓ · editor —
+slices 5/5 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
@@ -147,29 +147,22 @@ slices 5/5 committed · standards ✓ · spec ✓ · editor —
   `v1.harness.tooling` (plan).
 - roadmap-layout: the coordinator's roadmap is split during this goal's final sync, which also
   moves the index's narrative header into notes; marathon 0.19.0 reads only the split layout (plan).
-- roadmap-layout: the plan-round eval scores 0.83–0.89 against the gate's 1.0 threshold on both
-  `main` and this branch, because the model's reply lines run past 100 characters; that predates
-  this task.
 - content-budgets: CI without the plugin fetches `lint-context` from the pinned `marathon/vX.Y.Z`
   tag; skipping when absent was rejected. The fetch can't be verified until `release` tags (plan).
 - content-budgets: budget options and per-repository overrides were rejected (plan).
-- content-budgets: standards-lab's check becomes `lint-context` at `release`'s sync, after the
-  roadmap split (plan).
-- content-budgets: no extension-contract marker, because no extension reads the files `lint-context`
-  checks.
-- content-budgets: `lint-context` skips dotfiles and dot directories under `context/`, looser than
-  the brief's "any other file fails".
-- content-budgets: a capability-map entry requires `: text` after its status, and the map section
-  allows no lead-in prose.
-- content-budgets: the editor's drops are listed under the session brief's "Decided without you".
-- retro-routes: retro reads redirects and escalations from a session-brief section kept in the
-  pull request body; a goal-record section (deleted at sync) and transcripts alone were rejected,
-  and pull request comments are dropped as empty in practice (plan).
-- retro-routes: transcripts are optional evidence; tool economy and instruction trim are finding
-  kinds, not route layers; a ticked design finding becomes a task, never a retro-branch change,
-  and proposes a goal when none owns the repository (plan).
-- retro-routes: a citation's first directory fails only one edit from a real one; an allowlist and
-  owner-marking were rejected. No retro eval case (plan).
+- retro-routes: retro reads redirects and escalations from the session brief in the pull request
+  body; a goal-record section, which sync deletes, and transcripts alone were rejected (plan).
+- retro-routes: tool economy and instruction trim are finding kinds, not route layers (plan).
+- retro-routes: a citation's first directory fails only when one edit from a real one; an
+  allowlist and owner-marking were rejected. No retro eval case (plan).
+- retro-routes: the rule that Progress records each redirect and escalation lives in
+  `mechanics/goal-record.md`; `references/briefs.md`, `mechanics/pipeline.md`, and
+  `references/build.md` point to it rather than restate it.
+- retro-routes: `near_dir` in `scripts/check.sh` catches one insertion, deletion, or
+  substitution, not a transposition, which is two edits.
+- retro-routes: `scripts/tests/test_check.py` runs the check on seeded copies of the repository,
+  with `claude` stubbed on PATH.
+- retro-routes: CI's Claude Code pin moved to 2.1.328 mid-task.
 
 ## Pending edits
 

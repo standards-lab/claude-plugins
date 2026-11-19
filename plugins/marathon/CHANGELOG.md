@@ -117,8 +117,9 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 - **Retro routes design first** (`commands/retro.md`): a design change that makes the mistake
   impossible now ranks ahead of a check that catches it. A ticked design finding becomes a task in
   the goal that owns the work, never a change on the retro branch, and proposes a goal when no
-  active goal owns the repository. Tool economy, a costly call a cheaper one could replace, and
-  instruction trim, an instruction that changes no behavior, are new kinds of finding.
+  active goal owns the repository. Two new kinds of finding join the routes: tool economy, a costly
+  call that a cheaper one could replace, and instruction trim, an instruction that changes no
+  behavior.
 - **A check's failure message names its fix** (`references/build.md`, "Checks come first"), and a
   proposed check carries its message. `lint-context`'s messages now say what to change.
 - **The session brief records redirects and escalations** (`references/briefs.md`, Session
@@ -127,7 +128,7 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   loses none. To migrate, expect the new section in session briefs.
 - **Retro reads the session briefs** (`commands/retro.md`): it gathers redirects and escalations
   from the merged pull requests' bodies and, when present, the sessions' local Claude Code
-  transcripts, instead of from goal-record Decisions, which the editor prunes, and pull request
+  transcripts. It no longer reads goal-record Decisions, which the editor prunes, or pull request
   comments.
 
 ## v0.18.0
