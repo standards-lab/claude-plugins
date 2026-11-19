@@ -1,8 +1,8 @@
 # goal · harness.optimization
 
-- **State:** building
-- **Task:** harness-standards
-- **Branch:** harness-standards
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
@@ -13,7 +13,7 @@
 5. [x] retro-routes
 6. [x] evidence-artifacts
 7. [x] comment-standard
-8. [ ] harness-standards
+8. [x] harness-standards
 9. [ ] release
 
 ## Task brief · harness.optimization · harness-standards
@@ -138,10 +138,6 @@ claude-plugins only, with no upgrade slice.
 
 Two-way. Nothing is released, every change is a revertible commit, and `marathon` reaches no
 session until `release`.
-
-## Progress
-
-slices 5/5 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
