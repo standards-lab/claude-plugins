@@ -202,8 +202,8 @@ the goal's root, which gitignores `.claude/briefs/`.
   changed, and each Decision the editor dropped (`mechanics/goal-record.md`). A drop the
   architect rejects is a redirect, and the session restores the line.
 - **Redirects and escalations** lists each BUILD escalation and each BRIEF redirect in the task,
-  one line each with the architect's answer, or reads "none". A brief written after a redirect
-  lists the earlier ones. Progress holds them (`mechanics/goal-record.md`).
+  one line each with the architect's answer, or reads "none". Progress holds them
+  (`mechanics/goal-record.md`).
 - **Merge danger** names the door type and the blast radius. A one-way door gets the close read.
   When the task brief has a Release line, Merge danger repeats its tags, which accepting the
   brief authorizes (`mechanics/releasing.md`).

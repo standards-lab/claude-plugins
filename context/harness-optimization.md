@@ -22,7 +22,7 @@ Read these sizes, in words, to judge the work:
 
 - The skill: SKILL.md links each file instead of `@`-including it, and each command's playbook
   opens with a "Read first" list of the files it needs. `start`'s read-first set, SKILL.md and the
-  playbook included, is 8,255 words against a budget of 8,300. `mechanics/pipeline.md` is about
+  playbook included, is 8,245 words against a budget of 8,300. `mechanics/pipeline.md` is about
   1,970 words, down from 2,715, since Releasing and RESUME moved to their own files.
 - The planner profile: 273 words, down from 554, since profiles cite the skill's rules instead of
   restating them.
@@ -72,5 +72,5 @@ A retro or `retro-routes` can take these up.
   because the model's reply lines run past 100 characters. `release` needs it fixed, or the
   threshold settled, before tagging.
 - A spike's `docs/` pages that link to its goal record break when sync deletes the record.
-- `start`'s and `intake`'s read-first sets sit 45 and 15 words under their budgets, so most edits
+- `start`'s and `intake`'s read-first sets sit 55 and 25 words under their budgets, so most edits
   to either need a budget change.

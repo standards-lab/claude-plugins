@@ -39,9 +39,9 @@ Route each finding to the cheapest layer that would have caught it, in this orde
 4. **skill/profile**: a change to a skill or a subagent profile
 5. **context**: a note to cull, sharpen, or write, or a pointer to add
 
-Look also for two kinds of finding, routed to the same layers: **tool economy**, a costly tool
-call that a cheaper call or a tool could replace, and **instruction trim**, an instruction that
-changes no behavior, routed to a cut.
+Look also for two kinds of finding, routed the same way: **tool economy**, a costly tool call that
+a cheaper call or a tool could replace, and **instruction trim**, an instruction that changes no
+behavior, whose proposed change is to cut it.
 
 When the architecture layer is enabled, the drift pass also checks that every pointer in each
 touched repository's `STANDARDS.md` resolves to a page in the layer; a broken pointer routes to
