@@ -138,7 +138,8 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   spec-reviewer writes and follows those steps and returns them in Verify's form, and Validate
   follows them, blocking BRIEF on a failing step (`references/build.md`). Decided without you no
   longer lists what the reviewers changed; `retro` reads that from their commits. To migrate,
-  expect Verify in place of Evidence in session briefs.
+  expect Verify in place of Evidence in session briefs, and no reviewers' changes in Decided
+  without you.
 
 ## v0.18.0
 
