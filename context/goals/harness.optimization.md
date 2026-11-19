@@ -89,7 +89,7 @@ commits.
 
 ## Progress
 
-slices 0/2 committed (slices 3–5 run at SHIP and sync) · standards — · spec — · editor —
+slices 2/2 committed (slices 3–5 run at SHIP and sync) · standards — · spec — · editor —
 
 ## Decisions
 
