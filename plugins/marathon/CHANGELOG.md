@@ -164,7 +164,8 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   `references/extensions.md`), so `init` writes an uncommented `marathon.toml`. Each key's meaning
   lives in the Keys list, which now says why the `[remote] ci` example polls for the merge
   commit's runs. The `plan-round-in-reply` fixture writes the same uncommented `marathon.toml`
-  and `.gitignore`.
+  and `.gitignore`, and its graders' front matter carries no comments: what each regex matches
+  moves into the case's description, and the AskUserQuestion grader's note into its body.
 
 ## v0.18.0
 
