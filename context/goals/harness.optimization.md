@@ -1,8 +1,8 @@
 # goal · harness.optimization
 
-- **State:** building
-- **Task:** evidence-artifacts
-- **Branch:** evidence-artifacts
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
@@ -11,7 +11,7 @@
 3. [x] roadmap-layout
 4. [x] content-budgets
 5. [x] retro-routes
-6. [ ] evidence-artifacts
+6. [x] evidence-artifacts
 7. [ ] comment-standard
 8. [ ] harness-standards
 9. [ ] release
@@ -90,10 +90,6 @@ Each slice keeps every budget and passes the check.
 
 Two-way. Nothing is released. Sessions keep running the installed 0.18.0 until `release`, so
 Verify reaches no session before then.
-
-## Progress
-
-slices 3/3 committed · standards ✓ (no fixes) · spec ✓ (1 gap closed, round 2 clean) · editor ✓
 
 ## Decisions
 
