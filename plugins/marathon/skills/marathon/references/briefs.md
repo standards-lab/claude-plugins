@@ -145,21 +145,17 @@ carries the standards that bear on the slice, quoted, in place of the whole `STA
 
 ## Session brief
 
-The session brief is the architect's view of the finished task, and the body of its pull request.
-It opens with what changed, then how to verify each behavior: the architect judges outcomes, not
-code. The session writes it to `.claude/briefs/<goal>.md` in the goal's root, which gitignores
+The session brief is the architect's view of the finished task, and the body of its pull request. It
+opens with what changed, then how to see it behave: the architect judges outcomes, not code. The
+session writes it to `.claude/briefs/<goal>.md` in the goal's root, which gitignores
 `.claude/briefs/`.
 
 > ## experiment.ai.spike-harness-driver · task 3/5 · harness-adapters
 >
 > ### Summary
 >
-> ```
-> clutch run --harness=<pi|claude|opencode>
-> adapters/ ─┬ pi/       (new)
->            ├ claude/   (new)
->            └ driver.go Session interface
-> ```
+> - `clutch run --harness=<pi|claude|opencode>` picks a session's harness.
+> - New `pi/` and `claude/` adapters sit behind one `driver.Session` interface.
 >
 > ### Core changes
 >
@@ -173,8 +169,8 @@ code. The session writes it to `.claude/briefs/<goal>.md` in the goal's root, wh
 >
 > `mise run check`: ✓ 214 tests, lint, split
 >
-> 1. **Every harness answers.** `clutch run --harness=pi "hi"` → reply streams, exit 0.
-> 2. **A closed session refuses turns.** Tests only: `TestSendAfterClose`.
+> 1. `clutch run --harness=pi "hi"` → the reply streams, exit 0.
+> 2. `clutch run --harness=claude "hi"` → the same, through Claude Code.
 >
 > ### Decided without you
 >
@@ -189,14 +185,13 @@ code. The session writes it to `.claude/briefs/<goal>.md` in the goal's root, wh
 >
 > **Needs you:** none
 
-- **Summary** is the smallest visual that makes the change clear: CLI usage, a tree, or
-  pseudocode, fenced as code.
+- **Summary** gives the details of what changed that the architect orients by, as markdown
+  bullets or a table, never a fenced block.
 - **Core changes** lists one to five entries, each with one line on why and, where the code is
   the change, a short excerpt or signature fenced as code.
-- **Verify** opens with the check's one-line result. Then comes one item per task-brief
-  behavior, numbered alike: the steps the architect can follow, outside the check and tests, and
-  what they should see. The spec-reviewer followed each. "Tests only", naming the test, is the
-  exception, when no such step exists.
+- **Verify** opens with the check's one-line result. Then come the steps the architect can run,
+  outside the check and tests, to see the behavior, each with what they should see. The
+  spec-reviewer followed each. A task with no such step, such as a prose change, reads "none".
 - **Decided without you** lists the decisions the brief didn't cover and each Decision the
   editor dropped (`mechanics/goal-record.md`). A drop the architect rejects is a redirect, and
   the session restores the line.
@@ -226,8 +221,8 @@ code. The session writes it to `.claude/briefs/<goal>.md` in the goal's root, wh
 >   - standards/harnesses.md: name the driver interface
 > - **next:** experiment.ai.spike-local-subagents · staged on accept
 
-On a spike's last task, the brief gives the spike's answer: Summary states the question and the
-one-line answer, Verify carries the numbered evidence, and Sync lists the answer section among
+On a spike's last task, the brief gives the spike's answer: Summary states the question, the
+one-line answer, and the numbered evidence, and Sync lists the answer section among
 the coordinator's edits.
 
 ## Answer section
