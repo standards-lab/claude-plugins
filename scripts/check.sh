@@ -99,6 +99,28 @@ citations() {
   ' "$1"
 }
 
+# Prints "root<TAB>dir" for the first directory in the given roots whose name
+# is exactly one edit (an insertion, deletion, or substitution) away from
+# name, and fails when there is none.
+near_dir() {
+  local name=$1 root dir
+  shift
+  for root in "$@"; do
+    while read -r dir; do
+      awk -v a="$name" -v b="$dir" '
+        BEGIN {
+          if (length(a) < length(b)) { t = a; a = b; b = t }
+          if (length(a) - length(b) > 1 || a == b) exit 1
+          i = 1
+          while (i <= length(b) && substr(a, i, 1) == substr(b, i, 1)) i++
+          skip = length(a) > length(b) ? 0 : 1
+          exit !(substr(a, i + 1) == substr(b, i + skip))
+        }' && { printf '%s\t%s\n' "$root" "$dir"; return 0; }
+    done < <(find "$root" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort)
+  done
+  return 1
+}
+
 # Every backtick file citation in the plugins' markdown names a real file.
 # ${CLAUDE_PLUGIN_ROOT}/ paths resolve against the plugin, and ./ and ../ paths
 # against the citing file. A bare path resolves against the skill root inside a
@@ -107,11 +129,17 @@ citations() {
 # marathon's `references/briefs.md`, resolves against that plugin's roots. A
 # bare path is a plugin citation only when its first segment is a directory in
 # one of those roots; anything else, such as context/roadmap.toml or
-# .claude/marathon.toml, is a path in the consumer's repository.
+# .claude/marathon.toml, is a path in the consumer's repository. A bare
+# path is also checked inside a skill against its plugin root, so a skill can
+# cite the plugin's agents/ profiles.
+#
+# A first segment one edit away from a directory in those roots is a typo,
+# such as refrences/ for references/, rather than a consumer path, so it fails
+# instead of being skipped.
 while read -r file; do
   plugin=$(echo "$file" | cut -d/ -f1-2)
   if [[ $file == "$plugin"/skills/*/* ]]; then
-    roots=("$(echo "$file" | cut -d/ -f1-4)")
+    roots=("$(echo "$file" | cut -d/ -f1-4)" "$plugin")
   else
     roots=("$plugin" "$plugin"/skills/*)
   fi
@@ -134,7 +162,12 @@ while read -r file; do
       cited=1
       [ -f "$root/$cite" ] && continue 2
     done
-    [ "$cited" -eq 0 ] || err "$file:$line: citation $cite does not resolve"
+    if [ "$cited" -eq 1 ]; then
+      err "$file:$line: citation $cite does not resolve"
+    elif near=$(near_dir "${cite%%/*}" "${bases[@]}"); then
+      read -r root dir <<<"$near"
+      err "$file:$line: citation $cite: directory '${cite%%/*}' is not in $root; did you mean '$dir'?"
+    fi
   done < <(citations "$file")
 done < <(find plugins -name '*.md')
 
@@ -176,7 +209,12 @@ within_budget() {
 
 # A command's read-first set: its skill's SKILL.md, the playbook, and every
 # file reached through Read first lists from there, each counted once.
+# Each playbook has exactly one Read first line, so a renamed or duplicated
+# line can't silently shrink the set the budget measures.
 for playbook in plugins/*/skills/*/commands/*.md; do
+  count=$(grep -c '^Read first' "$playbook")
+  [ "$count" -eq 1 ] ||
+    err "$playbook: has $count \"Read first\" lines; give it exactly one \"Read first, before acting:\" list"
   declare -A seen=()
   queue=("$playbook")
   set_files=("$(dirname "$(dirname "$playbook")")/SKILL.md")
