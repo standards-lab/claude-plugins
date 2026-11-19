@@ -162,8 +162,6 @@ slices 4/5 committed · standards — · spec — · editor —
 - content-budgets: a capability-map entry requires `: text` after its status, and the map section
   allows no lead-in prose.
 - content-budgets: the editor's drops are listed under the session brief's "Decided without you".
-- content-budgets: `commands/retro.md` still reads redirects and escalations from Decisions, which
-  pruning removes; `retro-routes` decides where retro gets them.
 - retro-routes: retro reads redirects and escalations from a session-brief section kept in the
   pull request body; a goal-record section (deleted at sync) and transcripts alone were rejected,
   and pull request comments are dropped as empty in practice (plan).
