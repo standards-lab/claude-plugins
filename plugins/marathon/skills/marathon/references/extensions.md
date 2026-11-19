@@ -11,7 +11,8 @@ An extension acts only when it is both:
 
 - **Installed**: its skill is available in the harness, at user or project scope.
 - **Enabled**: the repository lists it in `.claude/marathon.toml`, so every clone has the same
-  setting.
+  setting: under `[project]` for that project, or under `[workspace]` at a coordinator for every
+  member (`mechanics/configuration.md`, `extensions`).
 
 An installed extension that no repository enables does nothing. When an enabled extension's skill
 is missing, tell the architect, and name the plugin to install.
