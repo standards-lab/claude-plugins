@@ -1,6 +1,6 @@
 # goal · harness.optimization
 
-- **State:** building
+- **State:** brief ready
 - **Task:** release
 - **Branch:** release
 
