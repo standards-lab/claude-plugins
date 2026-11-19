@@ -107,8 +107,9 @@ coordinator during BUILD. When the context fills, hand off (`references/build.md
 2. Show it, and wait for the architect. **[touch 2]**
    - **Accept**: continue with SHIP. On the goal's last task, accepting also authorizes the sync
      and the staging its Sync section shows.
-   - **Redirect**: treat the redirect as gaps, return to BUILD, and brief again. A redirect that
-     changes the brief's behaviors returns to PLAN on the same branch.
+   - **Redirect**: record it in Progress (`mechanics/goal-record.md`), treat it as gaps, return
+     to BUILD, and brief again. A redirect that changes the brief's behaviors returns to PLAN on
+     the same branch.
 
 ### 6 · SHIP
 

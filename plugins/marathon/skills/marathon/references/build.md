@@ -69,7 +69,8 @@ BUILD stops for the architect only for:
 
 An escalation uses the plan-round format, headed `ESCALATION` (`references/briefs.md`), and is
 presented as a round is (`behavior/planning.md`, "Ask for decisions, never for facts"). BUILD
-resumes once it is answered. Anything else a delegate decides goes under Decided without you.
+resumes once it is answered, and the session records the escalation in Progress
+(`mechanics/goal-record.md`). Anything else a delegate decides goes under Decided without you.
 
 ## Handoff
 

@@ -14,11 +14,16 @@ Read first, before acting:
 
 For the range, read:
 
-- the merged pull requests and their bodies, which are the session briefs, and the architect's
-  comments on them
-- the redirects and escalations the goal records' Decisions recorded
+- the merged pull requests' bodies, which are the session briefs, including their Redirects and
+  escalations and Decided without you
 - the commits the standards-reviewer made, which show what the implementer kept missing
 - the notes, `context/README.md`, and `docs/` pages the range touched, for drift
+- when present, the local Claude Code transcripts of the range's sessions, under
+  `~/.claude/projects/`, as optional evidence. They show the tool calls and their cost, which
+  tool-economy findings cite.
+
+A repository whose transcripts are missing is named in the retro's header, and the retro goes on
+without them.
 
 ## Route
 

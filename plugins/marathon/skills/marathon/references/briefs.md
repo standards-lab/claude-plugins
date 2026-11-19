@@ -184,6 +184,11 @@ the goal's root, which gitignores `.claude/briefs/`.
 > 2. Standards-reviewer: 4 fixes, 2 tautological tests cut.
 > 3. Dropped decision "harness: a Session closes on EOF": the `driver` package docs state it.
 >
+> ### Redirects and escalations
+>
+> 1. Escalation, slice 2: raise pi's floor to 0.9 for RPC mode? Answer: yes.
+> 2. Redirect, first brief: "Evidence needs an OpenCode run." The demo now runs all three.
+>
 > **Merge danger:** two-way door · blast radius: the spike repository only
 >
 > **Needs you:** none
@@ -196,6 +201,9 @@ the goal's root, which gitignores `.claude/briefs/`.
 - **Decided without you** lists the decisions the brief didn't cover, what the reviewers
   changed, and each Decision the editor dropped (`mechanics/goal-record.md`). A drop the
   architect rejects is a redirect, and the session restores the line.
+- **Redirects and escalations** lists each BUILD escalation and each BRIEF redirect in the task,
+  one line each with the architect's answer, or reads "none". A brief written after a redirect
+  lists the earlier ones. Progress holds them (`mechanics/goal-record.md`).
 - **Merge danger** names the door type and the blast radius. A one-way door gets the close read.
   When the task brief has a Release line, Merge danger repeats its tags, which accepting the
   brief authorizes (`mechanics/releasing.md`).
@@ -294,6 +302,8 @@ yet shows `no record`.
 checkbox each with a proposed change, and the architect ticks the ones to apply.
 
 > ## Retro · goal v1.storage · 2026-09-14..09-24
+>
+> transcripts missing: go-core
 >
 > ### design
 > - [ ] 1. new goal v1.config: one typed config loader (go-web-service)

@@ -33,6 +33,7 @@ request merges (`mechanics/goals.md`).
 ## Progress
 
 slices 2/3 committed · standards — · spec — · editor —
+- escalation, slice 2: raise pi's floor to 0.9 for RPC mode? yes
 
 ## Handoff
 
@@ -75,7 +76,9 @@ to their budgets.
 - **Task brief** is the current task's approved brief, stored as markdown in the shape of
   `references/briefs.md`, "Task brief", unfenced. The next task's brief replaces it. Briefs
   already stored fenced stay as they are until the record is next rewritten.
-- **Progress** records the build loop's position (`references/build.md`).
+- **Progress** records the build loop's position (`references/build.md`), and each escalation
+  and redirect as it happens, one line each with the architect's answer, so a handoff loses none
+  and the session brief lists them all.
 - **Handoff** gives the exact next move while State is `handoff`: the BUILD position `reset`
   wrote (`commands/reset.md`); "merge", or the failing check, when SHIP can't merge; "tag
   <names>" when the context fills during a release (`mechanics/releasing.md`); "merge, then
