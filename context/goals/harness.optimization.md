@@ -1,8 +1,8 @@
 # goal · harness.optimization
 
-- **State:** brief ready
-- **Task:** retro-routes
-- **Branch:** retro-routes
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
@@ -10,7 +10,7 @@
 2. [x] skill-footprint
 3. [x] roadmap-layout
 4. [x] content-budgets
-5. [ ] retro-routes
+5. [x] retro-routes
 6. [ ] evidence-artifacts
 7. [ ] comment-standard
 8. [ ] harness-standards
@@ -119,10 +119,6 @@ Each slice adjusts the budgets its own edits move, so the check passes after eve
 
 Two-way. Nothing is released. Sessions keep running the installed 0.18.0 until `release`, so the
 new section and routes reach no session before then.
-
-## Progress
-
-slices 5/5 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
