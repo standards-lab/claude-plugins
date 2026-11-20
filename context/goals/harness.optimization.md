@@ -191,6 +191,10 @@ commits.
 - release: a postscript after a round's **reply:** line stays allowed; the judge reads only the
   round (escalation).
 - release: a format heading over 100 characters is wrapped like any other line (build).
+- release: the wrapper never starts a continuation line on a Markdown block start, which had
+  turned `step 1. Then` into a list item and failed numbered-questions; the gate keeps every
+  run's trace and final message in its results directory, so a failed run can be diagnosed
+  (build).
 
 ## Pending edits
 
