@@ -7,7 +7,11 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
-## Unreleased
+## v0.22.0
+
+The format hook rewraps a marathon format on screen as the reply streams, so the model no longer
+reprints a reply, and a shim runs the release in the caller's environment, so a configured command
+can read the repository's own mise configuration.
 
 ### Changed
 
@@ -26,6 +30,14 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   `mise run` couldn't read the repository's `mise.toml`. The shim now resolves the release with
   `mise where`, installing it on first use, under those overrides, and runs its binary with the
   caller's environment unchanged.
+
+### Migrating from 0.21.0
+
+1. Install 0.22.0. The format hook now runs on `MessageDisplay`: it rewraps a reply as it is
+   displayed, and the model no longer reprints a reply to fix its lines. Nothing in a repository
+   changes for it.
+2. A repository may move its `github:standards-lab/claude-plugins` pin to 0.22.0 in its
+   `mise.toml`.
 
 ## v0.21.0
 
