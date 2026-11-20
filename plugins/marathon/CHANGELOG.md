@@ -169,10 +169,13 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
   rewraps the round, and those rules are gone. A question also restates any fact it leans on,
   never pointing back with a phrase like "the three files above", and its **rec:** gives its
   reason.
-- **This repository's gate judges on sonnet.** `scripts/gate.sh` runs the eval suite with
-  `--judge-model sonnet`, since eval's default judge, haiku, gave the same round different
-  verdicts. `plan-round-in-reply`'s self-contained-questions grader reads the round through its
-  `reply:` line, fails only on the faults it lists, and names what isn't a fault.
+- **This repository's gate rests on deterministic graders.** eval keeps no judge reasoning and
+  can't re-grade a stored reply, and its sonnet judge failed a round 3/3 that the same model,
+  given the same criteria outside eval, passed 3/3. `scripts/gate.sh` no longer passes
+  `--judge-model`, and `plan-round-in-reply` swaps its `llm` grader for no-back-reference, a regex
+  that fails a numbered question saying "above", "below", "option" and a capital letter, "Facts
+  found", "see the plan file", or "details to follow". The `llm` grader moves to
+  `plan-round-judged` in `evals-judged/`, which the gate doesn't run; run it by hand, on sonnet.
 
 ### Migrating from 0.18.0
 

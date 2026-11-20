@@ -1,22 +1,16 @@
 """Tests for marathon's wrap-formats Stop hook, run on the plan rounds stored from eval runs."""
 
 import json
-import re
 import subprocess
 import unittest
 from pathlib import Path
 
+from plan_rounds import ROUNDS, regex_grader, round_with
+
 REPOSITORY = Path(__file__).resolve().parents[2]
 HOOK = REPOSITORY / "plugins/marathon/bin/wrap-formats"
-GRADER = REPOSITORY / "plugins/marathon/evals/plan-round-in-reply/graders/line-width.md"
-ROUNDS = Path(__file__).resolve().parent / "fixtures/plan-rounds"
 LONG_WORD = "https://example.com/" + "a" * 100
 PROSE = " ".join(["word"] * 15)
-
-
-def line_width_grader():
-    pattern = GRADER.read_text().split("---", 2)[2].strip()
-    return re.compile(pattern, re.MULTILINE)
 
 
 def run_hook(payload):
@@ -36,13 +30,9 @@ def reprint(output):
     return output["reason"].split("\n\n", 1)[1]
 
 
-def round_with(*lines):
-    return "\n".join(["## PLAN ROUND 1 · goal · task t", "", *lines, "", "**reply:** ok"])
-
-
 class WrapFormatsTest(unittest.TestCase):
     def test_stored_rounds_print_within_the_line_width_grader(self):
-        grader = line_width_grader()
+        grader = regex_grader("line-width")
         failing = set()
         for path in sorted(ROUNDS.glob("*.txt")):
             with self.subTest(path.stem):

@@ -183,6 +183,11 @@ commits.
   (escalation).
 - release: the judge is named by the `sonnet` alias, not a pinned ID, following rolling currency;
   the stored rounds recalibrate it if a release shifts verdicts (escalation).
+- release: eval's own sonnet judge failed a round that the same model passes outside eval, and
+  eval neither stores reasoning nor re-grades stored output; the gate rests on deterministic
+  graders, with a back-reference regex, and the judge moves to `evals-judged/`, run by hand,
+  because eval can't mark a grader non-scoring; an in-eval calibration case was rejected
+  (escalation).
 - release: a postscript after a round's **reply:** line stays allowed; the judge reads only the
   round (escalation).
 - release: a format heading over 100 characters is wrapped like any other line (build).

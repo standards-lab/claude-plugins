@@ -8,3 +8,4 @@ Thumbs.db
 .claude/plans/
 .claude/briefs/
 plugins/*/evals/results/
+plugins/*/evals-judged/results/

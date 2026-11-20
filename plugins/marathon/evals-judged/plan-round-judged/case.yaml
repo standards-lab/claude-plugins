@@ -1,0 +1,28 @@
+schema_version: "1.1"
+name: plan-round-judged
+description: >-
+  plan-round-in-reply's run, judged rather than gated: the same prompt, fixture, and limits, with
+  one llm grader. The gate doesn't run this suite, since a gated suite holds no llm grader
+  (scripts/gate.sh). Run it by hand for a reading of a round, with `claude plugin eval
+  plugins/marathon --eval-dir evals-judged --ablation none --scaffold --trust-plugin --no-publish
+  --judge-model sonnet`.
+  self-contained-questions judges the lines from the one that contains PLAN ROUND 1 through the
+  first that contains reply:, and fails only on a listed fault: no numbered question, a question
+  line that doesn't name its subject and options, a missing rec: or one without its reason, a
+  reference to text outside the question, or deferred options. It lists what isn't a fault, such
+  as a file named while its content is stated, or facts repeated from Facts found. It runs on
+  sonnet, since eval's default judge, haiku, flipped verdicts on the same round.
+tags: [plan, plan-round]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 40
+  timeout_seconds: 900
+  allowed_tools:
+    - Read
+    - Glob
+    - Grep
+    - Skill
+    - Agent
+    - AskUserQuestion
+runs: 3

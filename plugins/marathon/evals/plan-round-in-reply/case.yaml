@@ -18,13 +18,12 @@ description: >-
   number of fence lines, so the last one opens a block the round sits in; a fence line may be
   indented or quoted, and opens with ``` or ~~~. numbered-questions needs two numbered questions,
   each with a rec: line and then a changes: line before the next numbered line, allowing
-  indentation, list bullets, and bold markup before each. self-contained-questions judges the
-  lines from the one that contains PLAN ROUND 1 through the first that contains reply:, and fails
-  only on a listed fault: no numbered question, a question line that doesn't name its subject and
-  options, a missing rec: or one without its reason, a reference to text outside the question, or
-  deferred options. It lists what isn't a fault, such as a file named while its content is
-  stated, or facts repeated from Facts found. The gate runs its judge on sonnet
-  (--judge-model sonnet), since eval's default, haiku, flipped verdicts on the same round.
+  indentation, list bullets, and bold markup before each. no-back-reference fails when a
+  numbered question's lines, up to the next numbered line or the line that contains reply:, say
+  above, below, option and a capital letter, Facts found, see the plan file, or details to follow,
+  the pointers references/briefs.md forbids in a question. Every grader here is deterministic,
+  since a gated suite holds no llm grader (scripts/gate.sh); the judge, self-contained-questions,
+  runs on the same fixture as plan-round-judged in evals-judged/, which the gate doesn't run.
 tags: [plan, plan-round]
 context:
   scaffold_script: scaffold.sh
