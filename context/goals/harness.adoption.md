@@ -1,12 +1,12 @@
 # goal · harness.adoption
 
-- **State:** brief ready
-- **Task:** references
-- **Branch:** references
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
-1. [ ] references
+1. [x] references
 2. [ ] ai-hosting
 3. [ ] core
 4. [ ] docproc
@@ -117,9 +117,6 @@ still in `context/` fails `lint-context`. The work before the tag is two-way.
 
 - `marathon/v0.20.0`
 
-## Progress
-
-slices 6/6 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
