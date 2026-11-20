@@ -68,7 +68,7 @@ def wrapped(line):
 
 def rewrapped_line(line):
     lines = wrapped(line)
-    return line if overlong(lines) else lines
+    return line if any(len(part) > WIDTH for part in lines.split("\n")) else lines
 
 
 def rewrap(text):
@@ -85,11 +85,10 @@ def verdict(hook_input):
     if not holds_format(reply) or not overlong(reply):
         return None
     rewrapped = rewrap(reply)
-    unwrappable = len(overlong(rewrapped))
     if rewrapped == reply:
         return {
-            "systemMessage": f"marathon: {unwrappable} line(s) of this reply run past {WIDTH} "
-            "characters on a single word, so they stay unwrapped."
+            "systemMessage": f"marathon: {len(overlong(reply))} line(s) of this reply run past "
+            f"{WIDTH} characters on a single word, so they stay unwrapped."
         }
     return {
         "decision": "block",
