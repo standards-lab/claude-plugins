@@ -29,8 +29,9 @@
 // A width counts code points, words split at Python's whitespace, digits and
 // word characters are Unicode's, and the output is JSON as Python's
 // json.dumps writes it, with every character outside printable ASCII escaped.
-// Input that isn't UTF-8, isn't a JSON object, or lacks a string message_id
-// and delta gets no output, so the batch displays as it is.
+// Input that isn't UTF-8, isn't a JSON object, lacks a string message_id or
+// delta, or gives a field the wrong type gets no output, so the batch displays
+// as it is.
 //
 // The package exports:
 //
