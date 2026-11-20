@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """Rewrap a marathon reply at 100 columns: the plugin's Stop hook.
 
-Reads the Stop hook's input on stdin. A reply that holds one of the formats in
-marathon's references/briefs.md the architect reads in the terminal, found by
-its heading at the start of a line, bare or under heading, quote, or emphasis
-markup, and a line over 100 characters outside code fences and tables, is
-blocked, and the reason hands the session the whole reply rewrapped at 100
-columns to print again as is. The rewrap breaks only at spaces, never inside a
-word, keeps each list and blockquote marker, and indents continuation lines
-under the text. Every other reply passes untouched. The hook blocks a reply at
-most once in a row, since stop_hook_active marks the reprint. A line that can't
-wrap within 100 columns, because one word in it runs past them, stays as it is;
-when only such lines run over, the hook reports them to the architect rather
-than blocking. Exits 0, also on input it can't read.
+Reads the Stop hook's input on stdin. The hook blocks a reply that holds both
+a format from marathon's references/briefs.md that the architect reads in the
+terminal and a line over 100 characters outside code fences and tables. It
+finds a format by its heading at the start of a line, bare or under heading,
+quote, or emphasis markup. The block reason hands the session the whole reply
+rewrapped at 100 columns to print again as is. The rewrap breaks only at
+spaces, keeps each list and blockquote marker, and indents continuation lines
+under the text. Every other reply passes untouched. The hook blocks at most
+once in a row, since stop_hook_active marks the reprint. A line that one word
+keeps over 100 columns stays as it is; when only such lines run over, the hook
+reports them to the architect instead of blocking. Exits 0, also on input it
+can't read.
 """
 
 import json

@@ -31,13 +31,13 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
   status. An unknown or unset key, a missing configuration, or no key fails with the fix. Every
   step that runs a configured command now calls it (`mechanics/pipeline.md`, "Invariants").
 - **A Stop hook that wraps marathon's formats at 100 columns** (`hooks/hooks.json`,
-  `bin/wrap-formats`, `mechanics/configuration.md`, "Wrapping the formats"). When a reply holds a
-  format the architect reads, found by its heading, and a line over 100 characters outside code
-  fences and tables, the hook blocks the stop once and hands the session the reply rewrapped at
-  100 columns to print again. The rewrap is a stdlib Python textwrap: it breaks only at spaces,
-  keeps list and blockquote markers, indents continuation lines under the text, and leaves every
-  word as it was. A line that a single word keeps over 100 characters stays whole; when only such
-  lines run over, the hook reports them instead of blocking. Any other reply passes untouched.
+  `bin/wrap-formats`). When a reply holds a format the architect reads, found by its heading, and a
+  line over 100 characters outside code fences and tables, the hook blocks the stop once and hands
+  the session the reply rewrapped at 100 columns to print again. The rewrap is a stdlib Python
+  textwrap: it breaks only at spaces, keeps list and blockquote markers, indents continuation lines
+  under the text, and leaves every word as it was. A line that a single word keeps over 100
+  characters stays whole; when only such lines run over, the hook reports them instead of blocking.
+  Any other reply passes untouched.
 
 ### Changed
 
@@ -172,7 +172,7 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
 - **This repository's gate judges on sonnet.** `scripts/gate.sh` runs the eval suite with
   `--judge-model sonnet`, since eval's default judge, haiku, gave the same round different
   verdicts. `plan-round-in-reply`'s self-contained-questions grader reads the round through its
-  `reply:` line and fails only on the faults it lists, and lists what isn't a fault.
+  `reply:` line, fails only on the faults it lists, and names what isn't a fault.
 
 ### Migrating from 0.18.0
 
