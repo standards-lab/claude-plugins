@@ -1,0 +1,52 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- The five runbooks are in `runbooks/`: `cert-expiry`, `deploy-rollback`, `disk-full`,
+  `dns-failure` and `queue-backlog`.
+- Three of them name internal hosts or secret paths:
+  - `runbooks/disk-full.md:3` names the host `db-primary-01.int.example.net`.
+  - `runbooks/queue-backlog.md:3` names the host `jobs-01.int.example.net`.
+  - `runbooks/cert-expiry.md:3` names the secret path `secret/platform/acme-token`.
+- The repository has no remote and no CI, and its history is one commit (`.git/config`,
+  `83ca01c`).
+- `scripts/check.sh` checks two things: each runbook's first line starts with "Use when", and
+  each `](./...)` link resolves. It doesn't look for hosts or secret paths.
+- Every format sits behind single sign-on, and one access group grants all three. So the audience
+  is the same whatever the format (`context/publishing.md`).
+
+**Currency**
+- ops-handbook: no currency command
+
+**Questions**
+
+1. **First-edition format: a static site, a single PDF, or Markdown in the repository with an
+   index page?**
+   - **rec:** a static site built with MkDocs, a standard tool that reads the existing Markdown
+     files unchanged. The goal asks readers to reach the *current* runbooks without cloning.
+     - A PDF leaves old copies in circulation after every edit.
+     - Markdown in the repository can't be reached without cloning while the repository has no
+       remote.
+     - The site's costs: a build step, space on the internal docs host, and no CI yet to run the
+       build. Also, the docs host may be unreachable during the outage the dns-failure runbook
+       covers.
+   - **changes:** which tool the task adopts (MkDocs, pandoc, or none), and whether it adds a
+     build step and a publish target. Round 2 then asks how each edition is built and hosted.
+2. **First-edition audience: on-call engineers only, or on-call engineers and the support
+   team?**
+   - **rec:** on-call engineers and the support team. Support asked for read access at the last
+     quarterly review, and the redaction is small: two internal hostnames (in disk-full and
+     queue-backlog) and one secret path (in cert-expiry).
+   - **changes:** including support adds a redaction slice for those three runbooks and a rule
+     that keeps new runbooks free of hosts and secret paths. It also adds support to the access
+     group, which makes publishing a one-way door. With on-call engineers only, the runbooks
+     publish as written.
+
+**Deferred to round 2:** how to redact, and how to enforce the rule for new runbooks (a pattern
+in `scripts/check.sh` or a line in `STANDARDS.md`); how each edition is built and published
+(manual, or adding a remote and CI first); and where it's hosted.
+
+**Outside this task:** `scripts/check.sh` only follows links written `](./...)`. An index page or
+site config linking `](runbooks/x.md)` would go unchecked. If you agree, I'll record it as a note
+rather than fix it here.
+
+**reply:** "1 ok, 2 ok, …"

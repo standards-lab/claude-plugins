@@ -1,0 +1,59 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- No goal record exists yet, so this is the goal's first and only task. `main` is clean, so no
+  other session holds the repository.
+- Three runbooks name internal hosts or secret paths, one line each:
+  - `runbooks/disk-full.md:3` names `db-primary-01.int.example.net`
+  - `runbooks/cert-expiry.md:3` names `secret/platform/acme-token`
+  - `runbooks/queue-backlog.md:3` names `jobs-01.int.example.net`
+  - `deploy-rollback.md` and `dns-failure.md` name neither.
+- `STANDARDS.md` has one rule: a runbook's first line says when to use it. It has nothing on
+  links or redaction.
+- `scripts/check.sh` checks two things: every runbook opens with "Use when", and every `./` link
+  in a `.md` file resolves. It doesn't check links in any other form, such as `runbooks/x.md`.
+- The repository has no git remote, no CI and no build tooling (`.git/config`). With no
+  `[remote] publish` in `.claude/marathon.toml`, the branch merges locally.
+- One single sign-on access group grants the docs site, the file share and repository read
+  alike, so the audience is the same whatever the format (`context/publishing.md`).
+- An inference, not a stated fact: `dns-failure.md` is for "when internal names stop resolving".
+  During that incident an internal docs host or repository host may be unreachable, but a
+  downloaded PDF isn't affected.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Handbook format: a MkDocs static site, a single PDF, or a Markdown index page in the
+   repository?**
+   - **rec:** a single PDF. It opens offline, even when internal names don't resolve. It needs
+     only pandoc, the standard converter, plus an upload to the internal file share. A site would
+     also need a remote, CI and a host, and the repository has none of them. A Markdown index
+     needs no build, but readers can't reach it until the repository has a remote. The cost:
+     old copies stay around after each edit.
+   - **changes:** sets how the edition is built and where it goes. The build tool and how
+     editions are dated come next round.
+2. **Handbook audience: on-call engineers only, or on-call engineers and the support team?**
+   - **rec:** on-call engineers and support. Support asked for access, and redaction covers only
+     three lines in three runbooks today.
+   - **changes:** including support adds a redaction slice and a rule that keeps new runbooks
+     clean; the rule's shape comes next round. On-call only publishes the runbooks as written.
+
+**reply:** "1 ok, 2 ok" or "1 site, 2 on-call only because ..."
+
+---
+
+This session doesn't have the tools marathon expects, so a few steps couldn't run as written:
+- **No plan mode or file writing:** I couldn't save this round to a plan file under
+  `.claude/plans/`. It exists only in this conversation for now.
+- **No shell:** I couldn't run `scripts/check.sh`, so the check status is unverified. From
+  reading the script and the runbooks, it should pass.
+
+Before you answer, two things you should know:
+- **Publishing is a one-way door.** Uploading a PDF or deploying a site reaches people outside
+  the repository. The task brief will mark it that way, and the upload itself probably has to be
+  done by hand or through a command you name.
+- **Later stages need a shell.** Creating the branch, committing and merging locally all need
+  one. The implementer subagents have one, but the session's own SHIP steps will need tool access
+  to be widened.

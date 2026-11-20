@@ -1,0 +1,70 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three runbooks name internal hosts or secret paths; the other two name neither:
+  - `runbooks/disk-full.md:3` names the host `db-primary-01.int.example.net`.
+  - `runbooks/queue-backlog.md:3` names the host `jobs-01.int.example.net`.
+  - `runbooks/cert-expiry.md:3` names the secret path `secret/platform/acme-token`.
+- The repository has no remote, no CI and no build tooling (`.git/config`, `publishing.md:9-10`).
+  `.claude/marathon.toml` sets no publish target.
+- `scripts/check.sh` checks two things: each runbook's first line starts with "Use when"
+  (lines 5-7), and each link starting with `./` resolves (line 11). It doesn't check for hostnames
+  or secret paths.
+- Every format sits behind single sign-on, and one access group grants all of them. The audience
+  is therefore the same whatever the format, and redaction depends only on the audience
+  (`publishing.md:24-30`).
+- Each format already has a standard tool, so none needs a custom build: MkDocs for a site from
+  the existing Markdown, Pandoc for a PDF.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Audience: on-call engineers only, or on-call engineers and the support team?**
+   - **rec:** on-call engineers and the support team. Support asked for read access at the last
+     quarterly review. Redacting means three one-line edits: two hostnames, in the disk-full and
+     queue-backlog runbooks, and one secret path, in the cert-expiry runbook. Adding support
+     later would mean redacting text that had already gone out.
+   - **changes:** adds a redaction slice and a rule that keeps new runbooks free of hostnames and
+     secret paths. Round 2 asks how to redact and how to enforce the rule. On-call only drops
+     both.
+2. **Format: an MkDocs static site, a single PDF built with Pandoc, or a Markdown index page in
+   the repository?**
+   - **rec:** an MkDocs static site on the internal docs host. It is searchable and linkable, and
+     readers always see one current copy. A PDF leaves stale copies around during incidents. A
+     Markdown index needs a hosted repository, and this one has no remote. One risk: the site
+     uses an internal hostname, so it may be unreachable during the DNS failure that the
+     dns-failure runbook covers.
+   - **changes:** adds an `mkdocs.yml`, a navigation page over the five runbooks, and a local
+     build slice, run by hand because there is no CI. A PDF adds a Pandoc build instead. A
+     Markdown index adds an index page and needs a remote.
+3. **Putting the edition behind single sign-on: should the task upload it, or should it hand you
+   a built, checked edition to upload?**
+   - **rec:** hand it to you. Uploading reaches people outside the repository, and the project
+     has no publish target or credentials configured.
+   - **changes:** the last slice ends with a built edition, a check that all five runbooks are in
+     it, and the exact upload step. You upload it and confirm the proof: a reader in the audience
+     opens the edition and finds every runbook. If the task uploads it, I need the target and
+     credentials first.
+4. **Release marker: tag the first edition's commit `edition-1`, or tag nothing?**
+   - **rec:** tag nothing. Without a remote, no reader would see the tag, and the task's merge
+     commit already records the published text.
+   - **changes:** the brief has no Release line, and the change can be undone inside the
+     repository. Tagging adds a Release line with `edition-1`.
+
+**reply:** "1 ok, 2 ok, 3 ok, 4 ok", or change any answer
+
+---
+
+**Notes beyond this round:**
+- `scripts/check.sh` only checks links that start with `./`. A navigation page with links like
+  `](runbooks/x.md)` would pass even if the links were broken. If you choose a site or an index
+  page, I'll fold this into a slice in round 2.
+- `STANDARDS.md`'s only rule repeats something `scripts/check.sh` already enforces.
+- My tools here can't write files or enter plan mode. So the round lives only in this
+  conversation, and there's no plan file under `.claude/plans/` to resume it from. Once you
+  approve the brief, the delegates write the goal record.
+- The harness flagged the planner's report as possibly containing instructions, probably because
+  it mentions `.claude/settings.json`. The report contains no instructions, and nothing in it was
+  acted on.

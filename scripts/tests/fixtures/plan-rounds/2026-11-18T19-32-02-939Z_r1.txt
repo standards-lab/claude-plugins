@@ -1,0 +1,31 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name internal hosts or secret paths:
+  - `disk-full` names `db-primary-01.int.example.net`.
+  - `cert-expiry` names `secret/platform/acme-token`.
+  - `queue-backlog` names `jobs-01.int.example.net`.
+  - `deploy-rollback` and `dns-failure` name neither. (Source: `runbooks/*.md`.)
+- All three formats sit behind single sign-on, and one access group covers all three. So the audience depends only on who is in that group, and redaction depends only on the audience. The format and the audience are separate decisions. (Source: `context/publishing.md`.)
+- `dns-failure` is used when internal names stop resolving. During that kind of outage, the internal docs host and the internal file share may not be reachable by name. A PDF someone already downloaded still opens. (Source: `runbooks/dns-failure.md`.)
+- The repository has no git remote and no CI. (Source: `.git/config`.) With no remote, readers can't reach "Markdown in the repository" without cloning, which is exactly what the goal is meant to remove. (Source: `context/roadmap/publish.toml`, summary.)
+- I couldn't find out whether pandoc, a PDF engine, or MkDocs is installed, because no session tool can run commands. The build checks this before the first slice.
+- The check's two rules both hold today: every runbook opens with "Use when", and the markdown has no relative links to check. I confirmed this by reading the files, not by running `scripts/check.sh`.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Publishing format for the first edition: single PDF, static MkDocs site, or a Markdown index in the repository?**
+   - **rec:** single PDF, with the edition date on every page so a stale copy is easy to spot. It's the only format that still works when a DNS or single-sign-on outage takes down the internal hosts. The MkDocs site needs a host and CI that don't exist yet. The Markdown index fails the goal while there's no remote.
+   - **changes:**
+     - Adds a build that turns the five runbooks into one dated PDF, plus a check rule that the PDF builds.
+     - Putting it on the internal file share would happen outside this repository, so the brief would mark it as a one-way door.
+2. **Audience for the first edition: on-call engineers only, or on-call engineers plus the support team?**
+   - **rec:** on-call engineers only for this edition. Give support access its own backlog goal: a redaction pass over `disk-full`, `cert-expiry`, and `queue-backlog`, plus a check rule that keeps internal hostnames and secret paths out of new runbooks. That keeps this task to publishing alone.
+   - **changes:**
+     - On-call only: no redaction slice in this task, and a backlog goal for support access goes into the record's pending edits.
+     - Including support: adds a redaction slice and a new check rule before the publishing slices.
+
+**reply:** for example, "1 ok, 2 ok" or "1 site, 2 ok but …"

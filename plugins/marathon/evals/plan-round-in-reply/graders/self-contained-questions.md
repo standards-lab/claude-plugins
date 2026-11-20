@@ -2,27 +2,23 @@
 type: llm
 focus: last_message
 ---
-Judge only the plan round in the response: the text from the line that contains `PLAN ROUND 1`
-to the end of the round. Ignore everything else in the response. You are reading it as the
-architect who must answer it, with nothing open but this text.
+The plan round is the lines from the line that contains `PLAN ROUND 1` through the first line
+after it that contains `reply:`. Judge only those lines; ignore all text before and after them.
+A question is one numbered item with its `rec:` and `changes:` lines, up to the next numbered
+item or the **reply:** line.
 
-The response PASSES only when every claim below holds:
+FAIL only if one of these holds; otherwise PASS:
 
-- PASS: the response contains a plan round with at least one numbered question.
-- PASS: each numbered question names its subject in its own words, for example "Publishing format
-  for the first edition: static site, single PDF, or Markdown in the repository?", so a reader
-  knows what is being decided from the question line itself.
-- PASS: each question, read with its own `rec:` and `changes:` lines, can be decided without
-  reading anything else: the options it chooses between are named, and the recommendation says
-  why.
+1. The round has no numbered question.
+2. A question's numbered line does not name what is being decided together with the options it
+   chooses between (for example "Format?" alone fails; "Publishing format: static site, single
+   PDF, or Markdown?" passes).
+3. A question has no `rec:` line, or its `rec:` names a choice but gives no reason for it.
+4. A question refers to something it does not itself state: words like "above", "below", "the
+   earlier question", "option B", or **Facts found**, a letter or label defined only outside the
+   question, or a file, note, or link the reader must open to know what is being decided.
+5. A question's options or recommendation are deferred, as in "details to follow".
 
-The response FAILS when any claim below holds:
-
-- FAIL: there is no plan round in the response, or it has no numbered questions.
-- FAIL: a question names its subject only by reference, such as "this", "the issue above",
-  "option B", "the audience question", or a short headline like "Format?" whose options appear
-  nowhere in that question, its `rec:`, or its `changes:`.
-- FAIL: a question depends on a label, letter, or term defined only outside it, or asks the
-  reader to open a file, a note, or a link to understand what is being decided.
-- FAIL: a question's options or recommendation are left for another message, such as "details
-  to follow" or "see the plan file".
+These are NOT failures: a question that mentions a file or runbook by name while also stating
+what it says; a shorthand whose meaning the same question states; a `changes:` line that says a
+later round will ask something; facts repeated from **Facts found**.

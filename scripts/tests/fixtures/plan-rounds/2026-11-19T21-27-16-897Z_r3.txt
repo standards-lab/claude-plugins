@@ -1,0 +1,53 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name internal hosts or secret paths:
+  - `runbooks/disk-full.md:3`: host `db-primary-01.int.example.net`
+  - `runbooks/cert-expiry.md:3`: secret path `secret/platform/acme-token`
+  - `runbooks/queue-backlog.md:3`: host `jobs-01.int.example.net`
+  - `deploy-rollback.md` and `dns-failure.md` name neither.
+- `scripts/check.sh:5-7` requires every runbook to open with "Use when", and all five do.
+  `scripts/check.sh:8-12` resolves only links that start with `](./`. Nothing in it looks for
+  hosts or secret paths. I didn't run it; from reading it, it should pass.
+- `.git/config` has no remote, `.claude/marathon.toml` configures no `[remote] publish`, and the
+  tree has no CI.
+- I didn't check whether pandoc, a PDF engine or mkdocs is installed on this machine.
+- `STANDARDS.md:5` has one rule: a runbook's first line says when to use it. It says nothing
+  about format, audience or redaction.
+- One single sign-on access group grants the docs host, the file share and the repository. The
+  audience is therefore the same whatever the format (`context/publishing.md:24-27`).
+- `runbooks/dns-failure.md:1` is for "when internal names stop resolving", which is when an
+  internal docs host may be unreachable too.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **First-edition format: a MkDocs static site on the internal docs host, a single PDF on the
+   internal file share, or a Markdown index page in this repository?**
+   - **rec:** a single PDF, built with pandoc (the standard Markdown-to-PDF converter) rather
+     than a hand-rolled script. A downloaded PDF still opens during a DNS outage, when an
+     internal docs site may not load. The repository has no remote, so a Markdown index reaches
+     only people who have cloned it. A MkDocs site needs a build and a host, and the project has
+     neither. Each edition's date goes on its title page so a stale copy is easy to spot.
+   - **changes:** adds a pandoc build script, a date stamp on each edition and a `.gitignore`
+     entry for the build output. Uploading the PDF to the file share stays a manual step,
+     because no publish target is configured. pandoc and a PDF engine may need installing.
+2. **First-edition audience: on-call engineers only, or on-call engineers and the support
+   team?**
+   - **rec:** on-call engineers only, with support access added to the backlog as its own goal.
+     One access group grants every format, so a redacted edition would be the only edition.
+     On-call engineers would lose the database host in disk-full, the jobs host in
+     queue-backlog, and the secret path in cert-expiry.
+   - **changes:** on-call only publishes the five runbooks as written and adds a support-access
+     goal to `backlog`. On-call and support adds a redaction slice for those three runbooks, and
+     round 2 then decides how new runbooks are kept clean.
+
+**reply:** "1 ok, 2 ok" or "1 site, 2 ..."
+
+---
+
+If you choose MkDocs in question 1, round 2 also asks where the site is built and who deploys
+it, since the project has no CI. To build, ship and merge, this session will also need a shell
+and the ability to write files.

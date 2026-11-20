@@ -1,0 +1,42 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- No git remote is set up, and `.claude/marathon.toml` has no `[remote] publish` (`.git/config`,
+  `.claude/marathon.toml`). Merges will happen locally.
+- Three of the five runbooks name internal hosts or secret paths: cert-expiry
+  (`secret/platform/acme-token`), disk-full (`db-primary-01.int.example.net`), and queue-backlog
+  (`jobs-01.int.example.net`). deploy-rollback and dns-failure name neither (`runbooks/`).
+- Every format sits behind single sign-on, and one access group grants all three. So the audience
+  is that group's members whichever format you pick (`context/publishing.md`).
+- The check verifies each runbook's "Use when" line and every relative link (`scripts/check.sh`).
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **What format should the first edition use: a static MkDocs site on the internal docs host, a
+   single PDF on the internal file share, or a Markdown index page over the runbooks in this
+   repository?**
+   - **rec:** the Markdown index page. It needs no build and no host, and the existing check
+     already guards its links. A site or PDF can follow once the project has a remote and CI.
+   - **changes:** the Markdown index adds one index page. MkDocs adds a site config and a build.
+     The PDF adds a build that renders all five runbooks into one file. Each of the three needs
+     one step outside this repository: granting the access group read access to this repository,
+     hosting the site, or uploading the PDF.
+2. **Who should the first edition reach: on-call engineers only, or on-call engineers and the
+   support team?**
+   - **rec:** on-call engineers only, with support's access added to the backlog as its own goal.
+   - **changes:** including support adds a redaction pass over cert-expiry, disk-full, and
+     queue-backlog, plus a check rule that keeps internal hosts and secret paths out of new
+     runbooks.
+
+**reply:** "1 ok, 2 ok, 3 yes but ..."
+
+---
+
+Nothing has been saved for this round yet. This session can't enter plan mode or write files, and
+the helper agent I asked to write the plan file (`.claude/plans/publish-first-edition.md`) had no
+write tool either. Answer both questions here. Before I write the task brief and you approve it,
+I'll need a session that can write files: the plan file, and later the goal record and the
+commits.

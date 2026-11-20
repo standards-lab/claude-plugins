@@ -1,0 +1,65 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name an internal host or a secret path:
+  - runbooks/disk-full.md:3: `db-primary-01.int.example.net`
+  - runbooks/cert-expiry.md:3: `secret/platform/acme-token`
+  - runbooks/queue-backlog.md:3: `jobs-01.int.example.net`
+  - deploy-rollback.md and dns-failure.md name neither.
+- The repository has no remote: .git/config has no `[remote]`, and .claude/marathon.toml has no
+  `[remote] publish`, so SHIP merges locally. There is no CI configuration either. History is one
+  commit, 2ea1ebc.
+- scripts/check.sh checks two things: every runbook's first line starts "Use when", and every
+  `](./…)` link resolves. It checks nothing about hosts or secrets, and it skips links that don't
+  start with `./` (scripts/check.sh:11).
+- One single-sign-on access group grants all three formats, so the audience is the same whatever
+  the format, and redaction depends only on the audience (context/publishing.md, "Audience").
+- Whether mkdocs or pandoc is installed here: not checked. This session has no shell.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **First edition's format: a MkDocs static site on the internal docs host, a single PDF on the
+   internal file share, or a Markdown index page over the runbooks in this repository?**
+   - **rec:** a single PDF built with pandoc, the standard Markdown converter, not a converter
+     written for this task. A PDF opens offline and on a phone, so it still works when the docs
+     host is down or internal names stop resolving, which is exactly when the DNS-failure runbook
+     gets used. It needs no remote and no CI, and the repo has neither. The cost is that every edit
+     means a new file and old downloads linger. A dated edition line on the cover tells readers
+     which edition they have. A MkDocs site would need a host and a build that nothing here runs.
+     A Markdown index would need a hosted remote, and none exists.
+   - **changes:** the task adds a pandoc build that turns the five runbooks into one PDF. The first
+     edition is that file on the internal file share. No remote, host, or CI gets set up.
+2. **First edition's audience: on-call engineers only, or on-call engineers and the support team?**
+   - **rec:** on-call engineers only, with support access as its own backlog goal. Three runbooks
+     name a host or secret path that on-call engineers need during an incident:
+     `db-primary-01.int.example.net`, `jobs-01.int.example.net`, and
+     `secret/platform/acme-token`. One access group grants every format, so adding support would
+     remove those lines for on-call engineers too. It would also need a new rule to keep future
+     runbooks clean. The backlog goal records the support team's request from the quarterly review.
+   - **changes:** with on-call only, there's no redaction pass and the backlog gains a
+     support-access goal. With both audiences, the task adds a redaction pass over those three
+     runbooks and a rule for new ones. The next round settles that rule's form.
+
+**reply:** "1 ok, 2 ok" or "1 MkDocs, 2 both, because …"
+
+---
+
+A few things depend on your answers, so the next round will cover them rather than this one:
+- **Your format choice:**
+  - PDF: installing pandoc if it's missing, whether the check builds the PDF, and who puts the file
+    on the file share.
+  - MkDocs: which host, and how it gets built without CI.
+  - Markdown index: where the remote lives. Creating it can't be undone.
+- **Including support:** how redacted lines get replaced, and whether the rule is a STANDARDS line
+  or a check.
+- **Either way:** whether the edition gets a tag, such as `edition-1`.
+
+Placing the edition where readers can open it reaches people outside the repo, so that step will be
+a one-way door.
+
+This session has no plan-mode, file-writing, or shell tools. So there's no plan file under
+`.claude/plans/`, and nothing in the repo has changed yet. Once the rounds settle, the brief will
+need approval in the chat. The implementer and editor will make the file changes.

@@ -1,0 +1,32 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- The goal is to have readers reach the current runbooks during an incident without cloning the repository (`context/roadmap/publish.toml`).
+- There are five runbooks. Three of them name internal hosts or secret paths:
+  - `cert-expiry` names `secret/platform/acme-token`
+  - `disk-full` names `db-primary-01.int.example.net`
+  - `queue-backlog` names `jobs-01.int.example.net`
+
+  `deploy-rollback` and `dns-failure` name neither (`runbooks/`).
+- The repository has no git remote and no CI (`.git/config`, `context/publishing.md`).
+- Every format sits behind single sign-on, and one access group grants all three. So the audience is that group's membership, whichever format we choose (`context/publishing.md`).
+- One runbook is for the moment when internal names stop resolving (`runbooks/dns-failure.md`).
+- MkDocs is the standard tool for a static site, and Pandoc is the standard tool for a PDF. Neither format needs a custom build.
+- The check only covers each runbook's "Use when" line and relative links. It has no rule about hosts or secrets (`scripts/check.sh`).
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Audience for the first edition: on-call engineers only, or on-call engineers plus the support team?**
+   - **rec:** on-call engineers only. The first edition can then ship the runbooks as written. Support's request becomes a backlog goal that does the redaction pass on its own.
+   - **changes:** On-call only means no redaction slice, and a backlog entry for support access goes under pending edits. Adding support means a later round decides how to redact the three runbooks and what rule keeps new runbooks free of internal hosts and secret paths.
+2. **Publishing format: an MkDocs site on the internal docs host, a single PDF on the internal file share, or a Markdown index page in this repository?**
+   - **rec:** a single PDF built with Pandoc, with the edition date on its cover. It is the only format that still opens when internal names don't resolve, which is the DNS-failure incident itself. It needs no host and no CI, and this repository has neither. The cost is stale copies, which the dated cover makes visible.
+   - **changes:**
+     - The PDF means a build script and a published edition file.
+     - MkDocs means a site config and a deploy target, and it first needs a host and a way to deploy that this repository doesn't have.
+     - The Markdown index means one index page, and it first needs a remote that readers can browse.
+
+**reply:** "1 ok, 2 ok" or "1 support, 2 MkDocs because …"

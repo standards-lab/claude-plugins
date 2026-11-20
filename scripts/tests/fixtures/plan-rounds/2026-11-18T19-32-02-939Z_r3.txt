@@ -1,0 +1,43 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name internal hosts or a secret path:
+  - `db-primary-01.int.example.net` (runbooks/disk-full.md:3)
+  - `jobs-01.int.example.net` (runbooks/queue-backlog.md:3)
+  - `secret/platform/acme-token` (runbooks/cert-expiry.md:3)
+
+  `deploy-rollback.md` and `dns-failure.md` name neither.
+- The check (scripts/check.sh:6, 8–12) requires each runbook's first line to start with `Use when`, and requires `./` links to resolve. It doesn't look for hosts or secrets.
+- The repository has no git remote (.git/config) and no CI (context/publishing.md:10).
+- STANDARDS.md has one rule: a runbook's first line says when to use it. It says nothing about publishing or redaction.
+- One single sign-on access group covers the internal docs host, the internal file share, and access to this repository. So the audience is the same whatever the format (context/publishing.md:25–27).
+- MkDocs is the standard tool for a static site and pandoc for a PDF. Nobody has checked whether either is installed.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **First-edition format: an MkDocs static site, a single PDF, or a Markdown index in the repository?**
+   - **rec:** an MkDocs static site on the internal docs host. The goal is to give readers the *current* runbooks. A site has one URL that stays current, but a PDF leaves old copies behind. A Markdown index would need a git host, and this repository has no remote. MkDocs is the standard tool, so we don't write a generator.
+   - **changes:** adds an MkDocs config with one page per runbook and a `mkdocs build --strict` step, then an upload to the docs host. The upload is a one-way door because readers outside the repository see it.
+2. **First-edition audience: on-call engineers only, or on-call engineers and the support team?**
+   - **rec:** on-call engineers only, with support's access request saved as a backlog goal. On-call engineers need the hostnames and the secret path in three runbooks. Because one access group covers everyone, adding support would mean removing those details for on-call too.
+   - **changes:** this task does no redaction. A backlog goal is added for support access with a redaction rule.
+
+**reply:** "1 ok, 2 ok, 3 yes but ..."
+
+---
+
+The next round depends on these answers:
+- **For an MkDocs site:** whether `mkdocs build --strict` joins `scripts/check.sh`, how the build gets to the docs host, and whether MkDocs is pinned.
+- **For a PDF:** which PDF engine to use, and how each edition is marked.
+- **For a Markdown index:** where the remote lives.
+- **If support is in the audience:** what form the redaction rule takes and how it is enforced.
+- **For every format:** the Door wording, and whether the task has a Release line.
+
+**Things to know about this session:**
+- **No shell or file-writing tools.** I couldn't run `scripts/check.sh`, so its pass is inferred from reading the files, not observed. I also couldn't check for mkdocs or pandoc on PATH.
+- **Planning notes are only in this conversation.** I couldn't write the plan file under `.claude/plans/`, so if the session ends, the next `start` redoes round 1.
+- **BUILD and SHIP need tools I don't have.** Creating the branch, committing, and merging need shell and edit access. I'll hand those to delegates that have them, or you can enable the tools.
+- **Planner note, outside this task:** the check only resolves links that start with `./`, so a broken `../` link would still pass.

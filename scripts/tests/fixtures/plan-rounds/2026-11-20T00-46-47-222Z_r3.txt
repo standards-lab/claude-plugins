@@ -1,0 +1,39 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- `cwd` is on `main`, clean, with no task branch, no goal record and no open plan file.
+- The project has no remote and no CI, and `.claude/marathon.toml` has no `[remote] publish`. The
+  task branch will be merged locally once you accept the session brief (`context/publishing.md`,
+  `.claude/marathon.toml`).
+- One SSO access group controls every format: a site on the internal docs host, a PDF on the
+  internal file share, or read access to the repository. So the audience is that group's members
+  whichever format you pick (`context/publishing.md`, Audience).
+- Three of the five runbooks name internal hosts or secret paths: `cert-expiry` (a secret path),
+  `disk-full` (`db-primary-01.int.example.net`) and `queue-backlog` (`jobs-01.int.example.net`).
+  `dns-failure` and `deploy-rollback` are clean.
+- The check (`scripts/check.sh`) tests each runbook's "Use when" line and every relative link. It
+  does not scan for hosts or secrets.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Format: static MkDocs site, single PDF, or a Markdown index page in the repository?**
+   - **rec:** a Markdown index page in the repository. It needs no build, host or CI, none of
+     which the project has. The check's link test already covers the index's links to each
+     runbook. Unlike a PDF, there are no stale copies left behind after the next edit.
+   - **changes:** the task adds one index page and its link from the README. A site would add an
+     MkDocs config, a build and a host, which the project has none of. A PDF would add a build
+     script and a step to put the file on the share.
+2. **Audience: on-call engineers only, or on-call engineers and the support team?**
+   - **rec:** on-call engineers only for the first edition. The support team's request becomes its
+     own follow-up goal. Three runbooks (`cert-expiry`, `disk-full`, `queue-backlog`) would first
+     need their internal hostnames and the secret path removed, plus a rule that keeps new
+     runbooks free of them.
+   - **changes:** with on-call only, the runbooks ship as written and a backlog goal for support
+     access is added. With support included, the task gains a redaction slice for those three
+     runbooks, a STANDARDS.md line or a check rule against hosts and secret paths, and the access
+     group grows to include support.
+
+**reply:** "1 ok, 2 ok" or "1 PDF, 2 ok but …"

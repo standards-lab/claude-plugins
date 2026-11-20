@@ -1,0 +1,57 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name internal hosts or secret paths, one line each:
+  `runbooks/disk-full.md:3` (`db-primary-01.int.example.net`), `runbooks/queue-backlog.md:3`
+  (`jobs-01.int.example.net`), `runbooks/cert-expiry.md:3` (`secret/platform/acme-token`).
+  `deploy-rollback.md` and `dns-failure.md` name neither (grep over `runbooks/`).
+- `scripts/check.sh` enforces two rules. Every runbook's first line starts with "Use when", and
+  every `](./…)` link resolves. It has no redaction rule (`scripts/check.sh:5-12`). All five
+  runbooks open with "Use when".
+- The repository has no remote (`.git/config`, `.claude/marathon.toml`), no CI, no `mkdocs.yml`,
+  and no index page.
+- Readers must reach the runbooks without cloning the repository (`context/roadmap/publish.toml`).
+  A Markdown index therefore works only once there is a hosted remote that readers can browse.
+- All three formats sit behind single sign-on, and one access group grants all three, so the
+  audience is set by that group's membership whatever the format (`context/publishing.md`).
+- Standard tools exist for both built formats: MkDocs for the site and Pandoc for the PDF.
+  Whether either is installed here hasn't been checked.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Publishing format for the first edition: a static MkDocs site, a single PDF, or a Markdown
+   index page in the repository?**
+   - **rec:** a single PDF, built from the five runbooks with Pandoc. A downloaded copy still
+     opens when internal names stop resolving, which is the outage `dns-failure.md` covers. It
+     also needs no remote or CI, and the repository has neither. The cost is that old copies
+     linger after each edit.
+   - **changes:** a PDF adds a Pandoc build and an upload to the internal file share. A site adds
+     an MkDocs config, a build, and hosting on the internal docs host. An index adds one page but
+     first needs a hosted remote.
+2. **Audience for the first edition: on-call engineers only, or on-call engineers and the
+   support team?**
+   - **rec:** on-call engineers and the support team. Support asked for read access at the last
+     quarterly review, and the redaction it needs touches three lines: two internal hostnames
+     and one secret path, in the disk-full, queue-backlog, and cert-expiry runbooks.
+   - **changes:** with support, the task opens with a redaction slice, and support must be added
+     to the single sign-on access group. That is an admin step for you, not a slice. With
+     on-call only, the runbooks are published as written.
+
+**reply:** "1 ok, 2 ok", or your choices
+
+---
+
+Notes for the session:
+- **Round 2 depends on your answers.** If support is included, I'll ask whether the redaction rule
+  goes into `scripts/check.sh` or `STANDARDS.md`, and what replaces the three redacted lines. I'll
+  also ask format follow-ups, such as whether the PDF prints its edition date so stale copies are
+  easy to spot, and whether the first edition gets a release tag.
+- **Outside this task:** `scripts/check.sh` doesn't call `lint-context`, which marathon expects
+  every check to do. I'll record it as a roadmap note, not fix it here.
+- **Plan file not written:** this session has no plan mode, file-writing, or shell tools. So the
+  round's copy in `.claude/plans/` wasn't written, and `scripts/check.sh` hasn't been run. Its
+  result above comes from reading the script. Nothing in the repository has changed. Before
+  BUILD I'll need write and shell access to create the branch, the goal record, and the slices.

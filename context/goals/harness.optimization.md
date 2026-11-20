@@ -160,8 +160,6 @@ commits.
 - harness-standards: an eval case's description says what each grader matches, because a
   grader's body is its pattern or criteria and its front matter carries no comments (build).
 
-- release: the plan-round eval's line-width failures are fixed in the skill; lowering the gate's
-  threshold was rejected (plan).
 - release: the coordinator's over-budget notes and entries and its missing capability map go to
   harness.adoption; its check runs lint-context with those failures showing (plan).
 - release: the release session merges the coordinator's sync pull request itself; a handoff for
@@ -171,13 +169,23 @@ commits.
 - release: the two deferred guards are recorded in `tool-based-skills.md`, not the roadmap (plan).
 - release: a `rec:` gives its reason and a question restates the fact it leans on, because the
   self-contained-questions grader failed runs that lacked them (build).
-- release: the 100-column wrap is stated in `behavior/planning.md` as well as
-  `references/briefs.md`, because line-width passed every run only once planning.md stated it
-  (build).
 - release: the configuration example's lint-context fetch pins `marathon/v0.19.0`, the first tag
   that ships lint-context (build).
 - release: the release-heading test inserts its Unreleased heading above an older fixed release,
   so it doesn't depend on the release under way (build).
+- release: the gate failed twice on a stochastic eval; retries and a lower threshold were rejected
+  for a root fix (escalation).
+- release: a marathon Stop hook wraps the formats deterministically. This reverses
+  harness-standards' objection that a marathon hook fires in every session, for reply formatting
+  only, since the hook exits at once on a reply without a format heading (escalation).
+- release: the judge's criteria mirror briefs.md's plan-round rules, and the gate passes
+  `--judge-model sonnet`, because eval's default judge, haiku, flipped verdicts on identical text
+  (escalation).
+- release: the judge is named by the `sonnet` alias, not a pinned ID, following rolling currency;
+  the stored rounds recalibrate it if a release shifts verdicts (escalation).
+- release: a postscript after a round's **reply:** line stays allowed; the judge reads only the
+  round (escalation).
+- release: a format heading over 100 characters is wrapped like any other line (build).
 
 ## Pending edits
 

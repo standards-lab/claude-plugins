@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+"""Rewrap a marathon reply at 100 columns: the plugin's Stop hook.
+
+Reads the Stop hook's input on stdin. The hook blocks a reply that holds both
+a format from marathon's references/briefs.md that the architect reads in the
+terminal and a line over 100 characters outside code fences and tables. It
+finds a format by its heading at the start of a line, bare or under heading,
+quote, or emphasis markup. The block reason hands the session the whole reply
+rewrapped at 100 columns to print again as is. The rewrap breaks only at
+spaces, keeps each list and blockquote marker, and indents continuation lines
+under the text. Every other reply passes untouched. The hook blocks at most
+once in a row, since stop_hook_active marks the reprint. A line that one word
+keeps over 100 columns stays as it is; when only such lines run over, the hook
+reports them to the architect instead of blocking. Exits 0, also on input it
+can't read.
+"""
+
+import json
+import re
+import sys
+import textwrap
+
+WIDTH = 100
+FORMAT_HEADING = re.compile(
+    r"[ \t]*(?:>[ \t]?)*(?:"
+    r"(?:#{1,6}[ \t]+)?[*_]{0,3}(?:PLAN ROUND \d|INTAKE ROUND \d|ESCALATION\b|Task brief ·"
+    r"|(?:── )?(?:Status|STATUS) ·|(?:Retro|RETRO) ·)"
+    r"|#{2,3}[ \t]+[*_]{0,3}\S.* · task \d+/\d+ ·)"
+)
+FENCE = re.compile(r"[ \t>]*(?:```|~~~)")
+MARKER = re.compile(r"([ \t]*(?:>[ \t]?)*[ \t]*)((?:[-*+]|\d+[.)]|#{1,6})[ \t]+)?")
+
+
+def prose_lines(text):
+    in_fence = False
+    for line in text.split("\n"):
+        if FENCE.match(line):
+            in_fence = not in_fence
+            yield line, False
+        else:
+            yield line, not in_fence and not line.lstrip(" \t>").startswith("|")
+
+
+def holds_format(text):
+    return any(prose and FORMAT_HEADING.match(line) for line, prose in prose_lines(text))
+
+
+def overlong(text):
+    return [line for line, prose in prose_lines(text) if prose and len(line) > WIDTH]
+
+
+def wrapped(line):
+    marker = MARKER.match(line)
+    lead, item = marker.group(1), marker.group(2) or ""
+    if ">" in lead:
+        continuation = lead + " " * len(item)
+    else:
+        continuation = " " * len(lead + item)
+    return textwrap.fill(
+        line[len(lead + item) :],
+        WIDTH,
+        initial_indent=lead + item,
+        subsequent_indent=continuation,
+        break_long_words=False,
+        break_on_hyphens=False,
+    )
+
+
+def rewrapped_line(line):
+    lines = wrapped(line)
+    return line if any(len(part) > WIDTH for part in lines.split("\n")) else lines
+
+
+def rewrap(text):
+    return "\n".join(
+        rewrapped_line(line) if prose and len(line) > WIDTH else line
+        for line, prose in prose_lines(text)
+    )
+
+
+def verdict(hook_input):
+    reply = hook_input.get("last_assistant_message")
+    if hook_input.get("stop_hook_active") or not isinstance(reply, str):
+        return None
+    if not holds_format(reply) or not overlong(reply):
+        return None
+    rewrapped = rewrap(reply)
+    if rewrapped == reply:
+        return {
+            "systemMessage": f"marathon: {len(overlong(reply))} line(s) of this reply run past "
+            f"{WIDTH} characters on a single word, so they stay unwrapped."
+        }
+    return {
+        "decision": "block",
+        "reason": f"marathon prints its formats wrapped at {WIDTH} columns, and this reply has "
+        f"longer lines. Print the reply again exactly as below, rewrapped at {WIDTH} columns, "
+        "with nothing before or after it:\n\n" + rewrapped,
+    }
+
+
+def main():
+    try:
+        hook_input = json.load(sys.stdin)
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return 0
+    if isinstance(hook_input, dict) and (output := verdict(hook_input)):
+        print(json.dumps(output))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

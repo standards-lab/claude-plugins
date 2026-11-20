@@ -1,0 +1,74 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name an internal host or a secret path:
+  - runbooks/disk-full.md:3 names `db-primary-01.int.example.net`
+  - runbooks/cert-expiry.md:3 names `secret/platform/acme-token`
+  - runbooks/queue-backlog.md:3 names `jobs-01.int.example.net`
+  - deploy-rollback.md and dns-failure.md name neither (search of runbooks/).
+- The check enforces two rules:
+  - every runbook opens with "Use when"
+  - every relative link written `](./...)` resolves; links without `./` aren't checked
+  
+  (scripts/check.sh)
+- A denylist grep for `.int.example.net` and `secret/` would catch all three lines. It would miss
+  hosts on other domains and secret paths under other roots (scripts/check.sh).
+- STANDARDS.md has one rule: "A runbook's first line says when to use it." (STANDARDS.md).
+- The repository has no remote, no CI and no mkdocs.yml (.git/config, file search).
+- No index of the runbooks exists (runbooks/, context/README.md).
+- Every format sits behind single sign-on, and one access group grants all three. The audience is
+  that group's membership whatever the format (context/publishing.md).
+- Task proof: "A reader in the chosen audience opens the first edition and finds every runbook"
+  (context/roadmap/publish.toml).
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **What format should the first edition use: a static MkDocs site, a single PDF, or a Markdown
+   index page in the repository?**
+   - **rec:** a Markdown index page in the repository.
+     - The project has no remote and no CI, so a MkDocs site would need a hand build and deploy
+       after every edit.
+     - A PDF goes stale at the next edit, and old copies stay around.
+     - The index page needs no build and never goes stale.
+     - One single sign-on group covers every format, so no format reaches more readers.
+     - A MkDocs site can be built over the same files later.
+   - **changes:** sets the slices:
+     - an index page linking all five runbooks,
+     - a mkdocs.yml and its build,
+     - or a pandoc build of one PDF.
+2. **Who is the first edition for: on-call engineers only, or on-call engineers and the support
+   team?**
+   - **rec:** on-call engineers and support.
+     - Support asked for read access in the last quarterly review.
+     - The redaction is three lines in three runbooks: two hosts, `db-primary-01.int.example.net`
+       and `jobs-01.int.example.net`, and the secret path `secret/platform/acme-token`.
+     - Adding support later would need the same pass then.
+   - **changes:** including support adds two things:
+     - a slice that redacts those three lines, so on-call loses the exact names in the text;
+     - a rule that keeps new runbooks clean.
+     
+     On-call only leaves the runbooks as written and adds no rule.
+3. **Where does first-edition end? The repository has no remote and no `[remote] publish`. It can
+   end when the edition merges into the local `main`, and you put it behind single sign-on by
+   hand. Or this task can first give the project a remote that a session publishes to.**
+   - **rec:** end at the local merge.
+     - The session brief lists the hand step under Needs you.
+     - You check the proof once the edition is in place.
+     - A remote and CI become a backlog goal.
+   - **changes:**
+     - Ending at the local merge keeps the task to the edition's own slices and adds a backlog
+       goal for a remote and CI.
+     - A remote first puts the remote and `[remote] publish` setup ahead of the edition.
+
+**reply:** "1 ok, 2 ok, 3 ok"
+
+---
+
+Your answers decide what round 2 asks:
+- **If support is in the audience:** how to keep new runbooks clean. It could be a denylist in
+  `scripts/check.sh`, a STANDARDS.md line, or both.
+- **If the format is the index page:** whether the check should fail when a runbook is missing from
+  the index. It may also ask whether the check should cover links that don't start with `./`.

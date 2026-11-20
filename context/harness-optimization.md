@@ -69,6 +69,10 @@ Read these sizes, in words, to judge the work:
   artifacts. The session brief's Verify section gives the steps the architect can run to see the
   work behave, and what they should see, or "none" for a prose-only change. The spec-reviewer
   has already followed them (marathon's `references/briefs.md`).
+- **Formats wrapped by a hook** (built). marathon's Stop hook, `bin/wrap-formats`, rewraps a
+  reply that holds a marathon format at 100 columns and asks the session to reprint it. This
+  repository's release gate judges `plan-round-in-reply` on sonnet, against criteria that mirror
+  marathon's plan-round rules (`harness-testing.md`).
 - **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
 
 ## Findings for later
@@ -92,6 +96,8 @@ A retro can take these up.
 - `marathon` treats any value that holds a newline as multi-line, so a one-line TOML string with
   a `\n` escape gets its arguments as positional parameters, which the command ignores unless it
   reads `$1`.
+- `claude plugin eval` stores no judge reasoning and makes the judge answer in one word, so a
+  flipped verdict can't be traced. Both are upstream requests.
 - `scripts/check.sh`'s header lists every check it runs, so each new check must be added there by
   hand, and nothing checks that it is.
 - `scripts/check.sh`'s `unreleased_path_citations_with_owner` reads every markdown file whole and

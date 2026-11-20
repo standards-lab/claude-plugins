@@ -1,0 +1,15 @@
+{
+  "description": "Rewraps a reply holding a marathon format at 100 columns (bin/wrap-formats).",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"${CLAUDE_PLUGIN_ROOT}/bin/wrap-formats\""
+          }
+        ]
+      }
+    ]
+  }
+}
