@@ -22,7 +22,7 @@ one you write together. It gives the vision and the scope. The structure comes o
   `context` (skills, prose, configuration).
 - **The check**: the one deterministic command that runs the build, tests, and lint, or the
   consistency script of a context project (`references/build.md`). It calls `lint-context`
-  (`mechanics/configuration.md`).
+  and `lint-references` (`mechanics/configuration.md`).
 - **The currency command**: optional. The read-only command that reports which direct
   dependencies, toolchain versions, and pins trail their latest release, run at PLAN and never in
   CI (`mechanics/configuration.md`).

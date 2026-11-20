@@ -79,9 +79,9 @@ and [`commands/intake.md`](./skills/marathon/commands/intake.md).
 ## Project kinds
 
 `init` declares a project `code` or `context` in `.claude/marathon.toml`, along with its one
-deterministic `check` command. Every check calls `lint-context`, a script marathon ships on the
-session's PATH, which holds `context/` to its file kinds, word budgets, and shapes and resolves
-relative links (see
+deterministic `check` command. Every check calls two scripts marathon ships on the session's PATH:
+`lint-context`, which holds `context/` to its file kinds, word budgets, and shapes and resolves
+relative links, and `lint-references`, which resolves the markdown references in comments (see
 [`mechanics/configuration.md`](./skills/marathon/mechanics/configuration.md)). Two commands are
 optional: a read-only `currency` command, which reports what trails its latest release, and a
 release `gate` command, such as a plugin's eval suite, which SHIP runs before each tag. On a code
