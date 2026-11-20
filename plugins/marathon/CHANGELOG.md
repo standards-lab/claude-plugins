@@ -7,7 +7,11 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
-## Unreleased
+## v0.20.0
+
+A second check, `lint-references`, resolves the references in code and configuration comments,
+and the roadmap moves out of `context/` to a root `roadmap/`. Every repository migrates; see
+Migrating below.
 
 ### Added
 
@@ -30,6 +34,7 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 
 ### Migrating from 0.19.0
 
+1. Install 0.20.0.
 2. At the coordinator or in a standalone project, move the index and every goal file into the root
    `roadmap/`, and update the notes that name the old paths.
 3. In each repository, add `lint-references` to the check, and have CI download it beside
