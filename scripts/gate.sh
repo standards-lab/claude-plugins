@@ -8,7 +8,9 @@
 #
 # The suite passes when every case scores 1.0 over its three runs, against the
 # plugin alone (--ablation none); it builds its fixtures without a prompt
-# (--scaffold --trust-plugin) and keeps its results local (--no-publish).
+# (--scaffold --trust-plugin), keeps its results local (--no-publish), and runs
+# its llm graders on sonnet (--judge-model sonnet), since eval's default judge,
+# haiku, gives the same round different verdicts.
 #
 # A plugin with no eval directory, or one holding no case, releases on the
 # check alone, and the gate says so on stderr. A malformed tag, or one naming no
@@ -46,6 +48,6 @@ if [ -z "$cases_outside_results" ]; then
 fi
 
 claude plugin eval "$dir" --threshold 1.0 --runs 3 --ablation none --scaffold \
-  --trust-plugin --no-publish ||
+  --trust-plugin --no-publish --judge-model sonnet ||
   fail "the $plugin eval suite failed, so $tag is held"
 echo "gate: $tag passes."

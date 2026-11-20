@@ -41,8 +41,11 @@ each `<plugin>/v<version>` tag, with the tag as its argument. It runs `scripts/c
 
 ```
 claude plugin eval plugins/<plugin> --threshold 1.0 --runs 3 --ablation none --scaffold \
-  --trust-plugin --no-publish
+  --trust-plugin --no-publish --judge-model sonnet
 ```
+
+`llm` graders run on sonnet: eval's default judge, haiku, answers in one word and gave the same
+round different verdicts across runs.
 
 Every case must pass all three runs, or the tag is held. A plugin with no case releases on the
 check alone. Evals never run per push or in CI, because each run is a paid session.
@@ -73,8 +76,9 @@ grades the final reply with six graders:
 - The round doesn't sit inside a code fence.
 - No line of the round exceeds 100 characters.
 - At least two numbered questions each carry a `rec:` line and a `changes:` line.
-- An `llm` grader judges that every question names its subject and can be decided on its own. It
-  finds the round by the line that contains `PLAN ROUND 1`.
+- An `llm` grader judges that every question names its subject and options and can be decided on
+  its own. It reads the lines from the one that contains `PLAN ROUND 1` through the first that
+  contains `reply:`, fails only on the faults it lists, and lists what isn't a fault.
 
 The case comes from marathon 0.16 sessions in which the architect rejected rounds shown as
 AskUserQuestion headlines, and a question asked without its context.

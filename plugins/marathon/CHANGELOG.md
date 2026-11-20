@@ -169,6 +169,10 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
   rewraps the round, and those rules are gone. A question also restates any fact it leans on,
   never pointing back with a phrase like "the three files above", and its **rec:** gives its
   reason.
+- **This repository's gate judges on sonnet.** `scripts/gate.sh` runs the eval suite with
+  `--judge-model sonnet`, since eval's default judge, haiku, gave the same round different
+  verdicts. `plan-round-in-reply`'s self-contained-questions grader reads the round through its
+  `reply:` line and fails only on the faults it lists, and lists what isn't a fault.
 
 ### Migrating from 0.18.0
 
