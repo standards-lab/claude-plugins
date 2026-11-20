@@ -120,7 +120,7 @@ is never re-cut. Everything before the tag is two-way.
 
 ## Progress
 
-slices 5/7 committed · standards — · spec — · editor —
+slices 6/7 committed · standards — · spec — · editor —
 
 ## Decisions
 
