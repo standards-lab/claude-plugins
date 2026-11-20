@@ -14,5 +14,6 @@ local_build=$(dirname "$0")/../.build/$name
 if [ -x "$local_build" ]; then
   exec "$local_build" "$@"
 fi
-MISE_OVERRIDE_CONFIG_FILENAMES=no-project-config exec mise exec \
+MISE_OVERRIDE_CONFIG_FILENAMES=no-project-config MISE_OVERRIDE_TOOL_VERSIONS_FILENAMES=none \
+  exec mise exec \
   "github:standards-lab/claude-plugins[version_prefix=marathon/v]@$version" -- "$name" "$@"

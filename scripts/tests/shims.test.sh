@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Tests for marathon's bin/ shims and the Stop hook that runs one, on a copy of the plugin's bin/
 # and hooks/ beside stub commands: a stub in .build/ stands for the local build, and a stub mise
-# first on PATH records the command line the shim hands it. Each test_ function is one case; the
+# first on PATH records the command line and the MISE_OVERRIDE_ settings the shim hands it. Each test_ function is one case; the
 # script prints a FAIL line per failed assertion and exits 1 if any fails.
 set -uo pipefail
 
@@ -37,12 +37,22 @@ set_up() {
   mkdir -p "$plugin" "$tmp/caller" "$tmp/stubs"
   cp -R "$repo/plugins/marathon/bin" "$repo/plugins/marathon/hooks" "$plugin/"
   write_stub "$tmp/stubs/mise" \
-    "{ pwd; printf '%s\n' \"\${MISE_OVERRIDE_CONFIG_FILENAMES-}\"; printf '%s\n' \"\$@\"; } >'$tmp/mise-call'"
+    "{ pwd; printf '%s\n' \"\$@\"; } >'$tmp/mise-call'; env | grep '^MISE_OVERRIDE_' >'$tmp/mise-env'"
   stubbed_path=$tmp/stubs:$PATH
 }
 
 mise_call() {
   cat "$tmp/mise-call" 2>/dev/null
+}
+
+mise_overrides() {
+  cat "$tmp/mise-env" 2>/dev/null
+}
+
+with_the_shims_overrides() {
+  local -a overrides
+  mapfile -t overrides < <(mise_overrides)
+  (cd "$tmp/caller" && env "${overrides[@]}" MISE_TRUSTED_CONFIG_PATHS="$tmp/caller" "$@")
 }
 
 hook_command() {
@@ -69,8 +79,8 @@ test_each_command_without_a_local_build_execs_the_release_at_the_plugins_version
     local -a call
     mapfile -t call < <(mise_call)
     assert_equal "$command: mise's working directory" "${call[0]}" "$tmp/caller"
-    assert_equal "$command: mise's arguments" "${call[*]:2}" "exec $release -- $command a b c"
-    assert_equal "$command: mise's argument count" "$((${#call[@]} - 2))" 6
+    assert_equal "$command: mise's arguments" "${call[*]:1}" "exec $release -- $command a b c"
+    assert_equal "$command: mise's argument count" "$((${#call[@]} - 1))" 6
   done
 }
 
@@ -87,11 +97,27 @@ test_the_release_ignores_the_callers_mise_config() {
   assert_equal "the config read without an override" "$read_by_default" "read"
   for command in "${commands[@]}"; do
     (cd "$tmp/caller" && PATH=$stubbed_path "$plugin/bin/$command")
-    local override ignored
-    override=$(mise_call | sed -n 2p)
-    ignored=$(cd "$tmp/caller" && MISE_TRUSTED_CONFIG_PATHS=$tmp/caller \
-      MISE_OVERRIDE_CONFIG_FILENAMES=$override mise exec -- sh -c "$config_value")
-    assert_equal "$command: the config read with the shim's override" "$ignored" "unset"
+    local ignored
+    ignored=$(with_the_shims_overrides mise exec -- sh -c "$config_value")
+    assert_equal "$command: the config read with the shim's overrides" "$ignored" "unset"
+  done
+}
+
+test_the_release_ignores_the_callers_tool_versions() {
+  command -v mise >/dev/null || {
+    fail "mise is not on PATH; install mise, then rerun"
+    return
+  }
+  echo 'nonexistent-tool-xyz 9.9.9' >"$tmp/caller/.tool-versions"
+  local read_by_default
+  read_by_default=$(cd "$tmp/caller" && mise exec -- true 2>&1)
+  [[ $read_by_default == *nonexistent-tool-xyz* ]] ||
+    fail "the .tool-versions read without an override: got [$read_by_default], want a warning naming nonexistent-tool-xyz"
+  for command in "${commands[@]}"; do
+    (cd "$tmp/caller" && PATH=$stubbed_path "$plugin/bin/$command")
+    local ignored
+    ignored=$(with_the_shims_overrides mise exec -- true 2>&1)
+    assert_equal "$command: mise's output with the shim's overrides" "$ignored" ""
   done
 }
 
