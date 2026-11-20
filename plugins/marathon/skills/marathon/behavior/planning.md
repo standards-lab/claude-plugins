@@ -1,7 +1,6 @@
 # Planning
 
-These rules govern how every marathon session decides its scope, at the pipeline's PLAN stage
-(`mechanics/pipeline.md`).
+These rules govern how a marathon session decides its scope at PLAN (`mechanics/pipeline.md`).
 
 ## Plan one task at a time
 
@@ -19,8 +18,7 @@ continue from the bottom.
 Before recommending that a task build something itself, ask whether the language's standard
 library, or a dependency its ecosystem treats as standard, already solves the problem. If one
 does, building your own needs a good reason, recorded as a rejected alternative in the goal
-record. Without a good reason, adopt the existing solution. Ask this in the plan round, while the
-answer can still change the brief.
+record. Ask this in the plan round, while the answer can still change the brief.
 
 ## Start from current dependencies
 

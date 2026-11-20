@@ -156,10 +156,11 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
   moves into the case's description, and the AskUserQuestion grader's note into its body.
 - **A plan round is wrapped before it is printed** (`references/briefs.md`, Plan round;
   `behavior/planning.md`; `agents/planner.md`): the round's rules now say to hard-wrap every line
-  at 100 characters, indentation and markup included, and to wrap the planner's draft before
-  printing it, and the planner returns the round already wrapped. Sessions had printed long facts
-  and **rec:** lines unwrapped, failing `plan-round-in-reply`'s line-width grader in four of six
-  runs. A question also restates any fact it leans on, never pointing back with a phrase like
+  at 100 characters, indentation and markup included, by breaking each longer line at a space and
+  indenting the rest under its text even though markdown would render it unbroken, and to rewrap
+  the planner's draft before printing it; the planner returns the round already wrapped. Sessions
+  had printed long facts and **rec:** lines unwrapped, as markdown paragraphs of up to 360
+  characters, failing `plan-round-in-reply`'s line-width grader in five of nine runs. A question also restates any fact it leans on, never pointing back with a phrase like
   "the three files above", and its **rec:** gives its reason.
 
 ### Migrating from 0.18.0

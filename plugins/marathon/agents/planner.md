@@ -27,7 +27,8 @@ The session asks for one of two things.
 - Before recommending that the task build something itself, answer the question in
   `${CLAUDE_PLUGIN_ROOT}/skills/marathon/behavior/planning.md`, "Check for an existing solution
   first", and put the answer in the `rec:`.
-- Return the round hard-wrapped at 100 characters, ready to print as is.
+- Return the round hard-wrapped at 100 characters, each longer line broken at a space and its
+  rest indented under its text, ready to print as is.
 - Return no questions when none remain open.
 
 **A task brief and its slices**, in the format of
