@@ -1,78 +1,16 @@
 # goal · harness.adoption
 
-- **State:** brief ready
-- **Task:** shim
-- **Branch:** shim
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
 1. [x] references
 2. [x] go-tools
 3. [x] ai-hosting
-4. [ ] shim
+4. [x] shim
 5. [ ] architecture
-
-## Task brief · shim
-
-**Problem**
-
-marathon 0.21.0's shims run the release through `mise exec` with two `MISE_OVERRIDE_*` variables
-set, and both reach the command marathon runs. A repository's `marathon check` and
-`marathon currency` then ignore its own `mise.toml`, and every adoption goal's validate and
-currency steps go through `marathon`. Separately, the plugin's Stop hook blocks a marathon
-format with a line over 100 columns and hands the model a rewrapped copy to print again, so the
-architect reads each such reply twice.
-
-**Behaviors**
-1. A command run through a shim without a local build sees the caller's environment, unchanged:
-   no `MISE_OVERRIDE_*` variable the caller didn't set, and the caller's own values as they were.
-   A `marathon check` whose configured command runs `mise run` reads the repository's `mise.toml`.
-2. The shim still runs the release at the plugin's version, resolved while ignoring the caller's
-   mise config and `.tool-versions`. A version not yet installed installs on first use, and a
-   local build still wins.
-3. claude-plugins' `marathon check` exits 0.
-4. The plugin's hook rewraps a marathon format on screen as the reply streams, from the format's
-   heading to the end of the message, with today's rewrap rules: lines over 100 columns outside
-   code fences and tables, list and blockquote markers kept, continuation lines indented, and no
-   continuation starting on a block-start word. The model is never asked to reprint, and a reply
-   holding no format displays untouched. A failure or timeout displays the original.
-5. The version reads 0.22.0 in the plugin manifest, the skill, each shim, and the pin example in
-   the configuration mechanics. The CHANGELOG has a v0.22.0 entry whose Migrating note names the
-   hook change and the 0.22.0 pin.
-
-**Test seams**
-- `scripts/tests/shims.test.sh`, through the check.
-- `wrapformats`' tests, over `MessageDisplay` input across batches and messages.
-- `marathon check` in claude-plugins.
-- A live session, for the on-screen rewrap (the session brief's Verify).
-
-**Slices**
-1. The shims resolve and exec the release, and the tests prove behaviors 1–3.
-2. wrap-formats as a `MessageDisplay` hook (behavior 4).
-3. Version 0.22.0 and its CHANGELOG entry (behavior 5).
-
-**Out of scope**
-
-Rewrapping files such as the session brief before publishing; replies with no marathon format;
-the Go binaries' other commands; adopting repositories' pins.
-
-**Door**
-
-One-way for the tag: once pushed, every installation at 0.22.0 runs these shims and this hook.
-Everything else is two-way.
-
-**Release**
-- claude-plugins: `marathon/v0.22.0`
-
-## Progress
-
-slices 3/3 committed · standards ✓ (baba806, c6cc55e) · spec ✓ · editor ✓
-- redirect, BUILD: fold the Stop hook's reprint into `shim`; re-planned: wrap-formats moves to a
-  `MessageDisplay` hook, and the release becomes v0.22.0.
-- slice 2, decided: hook state also opens for a fence still open at a batch's end, so a heading
-  inside it isn't a format; one overlong word stays unwrapped, with no report.
-- escalation, slice 3: drop plan-round-in-reply's line-width grader, which can't see the displayed
-  text? Answer: yes (fd135b2); graders.test.mjs holds the displayed width.
 
 ## Decisions
 
