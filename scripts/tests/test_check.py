@@ -21,8 +21,8 @@ READ_FIRST_FIX = 'give it exactly one "Read first, before acting:" list'
 RERUN = "fix the lines above, then rerun"
 EXTENSION = "plugins/marathon-architecture"
 CHECK_TOOLS_EXCEPT_CLAUDE = (
-    "awk", "bash", "cat", "cut", "dirname", "find", "git", "grep", "jq", "python3",
-    "realpath", "sort", "wc",
+    "as", "awk", "bash", "cat", "cut", "dirname", "find", "gcc", "git", "go", "gofmt",
+    "golangci-lint", "grep", "jq", "ld", "mktemp", "python3", "realpath", "rm", "sort", "wc",
 )
 
 

@@ -1,0 +1,17 @@
+# golangci-lint v2 configuration for the marathon module, run by scripts/check.sh: the standard set
+# (errcheck, govet, ineffassign, staticcheck, unused), plus testpackage, which keeps tests
+# black-box with export_test.go the one white-box file allowed, and nolintlint, which requires
+# every suppression to name its linter and give its reason.
+version: "2"
+
+linters:
+  default: standard
+  enable:
+    - nolintlint
+    - testpackage
+  settings:
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    testpackage:
+      skip-regexp: export_test\.go

@@ -5,8 +5,9 @@
 # the marketplace (a missing claude fails the check), the plugins' markdown outside eval results
 # has no @-include lines and its links and backtick file citations resolve, the word budgets in
 # scripts/budgets.txt hold, every skill description fits in 1,024 characters, every marathon
-# extension skill declares user-invocable: false, and lint-context, lint-references, and
-# scripts/tests pass.
+# extension skill declares user-invocable: false, the Go module in marathon/ passes the Go check
+# (build, vet, gofmt, go fix, go mod tidy, go test -race, and golangci-lint, with GOWORK=off),
+# and lint-context, lint-references (built from marathon/), and scripts/tests pass.
 set -uo pipefail
 
 fail=0
@@ -271,8 +272,45 @@ done
 
 working_tree_lint_context=plugins/marathon/bin/lint-context
 "$working_tree_lint_context" || err "lint-context failed; fix the lines above, then rerun"
-working_tree_lint_references=plugins/marathon/bin/lint-references
-"$working_tree_lint_references" || err "lint-references failed; fix the lines above, then rerun"
+go_module=marathon
+if command -v go >/dev/null && command -v gofmt >/dev/null && command -v golangci-lint >/dev/null; then
+  export GOWORK=off
+  rerun_after_output() {
+    local step=$1
+    shift
+    if ! failed_step_report=$("$@" 2>&1); then
+      echo "$failed_step_report" >&2
+      err "$step failed in $go_module/; fix the lines above, then rerun"
+    fi
+  }
+  rerun_after_output "go build" go build -C "$go_module" ./...
+  rerun_after_output "go vet" go vet -C "$go_module" ./...
+  while read -r file; do
+    [ -n "$file" ] && err "$go_module/$file is not gofmt-formatted; run gofmt -w $go_module/$file"
+  done < <(cd "$go_module" && gofmt -l .)
+  if ! go_fix_diff=$(go fix -C "$go_module" -diff ./... 2>&1) || [ -n "$go_fix_diff" ]; then
+    echo "$go_fix_diff" >&2
+    err "go fix would change $go_module/; run 'go fix ./...' in $go_module/"
+  fi
+  if ! go_mod_tidy_diff=$(go mod tidy -C "$go_module" -diff 2>&1); then
+    echo "$go_mod_tidy_diff" >&2
+    err "go.mod or go.sum in $go_module/ is not tidy; run 'go mod tidy' in $go_module/"
+  fi
+  rerun_after_output "go test -race" go test -C "$go_module" -race ./...
+  rerun_after_output "golangci-lint" bash -c 'cd "$1" && golangci-lint run ./...' _ "$go_module"
+
+  tools=$(mktemp -d)
+  trap 'rm -rf "$tools"' EXIT
+  if go build -C "$go_module" -o "$tools/" ./cmd/...; then
+    "$tools/lint-references" || err "lint-references failed; fix the lines above, then rerun"
+  else
+    err "the $go_module/ commands do not build, so lint-references did not run;" \
+      "fix the lines above, then rerun"
+  fi
+else
+  err "go, gofmt, or golangci-lint is not on PATH, so $go_module/ was not checked and" \
+    "lint-references did not run; run 'mise install' and activate mise, then rerun"
+fi
 if ! failed_tests_report=$(python3 -B -m unittest discover -s scripts/tests 2>&1); then
   echo "$failed_tests_report" >&2
   err "scripts/tests failed; fix the lines above, then rerun"
