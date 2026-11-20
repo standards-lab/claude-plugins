@@ -32,6 +32,13 @@ Migrating below.
   project. marathon reads only the new layout, with no fallback, and `lint-context` fails on a
   file at an old path, naming the move. `context/` keeps the notes and goal records.
 
+### Fixed
+
+- **A plan-round question no longer points at text outside it** (`references/briefs.md`, "Plan
+  round"). The release gate caught a question that named "the three runbooks above". Before
+  printing a round, the session now rereads each question for "above", "below", "this", and
+  "these", and replaces each with the thing it points at.
+
 ### Migrating from 0.19.0
 
 1. Install 0.20.0.

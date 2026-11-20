@@ -49,7 +49,9 @@ next round; it is never asked conditionally, as in "only if 1 is yes". The round
   architect can decide it from the question, its **rec:**, and its **changes:** alone. All three
   name the things they refer to and never point elsewhere for them: not "this", "option B",
   "the three files above", **Facts found**, another question, a term defined outside the
-  question, or a file to open. A fact the question leans on is restated in it.
+  question, or a file to open. A fact the question leans on is restated in it. Before printing
+  the round, reread each question for "above", "below", "this", and "these", and replace each
+  with the thing it points at.
 - Decide one thing per question. When two choices are coupled, ask first the one that settles
   the other. Never bundle two decisions into lettered combinations.
 - Give every question a **rec:** with its reason, and a **changes:** line saying what the answer
