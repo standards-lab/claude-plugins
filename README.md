@@ -72,7 +72,8 @@ User-invocable skills can also be triggered directly with slash commands (e.g., 
 
 Releases are tag-driven. Pushing a tag of the form `<plugin>/v<version>` (e.g. `marathon/v0.1.0`)
 triggers [`.github/workflows/release.yml`](./.github/workflows/release.yml), which cuts a GitHub
-release from that plugin's `CHANGELOG.md`.
+release from that plugin's `CHANGELOG.md`; a marathon release also carries its Go commands'
+binaries.
 
 ## Repository Structure
 

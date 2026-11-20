@@ -53,19 +53,17 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   links in the root README, `context/`, and `docs/`. `lint-references` resolves each markdown
   reference in the comments of the tracked files that aren't markdown: from the repository root,
   or in the sibling directory its first segment names. It skips a reference whose directory
-  exists in neither place, as in CI. Both ship in the plugin's `bin/`, so a
-  session has them on PATH, and they run the plugin's release through mise, so a session needs mise
-  on PATH. A CI that lacks the plugin fetches both from one pinned `marathon/vX.Y.Z` tag, and the
-  pin is bumped like any other dependency:
+  exists in neither place, as in CI. Both are Go binaries. The plugin's `bin/` shims put them on a
+  session's PATH, each running the plugin's local build when present, or the plugin's release
+  through mise, so a session needs mise on PATH. A repository pins the release in its
+  `mise.toml`, so `mise install` puts both on PATH and `mise outdated` reports a newer tag:
 
-  ```sh
-  base=https://raw.githubusercontent.com/standards-lab/claude-plugins/refs/tags/marathon/v0.20.0
-  for lint in lint-context lint-references; do
-    curl -fsSLo "$lint" "$base/plugins/marathon/bin/$lint"
-  done
-  python3 lint-context
-  python3 lint-references
+  ```toml
+  [tools]
+  "github:standards-lab/claude-plugins" = { version = "0.21.0", version_prefix = "marathon/v" }
   ```
+
+  CI calls both after `mise install`.
 - **`[project] currency`**: optional. The repository's read-only command that reports what trails
   its latest release: the direct dependencies, the toolchain, and the pins, such as CI actions and
   images. Indirect dependencies are left to the ecosystem's resolver. PLAN runs it at development

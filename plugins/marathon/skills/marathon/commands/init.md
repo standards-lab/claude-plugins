@@ -22,7 +22,7 @@ one you write together. It gives the vision and the scope. The structure comes o
   `context` (skills, prose, configuration).
 - **The check**: the one deterministic command that runs the build, tests, and lint, or the
   consistency script of a context project (`references/build.md`). It calls `lint-context`
-  and `lint-references` (`mechanics/configuration.md`).
+  and `lint-references`, pinned in the repository's `mise.toml` (`mechanics/configuration.md`).
 - **The currency command**: optional. The read-only command that reports which direct
   dependencies, toolchain versions, and pins trail their latest release, run at PLAN and never in
   CI (`mechanics/configuration.md`).
@@ -44,6 +44,7 @@ Keep every file brief, a few sentences each.
 ├── CLAUDE.md          # navigation pointers only: context/README.md, STANDARDS.md, the check
 ├── STANDARDS.md       # judgement calls for the standards-reviewer; starts as a stub
 ├── .gitignore         # .claude/plans/ and .claude/briefs/
+├── mise.toml          # the lints' pin; mechanics/configuration.md
 ├── .claude/
 │   ├── settings.json  # plansDirectory = ./.claude/plans; allow Skill(marathon:marathon)
 │   └── marathon.toml  # mechanics/configuration.md

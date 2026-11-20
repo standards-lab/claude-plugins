@@ -7,6 +7,48 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
+## Unreleased
+
+marathon's four tools are Go binaries, released on each `marathon/vX.Y.Z` tag, and a repository
+pins them through mise. Nothing needs Python. Every repository migrates; see Migrating below.
+
+### Added
+
+- **Release binaries.** Each `marathon/vX.Y.Z` release carries
+  `marathon-<version>-<os>-<arch>.tar.gz` for linux and darwin on amd64 and arm64, each holding
+  `lint-context`, `lint-references`, `marathon`, and `wrap-formats` at its top level, and
+  `SHA256SUMS`. A repository pins them as
+  `"github:standards-lab/claude-plugins" = { version = "0.21.0", version_prefix = "marathon/v" }`
+  in its `mise.toml`; `mise install` puts all four on PATH, and `mise outdated` reports a newer
+  tag (`mechanics/configuration.md`). This repository's release gate cross-builds the four
+  archives before the tag.
+- **`--version`.** Each tool, given `--version` as its one argument, prints its name and release
+  version; a build without a stamped version reports `dev`.
+
+### Changed
+
+- **The tools are Go commands.** `lint-context`, `lint-references`, `marathon`, and `wrap-formats`
+  keep their arguments, output, and exit status. They no longer need Python; a session needs mise
+  on PATH instead.
+- **`bin/` holds shims** (`bin/marathon`). Each runs the plugin's local build, `.build/` beside
+  `bin/`, when it holds the tool, and otherwise the tool from the release at the plugin's own
+  version through `mise exec`, ignoring the caller's mise configuration. The Stop hook never
+  blocks a reply when its shim fails (`hooks/hooks.json`).
+- **`init`'s check calls the pinned lints** (`commands/init.md`): the repository pins
+  `lint-context` and `lint-references` in its `mise.toml`, and CI calls them after `mise install`.
+
+### Fixed
+
+- **`lint-references` reads a line starting with `*` as a comment only inside a `/*` block**, so a
+  star line elsewhere, such as a `.gitignore` pattern, no longer carries a reference.
+
+### Migrating from 0.20.0
+
+2. Pin `github:standards-lab/claude-plugins` with `version_prefix = "marathon/v"` at 0.21.0 or
+   later in each repository's `mise.toml`.
+3. In CI, call `lint-context` and `lint-references` after `mise install`, and drop any `curl`
+   download.
+
 ## v0.20.0
 
 A second check, `lint-references`, resolves the references in code and configuration comments,
