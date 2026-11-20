@@ -213,7 +213,7 @@ session writes it to `.claude/briefs/<goal>.md` in the goal's root, which gitign
 >
 > - **coordinator**
 >   - context/ai.md: answer section for spike-harness-driver
->   - roadmap.toml: remove experiment.ai.spike-harness-driver from `active`
+>   - roadmap/index.toml: remove experiment.ai.spike-harness-driver from `active`
 >   - roadmap/experiment.ai.spike-harness-driver.toml: delete
 > - **architecture**
 >   - standards/harnesses.md: name the driver interface

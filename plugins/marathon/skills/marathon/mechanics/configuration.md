@@ -49,13 +49,13 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
 - **`[project] check`**: the repository's one deterministic check, which every slice and review
   runs (`references/build.md`). A context project names its consistency script, if it has one.
   Every repository's check calls `lint-context` and `lint-references`. `lint-context` holds
-  `context/` to its file kinds, word budgets, and shapes, and checks the relative links in the
-  root README, `context/`, and `docs/`. `lint-references` checks that the markdown references in
-  the comments of tracked files that aren't markdown resolve, from the repository root or in the
-  sibling directory the reference's first segment names, and skips a reference whose directory
-  exists in neither place, as in CI. Both ship in the plugin's `bin/`, so a session has them on
-  PATH, and both need Python 3.11 or later. A CI that lacks the plugin fetches both from one
-  pinned `marathon/vX.Y.Z` tag, and the pin is bumped like any other dependency:
+  `context/` and `roadmap/` to their file kinds, word budgets, and shapes, and checks the relative
+  links in the root README, `context/`, and `docs/`. `lint-references` checks that the markdown
+  references in the comments of tracked files that aren't markdown resolve, from the repository
+  root or in the sibling directory the reference's first segment names, and skips a reference
+  whose directory exists in neither place, as in CI. Both ship in the plugin's `bin/`, so a
+  session has them on PATH, and both need Python 3.11 or later. A CI that lacks the plugin fetches
+  both from one pinned `marathon/vX.Y.Z` tag, and the pin is bumped like any other dependency:
 
   ```sh
   base=https://raw.githubusercontent.com/standards-lab/claude-plugins/refs/tags/marathon/v0.20.0

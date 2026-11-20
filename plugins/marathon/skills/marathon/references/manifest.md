@@ -1,8 +1,8 @@
 # The roadmap manifest
 
 The roadmap manifest holds only what remains on the path to the target end state: goals, their
-tasks, and the three state arrays (`mechanics/goals.md`). It is an index, `context/roadmap.toml`,
-and one goal file per goal in the roadmap directory beside it, `context/roadmap/`. Every file is
+tasks, and the three state arrays (`mechanics/goals.md`). It is the repository's root `roadmap/`:
+an index, `roadmap/index.toml`, and one goal file per goal, `roadmap/<goal>.toml`. Every file is
 plain TOML, with no inline tables and no timestamps.
 
 ## The index
@@ -14,7 +14,7 @@ themselves.
 ## Goal files
 
 - Every goal has its own file, named by the goal's full dotted path:
-  `context/roadmap/v1.data.toml`. That includes a container goal that sits in no array, and the
+  `roadmap/v1.data.toml`. That includes a container goal that sits in no array, and the
   reserved root goal `experiment`. A backlog goal is an ordinary goal file.
 - A sub-goal's file name extends its parent's (`v1.data.toml` under `v1.toml`). The file names are
   the whole tree; no file names another goal as its parent or child.
@@ -102,7 +102,7 @@ backlog = []
 
 ## Example
 
-`context/roadmap.toml`:
+`roadmap/index.toml`:
 
 ```toml
 # Roadmap index: the three arrays. The format is marathon's references/manifest.md.
@@ -112,7 +112,7 @@ planned = ["v1.messaging"]
 backlog = ["docs-site"]
 ```
 
-`context/roadmap/v1.toml`:
+`roadmap/v1.toml`:
 
 ```toml
 name = "The service at v1.0"
@@ -121,7 +121,7 @@ repos = []
 criteria = ["Every capability goal beneath this one is closed."]
 ```
 
-`context/roadmap/v1.data.toml`:
+`roadmap/v1.data.toml`:
 
 ```toml
 name = "Data layer"
@@ -141,7 +141,7 @@ name = "Writes"
 summary = "Commands over the reads slice's first domain package."
 ```
 
-`context/roadmap/v1.messaging.toml`:
+`roadmap/v1.messaging.toml`:
 
 ```toml
 name = "Messaging"
@@ -149,7 +149,7 @@ summary = "A messaging library and the reactor services it enables."
 repos = ["messaging-lib", "service"]
 ```
 
-`context/roadmap/experiment.toml`:
+`roadmap/experiment.toml`:
 
 ```toml
 name = "Experiments"
@@ -157,7 +157,7 @@ summary = "The spikes that settle what a goal is built from."
 repos = []
 ```
 
-`context/roadmap/experiment.cache.toml`:
+`roadmap/experiment.cache.toml`:
 
 ```toml
 name = "Does a read-through cache pay for itself?"
@@ -171,7 +171,7 @@ name = "The cache intake"
 summary = "Decides what v1.data takes from the spikes' answers."
 ```
 
-`context/roadmap/experiment.cache.spike-cache-redis.toml`:
+`roadmap/experiment.cache.spike-cache-redis.toml`:
 
 ```toml
 name = "A shared Redis cache"
@@ -191,7 +191,7 @@ name = "Read-through cache"
 summary = "Adds the cache and measures the reads again."
 ```
 
-`context/roadmap/experiment.cache.spike-cache-local.toml`:
+`roadmap/experiment.cache.spike-cache-local.toml`:
 
 ```toml
 name = "An in-process cache"
@@ -207,7 +207,7 @@ name = "In-process cache"
 summary = "Adds the cache and measures the reads against the same baseline."
 ```
 
-`context/roadmap/docs-site.toml`:
+`roadmap/docs-site.toml`:
 
 ```toml
 name = "The docs site"

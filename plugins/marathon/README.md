@@ -58,7 +58,7 @@ request in each repository it changes. See
 ## Goals
 
 The roadmap manifest holds goals (outcomes) and their tasks (one session's work each): an index,
-`context/roadmap.toml`, of the three arrays, and one file per goal in `context/roadmap/`. Every
+`roadmap/index.toml`, of the three arrays, and one file per goal, `roadmap/<goal>.toml`. Every
 goal is `active`, `planned`, or `backlog`, except an experiment goal, which is never listed.
 Active goals run side by side, and each locks the repositories it touches, so no two share one and
 no worktrees are needed.
@@ -80,13 +80,13 @@ and [`commands/intake.md`](./skills/marathon/commands/intake.md).
 
 `init` declares a project `code` or `context` in `.claude/marathon.toml`, along with its one
 deterministic `check` command. Every check calls two scripts marathon ships on the session's PATH:
-`lint-context`, which holds `context/` to its file kinds, word budgets, and shapes and resolves
-relative links, and `lint-references`, which resolves the markdown references in comments (see
-[`mechanics/configuration.md`](./skills/marathon/mechanics/configuration.md)). Two commands are
-optional: a read-only `currency` command, which reports what trails its latest release, and a
-release `gate` command, such as a plugin's eval suite, which SHIP runs before each tag. On a code
-project a slice adds behavior with its tests; on a context project a slice is the deliverable
-prose, checked by the consistency script and a read.
+`lint-context`, which holds `context/` and `roadmap/` to their file kinds, word budgets, and
+shapes and resolves relative links, and `lint-references`, which resolves the markdown references
+in comments (see [`mechanics/configuration.md`](./skills/marathon/mechanics/configuration.md)).
+Two commands are optional: a read-only `currency` command, which reports what trails its latest
+release, and a release `gate` command, such as a plugin's eval suite, which SHIP runs before each
+tag. On a code project a slice adds behavior with its tests; on a context project a slice is the
+deliverable prose, checked by the consistency script and a read.
 
 ## Currency
 

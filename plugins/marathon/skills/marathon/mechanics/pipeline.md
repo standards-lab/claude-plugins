@@ -29,7 +29,7 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
      standalone project whose roadmap holds the spike's experiment, never from the spike's own
      repository.
 2. Read the manifest (`references/manifest.md`): the index, the project's own
-   `context/roadmap.toml` or the coordinator's, then the named goal's file beside it. First check
+   `roadmap/index.toml` or the coordinator's, then the named goal's file beside it. First check
    the coordinator's lock as step 5 does, then pull its default branch, unless the session resumes
    on its own branch there. Take the goal's `repos` and `root` from its file, and resolve each
    repository name through the workspace's `order` or `[workspace.paths]`, or a spike's `path`.
