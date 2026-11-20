@@ -27,8 +27,8 @@ Read these sizes, in words, to judge the work:
   1,980 words, down from 2,715, since Releasing and RESUME moved to their own files.
 - The planner profile: 272 words, down from 554, since profiles cite the skill's rules instead of
   restating them.
-- The coordinator's `context/roadmap.toml`: one file of 13,353 words over 61 goals and 74 tasks,
-  with no task order and dated lines its format forbids.
+- The coordinator's roadmap as one file, then `context/roadmap.toml`: 13,353 words over 61 goals
+  and 74 tasks, with no task order and dated lines its format forbids.
 - A long goal record: docproc's `v1.ai.processing` runs to 15,245 words, 12,334 of them
   Decisions.
 - Spike READMEs that became lab notebooks: `spike-html-conventions`, at 24,678 words.
@@ -44,17 +44,17 @@ Read these sizes, in words, to judge the work:
   comment in source: package documentation, a lint suppression's reason, a pin hold's reason,
   provenance, and a reference, one line pointing a file at the document that governs it instead
   of restating it. Each ecosystem's stock lint rule requires a suppression's reason, each
-  repository's check resolves its references, and the standards-reviewer judges every other
-  comment.
+  repository's check resolves its references with marathon's `lint-references`, and the
+  standards-reviewer judges every other comment.
   marathon's standards-reviewer applies the comment rule a repository's `STANDARDS.md` declares.
   claude-plugins' scripts, tests, and configuration files follow it, as its `STANDARDS.md`
   declares, and marathon's configuration examples carry no comments. Code repositories adopt it
   in `harness.adoption`.
 - **One release** (built). marathon 0.19.0 and marathon-architecture 0.4.0 carry the goal's
   changes, and marathon's CHANGELOG gives the migration from 0.18.0 as ordered steps.
-- **Roadmap layout** (built). marathon reads an index of the three arrays plus one
-  `context/roadmap/<goal>.toml` per goal, holding its own `root` and `repos`, an `order` array,
-  and its tasks (marathon's `references/manifest.md`).
+- **Roadmap layout** (built). marathon reads the root `roadmap/`: `roadmap/index.toml`, of the
+  three arrays, plus one `roadmap/<goal>.toml` per goal, holding its own `root` and `repos`, an
+  `order` array, and its tasks (marathon's `references/manifest.md`).
 - **Harness standards** (built). claude-plugins' `STANDARDS.md` lists the judgement calls of
   harness programming, one line each, with pointers to the architecture pages that govern the
   repository, and the standards-reviewer applies it. `scripts/check.sh` enforces the mechanical
