@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Check a marathon repository's context at the current working directory.
 
-Every file under context/ is of a known kind: the context README, a note, a
-goal record, the roadmap index, or a goal file. Notes, READMEs, goal-record
-sections, and roadmap entries stay within fixed word budgets, where a word is a
-whitespace-separated token, as wc -w counts it. The roadmap keeps the shape
-marathon's references/manifest.md gives it, and its goal files carry no
-comments. The context README's capability map lists each feature as built or
+Every file under context/ is of a known kind: the context README, a note, or a
+goal record. Every file under roadmap/ is the roadmap index, index.toml, or a
+goal file, <goal>.toml. Notes, READMEs, goal-record sections, and roadmap
+entries stay within fixed word budgets, where a word is a whitespace-separated
+token, as wc -w counts it. The roadmap keeps the shape marathon's
+references/manifest.md gives it, and its goal files carry no comments. The context README's capability map lists each feature as built or
 planned, and every relative markdown link in the root README, context/, and
 docs/ resolves. Prints one line per failure and exits nonzero if there is any.
 """
@@ -55,18 +55,24 @@ def over(path, kind, count, budget, fix):
     return f"{path}: {kind} is {count:,} words, budget {budget:,}; {fix}"
 
 
-def context_kind(rel):
+def file_kind(rel):
     parts = rel.parts
+    if parts[0] == "roadmap":
+        if parts == ("roadmap", "index.toml"):
+            return "roadmap-index"
+        if len(parts) == 2 and rel.suffix == ".toml":
+            return "goal-file"
+        return None
     if parts == ("context", "README.md"):
         return "context-readme"
     if parts == ("context", "roadmap.toml"):
-        return "roadmap-index"
+        return "moved-roadmap-index"
     if len(parts) == 2 and rel.suffix == ".md":
         return "note"
     if len(parts) == 3 and parts[1] == "goals" and rel.suffix == ".md":
         return "record"
     if len(parts) == 3 and parts[1] == "roadmap" and rel.suffix == ".toml":
-        return "goal-file"
+        return "moved-goal-file"
     return None
 
 
@@ -98,11 +104,20 @@ def heading_and_body_per_section(text):
 
 def check_kinds(root, files):
     for rel in files:
-        if context_kind(rel) is None:
+        kind = file_kind(rel)
+        if kind == "moved-roadmap-index":
+            yield f"{rel}: the roadmap index moved; move it to roadmap/index.toml"
+        elif kind == "moved-goal-file":
+            yield f"{rel}: the roadmap moved; move it to roadmap/{rel.name}"
+        elif kind is None and rel.parts[0] == "roadmap":
+            yield (
+                f"{rel}: not a roadmap file; name it index.toml or <goal>.toml, "
+                "or move it out of roadmap/"
+            )
+        elif kind is None:
             yield (
                 f"{rel}: not a context file, which is README.md, a note (*.md), "
-                "goals/*.md, roadmap.toml, or roadmap/*.toml; "
-                "move it to docs/ or rename it to one of those kinds"
+                "or goals/*.md; move it to docs/ or rename it to one of those kinds"
             )
 
 
@@ -113,7 +128,7 @@ def check_budgets(root, files):
         if count > ROOT_README_BUDGET:
             yield over("README.md", "README", count, ROOT_README_BUDGET, PROSE_FIX)
     for rel in files:
-        kind = context_kind(rel)
+        kind = file_kind(rel)
         if kind == "context-readme":
             count = words(read(root / rel))
             if count > CONTEXT_README_BUDGET:
@@ -141,7 +156,7 @@ def parsed_or_none(root, rel):
 
 def parsed_goal_files(root, files):
     for rel in files:
-        if context_kind(rel) == "goal-file":
+        if file_kind(rel) == "goal-file":
             data = parsed_or_none(root, rel)
             if data is not None:
                 yield rel, data
@@ -156,7 +171,7 @@ def task_tables(data):
 
 def check_toml_parses(root, files):
     for rel in files:
-        if context_kind(rel) not in ("roadmap-index", "goal-file"):
+        if file_kind(rel) not in ("roadmap-index", "goal-file"):
             continue
         try:
             tomllib.loads(read(root / rel))
@@ -166,7 +181,7 @@ def check_toml_parses(root, files):
 
 def check_index(root, files):
     for rel in files:
-        if context_kind(rel) != "roadmap-index":
+        if file_kind(rel) != "roadmap-index":
             continue
         text = read(root / rel)
         comments = sum(1 for line in text.splitlines() if line.lstrip().startswith("#"))
@@ -182,7 +197,7 @@ def check_index(root, files):
             if key not in INDEX_ARRAYS:
                 yield (
                     f"{rel}: '{key}' is not one of active, planned, backlog; "
-                    "move it into a goal file under context/roadmap/ or remove it"
+                    "move it into a goal file under roadmap/ or remove it"
                 )
             elif not isinstance(value, list):
                 yield (
@@ -223,7 +238,7 @@ def toml_comment_line_numbers(text):
 
 def check_goal_file_comments(root, files):
     for rel in files:
-        if context_kind(rel) != "goal-file":
+        if file_kind(rel) != "goal-file":
             continue
         for number in toml_comment_line_numbers(read(root / rel)):
             yield f"{rel}:{number}: comment; move the note into the goal's context note"
@@ -454,7 +469,7 @@ CHECKS = (
 
 def main():
     root = Path.cwd()
-    files = list(non_dot_files(root, "context"))
+    files = [*non_dot_files(root, "context"), *non_dot_files(root, "roadmap")]
     failures = [line for check in CHECKS for line in check(root, files)]
     for line in failures:
         print(line)

@@ -113,7 +113,7 @@ class CheckTest(unittest.TestCase):
     def test_consumer_paths_pass(self):
         self.write(
             UNBUDGETED_SEED,
-            "# Seeded\n\nSee `context/roadmap.toml`, `scripts/check.sh`, and `src/app/main.py`.\n",
+            "# Seeded\n\nSee `roadmap/index.toml`, `scripts/check.sh`, and `src/app/main.py`.\n",
         )
         self.assertEqual(self.check(), (0, []))
 
