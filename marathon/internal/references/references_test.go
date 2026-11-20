@@ -99,6 +99,34 @@ func TestAnOpenerInsideAPatternOrLineCommentDoesNotOpenABlock(t *testing.T) {
 	r.assertResult(0)
 }
 
+func TestAnOpenerInsideAnyLineCommentDoesNotOpenABlock(t *testing.T) {
+	r := newRepo(t)
+	r.write(".gitignore", "# drop everything under /* at root\n* docs/missing.md\n")
+	r.write("s.sh", "echo hi # glob /* here\n* docs/missing.md\n")
+	r.write("q.sql", "select 1; -- not /* a block\n* docs/missing.md\n")
+	r.assertResult(0)
+}
+
+func TestAnOpenerAfterPunctuationOpensABlock(t *testing.T) {
+	for _, before := range []string{";", ")", "}", ",", "="} {
+		t.Run(before, func(t *testing.T) {
+			r := newRepo(t)
+			r.write("b.c", "x"+before+"/* tight\n * docs/missing.md\n */\n")
+			r.assertResult(1, "b.c:2: reference docs/missing.md does not resolve; "+fix)
+		})
+	}
+}
+
+func TestAnOpenerInsideAPathOrGlobDoesNotOpenABlock(t *testing.T) {
+	for _, line := range []string{"build/*", "http://host/*", "src/**/*.go", "~/*", "[ab]/*", "\"/*\""} {
+		t.Run(line, func(t *testing.T) {
+			r := newRepo(t)
+			r.write("src/script", "x = "+line+"\n* docs/missing.md\n")
+			r.assertResult(0)
+		})
+	}
+}
+
 func TestOtherLinesAreNotReferenceLines(t *testing.T) {
 	r := newRepo(t)
 	r.write("src/code", "path = \"docs/missing.md\"\nx = 1  # docs/missing.md\n")

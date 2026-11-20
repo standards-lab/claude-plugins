@@ -114,10 +114,8 @@ func numberedReferences(text string) []reference {
 	inBlockComment := false
 	for i, line := range pytext.Lines(text) {
 		trimmed := strings.TrimLeftFunc(line, unicode.IsSpace)
-		isReferenceLine := strings.HasPrefix(trimmed, "/*") ||
-			strings.HasPrefix(trimmed, "#") ||
-			strings.HasPrefix(trimmed, "//") ||
-			strings.HasPrefix(trimmed, "--") ||
+		isReferenceLine := strings.HasPrefix(trimmed, blockOpener) ||
+			startsLineComment(trimmed, 0) ||
 			(inBlockComment && strings.HasPrefix(trimmed, "*"))
 		inBlockComment = endsInBlockComment(line, inBlockComment)
 		if !isReferenceLine {
@@ -128,6 +126,19 @@ func numberedReferences(text string) []reference {
 		}
 	}
 	return refs
+}
+
+const blockOpener = "/*"
+
+var lineCommentMarkers = []string{"#", "//", "--"}
+
+func startsLineComment(line string, i int) bool {
+	for _, marker := range lineCommentMarkers {
+		if startsToken(line, i, marker) {
+			return true
+		}
+	}
+	return false
 }
 
 func endsInBlockComment(line string, inBlockComment bool) bool {
@@ -142,9 +153,9 @@ func endsInBlockComment(line string, inBlockComment bool) bool {
 			continue
 		}
 		switch {
-		case startsToken(line, i, "//"):
+		case startsLineComment(line, i):
 			return false
-		case startsToken(line, i, "/*"):
+		case startsToken(line, i, blockOpener):
 			inBlockComment = true
 			i += 2
 		default:
@@ -156,7 +167,11 @@ func endsInBlockComment(line string, inBlockComment bool) bool {
 
 func startsToken(line string, i int, token string) bool {
 	return strings.HasPrefix(line[i:], token) &&
-		(i == 0 || line[i-1] == ' ' || line[i-1] == '\t')
+		(i == 0 || !continuesPathOrGlob(line[i-1]))
+}
+
+func continuesPathOrGlob(c byte) bool {
+	return isPathChar(c) || strings.IndexByte("*?[]~:\"'`", c) >= 0
 }
 
 func referencePaths(line string) []string {

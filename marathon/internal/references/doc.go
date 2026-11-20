@@ -5,8 +5,10 @@
 // a submodule, and a tracked file missing from the working tree are skipped. A
 // reference line is one whose first non-blank characters are #, //, --, or /*,
 // or one that starts with * inside a block comment. A block comment opens at a
-// /* that starts a line or follows a space or tab, outside a // comment, and
-// closes at the next */. A reference is a path on such a line made of letters,
+// /* outside a #, //, or -- line comment, and closes at the next */. An opener
+// or line comment marker counts at the start of a line or after a character
+// that can't continue a path or glob: not a letter, digit, '.', '_', '/', '-',
+// '*', '?', '[', ']', '~', ':', or a quote. A reference is a path on such a line made of letters,
 // digits, '.', '_', '/', and '-' that ends in '.md' and starts with a letter,
 // digit, '_', or '.'. A path that follows one of those characters, or '/', '*',
 // '$', '{', '}', '<', or '>', is part of a URL, pattern, or template, and isn't
