@@ -8,17 +8,20 @@ finds a format by its heading at the start of a line, bare or under heading,
 quote, or emphasis markup. The block reason hands the session the whole reply
 rewrapped at 100 columns to print again as is. The rewrap breaks only at
 spaces, keeps each list and blockquote marker, and indents continuation lines
-under the text. Every other reply passes untouched. The hook blocks at most
-once in a row, since stop_hook_active marks the reprint. A line that one word
-keeps over 100 columns stays as it is; when only such lines run over, the hook
-reports them to the architect instead of blocking. Exits 0, also on input it
-can't read.
+under the text. It never starts a continuation line on a word Markdown would
+read as a block start, such as an ordered marker (also under emphasis, which
+the numbered-questions grader reads as one) or a bullet marker, a heading,
+quote, fence, or table opener, or a rule or setext underline: it carries the
+previous word down with it, so the line keeps the paragraph it was in. Every
+other reply passes untouched. The hook blocks at most once in a row, since
+stop_hook_active marks the reprint. A line that one word keeps over 100 columns
+stays as it is; when only such lines run over, the hook reports them to the
+architect instead of blocking. Exits 0, also on input it can't read.
 """
 
 import json
 import re
 import sys
-import textwrap
 
 WIDTH = 100
 FORMAT_HEADING = re.compile(
@@ -29,6 +32,7 @@ FORMAT_HEADING = re.compile(
 )
 FENCE = re.compile(r"[ \t>]*(?:```|~~~)")
 MARKER = re.compile(r"([ \t]*(?:>[ \t]?)*[ \t]*)((?:[-*+]|\d+[.)]|#{1,6})[ \t]+)?")
+BLOCK_START = re.compile(r"[*_]*\d+[.)]|[-*+]|#{1,6}|[>|].*|(?:```|~~~).*|[-=]+|[*_]{3,}")
 
 
 def prose_lines(text):
@@ -49,6 +53,30 @@ def overlong(text):
     return [line for line, prose in prose_lines(text) if prose and len(line) > WIDTH]
 
 
+def filled(words, first, rest):
+    """Words filled greedily into lines of at most WIDTH, prefixed first then rest.
+
+    A word that would open a continuation line as a block start takes the previous word down
+    with it. A line left holding one word keeps the block start instead, over WIDTH.
+    """
+    lines, line = [], []
+    for word in words:
+        prefix = rest if lines else first
+        if not line or len(prefix + " ".join(line + [word])) <= WIDTH:
+            line.append(word)
+            continue
+        carried = [word]
+        while BLOCK_START.fullmatch(carried[0]) and len(line) > 1:
+            carried.insert(0, line.pop())
+        if BLOCK_START.fullmatch(carried[0]):
+            line += carried
+        else:
+            lines.append(prefix + " ".join(line))
+            line = carried
+    lines.append((rest if lines else first) + " ".join(line))
+    return "\n".join(lines)
+
+
 def wrapped(line):
     marker = MARKER.match(line)
     lead, item = marker.group(1), marker.group(2) or ""
@@ -56,14 +84,7 @@ def wrapped(line):
         continuation = lead + " " * len(item)
     else:
         continuation = " " * len(lead + item)
-    return textwrap.fill(
-        line[len(lead + item) :],
-        WIDTH,
-        initial_indent=lead + item,
-        subsequent_indent=continuation,
-        break_long_words=False,
-        break_on_hyphens=False,
-    )
+    return filled(line[len(lead + item) :].split(), lead + item, continuation)
 
 
 def rewrapped_line(line):

@@ -33,9 +33,11 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
 - **A Stop hook that wraps marathon's formats at 100 columns** (`hooks/hooks.json`,
   `bin/wrap-formats`). When a reply holds a format the architect reads, found by its heading, and a
   line over 100 characters outside code fences and tables, the hook blocks the stop once and hands
-  the session the reply rewrapped at 100 columns to print again. The rewrap is a stdlib Python
-  textwrap: it breaks only at spaces, keeps list and blockquote markers, indents continuation lines
-  under the text, and leaves every word as it was. A line that a single word keeps over 100
+  the session the reply rewrapped at 100 columns to print again. The rewrap breaks only at spaces,
+  keeps list and blockquote markers, indents continuation lines under the text, and leaves every
+  word as it was. It never starts a continuation line on a word Markdown reads as a block start,
+  such as `1.` or `-`, `#`, `>`, a fence, `|`, or `---`, and carries the previous word down with
+  it instead, so a wrapped line keeps its structure. A line that a single word keeps over 100
   characters stays whole; when only such lines run over, the hook reports them instead of blocking.
   Any other reply passes untouched.
 
@@ -176,6 +178,8 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
   that fails a numbered question saying "above", "below", "option" and a capital letter, "Facts
   found", "see the plan file", or "details to follow". The `llm` grader moves to
   `plan-round-judged` in `evals-judged/`, which the gate doesn't run; run it by hand, on sonnet.
+  The gate also keeps what each run produced, its trace and final message, in the results
+  directory, since eval's results hold only scores.
 
 ### Migrating from 0.18.0
 

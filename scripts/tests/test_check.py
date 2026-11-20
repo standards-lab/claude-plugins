@@ -157,6 +157,13 @@ class CheckTest(unittest.TestCase):
             ],
         )
 
+    def test_eval_results_markdown_is_not_checked(self):
+        results = self.root / "plugins/marathon/evals/results/run"
+        results.mkdir(parents=True)
+        (results / "case-with-r1.last-message.md").write_text("See [gone](./gone.md).\n")
+        code, lines = self.check()
+        self.assertEqual((code, lines), (0, []))
+
     def test_budget_messages_give_the_budget_to_record(self):
         implementer = "plugins/marathon/agents/implementer.md"
         planner = "plugins/marathon/agents/planner.md"

@@ -1,6 +1,7 @@
 """Tests for marathon's wrap-formats Stop hook, run on the plan rounds stored from eval runs."""
 
 import json
+import re
 import subprocess
 import unittest
 from pathlib import Path
@@ -11,6 +12,12 @@ REPOSITORY = Path(__file__).resolve().parents[2]
 HOOK = REPOSITORY / "plugins/marathon/bin/wrap-formats"
 LONG_WORD = "https://example.com/" + "a" * 100
 PROSE = " ".join(["word"] * 15)
+BLOCK_STARTS = (
+    "1.", "2)", "**3.", "-", "+", "*", "#", "###", ">", "|", "```", "~~~", "---", "===", "***"
+)
+OPENS_BLOCK = re.compile(
+    r"[*_]*\d+[.)](?:\s|$)|[-*+](?:\s|$)|#{1,6}(?:\s|$)|>|\||```|~~~|[-=]+\s*$|[*_]{3,}\s*$"
+)
 
 
 def run_hook(payload):
@@ -44,6 +51,35 @@ class WrapFormatsTest(unittest.TestCase):
                 self.assertIsNone(grader.search(printed))
                 self.assertEqual(printed.split(), reply.split())
         self.assertTrue(failing, "no stored round fails the line-width grader unwrapped")
+
+    def test_stored_rounds_keep_their_numbered_questions(self):
+        grader = regex_grader("numbered-questions")
+        for path in sorted(ROUNDS.glob("*.txt")):
+            reply = path.read_text()
+            if not grader.search(reply):
+                continue
+            with self.subTest(path.stem):
+                output = stop(reply)
+                printed = reply if output is None else reprint(output)
+                self.assertIsNotNone(grader.search(printed))
+
+    def test_no_continuation_line_opens_a_block(self):
+        items = [
+            f"{lead}{PROSE} {'x' * shift} {word}{tail}"
+            for word in BLOCK_STARTS
+            for shift in range(30)
+            for lead in ("- **rec:** ", "> - ")
+            for tail in ("", " after")
+        ]
+        reply = round_with(*items)
+        lines = reprint(stop(reply)).split("\n")
+        continuations = [line for line in lines if line.startswith(("  ", ">   "))]
+        unquoted = [line.removeprefix(">   ") for line in lines]
+        self.assertEqual(" ".join(unquoted).split(), reply.split())
+        self.assertTrue(continuations)
+        for line in continuations:
+            self.assertLessEqual(len(line), 100)
+            self.assertIsNone(OPENS_BLOCK.match(line.removeprefix(">   ").lstrip()), line)
 
     def test_continuation_lines_indent_under_the_text(self):
         output = stop(
