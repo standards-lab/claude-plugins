@@ -7,7 +7,7 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
-## Unreleased
+## v0.21.0
 
 marathon's four tools are Go binaries, released on each `marathon/vX.Y.Z` tag, and a repository
 pins them through mise. Nothing needs Python. Every repository migrates; see Migrating below.
@@ -44,6 +44,7 @@ pins them through mise. Nothing needs Python. Every repository migrates; see Mig
 
 ### Migrating from 0.20.0
 
+1. Install 0.21.0 with mise on PATH.
 2. Pin `github:standards-lab/claude-plugins` with `version_prefix = "marathon/v"` at 0.21.0 or
    later in each repository's `mise.toml`.
 3. In CI, call `lint-context` and `lint-references` after `mise install`, and drop any `curl`
