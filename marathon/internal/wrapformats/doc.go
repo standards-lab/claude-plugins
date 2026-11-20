@@ -1,9 +1,9 @@
 // Package wrapformats rewraps a marathon reply at 100 columns: the plugin's
 // Stop hook.
 //
-// The hook blocks a reply that holds both a format from marathon's
-// references/briefs.md that the architect reads in the terminal and a line
-// over 100 characters outside code fences and tables. It finds a format by
+// The hook blocks a reply that holds both a format from
+// plugins/marathon/skills/marathon/references/briefs.md that the architect
+// reads in the terminal and a line over 100 characters outside code fences and tables. It finds a format by
 // its heading at the start of a line, bare or under heading, quote, or
 // emphasis markup. The block reason hands the session the whole reply
 // rewrapped at 100 columns to print again as is. The rewrap breaks only at
@@ -18,8 +18,7 @@
 // one word keeps over 100 columns stays as it is; when only such lines run
 // over, the hook reports them to the architect instead of blocking.
 //
-// It keeps the behavior of the Python hook it replaces: a width counts code
-// points, words split at Python's whitespace, digits and word characters are
+// A width counts code points, words split at Python's whitespace, digits and word characters are
 // Unicode's, and the output is JSON as Python's json.dumps writes it, with
 // every character outside printable ASCII escaped. Input that isn't UTF-8 or
 // isn't a JSON object passes.
