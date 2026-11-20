@@ -7,6 +7,17 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
+## Unreleased
+
+### Fixed
+
+- **A shim runs the release in the caller's environment** (`bin/marathon`). Without a local build,
+  a shim ran the release through `mise exec` under overrides that ignore every project mise
+  config, and the command inherited them, so a `marathon check` whose configured command runs
+  `mise run` couldn't read the repository's `mise.toml`. The shim now resolves the release with
+  `mise where`, installing it on first use, under those overrides, and runs its binary with the
+  caller's environment unchanged.
+
 ## v0.21.0
 
 marathon's four tools are Go binaries, released on each `marathon/vX.Y.Z` tag, and a repository
