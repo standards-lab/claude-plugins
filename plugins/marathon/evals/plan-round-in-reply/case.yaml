@@ -11,7 +11,8 @@ description: >-
   permission-prompt tool, which drops AskUserQuestion, EnterPlanMode, and ExitPlanMode, so it can't
   reproduce the original failure. Its AskUserQuestion grader stays for when eval offers that tool.
   It allows no Bash: the fixture declares no currency command and no remote, so round 1 needs only
-  reads. The graders read the round from the line that contains PLAN ROUND 1, headed as
+  reads, plus Write for the plan file that keeps the round's copy (behavior/planning.md); without
+  it, a run can end on a message about the unsaved file instead of the round. The graders read the round from the line that contains PLAN ROUND 1, headed as
   references/briefs.md shows it. line-width fails a line of 101 or more characters from there to
   the first line that contains reply:, or to the end of the reply when the round has none; its u
   flag counts characters, not UTF-16 units. no-code-fence fails when that line follows an odd
@@ -34,6 +35,7 @@ execution:
     - Read
     - Glob
     - Grep
+    - Write
     - Skill
     - Agent
     - AskUserQuestion
