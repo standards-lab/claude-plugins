@@ -10,14 +10,14 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 ## v0.21.0
 
 marathon's four tools are Go binaries, released on each `marathon/vX.Y.Z` tag, and a repository
-pins them through mise. Nothing needs Python. Every repository migrates; see Migrating below.
+pins them through mise. No tool needs Python. Every repository migrates; see Migrating below.
 
 ### Added
 
-- **Release binaries.** Each `marathon/vX.Y.Z` release carries
-  `marathon-<version>-<os>-<arch>.tar.gz` for linux and darwin on amd64 and arm64, each holding
-  `lint-context`, `lint-references`, `marathon`, and `wrap-formats` at its top level, and
-  `SHA256SUMS`. A repository pins them as
+- **Release binaries.** Each `marathon/vX.Y.Z` release carries `SHA256SUMS` and one
+  `marathon-<version>-<os>-<arch>.tar.gz` for each of linux and darwin on amd64 and arm64. Each
+  archive holds `lint-context`, `lint-references`, `marathon`, and `wrap-formats` at its top
+  level. A repository pins them as
   `"github:standards-lab/claude-plugins" = { version = "0.21.0", version_prefix = "marathon/v" }`
   in its `mise.toml`; `mise install` puts all four on PATH, and `mise outdated` reports a newer
   tag (`mechanics/configuration.md`). This repository's release gate cross-builds the four

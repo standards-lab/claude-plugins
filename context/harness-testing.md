@@ -25,14 +25,18 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 - each skill whose description calls it a marathon extension declares `user-invocable: false`
 - each marketplace source points to a plugin
 - `claude plugin validate --strict` passes for each plugin and the marketplace
-- marathon's `lint-context`, run from the working tree, passes on this repository's `context/`,
-  READMEs, and links, and the tests in `scripts/tests/` pass, for `lint-context`, `marathon`, and
-  the check itself
+- no tracked file is Python
+- the `marathon/` Go module passes the Go check: build, vet, gofmt, `go fix`, `go mod tidy`,
+  `go test -race`, and golangci-lint
+- marathon's `lint-context` and `lint-references`, built from the working tree, pass on this
+  repository
+- the tests in `scripts/tests/` pass: `node --test` files for the eval graders' patterns, and bash
+  scripts for the check, the `bin/` shims, the gate, and the release build
 
-CI installs Claude Code at an exact version, its latest release, pinned in
-`.github/workflows/ci.yml`. `scripts/currency.sh` reports the pin when it trails npm's `latest`
-dist-tag. The check is deterministic and runs no model. Each failure message names what to change
-for the check to pass.
+CI installs the exact versions `mise.toml` pins, Claude Code and Go among them, and
+`scripts/currency.sh` reports, through `mise outdated`, a pin that trails its latest release. The
+check is deterministic and runs no model. Each failure message names what to change for the check
+to pass.
 
 ## Per release: the gate
 
@@ -43,6 +47,10 @@ each `<plugin>/v<version>` tag, with the tag as its argument. It runs `scripts/c
 claude plugin eval plugins/<plugin> --threshold 1.0 --runs 3 --ablation none --scaffold \
   --trust-plugin --no-publish
 ```
+
+For a marathon tag, the gate also cross-builds the release binaries after the check, and builds
+the host's binaries into `plugins/marathon/.build/` so the eval's sessions run the working
+tree's tools. It removes both when it exits.
 
 The gate rests on deterministic graders alone. eval keeps no judge reasoning and can't re-grade a
 stored reply, so an `llm` verdict can't be reproduced: eval's sonnet judge failed a round in all
@@ -81,8 +89,8 @@ grades the final reply with six graders:
 - No line of the round exceeds 100 characters.
 - At least two numbered questions each carry a `rec:` line and a `changes:` line.
 - No numbered question points outside itself with "above", "below", "option" and a capital
-  letter, "Facts found", "see the plan file", or "details to follow". Its test runs the pattern on
-  the stored rounds in `scripts/tests/fixtures/plan-rounds/`.
+  letter, "Facts found", "see the plan file", or "details to follow". Its `node --test` test runs
+  the pattern on the stored rounds in `scripts/tests/fixtures/plan-rounds/`.
 
 `plan-round-judged`, in the judged suite, runs the same fixture with one `llm` grader, which
 judges that every question names its subject and options and can be decided on its own. Run it

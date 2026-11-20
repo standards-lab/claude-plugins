@@ -120,7 +120,7 @@ is never re-cut. Everything before the tag is two-way.
 
 ## Progress
 
-slices 7/7 committed · standards ✓ · spec ✓ (2 rounds) · editor —
+slices 7/7 committed · standards ✓ · spec ✓ (2 rounds) · editor ✓
 
 ## Decisions
 
@@ -151,15 +151,6 @@ slices 7/7 committed · standards ✓ · spec ✓ (2 rounds) · editor —
   YAML, `.gitignore`), as claude-plugins' does.
 - ai-hosting: `scripts/check.sh` keeps its own link check over every tracked `.md` beside
   `lint-context`, which doesn't check `CLAUDE.md` or `STANDARDS.md`.
-- plan: the harness tools port to Go release binaries pinned through mise before any repository
-  adopts them; rejected adopting the Python lints first, which would rewire about 25 repositories
-  twice. Should the port fall through: the system `python3`, nothing pinned.
-- go-tools: a repository pins the tools as `"github:standards-lab/claude-plugins" = { version =
-  "…", version_prefix = "marathon/v" }` and CI gets them from `mise install`; releases cover
-  linux and darwin only.
-- go-tools: claude-plugins tracks no Python; the eval graders' patterns are tested with
-  `node --test`, since the eval runs them as JavaScript; rejected `dlclark/regexp2`, which only
-  imitates that engine.
 
 ## Pending edits
 

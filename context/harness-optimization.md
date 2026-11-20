@@ -36,7 +36,7 @@ Read these sizes, in words, to judge the work:
 
 ## Settled
 
-- **Budgets are checks** (built). marathon's `bin/lint-context` holds `context/` to its file
+- **Budgets are checks** (built). marathon's `lint-context` holds `context/` to its file
   kinds, the READMEs, notes, and goal-record sections to word budgets, and the roadmap and
   capability map to their shapes. It fails on a comment in a goal file and resolves relative
   links. Each repository's `[project] check` calls it (marathon's `mechanics/configuration.md`).
@@ -60,7 +60,7 @@ Read these sizes, in words, to judge the work:
   repository, and the standards-reviewer applies it. `scripts/check.sh` enforces the mechanical
   rules: a CHANGELOG release heading carries only its version, a CHANGELOG holds no link
   definitions, and a marathon extension declares `user-invocable: false`.
-- **Configured commands run through `marathon`** (built). marathon's `bin/marathon` runs a
+- **Configured commands run through `marathon`** (built). marathon's `marathon` command runs a
   `.claude/marathon.toml` command by its key, exactly as declared, and every pipeline step that
   runs one calls it (marathon's `mechanics/configuration.md`, "Running a command"), so a session
   runs `[remote] merge` with its `&&` instead of retyping it. A hook that refuses a chained
@@ -71,7 +71,7 @@ Read these sizes, in words, to judge the work:
   artifacts. The session brief's Verify section gives the steps the architect can run to see the
   work behave, and what they should see, or "none" for a prose-only change. The spec-reviewer
   has already followed them (marathon's `references/briefs.md`).
-- **Formats wrapped by a hook** (built). marathon's Stop hook, `bin/wrap-formats`, rewraps a
+- **Formats wrapped by a hook** (built). marathon's Stop hook runs `wrap-formats`, which rewraps a
   reply that holds a marathon format at 100 columns and asks the session to reprint it. This
   repository's release gate rests on deterministic graders; the LLM judge, on sonnet against
   criteria that mirror marathon's plan-round rules, runs in its own suite outside the gate

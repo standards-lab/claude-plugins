@@ -19,7 +19,7 @@ claude plugin marketplace add standards-lab/claude-plugins
 claude plugin install marathon@standards-lab
 ```
 
-marathon's tools run through mise, so a session needs `mise` on PATH.
+A session needs `mise` on PATH, because marathon's tools run through it.
 
 Then run `marathon init` in a repository to set it up, or `marathon status` in a repository that
 already has a top-level `context/` directory.
