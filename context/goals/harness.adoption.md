@@ -1,8 +1,8 @@
 # goal · harness.adoption
 
-- **State:** idle
-- **Task:** none
-- **Branch:** none
+- **State:** building
+- **Task:** go-tools
+- **Branch:** go-tools
 
 ## Tasks
 
@@ -117,6 +117,10 @@ is never re-cut. Everything before the tag is two-way.
 **Release**
 
 - `marathon/v0.21.0`
+
+## Progress
+
+slices 0/7 committed · standards — · spec — · editor —
 
 ## Decisions
 
