@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
 
       - name: Install Claude Code, which check.sh's plugin validation needs
-        run: npm install -g @anthropic-ai/claude-code@2.1.328
+        run: npm install -g @anthropic-ai/claude-code@2.1.329
 
       - name: Repository consistency checks
         run: bash scripts/check.sh
