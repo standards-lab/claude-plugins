@@ -27,9 +27,25 @@ jobs:
           echo "prefix=$PREFIX/" >> "$GITHUB_OUTPUT"
           echo "changelog=plugins/$PREFIX/CHANGELOG.md" >> "$GITHUB_OUTPUT"
 
+      - name: Install Go as mise.toml pins it
+        if: startsWith(github.ref_name, 'marathon/v')
+        uses: jdx/mise-action@v5.2.10
+        with:
+          install_args: go
+
+      - name: Build marathon's binaries
+        if: startsWith(github.ref_name, 'marathon/v')
+        run: scripts/dist.sh "${GITHUB_REF_NAME#marathon/v}" dist
+
       - name: Create GitHub Release
         uses: taiki-e/create-gh-release-action@v1.12.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           prefix: ${{ steps.plugin.outputs.prefix }}
           changelog: ${{ steps.plugin.outputs.changelog }}
+
+      - name: Attach marathon's binaries
+        if: startsWith(github.ref_name, 'marathon/v')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "$GITHUB_REF_NAME" dist/*
