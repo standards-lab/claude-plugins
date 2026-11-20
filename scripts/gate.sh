@@ -17,8 +17,8 @@
 # eval's results hold scores but not what a run produced, so the gate keeps
 # each run's scaffold (--keep-temp), copies the run's trace and final message
 # into the results directory beside aggregate-result.json, as
-# <case>-<arm>-r<run>.trace.jsonl and .last-message.md, and then removes the
-# scaffold, but only a trace path of the shape eval writes,
+# <case>-<arm>-r<run>.trace.jsonl and <case>-<arm>-r<run>.last-message.md, and
+# then removes the scaffold, but only a trace path of the shape eval writes,
 # <absolute dir>/claude-eval-<id>/out/trace.jsonl with no . or .. component. Every failed run can be read back from there.
 #
 # A plugin with no eval directory, or one holding no case, releases on the

@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""Check that the markdown references in a repository's comments resolve.
+
+Runs on the repository at the current working directory and reads every
+git-tracked file that isn't markdown; a file that isn't UTF-8 is skipped. A
+reference line is one whose first non-blank characters are #, //, --, /*, or *.
+A reference is a path on such a line made of letters, digits, '.', '_', '/', and
+'-' that ends in '.md' and starts with a letter, digit, '_', or '.'. A path that
+follows one of those characters, or '/', '*', '$', '{', '}', '<', or '>', is
+part of a URL, pattern, or template, and isn't a reference.
+
+A reference, normalized, resolves from the repository root when its first
+segment names something there, or when it has only one segment. Otherwise it
+resolves in the sibling directory of that name beside the repository; a
+reference that starts with '../' names that directory after the '../'. A
+reference resolving in neither place fails. When no directory of that name
+exists in the repository or beside it, as in CI, the reference is skipped with a
+note. Prints one line per failure or skip and exits nonzero if any reference
+fails.
+"""
+
+import posixpath
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+REFERENCE_MARKERS = ("#", "//", "--", "/*", "*")
+REFERENCE = re.compile(
+    r"(?<![A-Za-z0-9._/*${}<>-])[A-Za-z0-9_.][A-Za-z0-9._/-]*?\.md"
+    r"(?![A-Za-z0-9_/-]|\.[A-Za-z0-9_])"
+)
+
+
+def tracked_non_markdown_files(root):
+    listing = subprocess.run(
+        ["git", "ls-files", "-z"], cwd=root, capture_output=True, text=True, check=True
+    ).stdout
+    return [rel for rel in listing.split("\0") if rel and not rel.endswith(".md")]
+
+
+def numbered_references(text):
+    for number, line in enumerate(text.splitlines(), 1):
+        if not line.lstrip().startswith(REFERENCE_MARKERS):
+            continue
+        for match in REFERENCE.finditer(line):
+            yield number, match.group(0)
+
+
+def named_directory_and_target(root, path):
+    parts = Path(posixpath.normpath(path)).parts
+    ups = len([part for part in parts if part == ".."])
+    base = root.joinpath(*parts[:ups])
+    segment = parts[ups] if ups < len(parts) else ""
+    if ups == 0 and len(parts) > 1 and not (root / segment).exists():
+        base = root.parent
+    return segment, base / segment, base.joinpath(*parts[ups:])
+
+
+def outcome(root, rel, number, path):
+    segment, directory, target = named_directory_and_target(root, path)
+    if target.exists():
+        return None, None
+    has_more_segments = target != directory
+    if has_more_segments and not directory.exists():
+        return "skip", (
+            f"{rel}:{number}: skipped {path}: "
+            f"no {segment}/ in this repository or beside it"
+        )
+    return "fail", (
+        f"{rel}:{number}: reference {path} does not resolve; "
+        "fix the path or remove the reference"
+    )
+
+
+def main():
+    root = Path.cwd()
+    failed = False
+    for rel in tracked_non_markdown_files(root):
+        try:
+            text = (root / rel).read_text(encoding="utf-8")
+        except (UnicodeDecodeError, FileNotFoundError, IsADirectoryError):
+            continue
+        for number, path in numbered_references(text):
+            kind, line = outcome(root, rel, number, path)
+            if line is not None:
+                print(line)
+                failed = failed or kind == "fail"
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
