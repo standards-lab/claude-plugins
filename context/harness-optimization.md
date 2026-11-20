@@ -40,10 +40,12 @@ Read these sizes, in words, to judge the work:
   kinds, the READMEs, notes, and goal-record sections to word budgets, and the roadmap and
   capability map to their shapes. It fails on a comment in a goal file and resolves relative
   links. Each repository's `[project] check` calls it (marathon's `mechanics/configuration.md`).
-- **Comments** (built). The architecture layer's `principles/comments.md` allows four kinds of
-  comment in source: package documentation, a lint suppression's reason, a pin hold's reason, and
-  provenance. Each ecosystem's stock lint rule requires a suppression's reason, the
-  standards-reviewer judges every other comment, and no custom tool enforces the principle.
+- **Comments** (built). The architecture layer's `principles/comments.md` allows five kinds of
+  comment in source: package documentation, a lint suppression's reason, a pin hold's reason,
+  provenance, and a reference, one line pointing a file at the document that governs it instead
+  of restating it. Each ecosystem's stock lint rule requires a suppression's reason, each
+  repository's check resolves its references, and the standards-reviewer judges every other
+  comment.
   marathon's standards-reviewer applies the comment rule a repository's `STANDARDS.md` declares.
   claude-plugins' scripts, tests, and configuration files follow it, as its `STANDARDS.md`
   declares, and marathon's configuration examples carry no comments. Code repositories adopt it
