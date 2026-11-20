@@ -114,18 +114,12 @@ func numberedReferences(text string) []reference {
 	inBlockComment := false
 	for i, line := range pytext.Lines(text) {
 		trimmed := strings.TrimLeftFunc(line, unicode.IsSpace)
-		opensBlock := strings.HasPrefix(trimmed, "/*")
-		isReferenceLine := opensBlock ||
+		isReferenceLine := strings.HasPrefix(trimmed, "/*") ||
 			strings.HasPrefix(trimmed, "#") ||
 			strings.HasPrefix(trimmed, "//") ||
 			strings.HasPrefix(trimmed, "--") ||
 			(inBlockComment && strings.HasPrefix(trimmed, "*"))
-		switch {
-		case opensBlock:
-			inBlockComment = !strings.Contains(trimmed[2:], "*/")
-		case inBlockComment:
-			inBlockComment = !strings.Contains(trimmed, "*/")
-		}
+		inBlockComment = endsInBlockComment(line, inBlockComment)
 		if !isReferenceLine {
 			continue
 		}
@@ -134,6 +128,35 @@ func numberedReferences(text string) []reference {
 		}
 	}
 	return refs
+}
+
+func endsInBlockComment(line string, inBlockComment bool) bool {
+	for i := 0; i < len(line); {
+		if inBlockComment {
+			end := strings.Index(line[i:], "*/")
+			if end < 0 {
+				return true
+			}
+			i += end + 2
+			inBlockComment = false
+			continue
+		}
+		switch {
+		case startsToken(line, i, "//"):
+			return false
+		case startsToken(line, i, "/*"):
+			inBlockComment = true
+			i += 2
+		default:
+			i++
+		}
+	}
+	return inBlockComment
+}
+
+func startsToken(line string, i int, token string) bool {
+	return strings.HasPrefix(line[i:], token) &&
+		(i == 0 || line[i-1] == ' ' || line[i-1] == '\t')
 }
 
 func referencePaths(line string) []string {

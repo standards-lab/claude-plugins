@@ -66,6 +66,39 @@ func TestAStarLineOutsideABlockCommentIsNotAReferenceLine(t *testing.T) {
 	r.assertResult(0)
 }
 
+func TestAStarLineInsideABlockOpenedMidLineIsAReferenceLine(t *testing.T) {
+	r := newRepo(t)
+	r.write("src/code", "int x; /* see\n * docs/missing.md\n */\n")
+	r.assertResult(1, "src/code:2: reference docs/missing.md does not resolve; "+fix)
+}
+
+func TestAStarLineInsideABlockReopenedAfterOneClosedIsAReferenceLine(t *testing.T) {
+	r := newRepo(t)
+	r.write("src/code", "/* a */ int x; /* b\n * docs/missing.md\n */\n")
+	r.assertResult(1, "src/code:2: reference docs/missing.md does not resolve; "+fix)
+}
+
+func TestAStarLineInsideABlockLeftOpenAfterAnOpenerIsAReferenceLine(t *testing.T) {
+	r := newRepo(t)
+	r.write("src/code", "/*/\n * docs/missing.md\n */\n")
+	r.assertResult(1, "src/code:2: reference docs/missing.md does not resolve; "+fix)
+}
+
+func TestAStarLineAfterABlockClosedMidLineIsNotAReferenceLine(t *testing.T) {
+	r := newRepo(t)
+	r.write("src/code", "int x; /* see */ int y;\n* docs/missing.md\n")
+	r.write("src/other", "/*\n */ int x; /* again */\n* docs/missing.md\n")
+	r.assertResult(0)
+}
+
+func TestAnOpenerInsideAPatternOrLineCommentDoesNotOpenABlock(t *testing.T) {
+	r := newRepo(t)
+	r.write(".gitignore", "build/*\n* docs/missing.md\n")
+	r.write("src/code", "x = 1; // not /* a block\n* docs/missing.md\n")
+	r.write("src/script", "url = \"http://host/*\"\n* docs/missing.md\n")
+	r.assertResult(0)
+}
+
 func TestOtherLinesAreNotReferenceLines(t *testing.T) {
 	r := newRepo(t)
 	r.write("src/code", "path = \"docs/missing.md\"\nx = 1  # docs/missing.md\n")
