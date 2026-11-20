@@ -1,8 +1,8 @@
 # Briefs
 
-These are the formats marathon writes for the architect, plus the slice brief it writes for an
-implementer. Each one the architect reads is read in the terminal, fits on about one screen, and
-leads with what needs a decision. Agents look up facts; the architect makes decisions.
+These are the formats marathon writes for the architect, and the slice brief for an implementer.
+Each one the architect reads is read in the terminal, fits on about one screen, and leads with
+what needs a decision. Agents look up facts; the architect makes decisions.
 
 Every format is markdown, hard-wrapped at 100 characters in the reply, and code fences appear only
 around code. Each template below is shown as a blockquote so it renders as it will in the reply;
@@ -10,10 +10,10 @@ the reply drops the `> `.
 
 ## Plan round
 
-PLAN asks its questions in rounds. A round holds every question whose prerequisites are already
-settled, and the architect answers them all at once, inline. A question that depends on the answer
-to another open question waits for the next round; it is never asked conditionally, as in "only if
-1 is yes". The round is presented as `behavior/planning.md` says.
+A PLAN round holds every question whose prerequisites are settled, and the architect answers
+them all at once, inline. A question that depends on another open question's answer waits for the
+next round; it is never asked conditionally, as in "only if 1 is yes". The round is presented as
+`behavior/planning.md` says.
 
 > ## PLAN ROUND 1 · v1.ai · task harness-adapters
 >
@@ -44,7 +44,8 @@ to another open question waits for the next round; it is never asked conditional
 > **reply:** "1 ok, 2 ok, 3 yes but ..."
 
 - Hard-wrap every line at 100 characters, indentation and markup included, as the template
-  does; wrap the planner's draft before printing it.
+  does: break a longer line at a space and indent the rest under its text, though markdown would
+  render it unbroken. Rewrap the planner's draft before printing it.
 - Number every question.
 - Name each question's subject in its own words, with the options it chooses between, so the
   architect can decide it from the question, its **rec:**, and its **changes:** alone. All three
