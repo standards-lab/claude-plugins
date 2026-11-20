@@ -1,9 +1,9 @@
 // Tests for plan-round-in-reply's regex graders, run by node --test. Each grader's pattern and
 // flags are read from its own file and compiled as a JavaScript RegExp, as the eval compiles them,
-// then run on the stored plan rounds in fixtures/plan-rounds and on rounds built here. The
-// line-width and numbered-questions graders also run on each stored round as wrap-formats displays
-// it, using the binary in $MARATHON_BUILD, or else in plugins/marathon/.build/, as
-// scripts/build.sh makes it.
+// then run on the stored plan rounds in fixtures/plan-rounds and on rounds built here. Each stored
+// round also runs through wrap-formats as it displays the round, using the binary in
+// $MARATHON_BUILD, or else in plugins/marathon/.build/, as scripts/build.sh makes it: the displayed
+// round keeps every line within 100 columns and its numbered questions.
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
@@ -21,6 +21,7 @@ const QUESTION = "1. **Format: site or PDF?**";
 const REC = "   - **rec:** the site, since it stays current.";
 const SECOND_QUESTION = "2. **Audience: on-call only, or on-call and support?**";
 const PREAMBLE = "The task has no brief yet, so planning starts.";
+const OVER_100_COLUMNS = /^(?=[^\n]*PLAN ROUND 1)(?:(?![^\n]*reply:)[^\n]*\n)*?[^\n]{101}/mu;
 
 function regexGrader(name) {
   const [, frontMatter, ...pattern] = readFileSync(join(graders, `${name}.md`), "utf8").split("---");
@@ -63,16 +64,16 @@ function words(text) {
   return text.split(/\s+/).filter(Boolean);
 }
 
-test("stored rounds display within the line-width grader", () => {
-  const lineWidth = regexGrader("line-width");
+test("stored rounds display within 100 columns", () => {
+  const lineWidth = OVER_100_COLUMNS;
   let failingUnwrapped = 0;
   for (const { name, reply } of storedRounds()) {
     if (lineWidth.test(reply)) failingUnwrapped++;
     const shown = displayed(reply);
-    assert.doesNotMatch(shown, lineWidth, `${name}: the displayed reply fails line-width`);
+    assert.doesNotMatch(shown, lineWidth, `${name}: a displayed line runs over 100`);
     assert.deepEqual(words(shown), words(reply), `${name}: the displayed reply changes the words`);
   }
-  assert.notEqual(failingUnwrapped, 0, "no stored round fails the line-width grader unwrapped");
+  assert.notEqual(failingUnwrapped, 0, "no stored round has a line over 100 columns unwrapped");
 });
 
 test("stored rounds keep their numbered questions when displayed", () => {

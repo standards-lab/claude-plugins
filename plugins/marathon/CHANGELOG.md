@@ -21,6 +21,10 @@ can read the repository's own mise configuration.
   rewrapped text in place of the original. The model no longer reprints the reply, and the
   transcript keeps the lines as written. A line one word keeps over 100 columns stays as it is,
   with no report. A failed or timed-out run displays the original.
+- **plan-round-in-reply drops its line-width grader** (`evals/plan-round-in-reply/`). The grader
+  read the transcript, which now keeps the model's lines as written, and no eval grader can see
+  the displayed text. `scripts/tests/graders.test.mjs` holds each stored round's displayed lines
+  to 100 columns.
 
 ### Fixed
 
