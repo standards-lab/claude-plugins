@@ -8,9 +8,11 @@
 #
 # The suite passes when every case scores 1.0 over its three runs, against the
 # plugin alone (--ablation none); it builds its fixtures without a prompt
-# (--scaffold --trust-plugin), keeps its results local (--no-publish), and runs
-# its llm graders on sonnet (--judge-model sonnet), since eval's default judge,
-# haiku, gives the same round different verdicts.
+# (--scaffold --trust-plugin), and keeps its results local (--no-publish). The
+# gate's pass rests on deterministic graders alone, and a gated suite holds no
+# llm grader: eval keeps no judge reasoning and can't re-grade a stored reply,
+# so no one can reproduce a judge's verdict. A plugin keeps its judges in a
+# suite the gate doesn't run, as marathon does in evals-judged/.
 #
 # A plugin with no eval directory, or one holding no case, releases on the
 # check alone, and the gate says so on stderr. A malformed tag, or one naming no
@@ -48,6 +50,6 @@ if [ -z "$cases_outside_results" ]; then
 fi
 
 claude plugin eval "$dir" --threshold 1.0 --runs 3 --ablation none --scaffold \
-  --trust-plugin --no-publish --judge-model sonnet ||
+  --trust-plugin --no-publish ||
   fail "the $plugin eval suite failed, so $tag is held"
 echo "gate: $tag passes."

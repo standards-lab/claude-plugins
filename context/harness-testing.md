@@ -41,27 +41,31 @@ each `<plugin>/v<version>` tag, with the tag as its argument. It runs `scripts/c
 
 ```
 claude plugin eval plugins/<plugin> --threshold 1.0 --runs 3 --ablation none --scaffold \
-  --trust-plugin --no-publish --judge-model sonnet
+  --trust-plugin --no-publish
 ```
 
-`llm` graders run on sonnet: eval's default judge, haiku, answers in one word and gave the same
-round different verdicts across runs.
+The gate rests on deterministic graders alone. eval keeps no judge reasoning and can't re-grade a
+stored reply, so an `llm` verdict can't be reproduced: eval's sonnet judge failed a round in all
+three runs that the same model, given the same criteria outside eval, passed. eval has no
+non-scoring grader under `--ablation none`, where `arm: with-only` still scores and `weight` must be
+positive, so a plugin keeps its judges in a second eval directory the gate doesn't run.
 
 Every case must pass all three runs, or the tag is held. A plugin with no case releases on the
 check alone. Evals never run per push or in CI, because each run is a paid session.
 
 ## Eval suites
 
-A plugin has a suite only once it has a case. marathon has one, in `plugins/marathon/evals/`;
-marathon-architecture has none, and the gate skips it. `results/` is gitignored.
+A plugin has a suite only once it has a case. marathon has one, in `plugins/marathon/evals/`, and
+its judged suite in `plugins/marathon/evals-judged/`; marathon-architecture has none, and the gate
+skips it. Each suite's `results/` is gitignored.
 
 - **Cases come from observed failures.** `retro` turns a ticked plugin eval finding into a case on
   its `retro-<topic>` branch, and the case's `description` cites the failing session or PR
   (marathon's `commands/retro.md`). The fix is its own task; the gate holds the next release
   until it merges.
-- **Graders are deterministic where possible.** `tool_used` and `regex` read the same way every
-  run. An `llm` grader judges only short output, with its rubric written as concrete PASS and FAIL
-  conditions.
+- **Gated graders are deterministic.** `tool_used` and `regex` read the same way every run. An
+  `llm` grader goes in the judged suite, judges only short output, and states concrete PASS and
+  FAIL conditions. It runs on sonnet, since eval's default judge, haiku, flipped verdicts.
 - **Fixtures are offline scaffold scripts.** A case that needs a repository builds it with a
   scaffold script. Replaying a recorded session through `history_file` isn't used, because it
   carries the skill text of the session it recorded.
@@ -76,9 +80,14 @@ grades the final reply with six graders:
 - The round doesn't sit inside a code fence.
 - No line of the round exceeds 100 characters.
 - At least two numbered questions each carry a `rec:` line and a `changes:` line.
-- An `llm` grader judges that every question names its subject and options and can be decided on
-  its own. It reads the lines from the one that contains `PLAN ROUND 1` through the first that
-  contains `reply:`, fails only on the faults it lists, and lists what isn't a fault.
+- No numbered question points outside itself with "above", "below", "option" and a capital
+  letter, "Facts found", "see the plan file", or "details to follow". Its test runs the pattern on
+  the stored rounds in `scripts/tests/fixtures/plan-rounds/`.
+
+`plan-round-judged`, in the judged suite, runs the same fixture with one `llm` grader, which
+judges that every question names its subject and options and can be decided on its own. Run it
+by hand with `claude plugin eval plugins/marathon --eval-dir evals-judged --ablation none
+--scaffold --trust-plugin --no-publish --judge-model sonnet`.
 
 The case comes from marathon 0.16 sessions in which the architect rejected rounds shown as
 AskUserQuestion headlines, and a question asked without its context.
