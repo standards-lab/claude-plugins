@@ -40,6 +40,8 @@ Migrating below.
   "these", and replaces each with the thing it points at.
 - **The `plan-round-in-reply` eval allows Write**, so a run can save the round to its plan file as
   the skill asks, and no longer ends on a message about the unsaved file instead of the round.
+- **The `plan-round-in-reply` eval accepts a round of one question**, which the skill holds when
+  the other questions depend on its answer; its `numbered-questions` grader required two.
 
 ### Migrating from 0.19.0
 
