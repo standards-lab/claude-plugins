@@ -65,12 +65,11 @@ function words(text) {
 }
 
 test("stored rounds display within 100 columns", () => {
-  const lineWidth = OVER_100_COLUMNS;
   let failingUnwrapped = 0;
   for (const { name, reply } of storedRounds()) {
-    if (lineWidth.test(reply)) failingUnwrapped++;
+    if (OVER_100_COLUMNS.test(reply)) failingUnwrapped++;
     const shown = displayed(reply);
-    assert.doesNotMatch(shown, lineWidth, `${name}: a displayed line runs over 100`);
+    assert.doesNotMatch(shown, OVER_100_COLUMNS, `${name}: a displayed line runs over 100`);
     assert.deepEqual(words(shown), words(reply), `${name}: the displayed reply changes the words`);
   }
   assert.notEqual(failingUnwrapped, 0, "no stored round has a line over 100 columns unwrapped");
