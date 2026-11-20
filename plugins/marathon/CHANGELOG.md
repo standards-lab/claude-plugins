@@ -178,6 +178,8 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
   that fails a numbered question saying "above", "below", "option" and a capital letter, "Facts
   found", "see the plan file", or "details to follow". The `llm` grader moves to
   `plan-round-judged` in `evals-judged/`, which the gate doesn't run; run it by hand, on sonnet.
+  The gate also keeps what each run produced, its trace and final message, in the results
+  directory, since eval's results hold only scores.
 
 ### Migrating from 0.18.0
 

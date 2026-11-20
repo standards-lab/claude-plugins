@@ -14,6 +14,12 @@
 # so no one can reproduce a judge's verdict. A plugin keeps its judges in a
 # suite the gate doesn't run, as marathon does in evals-judged/.
 #
+# eval's results hold scores but not what a run produced, so the gate keeps
+# each run's scaffold (--keep-temp), copies the run's trace and final message
+# into the results directory beside aggregate-result.json, as
+# <case>-<arm>-r<run>.trace.jsonl and .last-message.md, and then removes the
+# scaffold. Every failed run can be read back from there.
+#
 # A plugin with no eval directory, or one holding no case, releases on the
 # check alone, and the gate says so on stderr. A malformed tag, or one naming no
 # plugin under plugins/, fails the gate rather than passing it unchecked.
@@ -49,7 +55,26 @@ if [ -z "$cases_outside_results" ]; then
   exit 0
 fi
 
+keep_run_evidence() {
+  local results=$1 case arm run trace scaffold
+  [ -f "$results/aggregate-result.json" ] || return
+  jq -r '.cases[] | .name as $case | .arms | to_entries[] | .key as $arm | .value
+    | to_entries[] | select(.value.tracePath)
+    | [$case, $arm, .key + 1, .value.tracePath] | @tsv' "$results/aggregate-result.json" |
+    while IFS=$'\t' read -r case arm run trace; do
+      cp "$trace" "$results/$case-$arm-r$run.trace.jsonl"
+      jq -rn '[inputs | select(.type == "result")] | last | .result // empty' "$trace" \
+        >"$results/$case-$arm-r$run.last-message.md"
+      scaffold=$(dirname "$(dirname "$trace")")
+      [[ $scaffold == */claude-eval-* ]] && chmod -R u+rwx "$scaffold" && rm -rf "$scaffold"
+    done
+}
+
+results="$eval_dir/results/$(date -u +%Y-%m-%dT%H-%M-%S-%3NZ)"
+eval_status=0
 claude plugin eval "$dir" --threshold 1.0 --runs 3 --ablation none --scaffold \
-  --trust-plugin --no-publish ||
-  fail "the $plugin eval suite failed, so $tag is held"
+  --trust-plugin --no-publish --keep-temp --output-dir "$results" || eval_status=$?
+keep_run_evidence "$results"
+[ "$eval_status" -eq 0 ] ||
+  fail "the $plugin eval suite failed, so $tag is held; each run's reply is in $results"
 echo "gate: $tag passes."
