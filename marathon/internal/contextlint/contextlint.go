@@ -138,7 +138,7 @@ func (c *checker) read(rel string) string {
 		}
 		return ""
 	}
-	return strings.ReplaceAll(strings.ReplaceAll(string(content), "\r\n", "\n"), "\r", "\n")
+	return pytext.UniversalNewlines(string(content))
 }
 
 func (c *checker) isFile(rel string) bool {
@@ -722,7 +722,7 @@ func (c *checker) checkLinks() {
 	for _, rel := range c.markdown() {
 		for _, target := range numberedLinkTargets(c.read(rel)) {
 			if p, ok := repoPath(target.text); ok && !c.resolves(rel, p) {
-				c.fail("%s:%d: link %s does not resolve; "+linkFix, rel, target.number, target.text)
+				c.fail("%s:%d: link %s does not resolve; %s", rel, target.number, target.text, linkFix)
 			}
 		}
 	}

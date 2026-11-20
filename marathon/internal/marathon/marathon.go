@@ -116,7 +116,7 @@ func declaredCommand(root, key string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	text := strings.ReplaceAll(strings.ReplaceAll(string(content), "\r\n", "\n"), "\r", "\n")
+	text := pytext.UniversalNewlines(string(content))
 	var parsed map[string]any
 	if _, err := toml.Decode(text, &parsed); err != nil {
 		return "", configurationError(fmt.Sprintf("%s does not parse: %v; fix it", path, err))

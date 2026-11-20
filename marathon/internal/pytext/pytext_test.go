@@ -54,6 +54,12 @@ func TestLinesBreaksAtEachPythonBoundary(t *testing.T) {
 	}
 }
 
+func TestUniversalNewlinesTurnsEachLineEndingIntoANewline(t *testing.T) {
+	if got := pytext.UniversalNewlines("a\r\nb\rc\nd\r\r\ne\v"); got != "a\nb\nc\nd\n\ne\v" {
+		t.Errorf("got %q, want %q", got, "a\nb\nc\nd\n\ne\v")
+	}
+}
+
 func TestLinesKeepsEmptyLinesButNoTrailingOne(t *testing.T) {
 	want := []string{"", "a", ""}
 	if got := pytext.Lines("\na\n\n"); !slices.Equal(got, want) {

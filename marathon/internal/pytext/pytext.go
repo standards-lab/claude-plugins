@@ -54,3 +54,9 @@ func Lines(s string) []string {
 	}
 	return lines
 }
+
+// UniversalNewlines returns s with each \r\n and each lone \r turned into \n,
+// as Python translates the text it reads in universal newlines mode.
+func UniversalNewlines(s string) string {
+	return strings.ReplaceAll(strings.ReplaceAll(s, "\r\n", "\n"), "\r", "\n")
+}

@@ -1,5 +1,5 @@
-// Package pytext splits and trims text as Python's str methods do, so the
-// marathon tools ported from Python keep their line numbers and word counts.
+// Package pytext splits, trims, and reads text as Python does, which is how
+// the marathon tools count lines and words.
 //
 // Python's whitespace is the runes str.isspace accepts: Unicode's White_Space
 // runes and the four separators U+001C through U+001F. Its line boundaries
@@ -13,4 +13,6 @@
 //   - [Fields], which splits text as str.split with no arguments does
 //   - [TrimSpace], which trims text as str.strip with no arguments does
 //   - [Lines], which splits text as str.splitlines does
+//   - [UniversalNewlines], which turns text's line endings into \n as Python's
+//     universal newlines mode does
 package pytext
