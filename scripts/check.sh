@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 # Repository consistency checks, run by .github/workflows/ci.yml and runnable locally: each
-# plugin's versions agree, its CHANGELOG's release headings carry only their version and it
-# defines no link references, the marketplace sources resolve, claude validates every plugin and
+# plugin's versions agree (plugin.json, the CHANGELOG's top heading, each skill's Version: line, and
+# each bin/ shim's version= line), its CHANGELOG's release headings carry only their version and
+# it defines no link references, the marketplace sources resolve, claude validates every plugin and
 # the marketplace (a missing claude fails the check), the plugins' markdown outside eval results
 # has no @-include lines and its links and backtick file citations resolve, the word budgets in
 # scripts/budgets.txt hold, every skill description fits in 1,024 characters, every marathon
-# extension skill declares user-invocable: false, the Go module in marathon/ passes the Go check
-# (build, vet, gofmt, go fix, go mod tidy, go test -race, and golangci-lint, with GOWORK=off),
-# lint-context and lint-references (built from marathon/) pass, and scripts/tests pass.
+# extension skill declares user-invocable: false, no tracked file is Python (a .py file or one
+# with a python shebang), the Go module in marathon/ passes the Go check (build, vet, gofmt, go
+# fix, go mod tidy, go test -race, and golangci-lint, with GOWORK=off), lint-context and
+# lint-references, built from marathon/ by scripts/build.sh, pass, and scripts/tests pass: its
+# node --test files, given that build's directory as MARATHON_BUILD, and its *.test.sh scripts.
 set -uo pipefail
 
 fail=0
@@ -40,6 +43,14 @@ for plugin in plugins/*/; do
     [ "$version" = "$skill_version" ] ||
       err "$name: plugin.json version $version != $skill Version: ${skill_version:-<none>};" \
         "set its Version: line to $version or correct plugin.json"
+  done
+
+  for shim in "$plugin"bin/*; do
+    [ -f "$shim" ] || continue
+    shim_version=$(grep -m1 -oP '^version=\K[0-9]+\.[0-9]+\.[0-9]+$' "$shim")
+    [ "$version" = "$shim_version" ] ||
+      err "$name: plugin.json version $version != $shim version=${shim_version:-<none>};" \
+        "set its version= line to $version or correct plugin.json"
   done
 done
 
@@ -270,7 +281,21 @@ for skill in plugins/*/skills/*/SKILL.md; do
       "add 'user-invocable: false' to its front matter"
 done
 
+tracked_python_files() {
+  git ls-files -z | while IFS= read -r -d '' file; do
+    if [[ $file == *.py ]] || { [ -f "$file" ] && head -n1 "$file" | grep -aq '^#!.*python'; }; then
+      echo "$file"
+    fi
+  done
+}
+
+while read -r file; do
+  err "$file: a tracked Python file; port it to Go, bash, or a node --test file, then remove it"
+done < <(tracked_python_files)
+
 go_module=marathon
+tools=$(mktemp -d)
+trap 'rm -rf "$tools"' EXIT
 if command -v go >/dev/null && command -v gofmt >/dev/null && command -v golangci-lint >/dev/null; then
   export GOWORK=off
   rerun_after_output() {
@@ -297,9 +322,7 @@ if command -v go >/dev/null && command -v gofmt >/dev/null && command -v golangc
   rerun_after_output "go test -race" go test -C "$go_module" -race ./...
   rerun_after_output "golangci-lint" bash -c 'cd "$1" && golangci-lint run ./...' _ "$go_module"
 
-  tools=$(mktemp -d)
-  trap 'rm -rf "$tools"' EXIT
-  if go build -C "$go_module" -o "$tools/" ./cmd/...; then
+  if scripts/build.sh "$tools"; then
     "$tools/lint-context" || err "lint-context failed; fix the lines above, then rerun"
     "$tools/lint-references" || err "lint-references failed; fix the lines above, then rerun"
   else
@@ -311,7 +334,18 @@ else
     "lint-context and lint-references did not run; run 'mise install' and activate mise," \
     "then rerun"
 fi
-if ! failed_tests_report=$(python3 -B -m unittest discover -s scripts/tests 2>&1); then
+
+run_tests() {
+  local status=0 test
+  MARATHON_BUILD=$tools node --test 'scripts/tests/*.test.mjs' || status=1
+  for test in scripts/tests/*.test.sh; do
+    [ -f "$test" ] || continue
+    bash "$test" || status=1
+  done
+  return "$status"
+}
+
+if ! failed_tests_report=$(run_tests 2>&1); then
   echo "$failed_tests_report" >&2
   err "scripts/tests failed; fix the lines above, then rerun"
 fi

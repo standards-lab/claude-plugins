@@ -1,92 +1,18 @@
-#!/usr/bin/env python3
-"""Run a command declared in the current repository's .claude/marathon.toml.
+#!/usr/bin/env bash
+# A shim for the marathon Go command this file is named after, run in the caller's working
+# directory with the caller's arguments. It runs the plugin's local build, .build/ beside bin/,
+# when that holds the command, as claude-plugins' scripts/build.sh makes it. Otherwise it runs the
+# command from the marathon/v<version> release of standards-lab/claude-plugins through mise exec,
+# at the plugin's own version, ignoring every project mise config so the caller's repository can't
+# change or break it.
+set -euo pipefail
 
-marathon <key> [args] reads the configuration at the git top-level of the
-working directory and runs the key's value with bash from that top-level, as
-declared, so a chained value keeps its && and a multi-line value runs as one
-script. Arguments are shell-quoted: a single-line value gets them appended, and
-a multi-line value gets them as its positional parameters. Exits with the
-command's status, or nonzero with a message naming the fix when the key is
-unknown or unset, the configuration is missing, or no key is given.
-"""
+version=0.20.0
 
-import shlex
-import subprocess
-import sys
-import tomllib
-from pathlib import Path
-
-CONFIGURATION = Path(".claude", "marathon.toml")
-TABLE_OF_KEY = {
-    "check": "project",
-    "currency": "project",
-    "gate": "project",
-    "publish": "remote",
-    "merge": "remote",
-    "ci": "remote",
-}
-KEYS = ", ".join(TABLE_OF_KEY)
-USAGE_FAILURE = 2
-SIGNALED_STATUS_BASE = 128
-
-
-class ConfigurationError(Exception):
-    pass
-
-
-def repository_root():
-    result = subprocess.run(
-        ["git", "rev-parse", "--show-toplevel"], capture_output=True, text=True
-    )
-    if result.returncode != 0:
-        raise ConfigurationError(
-            f"{Path.cwd()} is not in a git repository; run marathon inside the "
-            f"repository whose {CONFIGURATION} declares the command"
-        )
-    return Path(result.stdout.strip())
-
-
-def declared_command(root, key):
-    if key not in TABLE_OF_KEY:
-        raise ConfigurationError(f"unknown key '{key}'; keys: {KEYS}")
-    path = root / CONFIGURATION
-    if not path.is_file():
-        raise ConfigurationError(
-            f"no {CONFIGURATION} in {root}; write one (marathon's init does), "
-            f"then set [{TABLE_OF_KEY[key]}] {key} in it"
-        )
-    try:
-        configuration = tomllib.loads(path.read_text(encoding="utf-8"))
-    except (tomllib.TOMLDecodeError, UnicodeDecodeError) as error:
-        raise ConfigurationError(f"{path} does not parse: {error}; fix it") from None
-    table = TABLE_OF_KEY[key]
-    value = configuration.get(table, {}).get(key)
-    if not isinstance(value, str) or not value.strip():
-        raise ConfigurationError(f"set [{table}] {key} in {CONFIGURATION}")
-    return value
-
-
-def bash_invocation(command, args):
-    declared = command.rstrip("\n")
-    if "\n" in declared:
-        return ["bash", "-c", command, "marathon", *args]
-    return ["bash", "-c", " ".join([declared, *map(shlex.quote, args)])]
-
-
-def main(argv):
-    if not argv:
-        print(f"usage: marathon <key> [args]; keys: {KEYS}", file=sys.stderr)
-        return USAGE_FAILURE
-    key, args = argv[0], argv[1:]
-    try:
-        root = repository_root()
-        command = declared_command(root, key)
-    except ConfigurationError as error:
-        print(f"marathon: {error}", file=sys.stderr)
-        return USAGE_FAILURE
-    status = subprocess.run(bash_invocation(command, args), cwd=root).returncode
-    return SIGNALED_STATUS_BASE - status if status < 0 else status
-
-
-if __name__ == "__main__":
-    sys.exit(main(sys.argv[1:]))
+name=$(basename "$0")
+local_build=$(dirname "$0")/../.build/$name
+if [ -x "$local_build" ]; then
+  exec "$local_build" "$@"
+fi
+MISE_OVERRIDE_CONFIG_FILENAMES=no-project-config exec mise exec \
+  "github:standards-lab/claude-plugins[version_prefix=marathon/v]@$version" -- "$name" "$@"

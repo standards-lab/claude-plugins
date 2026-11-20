@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"os"
-	"path/filepath"
 	"regexp"
 	"slices"
 	"strings"
@@ -16,8 +14,6 @@ import (
 	"github.com/standards-lab/claude-plugins/marathon/internal/wrapformats"
 )
 
-const storedRounds = "testdata/plan-rounds"
-
 var (
 	longWord    = "https://example.com/" + strings.Repeat("a", 100)
 	prose       = strings.TrimSuffix(strings.Repeat("word ", 15), " ")
@@ -26,10 +22,6 @@ var (
 	}
 	opensBlock = regexp.MustCompile(`^(?:[*_]*\d+[.)](?:\s|$)|[-*+](?:\s|$)|#{1,6}(?:\s|$)|>|\||` +
 		"```|~~~" + `|[-=]+\s*$|[*_]{3,}\s*$)`)
-	numberedItem = regexp.MustCompile(`^[ \t>*_]*\d+[.)][ \t]`)
-	numberedText = regexp.MustCompile(`^[ \t>*_]*\d+[.)][ \t]+\S`)
-	recLine      = regexp.MustCompile(`^[ \t>*_-]*rec:`)
-	changesLine  = regexp.MustCompile(`^[ \t>*_-]*changes:`)
 )
 
 func runHook(t *testing.T, payload string) string {
@@ -78,106 +70,6 @@ func reprint(t *testing.T, output map[string]string) string {
 func roundWith(lines ...string) string {
 	return strings.Join(slices.Concat(
 		[]string{"## PLAN ROUND 1 · goal · task t", ""}, lines, []string{"", "**reply:** ok"}), "\n")
-}
-
-func storedRoundReplies(t *testing.T) map[string]string {
-	t.Helper()
-	paths, err := filepath.Glob(filepath.Join(storedRounds, "*.txt"))
-	if err != nil || len(paths) == 0 {
-		t.Fatalf("no stored rounds in %s: %v", storedRounds, err)
-	}
-	replies := map[string]string{}
-	for _, path := range paths {
-		content, err := os.ReadFile(path)
-		if err != nil {
-			t.Fatal(err)
-		}
-		replies[filepath.Base(path)] = string(content)
-	}
-	return replies
-}
-
-func printedReply(t *testing.T, reply string) string {
-	t.Helper()
-	output := stop(t, reply)
-	if output == nil {
-		return reply
-	}
-	return reprint(t, output)
-}
-
-func lineWidthGraderMatches(reply string) bool {
-	lines := strings.Split(reply, "\n")
-	for i, line := range lines {
-		if !strings.Contains(line, "PLAN ROUND 1") {
-			continue
-		}
-		for _, later := range lines[i:] {
-			if utf8.RuneCountInString(later) > 100 {
-				return true
-			}
-			if strings.Contains(later, "reply:") {
-				break
-			}
-		}
-	}
-	return false
-}
-
-func numberedQuestionsGraderMatches(reply string) bool {
-	lines := strings.Split(reply, "\n")
-	last := len(lines) - 1
-	for i := range last {
-		if !numberedText.MatchString(lines[i]) {
-			continue
-		}
-		for j := i + 1; j < last && !numberedItem.MatchString(lines[j]); j++ {
-			if !recLine.MatchString(lines[j]) {
-				continue
-			}
-			for k := j + 1; k <= last && !numberedItem.MatchString(lines[k]); k++ {
-				if changesLine.MatchString(lines[k]) {
-					return true
-				}
-			}
-		}
-	}
-	return false
-}
-
-func TestStoredRoundsPrintWithinTheLineWidthGrader(t *testing.T) {
-	failing := 0
-	for name, reply := range storedRoundReplies(t) {
-		if lineWidthGraderMatches(reply) {
-			failing++
-		}
-		printed := printedReply(t, reply)
-		if lineWidthGraderMatches(printed) {
-			t.Errorf("%s: the printed reply fails the line-width grader", name)
-		}
-		if !slices.Equal(pytext.Fields(printed), pytext.Fields(reply)) {
-			t.Errorf("%s: the printed reply changes the words", name)
-		}
-	}
-	if failing == 0 {
-		t.Error("no stored round fails the line-width grader unwrapped")
-	}
-}
-
-func TestStoredRoundsKeepTheirNumberedQuestions(t *testing.T) {
-	kept := 0
-	for name, reply := range storedRoundReplies(t) {
-		if !numberedQuestionsGraderMatches(reply) {
-			continue
-		}
-		kept++
-		if !numberedQuestionsGraderMatches(printedReply(t, reply)) {
-			t.Errorf("%s: the printed reply loses its numbered questions", name)
-		}
-	}
-	if kept == 0 {
-		t.Error("no stored round has numbered questions")
-	}
 }
 
 func TestNoContinuationLineOpensABlock(t *testing.T) {

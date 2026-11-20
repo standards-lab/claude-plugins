@@ -54,8 +54,9 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   reference in the comments of the tracked files that aren't markdown: from the repository root,
   or in the sibling directory its first segment names. It skips a reference whose directory
   exists in neither place, as in CI. Both ship in the plugin's `bin/`, so a
-  session has them on PATH, and both need Python 3.11 or later. A CI that lacks the plugin fetches
-  both from one pinned `marathon/vX.Y.Z` tag, and the pin is bumped like any other dependency:
+  session has them on PATH, and they run the plugin's release through mise, so a session needs mise
+  on PATH. A CI that lacks the plugin fetches both from one pinned `marathon/vX.Y.Z` tag, and the
+  pin is bumped like any other dependency:
 
   ```sh
   base=https://raw.githubusercontent.com/standards-lab/claude-plugins/refs/tags/marathon/v0.20.0

@@ -82,7 +82,7 @@ grades the final reply with six graders:
 - At least two numbered questions each carry a `rec:` line and a `changes:` line.
 - No numbered question points outside itself with "above", "below", "option" and a capital
   letter, "Facts found", "see the plan file", or "details to follow". Its test runs the pattern on
-  the stored rounds in `marathon/internal/wrapformats/testdata/plan-rounds/`.
+  the stored rounds in `scripts/tests/fixtures/plan-rounds/`.
 
 `plan-round-judged`, in the judged suite, runs the same fixture with one `llm` grader, which
 judges that every question names its subject and options and can be decided on its own. Run it
