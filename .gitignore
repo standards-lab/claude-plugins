@@ -9,3 +9,4 @@ Thumbs.db
 .claude/briefs/
 plugins/*/evals/results/
 plugins/*/evals-judged/results/
+plugins/marathon/.build/

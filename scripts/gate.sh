@@ -6,6 +6,15 @@
 # when both pass. It is a development-time command and CI never runs it, since
 # the eval suite runs paid claude sessions on the caller's credential.
 #
+# For a marathon tag, the gate also builds the release's assets with
+# scripts/dist.sh, the build the release workflow publishes, into a temporary
+# directory, stamped with the tag's version, after the check, and fails when a
+# target doesn't build. Before the eval it builds the host's commands into
+# plugins/marathon/.build/, the local build the plugin's bin/ shims run, so the
+# eval's sessions run the working tree's tools; it removes that directory, and
+# any local build it replaced, when it exits, pass or fail. Another plugin's
+# tag ships no binaries, so its gate builds neither.
+#
 # The suite passes when every case scores 1.0 over its three runs, against the
 # plugin alone (--ablation none); it builds its fixtures without a prompt
 # (--scaffold --trust-plugin), and keeps its results local (--no-publish). The
@@ -22,8 +31,9 @@
 # <absolute dir>/claude-eval-<id>/out/trace.jsonl with no . or .. component. Every failed run can be read back from there.
 #
 # A plugin with no eval directory, or one holding no case, releases on the
-# check alone, and the gate says so on stderr. A malformed tag, or one naming no
-# plugin under plugins/, fails the gate rather than passing it unchecked.
+# check alone, a marathon tag on the check and the release build, and the gate
+# says so on stderr. A malformed tag, or one naming no plugin under plugins/,
+# fails the gate rather than passing it unchecked.
 set -uo pipefail
 cd "$(git -C "$(dirname "$0")" rev-parse --show-toplevel)" || exit 1
 
@@ -43,6 +53,15 @@ dir="plugins/$plugin"
 
 scripts/check.sh || fail "scripts/check.sh failed, so $tag is held"
 
+local_build=plugins/marathon/.build
+if [ "$plugin" = marathon ]; then
+  version=${tag#marathon/v}
+  dist=$(mktemp -d) || fail "could not create a directory for the release build"
+  trap 'rm -rf "$dist"' EXIT
+  scripts/dist.sh "$version" "$dist" ||
+    fail "the release build failed, so $tag is held; fix the lines above, then rerun"
+fi
+
 eval_dir="$dir/$(jq -r '.experimental.evals // "evals"' "$dir/.claude-plugin/plugin.json")" ||
   fail "$dir/.claude-plugin/plugin.json does not parse"
 cases_outside_results=
@@ -52,7 +71,9 @@ if [ -d "$eval_dir" ]; then
     fail "could not list the cases in $eval_dir"
 fi
 if [ -z "$cases_outside_results" ]; then
-  echo "gate: $plugin has no eval cases, so $tag passes on scripts/check.sh alone" >&2
+  passed_on="scripts/check.sh alone"
+  [ "$plugin" = marathon ] && passed_on="scripts/check.sh and the release build"
+  echo "gate: $plugin has no eval cases, so $tag passes on $passed_on" >&2
   exit 0
 fi
 
@@ -71,6 +92,13 @@ keep_run_evidence() {
       chmod -R u+rwx "$scaffold" && rm -rf "$scaffold"
     done
 }
+
+if [ "$plugin" = marathon ]; then
+  trap 'rm -rf "$dist" "$local_build"' EXIT
+  rm -rf "$local_build"
+  scripts/build.sh "$local_build" "$version" ||
+    fail "the local build for the eval failed, so $tag is held; fix the lines above, then rerun"
+fi
 
 results="$eval_dir/results/$(date -u +%Y-%m-%dT%H-%M-%S-%3NZ)"
 eval_status=0

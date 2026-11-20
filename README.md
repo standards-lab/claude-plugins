@@ -72,7 +72,8 @@ User-invocable skills can also be triggered directly with slash commands (e.g., 
 
 Releases are tag-driven. Pushing a tag of the form `<plugin>/v<version>` (e.g. `marathon/v0.1.0`)
 triggers [`.github/workflows/release.yml`](./.github/workflows/release.yml), which cuts a GitHub
-release from that plugin's `CHANGELOG.md`.
+release from that plugin's `CHANGELOG.md`. A marathon release also attaches the binaries of
+marathon's Go tools.
 
 ## Repository Structure
 
@@ -86,9 +87,11 @@ claude-plugins/
 │       └── release.yml          # Tag-triggered release automation
 ├── CLAUDE.md                    # Agent orientation: the repo is developed under marathon
 ├── context/                     # marathon working context for the repo itself
+├── marathon/                    # Go module: the source of marathon's tools
 ├── plugins/
 │   ├── marathon/                # Long-haul development as a software factory
 │   └── marathon-architecture/   # Marathon extension: the architecture layer
+├── mise.toml                    # Development tools, which CI installs
 ├── LICENSE
 └── README.md
 ```

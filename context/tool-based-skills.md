@@ -1,9 +1,8 @@
 # Tool-based skills: the tooling layer beneath the plugins
 
-The tooling layer is planned work, tracked as `v1.harness.tooling`. marathon ships two tools in
-its `bin/`, on PATH in a session: `lint-context`, which checks a repository's `context/`, and
-`marathon`, which runs a configured command by its key. The rest of marathon's procedure, and its
-extensions', is prose, and no schema or `spec/` directory exists.
+The tooling layer is planned work, tracked as `v1.harness.tooling`. It starts from marathon's four
+Go tools, in the [`marathon/` module](../marathon/), which repositories pin through mise. The rest
+of marathon's procedure, and its extensions', is prose, and no schema or `spec/` directory exists.
 
 ## The idea
 
@@ -42,11 +41,9 @@ marathon-extraction's deterministic checks (`marathon-extraction.md`, "Tooling")
 ## Assumptions
 
 - The manifest and goal-record formats stay stable enough to fix as schemas.
-- A tool can ship inside a plugin and run wherever the plugin is installed.
 
 ## Open questions
 
-- The language and packaging of the tools, and how a plugin declares and pins them.
 - Whether the schemas live in this repository or in a specification repository of their own,
   with instances pinned to a version.
 - Whether structured, repetitive generation, such as a rollup to a fixed template, moves to a

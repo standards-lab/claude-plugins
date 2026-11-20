@@ -19,6 +19,8 @@ claude plugin marketplace add standards-lab/claude-plugins
 claude plugin install marathon@standards-lab
 ```
 
+A session needs `mise` on PATH, because marathon's tools run through it.
+
 Then run `marathon init` in a repository to set it up, or `marathon status` in a repository that
 already has a top-level `context/` directory.
 
@@ -79,10 +81,11 @@ and [`commands/intake.md`](./skills/marathon/commands/intake.md).
 ## Project kinds
 
 `init` declares a project `code` or `context` in `.claude/marathon.toml`, along with its one
-deterministic `check` command. Every check calls two scripts marathon ships on the session's PATH:
-`lint-context`, which holds `context/` and `roadmap/` to their file kinds, word budgets, and
-shapes and resolves relative links, and `lint-references`, which resolves the markdown references
-in comments (see [`mechanics/configuration.md`](./skills/marathon/mechanics/configuration.md)).
+deterministic `check` command. Every check calls two commands that marathon ships on the
+session's PATH and each repository pins in its `mise.toml`: `lint-context`, which holds `context/`
+and `roadmap/` to their file kinds, word budgets, and shapes and resolves relative links, and
+`lint-references`, which resolves the markdown references in comments (see
+[`mechanics/configuration.md`](./skills/marathon/mechanics/configuration.md)).
 Two commands are optional: a read-only `currency` command, which reports what trails its latest
 release, and a release `gate` command, such as a plugin's eval suite, which SHIP runs before each
 tag. On a code project a slice adds behavior with its tests; on a context project a slice is the
@@ -119,4 +122,5 @@ a whole workspace under the coordinator's `[workspace]`. See
 
 Releases are cut from [`CHANGELOG.md`](./CHANGELOG.md) by tag. Before SHIP pushes a
 `marathon/v<version>` tag, the repository's release gate, `scripts/gate.sh`, runs the consistency
-check and marathon's eval suite. Pushing the tag starts the host's release workflow.
+check, cross-builds marathon's Go commands, and runs marathon's eval suite. Pushing the tag starts
+the host's release workflow, which attaches the commands' binaries to the release.

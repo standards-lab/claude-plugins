@@ -1,12 +1,12 @@
 {
-  "description": "Rewraps a reply holding a marathon format at 100 columns (bin/wrap-formats).",
+  "description": "Rewraps a reply holding a marathon format at 100 columns (bin/wrap-formats); a failed run passes the reply.",
   "hooks": {
     "Stop": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/bin/wrap-formats\""
+            "command": "out=$(\"${CLAUDE_PLUGIN_ROOT}/bin/wrap-formats\") && printf '%s' \"$out\"; exit 0"
           }
         ]
       }

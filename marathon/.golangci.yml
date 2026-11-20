@@ -1,0 +1,17 @@
+# golangci-lint v2 configuration for the marathon module, run by scripts/check.sh: the standard set
+# plus testpackage and nolintlint.
+# See architecture/standards/go-elemental/principles/tests-and-docs.md
+# See architecture/principles/comments.md
+version: "2"
+
+linters:
+  default: standard
+  enable:
+    - nolintlint
+    - testpackage
+  settings:
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    testpackage:
+      skip-regexp: export_test\.go
