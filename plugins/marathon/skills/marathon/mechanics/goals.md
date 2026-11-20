@@ -1,9 +1,9 @@
 # Goals
 
 Goals and tasks are marathon's whole vocabulary for work, including work that runs at the same time.
-The roadmap manifest holds them: an index, `context/roadmap.toml`, of the three arrays, and one file
-per goal in `context/roadmap/` (`references/manifest.md`). A standalone project keeps its own, and a
-workspace keeps one at the coordinator.
+The roadmap manifest holds them: an index, `roadmap/index.toml`, of the three arrays, and one file
+per goal, `roadmap/<goal>.toml` (`references/manifest.md`). A standalone project keeps its own,
+and a workspace keeps one at the coordinator.
 
 ## Goals and tasks
 

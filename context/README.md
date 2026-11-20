@@ -20,7 +20,8 @@ repository is developed with marathon, so the workflow runs against its own sour
   `references/extensions.md`). Its design lives in
   [plugins/marathon-architecture](../plugins/marathon-architecture/).
 - **harness.optimization** (built): marathon checks its rules instead of describing them. Its
-  `lint-context` holds each repository's `context/` to its file kinds, word budgets, and shapes.
+  `lint-context` holds each repository's `context/` and `roadmap/` to their file kinds, word
+  budgets, and shapes, and its `lint-references` resolves the markdown references in comments.
   See [harness-optimization.md](harness-optimization.md).
 - **marathon-extraction** (planned): carries patterns a consumer proves back to the blueprint.
   See [marathon-extraction.md](marathon-extraction.md).
@@ -34,8 +35,9 @@ repository is developed with marathon, so the workflow runs against its own sour
   CHANGELOG link definitions, and requires each marathon extension to declare
   `user-invocable: false`. It requires one "Read first" line per command playbook, holds each
   command's read-first set and each agent profile to a word budget, caps skill descriptions at
-  1,024 characters, and runs `claude plugin validate`. It also runs marathon's `lint-context` from
-  the working tree, and the tests of `lint-context`, `marathon`, and the check itself. Each failure
+  1,024 characters, and runs `claude plugin validate`. It also runs marathon's `lint-context` and
+  `lint-references` from the working tree, and the tests of both, of `marathon`, and of the check
+  itself. Each failure
   message names its fix. Before each tag, the release gate, `scripts/gate.sh`, runs the check and
   the plugin's `claude plugin eval` suite. marathon's suite has one case, drawn from an observed
   failure. See [harness-testing.md](harness-testing.md).

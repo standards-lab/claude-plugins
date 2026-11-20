@@ -2,7 +2,8 @@
 
 The outer check runs the real test suite and validates the plugins, so the
 copy's scripts/tests holds one passing test in their place, which keeps the
-check from recursing into these tests, and a stub claude goes first on PATH.
+check from recursing into these tests, and a stub claude goes first on PATH. The
+copy is a git repository, so lint-references reads its tracked files.
 """
 
 import json
@@ -20,7 +21,7 @@ READ_FIRST_FIX = 'give it exactly one "Read first, before acting:" list'
 RERUN = "fix the lines above, then rerun"
 EXTENSION = "plugins/marathon-architecture"
 CHECK_TOOLS_EXCEPT_CLAUDE = (
-    "awk", "bash", "cat", "cut", "dirname", "find", "grep", "jq", "python3",
+    "awk", "bash", "cat", "cut", "dirname", "find", "git", "grep", "jq", "python3",
     "realpath", "sort", "wc",
 )
 
@@ -42,6 +43,8 @@ class CheckTest(unittest.TestCase):
             "import unittest\n\n\nclass T(unittest.TestCase):\n"
             "    def test_passes(self):\n        pass\n"
         )
+        subprocess.run(["git", "init", "-q"], cwd=self.root, check=True)
+        subprocess.run(["git", "add", "-A"], cwd=self.root, check=True)
         stub = Path(tmp.name) / "bin/claude"
         stub.parent.mkdir()
         stub.write_text("#!/bin/sh\nexit 0\n")
@@ -110,7 +113,7 @@ class CheckTest(unittest.TestCase):
     def test_consumer_paths_pass(self):
         self.write(
             UNBUDGETED_SEED,
-            "# Seeded\n\nSee `context/roadmap.toml`, `scripts/check.sh`, and `src/app/main.py`.\n",
+            "# Seeded\n\nSee `roadmap/index.toml`, `scripts/check.sh`, and `src/app/main.py`.\n",
         )
         self.assertEqual(self.check(), (0, []))
 
@@ -155,6 +158,13 @@ class CheckTest(unittest.TestCase):
                 f"FAIL: {UNBUDGETED_SEED}: link ./gone.md does not resolve; "
                 "point the link at an existing file or remove it"
             ],
+        )
+
+    def test_unresolved_reference_fails(self):
+        self.append("scripts/gate.sh", "# See scripts/gone.md\n")
+        code, lines = self.check()
+        self.assertEqual(
+            (code, lines), (1, [f"FAIL: lint-references failed; {RERUN}"])
         )
 
     def test_eval_results_markdown_is_not_checked(self):

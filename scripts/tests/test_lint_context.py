@@ -37,8 +37,8 @@ class LintContextTest(unittest.TestCase):
         self.write("README.md", text(10))
         self.write("context/README.md", CONTEXT_README)
         self.write("context/note.md", text(10))
-        self.write("context/roadmap.toml", INDEX)
-        self.write("context/roadmap/goal.toml", 'repos = []\n')
+        self.write("roadmap/index.toml", INDEX)
+        self.write("roadmap/goal.toml", 'repos = []\n')
         self.write("context/goals/goal.md", "# Goal\n\n## Decisions\n\n" + text(10))
 
     def write(self, rel, content):
@@ -141,13 +141,13 @@ class LintContextTest(unittest.TestCase):
             "context/sub/note.md",
             "context/goals/goal.toml",
             "context/roadmap/goal.md",
+            "context/roadmap/sub/goal.toml",
         )
         for rel in stray:
             self.write(rel, "")
         expected = sorted(
             f"{rel}: not a context file, which is README.md, a note (*.md), "
-            "goals/*.md, roadmap.toml, or roadmap/*.toml; "
-            "move it to docs/ or rename it to one of those kinds"
+            "or goals/*.md; move it to docs/ or rename it to one of those kinds"
             for rel in stray
         )
         code, lines = self.lint()
@@ -160,7 +160,7 @@ class LintContextTest(unittest.TestCase):
 
     def write_goal_file_without_record(self, body):
         (self.root / "context/goals/goal.md").unlink(missing_ok=True)
-        self.write("context/roadmap/goal.toml", "repos = []\n" + body)
+        self.write("roadmap/goal.toml", "repos = []\n" + body)
 
     def test_goal_entry_budgets(self):
         cases = (
@@ -174,7 +174,7 @@ class LintContextTest(unittest.TestCase):
                 self.assert_clean()
                 self.write_goal_file_without_record(body(phrase(budget + 1)))
                 self.assert_fails(
-                    f"context/roadmap/goal.toml: {entry} is {budget + 1:,} words, "
+                    f"roadmap/goal.toml: {entry} is {budget + 1:,} words, "
                     f"budget {budget:,}; {ENTRY_FIX}"
                 )
 
@@ -183,7 +183,7 @@ class LintContextTest(unittest.TestCase):
         self.assert_clean()
         self.write_goal_file_without_record(f'criteria = ["{phrase(60)}", "{phrase(61)}"]\n')
         self.assert_fails(
-            "context/roadmap/goal.toml: goal criteria[1] is 61 words, budget 60; "
+            "roadmap/goal.toml: goal criteria[1] is 61 words, budget 60; "
             + ENTRY_FIX
         )
 
@@ -192,33 +192,33 @@ class LintContextTest(unittest.TestCase):
         self.assert_clean()
         self.write_goal_file_without_record(f'criteria = "{phrase(61)}"\n')
         self.assert_fails(
-            "context/roadmap/goal.toml: goal criteria is 61 words, budget 60; "
+            "roadmap/goal.toml: goal criteria is 61 words, budget 60; "
             + ENTRY_FIX
         )
 
     def test_index_holds_only_the_arrays(self):
-        self.write("context/roadmap.toml", INDEX + 'extra = "x"\n')
+        self.write("roadmap/index.toml", INDEX + 'extra = "x"\n')
         self.assert_fails(
-            "context/roadmap.toml: 'extra' is not one of active, planned, backlog; "
-            "move it into a goal file under context/roadmap/ or remove it"
+            "roadmap/index.toml: 'extra' is not one of active, planned, backlog; "
+            "move it into a goal file under roadmap/ or remove it"
         )
-        self.write("context/roadmap.toml", INDEX + "\n[goal]\nname = \"x\"\n")
+        self.write("roadmap/index.toml", INDEX + "\n[goal]\nname = \"x\"\n")
         self.assert_fails(
-            "context/roadmap.toml: 'goal' is not one of active, planned, backlog; "
-            "move it into a goal file under context/roadmap/ or remove it"
+            "roadmap/index.toml: 'goal' is not one of active, planned, backlog; "
+            "move it into a goal file under roadmap/ or remove it"
         )
-        self.write("context/roadmap.toml", 'active = "goal"\n')
+        self.write("roadmap/index.toml", 'active = "goal"\n')
         self.assert_fails(
-            "context/roadmap.toml: 'active' is not an array; "
+            "roadmap/index.toml: 'active' is not an array; "
             "write it as an array of goal slugs, [] for none"
         )
 
     def test_index_comment_lines(self):
-        self.write("context/roadmap.toml", "# one\n# two\n" + INDEX.split("\n", 1)[1])
+        self.write("roadmap/index.toml", "# one\n# two\n" + INDEX.split("\n", 1)[1])
         self.assert_clean()
-        self.write("context/roadmap.toml", "# one\n\n# two\n" + INDEX)
+        self.write("roadmap/index.toml", "# one\n\n# two\n" + INDEX)
         self.assert_fails(
-            "context/roadmap.toml: 3 comment lines, at most 2; "
+            "roadmap/index.toml: 3 comment lines, at most 2; "
             "keep one comment that points to the format"
         )
 
@@ -229,29 +229,29 @@ class LintContextTest(unittest.TestCase):
             "proof = '''\n# inside a literal string\n'''\n"
             'name = "# not a comment"\n'
         )
-        self.write("context/roadmap/goal.toml", strings)
+        self.write("roadmap/goal.toml", strings)
         self.assert_clean()
         self.write(
-            "context/roadmap/goal.toml",
+            "roadmap/goal.toml",
             "# a note\n" + strings + '  # indented\nroot = "." # trailing\n',
         )
         fix = "comment; move the note into the goal's context note"
         self.assert_fails(
-            f"context/roadmap/goal.toml:1: {fix}",
-            f"context/roadmap/goal.toml:10: {fix}",
-            f"context/roadmap/goal.toml:11: {fix}",
+            f"roadmap/goal.toml:1: {fix}",
+            f"roadmap/goal.toml:10: {fix}",
+            f"roadmap/goal.toml:11: {fix}",
         )
 
     def test_goal_file_writes_repos(self):
-        self.write("context/roadmap/goal.toml", 'name = "Goal"\n')
+        self.write("roadmap/goal.toml", 'name = "Goal"\n')
         self.assert_fails(
-            "context/roadmap/goal.toml: repos is missing; every goal file writes it, "
+            "roadmap/goal.toml: repos is missing; every goal file writes it, "
             "[] for none"
         )
 
     def test_order_lists_each_task_once(self):
         tasks = "\n[tasks.a]\nname = \"A\"\n\n[tasks.b]\nname = \"B\"\n"
-        rel = "context/roadmap/goal.toml"
+        rel = "roadmap/goal.toml"
         cases = (
             ('order = ["a", "b"]\n', []),
             ("", [f"{rel}: order is missing; list each task slug once, in run order"]),
@@ -286,7 +286,7 @@ class LintContextTest(unittest.TestCase):
     def test_order_without_tasks_lists_nothing(self):
         self.write_goal_file_without_record('order = ["a"]\n')
         self.assert_fails(
-            "context/roadmap/goal.toml: order lists 'a', which has no [tasks.a] table; "
+            "roadmap/goal.toml: order lists 'a', which has no [tasks.a] table; "
             "add a [tasks.a] table or drop it from order"
         )
 
@@ -308,7 +308,7 @@ class LintContextTest(unittest.TestCase):
                 self.write("context/goals/goal.md", f"# Goal\n\n## Tasks\n\n{listed}")
                 self.assert_fails(
                     f"context/goals/goal.md: ## Tasks lists [{slugs}], but "
-                    "context/roadmap/goal.toml order is [a, b]; make the list mirror order"
+                    "roadmap/goal.toml order is [a, b]; make the list mirror order"
                 )
 
     def test_record_without_goal_file_is_unchecked(self):
@@ -316,7 +316,7 @@ class LintContextTest(unittest.TestCase):
         self.assert_clean()
 
     def test_unparseable_toml_fails_with_its_error(self):
-        for rel in ("context/roadmap.toml", "context/roadmap/goal.toml"):
+        for rel in ("roadmap/index.toml", "roadmap/goal.toml"):
             with self.subTest(rel=rel):
                 self.setUp()
                 self.write(rel, "active = [\n")
@@ -327,9 +327,31 @@ class LintContextTest(unittest.TestCase):
                 self.assertTrue(lines[0].endswith("; fix the TOML at that position"), lines)
 
     def test_missing_roadmap_is_clean(self):
-        (self.root / "context/roadmap.toml").unlink()
-        (self.root / "context/roadmap/goal.toml").unlink()
+        (self.root / "roadmap/index.toml").unlink()
+        (self.root / "roadmap/goal.toml").unlink()
+        (self.root / "roadmap").rmdir()
         self.assert_clean()
+
+    def test_stray_roadmap_files_fail(self):
+        stray = ("roadmap/notes.md", "roadmap/goal.json", "roadmap/sub/goal.toml")
+        for rel in stray:
+            self.write(rel, "")
+        self.write("roadmap/.DS_Store", "")
+        expected = sorted(
+            f"{rel}: not a roadmap file; name it index.toml or <goal>.toml, "
+            "or move it out of roadmap/"
+            for rel in stray
+        )
+        code, lines = self.lint()
+        self.assertEqual((code, sorted(lines)), (1, expected))
+
+    def test_old_roadmap_layout_fails_unchecked(self):
+        self.write("context/roadmap.toml", 'extra = "x"\n')
+        self.write("context/roadmap/goal.toml", "# a note\nactive = [\n")
+        self.assert_fails(
+            "context/roadmap/goal.toml: the roadmap moved; move it to roadmap/goal.toml",
+            "context/roadmap.toml: the roadmap index moved; move it to roadmap/index.toml",
+        )
 
     def capability_map(self, entries, after=""):
         self.write(

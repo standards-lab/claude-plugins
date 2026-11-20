@@ -47,7 +47,7 @@ slices 2/3 committed · standards — · spec — · editor —
 ## Pending edits
 
 - coordinator · roadmap/harness-resume.toml: create the goal (resumable sessions, ruled out of
-  v1); roadmap.toml: add it to `backlog`.
+  v1); roadmap/index.toml: add it to `backlog`.
 - coordinator · references catalog: add the `pi` repository.
 - architecture · a page on model tiers, from `context/model-tiers.md` in this repository.
 ```

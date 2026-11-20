@@ -11,13 +11,13 @@ set -euo pipefail
 
 repo=$(basename "$PWD")
 
-mkdir -p .claude context/roadmap runbooks scripts
+mkdir -p .claude context roadmap runbooks scripts
 
 cat >CLAUDE.md <<'EOF'
 # ops-handbook
 
-- Context: `context/README.md`, then the roadmap index `context/roadmap.toml` and its goal files
-  in `context/roadmap/`.
+- Context: `context/README.md`, then the roadmap index `roadmap/index.toml` and its goal files
+  beside it.
 - Standards: `STANDARDS.md`.
 - Check: `scripts/check.sh`.
 EOF
@@ -77,10 +77,10 @@ marathon.
 
 ## Capability map
 
-- **Runbooks**: one Markdown file per known failure under `runbooks/`, each opening with when to
-  use it. Five exist today.
-- **Consistency check**: `scripts/check.sh` keeps every runbook's opening line and every
-  relative link honest.
+- **Runbooks** (built): one Markdown file per known failure under [`runbooks/`](../runbooks/),
+  each opening with when to use it. Five exist today.
+- **Consistency check** (built): [`scripts/check.sh`](../scripts/check.sh) keeps every runbook's
+  opening line and every relative link honest.
 - **Publishing** (planned): the handbook leaves the repository as an edition its readers can
   reach during an incident. See `publishing.md`.
 EOF
@@ -118,7 +118,7 @@ redaction pass depends on the audience alone: a secret path is as exposed on a w
 PDF or a Markdown file.
 EOF
 
-cat >context/roadmap.toml <<'EOF'
+cat >roadmap/index.toml <<'EOF'
 # Roadmap index: the three arrays. The format is marathon's references/manifest.md.
 
 active = ["publish"]
@@ -126,7 +126,7 @@ planned = []
 backlog = []
 EOF
 
-cat >context/roadmap/publish.toml <<EOF
+cat >roadmap/publish.toml <<EOF
 name = "The handbook published"
 summary = "Readers reach the current runbooks during an incident without cloning the repository."
 repos = ["$repo"]

@@ -5,7 +5,8 @@
 # the marketplace (a missing claude fails the check), the plugins' markdown outside eval results
 # has no @-include lines and its links and backtick file citations resolve, the word budgets in
 # scripts/budgets.txt hold, every skill description fits in 1,024 characters, every marathon
-# extension skill declares user-invocable: false, and lint-context and scripts/tests pass.
+# extension skill declares user-invocable: false, and lint-context, lint-references, and
+# scripts/tests pass.
 set -uo pipefail
 
 fail=0
@@ -270,6 +271,8 @@ done
 
 working_tree_lint_context=plugins/marathon/bin/lint-context
 "$working_tree_lint_context" || err "lint-context failed; fix the lines above, then rerun"
+working_tree_lint_references=plugins/marathon/bin/lint-references
+"$working_tree_lint_references" || err "lint-references failed; fix the lines above, then rerun"
 if ! failed_tests_report=$(python3 -B -m unittest discover -s scripts/tests 2>&1); then
   echo "$failed_tests_report" >&2
   err "scripts/tests failed; fix the lines above, then rerun"

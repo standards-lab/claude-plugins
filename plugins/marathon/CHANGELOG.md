@@ -7,6 +7,40 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
+## v0.20.0
+
+A second check, `lint-references`, resolves the references in code and configuration comments,
+and the roadmap moves out of `context/` to a root `roadmap/`. Every repository migrates; see
+Migrating below.
+
+### Added
+
+- **`lint-references`** (`bin/lint-references`, `mechanics/configuration.md`): a stdlib Python
+  3.11 script, on PATH in a session beside `lint-context`, that checks the markdown references in
+  the comments of the repository it runs in. It reads each tracked file that isn't markdown, and
+  each path ending in `.md` on a comment line is a reference. A reference resolves from the
+  repository root when its first segment names something there, and otherwise in the sibling
+  directory of that name beside the repository. When neither exists, as in CI, it skips the
+  reference with a note. Each failure names the file, the line, and the fix: correct the reference
+  or remove it. This repository's check runs it and its tests.
+
+### Changed
+
+- **The roadmap moves to a root `roadmap/`** (`references/manifest.md`). This breaks 0.19.0. The
+  index moves from `context/roadmap.toml` to `roadmap/index.toml`, and each goal file from
+  `context/roadmap/<goal>.toml` to `roadmap/<goal>.toml`, at the coordinator and in a standalone
+  project. marathon reads only the new layout, with no fallback, and `lint-context` fails on a
+  file at an old path, naming the move. `context/` keeps the notes and goal records.
+
+### Migrating from 0.19.0
+
+1. Install 0.20.0.
+2. At the coordinator or in a standalone project, move the index and every goal file into the root
+   `roadmap/`, and update the notes that name the old paths.
+3. In each repository, add `lint-references` to the check, and have CI download it beside
+   `lint-context` at `marathon/v0.20.0` or later.
+4. Run it, then fix or remove each reference that fails.
+
 ## v0.19.0
 
 marathon's rules become checks. `lint-context` holds each repository's `context/` to its file

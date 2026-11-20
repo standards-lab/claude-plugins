@@ -22,7 +22,7 @@ one you write together. It gives the vision and the scope. The structure comes o
   `context` (skills, prose, configuration).
 - **The check**: the one deterministic command that runs the build, tests, and lint, or the
   consistency script of a context project (`references/build.md`). It calls `lint-context`
-  (`mechanics/configuration.md`).
+  and `lint-references` (`mechanics/configuration.md`).
 - **The currency command**: optional. The read-only command that reports which direct
   dependencies, toolchain versions, and pins trail their latest release, run at PLAN and never in
   CI (`mechanics/configuration.md`).
@@ -47,11 +47,12 @@ Keep every file brief, a few sentences each.
 ├── .claude/
 │   ├── settings.json  # plansDirectory = ./.claude/plans; allow Skill(marathon:marathon)
 │   └── marathon.toml  # mechanics/configuration.md
-└── context/
-    ├── README.md      # vision and capability map
-    ├── roadmap.toml   # the index: active = [the first goal]; references/manifest.md
-    ├── roadmap/       # the first goal's file, once one is settled
-    └── <note>.md      # optional: what the first goal needs to know
+├── context/
+│   ├── README.md      # vision and capability map
+│   └── <note>.md      # optional: what the first goal needs to know
+└── roadmap/
+    ├── index.toml     # the index: active = [the first goal]; references/manifest.md
+    └── <goal>.toml    # the first goal's file, once one is settled
 ```
 
 A member of a workspace has no roadmap index or goal files; its goals live in the coordinator's, and

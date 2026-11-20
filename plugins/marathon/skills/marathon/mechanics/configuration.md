@@ -48,16 +48,22 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   release what it ships.
 - **`[project] check`**: the repository's one deterministic check, which every slice and review
   runs (`references/build.md`). A context project names its consistency script, if it has one.
-  Every repository's check calls `lint-context`, which holds `context/` to its file kinds, word
-  budgets, and shapes, and checks the relative links in the root README, `context/`, and
-  `docs/`. It ships in the plugin's `bin/`, so a session has it on PATH, and it needs Python 3.11
-  or later. A CI that lacks the plugin fetches it from a pinned `marathon/vX.Y.Z` tag, and the pin
-  is bumped like any other dependency:
+  Every repository's check calls `lint-context` and `lint-references`. `lint-context` holds
+  `context/` and `roadmap/` to their file kinds, word budgets, and shapes, and checks the relative
+  links in the root README, `context/`, and `docs/`. `lint-references` resolves each markdown
+  reference in the comments of the tracked files that aren't markdown: from the repository root,
+  or in the sibling directory its first segment names. It skips a reference whose directory
+  exists in neither place, as in CI. Both ship in the plugin's `bin/`, so a
+  session has them on PATH, and both need Python 3.11 or later. A CI that lacks the plugin fetches
+  both from one pinned `marathon/vX.Y.Z` tag, and the pin is bumped like any other dependency:
 
   ```sh
-  base=https://raw.githubusercontent.com/standards-lab/claude-plugins/refs/tags
-  curl -fsSLo lint-context "$base/marathon/v0.19.0/plugins/marathon/bin/lint-context"
+  base=https://raw.githubusercontent.com/standards-lab/claude-plugins/refs/tags/marathon/v0.20.0
+  for lint in lint-context lint-references; do
+    curl -fsSLo "$lint" "$base/plugins/marathon/bin/$lint"
+  done
   python3 lint-context
+  python3 lint-references
   ```
 - **`[project] currency`**: optional. The repository's read-only command that reports what trails
   its latest release: the direct dependencies, the toolchain, and the pins, such as CI actions and
@@ -95,9 +101,9 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
 ## Running a command
 
 `marathon <key> [args]` runs the `check`, `currency`, `gate`, `publish`, `merge`, or `ci` command
-above, and is on PATH in a session beside `lint-context`. It reads `.claude/marathon.toml` at the
-root of the git repository it runs in, and runs the key's value with bash from that root, exactly
-as declared. A single-line command gets the arguments appended, each shell-quoted, as in
-`marathon gate v1.4.0`. A multi-line command, such as `ci`, runs as one script and gets them as
-its positional parameters. `marathon` exits with the command's status. An unset or unknown key
-fails with the fix, such as "set [remote] merge in .claude/marathon.toml".
+above, and is on PATH in a session beside `lint-context` and `lint-references`. It reads
+`.claude/marathon.toml` at the root of the git repository it runs in, and runs the key's value
+with bash from that root, exactly as declared. A single-line command gets the arguments appended,
+each shell-quoted, as in `marathon gate v1.4.0`. A multi-line command, such as `ci`, runs as one
+script and gets them as its positional parameters. `marathon` exits with the command's status. An
+unset or unknown key fails with the fix, such as "set [remote] merge in .claude/marathon.toml".
