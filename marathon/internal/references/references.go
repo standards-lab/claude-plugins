@@ -14,6 +14,8 @@ import (
 	"syscall"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/standards-lab/claude-plugins/marathon/internal/pytext"
 )
 
 const fix = "fix the path or remove the reference"
@@ -110,7 +112,7 @@ type reference struct {
 func numberedReferences(text string) []reference {
 	var refs []reference
 	inBlockComment := false
-	for i, line := range splitLines(text) {
+	for i, line := range pytext.Lines(text) {
 		trimmed := strings.TrimLeftFunc(line, unicode.IsSpace)
 		opensBlock := strings.HasPrefix(trimmed, "/*")
 		isReferenceLine := opensBlock ||
@@ -132,32 +134,6 @@ func numberedReferences(text string) []reference {
 		}
 	}
 	return refs
-}
-
-func splitLines(text string) []string {
-	var lines []string
-	start := 0
-	for i, r := range text {
-		if i < start {
-			continue
-		}
-		width := utf8.RuneLen(r)
-		switch r {
-		case '\r':
-			if strings.HasPrefix(text[i+1:], "\n") {
-				width++
-			}
-		case '\n', '\v', '\f', '\x1c', '\x1d', '\x1e', '\u0085', ' ', ' ':
-		default:
-			continue
-		}
-		lines = append(lines, text[start:i])
-		start = i + width
-	}
-	if start < len(text) {
-		lines = append(lines, text[start:])
-	}
-	return lines
 }
 
 func referencePaths(line string) []string {

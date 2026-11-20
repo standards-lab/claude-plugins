@@ -7,7 +7,7 @@
 # scripts/budgets.txt hold, every skill description fits in 1,024 characters, every marathon
 # extension skill declares user-invocable: false, the Go module in marathon/ passes the Go check
 # (build, vet, gofmt, go fix, go mod tidy, go test -race, and golangci-lint, with GOWORK=off),
-# and lint-context, lint-references (built from marathon/), and scripts/tests pass.
+# lint-context and lint-references (built from marathon/) pass, and scripts/tests pass.
 set -uo pipefail
 
 fail=0
@@ -270,8 +270,6 @@ for skill in plugins/*/skills/*/SKILL.md; do
       "add 'user-invocable: false' to its front matter"
 done
 
-working_tree_lint_context=plugins/marathon/bin/lint-context
-"$working_tree_lint_context" || err "lint-context failed; fix the lines above, then rerun"
 go_module=marathon
 if command -v go >/dev/null && command -v gofmt >/dev/null && command -v golangci-lint >/dev/null; then
   export GOWORK=off
@@ -302,14 +300,16 @@ if command -v go >/dev/null && command -v gofmt >/dev/null && command -v golangc
   tools=$(mktemp -d)
   trap 'rm -rf "$tools"' EXIT
   if go build -C "$go_module" -o "$tools/" ./cmd/...; then
+    "$tools/lint-context" || err "lint-context failed; fix the lines above, then rerun"
     "$tools/lint-references" || err "lint-references failed; fix the lines above, then rerun"
   else
-    err "the $go_module/ commands do not build, so lint-references did not run;" \
-      "fix the lines above, then rerun"
+    err "the $go_module/ commands do not build, so lint-context and lint-references did not" \
+      "run; fix the lines above, then rerun"
   fi
 else
   err "go, gofmt, or golangci-lint is not on PATH, so $go_module/ was not checked and" \
-    "lint-references did not run; run 'mise install' and activate mise, then rerun"
+    "lint-context and lint-references did not run; run 'mise install' and activate mise," \
+    "then rerun"
 fi
 if ! failed_tests_report=$(python3 -B -m unittest discover -s scripts/tests 2>&1); then
   echo "$failed_tests_report" >&2

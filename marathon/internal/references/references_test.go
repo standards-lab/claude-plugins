@@ -1,85 +1,46 @@
 package references_test
 
 import (
-	"bytes"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"slices"
-	"strings"
 	"testing"
 
 	"github.com/standards-lab/claude-plugins/marathon/internal/references"
+	"github.com/standards-lab/claude-plugins/marathon/internal/repotest"
 )
 
 const fix = "fix the path or remove the reference"
 
 type repo struct {
-	t      *testing.T
-	parent string
-	root   string
+	*repotest.Repo
+	t *testing.T
 }
 
-func newRepo(t *testing.T) *repo {
+func newRepo(t *testing.T) repo {
 	t.Helper()
-	parent := t.TempDir()
-	r := &repo{t: t, parent: parent, root: filepath.Join(parent, "repo")}
-	if err := os.Mkdir(r.root, 0o755); err != nil {
-		t.Fatal(err)
-	}
-	r.git("init", "-q")
+	r := repo{repotest.New(t), t}
+	r.Git("init", "-q")
 	r.write("docs/guide.md", "# Guide\n")
 	return r
 }
 
-func (r *repo) git(args ...string) {
+func (r repo) write(rel, content string) {
 	r.t.Helper()
-	cmd := exec.Command("git", args...)
-	cmd.Dir = r.root
-	if out, err := cmd.CombinedOutput(); err != nil {
-		r.t.Fatalf("git %v: %v\n%s", args, err, out)
-	}
+	r.Write(rel, content)
+	r.Git("add", rel)
 }
 
-func (r *repo) put(base, rel, content string) {
+func (r repo) writeUntracked(rel, content string) {
 	r.t.Helper()
-	name := filepath.Join(base, rel)
-	if err := os.MkdirAll(filepath.Dir(name), 0o755); err != nil {
-		r.t.Fatal(err)
-	}
-	if err := os.WriteFile(name, []byte(content), 0o644); err != nil {
-		r.t.Fatal(err)
-	}
+	r.Write(rel, content)
 }
 
-func (r *repo) write(rel, content string) {
+func (r repo) sibling(rel string) {
 	r.t.Helper()
-	r.put(r.root, rel, content)
-	r.git("add", rel)
+	r.WriteBeside(rel, "# Page\n")
 }
 
-func (r *repo) writeUntracked(rel, content string) {
+func (r repo) assertResult(wantCode int, wantLines ...string) {
 	r.t.Helper()
-	r.put(r.root, rel, content)
-}
-
-func (r *repo) sibling(rel string) {
-	r.t.Helper()
-	r.put(r.parent, rel, "# Page\n")
-}
-
-func (r *repo) assertResult(wantCode int, wantLines ...string) {
-	r.t.Helper()
-	var stdout, stderr bytes.Buffer
-	code := references.Run(r.root, &stdout, &stderr)
-	lines := strings.Split(strings.TrimSuffix(stdout.String(), "\n"), "\n")
-	if stdout.Len() == 0 {
-		lines = nil
-	}
-	if code != wantCode || !slices.Equal(lines, wantLines) || stderr.Len() != 0 {
-		r.t.Errorf("got (%d, %q, %q), want (%d, %q, \"\")",
-			code, lines, stderr.String(), wantCode, wantLines)
-	}
+	r.AssertResult(references.Run, wantCode, wantLines...)
 }
 
 func TestEachMarkerMakesAReferenceLine(t *testing.T) {
