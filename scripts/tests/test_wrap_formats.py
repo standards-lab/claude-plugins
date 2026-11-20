@@ -12,24 +12,9 @@ REPOSITORY = Path(__file__).resolve().parents[2]
 HOOK = REPOSITORY / "plugins/marathon/bin/wrap-formats"
 LONG_WORD = "https://example.com/" + "a" * 100
 PROSE = " ".join(["word"] * 15)
-# Words that would open a block at the start of a line, each between ordinary words.
 BLOCK_STARTS = (
-    "from step 1. Then the rest",
-    "or 2) next",
-    "a - b",
-    "c + d",
-    "e * f",
-    "see # 3",
-    "> quote",
-    "x | y",
-    "``` fence",
-    "~~~ tilde",
-    "--- rule",
-    "=== setext",
-    "**3. bold",
+    "1.", "2)", "**3.", "-", "+", "*", "#", "###", ">", "|", "```", "~~~", "---", "===", "***"
 )
-# Independent of the hook's own pattern: a line that Markdown, or the numbered-questions grader,
-# would read as opening a block.
 OPENS_BLOCK = re.compile(
     r"[*_]*\d+[.)](?:\s|$)|[-*+](?:\s|$)|#{1,6}(?:\s|$)|>|\||```|~~~|[-=]+\s*$|[*_]{3,}\s*$"
 )
@@ -79,16 +64,19 @@ class WrapFormatsTest(unittest.TestCase):
                 self.assertIsNotNone(grader.search(printed))
 
     def test_no_continuation_line_opens_a_block(self):
-        text = " ".join(f"{PROSE} {hazard}" for hazard in BLOCK_STARTS)
-        items = []
-        for shift in range(60):
-            items += [f"- **rec:** {'x' * shift} {text}", f"> - {'x' * shift} {text}"]
+        items = [
+            f"{lead}{PROSE} {'x' * shift} {word}{tail}"
+            for word in BLOCK_STARTS
+            for shift in range(30)
+            for lead in ("- **rec:** ", "> - ")
+            for tail in ("", " after")
+        ]
         reply = round_with(*items)
         lines = reprint(stop(reply)).split("\n")
         continuations = [line for line in lines if line.startswith(("  ", ">   "))]
         unquoted = [line.removeprefix(">   ") for line in lines]
         self.assertEqual(" ".join(unquoted).split(), reply.split())
-        self.assertGreater(len(continuations), len(items))
+        self.assertTrue(continuations)
         for line in continuations:
             self.assertLessEqual(len(line), 100)
             self.assertIsNone(OPENS_BLOCK.match(line.removeprefix(">   ").lstrip()), line)

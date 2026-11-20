@@ -9,13 +9,14 @@ quote, or emphasis markup. The block reason hands the session the whole reply
 rewrapped at 100 columns to print again as is. The rewrap breaks only at
 spaces, keeps each list and blockquote marker, and indents continuation lines
 under the text. It never starts a continuation line on a word Markdown would
-read as a block start, such as an ordered or bullet marker, a heading, quote,
-fence, or table opener, or a rule or setext underline: it carries the previous
-word down with it, so the line keeps the paragraph it was in. Every other reply
-passes untouched. The hook blocks at most once in a row, since
-stop_hook_active marks the reprint. A line that one word keeps over 100
-columns stays as it is; when only such lines run over, the hook reports them to
-the architect instead of blocking. Exits 0, also on input it can't read.
+read as a block start, such as an ordered marker (also under emphasis, which
+the numbered-questions grader reads as one) or a bullet marker, a heading,
+quote, fence, or table opener, or a rule or setext underline: it carries the
+previous word down with it, so the line keeps the paragraph it was in. Every
+other reply passes untouched. The hook blocks at most once in a row, since
+stop_hook_active marks the reprint. A line that one word keeps over 100 columns
+stays as it is; when only such lines run over, the hook reports them to the
+architect instead of blocking. Exits 0, also on input it can't read.
 """
 
 import json
@@ -31,9 +32,6 @@ FORMAT_HEADING = re.compile(
 )
 FENCE = re.compile(r"[ \t>]*(?:```|~~~)")
 MARKER = re.compile(r"([ \t]*(?:>[ \t]?)*[ \t]*)((?:[-*+]|\d+[.)]|#{1,6})[ \t]+)?")
-# A first word that would open a block, or end one, at the start of a line: an ordered marker
-# (also under emphasis, which plan-round-in-reply's numbered-questions grader reads as one), a
-# bullet, a heading, a quote, a fence, a table row, or a thematic break or setext underline.
 BLOCK_START = re.compile(r"[*_]*\d+[.)]|[-*+]|#{1,6}|[>|].*|(?:```|~~~).*|[-=]+|[*_]{3,}")
 
 
