@@ -72,10 +72,10 @@ Read these sizes, in words, to judge the work:
   work behave, and what they should see, or "none" for a prose-only change. The spec-reviewer
   has already followed them (marathon's `references/briefs.md`).
 - **Formats wrapped by a hook** (built). marathon's MessageDisplay hook runs `wrap-formats`,
-  which rewraps a marathon format at 100 columns on screen as the reply streams; the model never
-  reprints it. This repository's release gate rests on deterministic graders; the LLM judge, on
-  sonnet against criteria that mirror marathon's plan-round rules, runs in its own suite outside
-  the gate (`harness-testing.md`).
+  which rewraps a marathon format at 100 columns on screen as the reply streams, so the model never
+  reprints it. This repository's release gate rests on deterministic graders. The LLM judge runs
+  on sonnet, against criteria that mirror marathon's plan-round rules, in its own suite outside the
+  gate (`harness-testing.md`).
 - **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
 
 ## Findings for later

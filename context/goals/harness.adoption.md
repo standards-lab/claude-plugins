@@ -66,7 +66,7 @@ Everything else is two-way.
 
 ## Progress
 
-slices 3/3 committed · standards — · spec — · editor —
+slices 3/3 committed · standards ✓ (baba806, c6cc55e) · spec ✓ · editor ✓
 - redirect, BUILD: fold the Stop hook's reprint into `shim`; re-planned: wrap-formats moves to a
   `MessageDisplay` hook, and the release becomes v0.22.0.
 - slice 2, decided: hook state also opens for a fence still open at a batch's end, so a heading
@@ -80,19 +80,18 @@ slices 3/3 committed · standards — · spec — · editor —
   v1.ai.hosting, a one-time exception that the sibling adoption goals share; no session runs on
   those goals until every adoption goal syncs (standards-lab/context/harness-adoption.md).
 - plan: the rest of the adoption runs as 14 sibling `harness.adoption-<slug>` goals, in one
-  orchestrating session once `shim` releases marathon/v0.21.1; the rules they share live in
+  orchestrating session once `shim` releases marathon/v0.22.0; the rules they share live in
   standards-lab/context/harness-adoption.md.
 - plan: architecture's `scripts/check.sh` switches to marathon's `lint-references` (the
   `architecture` task).
-- shim: the shims resolve the release with `mise where` and exec its binary, never `mise exec`, so
-  the command sees the caller's environment; released with the hook change as marathon/v0.22.0.
-- shim: wrap-formats runs as a `MessageDisplay` hook that rewraps a format on screen; the model
-  never reprints.
 - references: rejected a pinned architecture checkout in CI, so `architecture/...` references
   skip there: architecture has no tags, so it would pin a bare SHA no currency command tracks.
 
 ## Pending edits
 
+- coordinator · standards-lab: marathon 0.22.0, the release the adoptions pin, in place of 0.21.0:
+  `context/harness-adoption.md`'s opening sentence, and the `harness.adoption-*` goal files'
+  names and summaries.
 - coordinator · standards-lab: repoint each mention of ai-hosting's removed `context/design.md`
   at the ai-hosting note that now holds its subject:
   - `context/ai-hosting.md`, "What `ai-hosting` holds", the suite's design:

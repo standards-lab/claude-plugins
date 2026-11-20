@@ -5,8 +5,8 @@ Each one the architect reads is read in the terminal, fits on about one screen, 
 what needs a decision. Agents look up facts; the architect makes decisions.
 
 Every format is markdown, hard-wrapped at 100 characters in the reply, and code fences appear only
-around code. marathon's MessageDisplay hook, `bin/wrap-formats`, rewraps a format that runs
-over on screen as the reply streams; the reply itself keeps its lines. Each template below is shown
+around code. As the reply streams, marathon's MessageDisplay hook, `bin/wrap-formats`, rewraps on
+screen a format whose lines run over; the reply itself keeps its lines. Each template below is shown
 as a blockquote so it renders as it will in the reply; the reply drops the `> `.
 
 ## Plan round

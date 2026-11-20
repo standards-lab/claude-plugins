@@ -10,17 +10,17 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 ## v0.22.0
 
 The format hook rewraps a marathon format on screen as the reply streams, so the model no longer
-reprints a reply, and a shim runs the release in the caller's environment, so a configured command
-can read the repository's own mise configuration.
+reprints a reply. A shim runs the release in the caller's environment, so a configured command can
+read the repository's own mise configuration.
 
 ### Changed
 
 - **The format hook rewraps on screen** (`hooks/hooks.json`, `bin/wrap-formats`). The hook runs on
   `MessageDisplay` in place of `Stop`: as a reply streams, it rewraps a marathon format at 100
-  columns from the format's heading to the end of the message, with the same rules, and shows the
-  rewrapped text in place of the original. The model no longer reprints the reply, and the
-  transcript keeps the lines as written. A line one word keeps over 100 columns stays as it is,
-  with no report. A failed or timed-out run displays the original.
+  columns from the format's heading to the end of the message, with the rules it used on `Stop`,
+  and shows the rewrapped text in place of the original. The transcript keeps the lines as the
+  model wrote them. A line that a single word holds over 100 columns stays as it is, and the hook
+  reports nothing. When the hook fails or times out, the original displays.
 - **plan-round-in-reply drops its line-width grader** (`evals/plan-round-in-reply/`). The grader
   read the transcript, which now keeps the model's lines as written, and no eval grader can see
   the displayed text. `scripts/tests/graders.test.mjs` holds each stored round's displayed lines
@@ -29,17 +29,17 @@ can read the repository's own mise configuration.
 ### Fixed
 
 - **A shim runs the release in the caller's environment** (`bin/marathon`). Without a local build,
-  a shim ran the release through `mise exec` under overrides that ignore every project mise
-  config, and the command inherited them, so a `marathon check` whose configured command runs
-  `mise run` couldn't read the repository's `mise.toml`. The shim now resolves the release with
-  `mise where`, installing it on first use, under those overrides, and runs its binary with the
-  caller's environment unchanged.
+  a shim ran the release through `mise exec` with `MISE_OVERRIDE_*` variables that ignore every
+  project mise config, and the command inherited them, so a `marathon check` whose configured
+  command runs `mise run` couldn't read the repository's `mise.toml`. The shim now sets those
+  variables only while `mise where` resolves the release, installing it on first use, and runs its
+  binary with the caller's environment unchanged.
 
 ### Migrating from 0.21.0
 
-1. Install 0.22.0. The format hook now runs on `MessageDisplay`: it rewraps a reply as it is
-   displayed, and the model no longer reprints a reply to fix its lines. Nothing in a repository
-   changes for it.
+1. Install 0.22.0. The format hook now runs on `MessageDisplay`: it rewraps a format as the reply
+   is displayed, and the model no longer reprints a reply to fix its lines. No repository changes
+   for it.
 2. A repository may move its `github:standards-lab/claude-plugins` pin to 0.22.0 in its
    `mise.toml`.
 
