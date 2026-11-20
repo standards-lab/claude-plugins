@@ -30,6 +30,15 @@ The first consumers are marathon's roadmap manifest and goal records, whose form
 documents in prose and `lint-context` checks only for shape and budgets, and
 marathon-extraction's deterministic checks (`marathon-extraction.md`, "Tooling").
 
+## Deferred guards
+
+`v1.harness.tooling` takes up two guards that `harness.optimization` deferred:
+
+- A hook that refuses a chained `gh pr merge` or `git push`.
+- A required `check` status on claude-plugins' main, once goal-record bookkeeping lands by pull
+  request. With the admin bypass it may not stop an admin's merge; without one it rejects
+  marathon's bookkeeping pushes to main.
+
 ## Assumptions
 
 - The manifest and goal-record formats stay stable enough to fix as schemas.

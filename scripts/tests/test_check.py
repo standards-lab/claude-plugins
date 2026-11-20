@@ -206,9 +206,8 @@ class CheckTest(unittest.TestCase):
 
     def test_release_heading_carries_only_its_version(self):
         changelog = f"{EXTENSION}/CHANGELOG.md"
-        self.replace(changelog, "## v0.2.2\n", "## v0.2.2 - 2026-01-02\n")
+        self.replace(changelog, "## v0.2.2\n", "## Unreleased (next)\n\n## v0.2.2 - 2026-01-02\n")
         self.replace(changelog, "## v0.2.1\n", "## [v0.2.1](https://example.com/v0.2.1)\n")
-        self.replace(changelog, "## Unreleased\n", "## Unreleased (next)\n")
         numbered = {
             heading: number
             for number, heading in enumerate((self.root / changelog).read_text().splitlines(), 1)

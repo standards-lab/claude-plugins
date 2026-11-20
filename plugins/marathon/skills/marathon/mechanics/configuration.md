@@ -56,7 +56,7 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
 
   ```sh
   base=https://raw.githubusercontent.com/standards-lab/claude-plugins/refs/tags
-  curl -fsSLo lint-context "$base/marathon/vX.Y.Z/plugins/marathon/bin/lint-context"
+  curl -fsSLo lint-context "$base/marathon/v0.19.0/plugins/marathon/bin/lint-context"
   python3 lint-context
   ```
 - **`[project] currency`**: optional. The repository's read-only command that reports what trails
