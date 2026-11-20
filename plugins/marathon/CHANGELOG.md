@@ -9,6 +9,15 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 
 ## Unreleased
 
+### Changed
+
+- **The format hook rewraps on screen** (`hooks/hooks.json`, `bin/wrap-formats`). The hook runs on
+  `MessageDisplay` in place of `Stop`: as a reply streams, it rewraps a marathon format at 100
+  columns from the format's heading to the end of the message, with the same rules, and shows the
+  rewrapped text in place of the original. The model no longer reprints the reply, and the
+  transcript keeps the lines as written. A line one word keeps over 100 columns stays as it is,
+  with no report. A failed or timed-out run displays the original.
+
 ### Fixed
 
 - **A shim runs the release in the caller's environment** (`bin/marathon`). Without a local build,

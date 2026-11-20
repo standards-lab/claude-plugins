@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# Tests for marathon's bin/ shims and the Stop hook that runs one, on a copy of the plugin's bin/
-# and hooks/ beside stub commands. A stub in .build/ stands for the local build, and stubs in
-# release/ for the release's binaries. A stub mise first on PATH records each call with its working
-# directory and the MISE_OVERRIDE_ settings the shim hands it; its where prints release/ once the
-# release is installed, which a call to its install, or an installed file, marks. Each test_
-# function is one case; the script prints a FAIL line per failed assertion and exits 1 if any fails.
+# Tests for marathon's bin/ shims and the MessageDisplay hook that runs one, on a copy of the
+# plugin's bin/ and hooks/ beside stub commands. A stub in .build/ stands for the local build, and
+# stubs in release/ for the release's binaries. A stub mise first on PATH records each call with its
+# working directory and the MISE_OVERRIDE_ settings the shim hands it; its where prints release/
+# once the release is installed, which a call to its install, or an installed file, marks. Each
+# test_ function is one case; the script prints a FAIL line per failed assertion and exits 1 if
+# any fails.
 set -uo pipefail
 
 repo=$(cd "$(dirname "$0")/../.." && pwd)
@@ -71,7 +72,7 @@ with_the_shims_overrides() {
 }
 
 hook_command() {
-  jq -r '.hooks.Stop[0].hooks[0].command' "$plugin/hooks/hooks.json"
+  jq -r '.hooks.MessageDisplay[0].hooks[0].command' "$plugin/hooks/hooks.json"
 }
 
 run_hook() {
@@ -189,9 +190,9 @@ test_the_release_ignores_the_callers_tool_versions() {
 test_hook_passes_the_local_builds_output_and_input_through() {
   write_stub "$plugin/.build/wrap-formats" 'cat'
   local output
-  output=$(echo '{"decision": "block"}' | run_hook "$stubbed_path")
+  output=$(echo '{"hookSpecificOutput": {}}' | run_hook "$stubbed_path")
   assert_equal "hook status" "$?" 0
-  assert_equal "hook output" "$output" '{"decision": "block"}'
+  assert_equal "hook output" "$output" '{"hookSpecificOutput": {}}'
 }
 
 test_hook_without_mise_passes() {
@@ -208,7 +209,7 @@ test_hook_without_mise_passes() {
 }
 
 test_hook_passes_when_mise_fails() {
-  write_stub "$tmp/stubs/mise" 'echo "{\"decision\": \"block\"}"; exit 2'
+  write_stub "$tmp/stubs/mise" 'echo "{\"hookSpecificOutput\": {}}"; exit 2'
   local output
   output=$(echo '{}' | run_hook "$stubbed_path" 2>/dev/null)
   assert_equal "hook status" "$?" 0
@@ -217,7 +218,7 @@ test_hook_passes_when_mise_fails() {
 
 test_hook_passes_when_the_release_fails() {
   touch "$tmp/installed"
-  write_stub "$tmp/release/wrap-formats" 'echo "{\"decision\": \"block\"}"; exit 1'
+  write_stub "$tmp/release/wrap-formats" 'echo "{\"hookSpecificOutput\": {}}"; exit 1'
   local output
   output=$(echo '{}' | run_hook "$stubbed_path")
   assert_equal "hook status" "$?" 0
@@ -225,7 +226,7 @@ test_hook_passes_when_the_release_fails() {
 }
 
 test_hook_passes_when_the_local_build_fails() {
-  write_stub "$plugin/.build/wrap-formats" 'echo "{\"decision\": \"block\"}"; exit 1'
+  write_stub "$plugin/.build/wrap-formats" 'echo "{\"hookSpecificOutput\": {}}"; exit 1'
   local output
   output=$(echo '{}' | run_hook "$stubbed_path")
   assert_equal "hook status" "$?" 0
