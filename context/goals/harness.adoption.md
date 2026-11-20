@@ -123,8 +123,6 @@ still in `context/` fails `lint-context`. The work before the tag is two-way.
 - plan: staged over the locks of v1.ai.processing, v1.client.stack, v1.ai.inference, and
   v1.ai.hosting, a one-time exception; no session runs on them until harness.adoption and then
   v1.ai.hosting's `secrets` task ship.
-- plan: the coordinator's roadmap moves to `roadmap/index.toml` in a `plan harness.adoption`
-  session right after `references` ships and is installed, not at sync.
 - plan: architecture's `scripts/check.sh` switches to marathon's `lint-references` (the
   `architecture` task).
 - plan: the 33 archived spikes stay as they are; only the 4 unarchived spikes adopt.
