@@ -87,17 +87,33 @@ class WrapFormatsTest(unittest.TestCase):
 
     def test_every_architect_format_heading_is_recognized(self):
         headings = [
-            "## PLAN ROUND 2 · goal · task t",
-            "## INTAKE ROUND 1 · experiment.ai → v1.ai",
-            "## ESCALATION · goal · task t",
-            "## Task brief · goal · task",
-            "## goal · task 3/5 · task",
-            "## Status · 2026-10-01",
-            "## Retro · goal v1.storage · 2026-09-14..09-24",
+            "PLAN ROUND 2 · goal · task t",
+            "INTAKE ROUND 1 · experiment.ai → v1.ai",
+            "ESCALATION · goal · task t",
+            "Task brief · goal · task",
+            "Status · 2026-10-01",
+            "── STATUS · 2026-10-01 ──",
+            "Retro · goal v1.storage · 2026-09-14..09-24",
+            "RETRO · goal v1.storage",
         ]
         for heading in headings:
-            with self.subTest(heading):
-                self.assertEqual(stop(f"{heading}\n\n{PROSE} {PROSE}\n")["decision"], "block")
+            for form in (heading, f"**{heading}**", f"# {heading}", f"## {heading}"):
+                with self.subTest(form):
+                    self.assertEqual(stop(f"{form}\n\n{PROSE} {PROSE}\n")["decision"], "block")
+
+    def test_session_brief_heading_is_recognized(self):
+        for form in ("## goal · task 3/5 · task", "> ### **goal · task 3/5 · task**"):
+            with self.subTest(form):
+                self.assertEqual(stop(f"{form}\n\n{PROSE} {PROSE}\n")["decision"], "block")
+
+    def test_format_named_mid_line_is_not_a_heading(self):
+        for line in (
+            "The next plan round asks about the audience.",
+            "I'll print PLAN ROUND 1 once the facts are in.",
+            "Next: ESCALATION · goal · task t",
+        ):
+            with self.subTest(line):
+                self.assertIsNone(stop(f"{line}\n\n{PROSE} {PROSE}\n"))
 
     def test_wrapped_reply_passes(self):
         self.assertIsNone(stop(round_with(PROSE)))

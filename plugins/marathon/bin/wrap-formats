@@ -3,7 +3,8 @@
 
 Reads the Stop hook's input on stdin. A reply that holds one of the formats in
 marathon's references/briefs.md the architect reads in the terminal, found by
-its heading, and a line over 100 characters outside code fences and tables, is
+its heading at the start of a line, bare or under heading, quote, or emphasis
+markup, and a line over 100 characters outside code fences and tables, is
 blocked, and the reason hands the session the whole reply rewrapped at 100
 columns to print again as is. The rewrap breaks only at spaces, never inside a
 word, keeps each list and blockquote marker, and indents continuation lines
@@ -21,8 +22,10 @@ import textwrap
 
 WIDTH = 100
 FORMAT_HEADING = re.compile(
-    r"#{2,3}[ \t]+(?:PLAN ROUND \d|INTAKE ROUND \d|ESCALATION\b|Task brief ·|Status ·|Retro ·"
-    r"|\S.* · task \d+/\d+ ·)"
+    r"[ \t]*(?:>[ \t]?)*(?:"
+    r"(?:#{1,6}[ \t]+)?[*_]{0,3}(?:PLAN ROUND \d|INTAKE ROUND \d|ESCALATION\b|Task brief ·"
+    r"|(?:── )?(?:Status|STATUS) ·|(?:Retro|RETRO) ·)"
+    r"|#{2,3}[ \t]+[*_]{0,3}\S.* · task \d+/\d+ ·)"
 )
 FENCE = re.compile(r"[ \t>]*(?:```|~~~)")
 MARKER = re.compile(r"([ \t]*(?:>[ \t]?)*[ \t]*)((?:[-*+]|\d+[.)]|#{1,6})[ \t]+)?")
