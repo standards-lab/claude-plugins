@@ -19,105 +19,104 @@
 11. [ ] architecture
 12. [ ] spikes
 
-## Task brief · references
+## Task brief · go-tools
 
 **Problem**
 
-The comment principle lets source carry a reference comment pointing a file at the document that
-governs it, and it requires every repository's check to resolve those references. Only
-architecture's check does so today, and only for `#` comments in its scripts. No code repository
-can adopt the rule until marathon ships one check that any repository's check and CI can call.
-The goal also moves the roadmap out of `context/` to a root `roadmap/` directory with
-`index.toml`. The coordinator's roadmap moves in a plan session after this release installs, so
-the release lands first. Every later adoption task depends on both.
+Every adopting repository is about to wire marathon's tools into its check and CI, and today
+those tools are Python scripts. No repository in the organization pins Python. The architect
+rejected adding it to about 25 repositories, and porting first spares them a second rewiring.
+Go release binaries pinned through mise need no language runtime in the consumer:
+- CI gets them from its existing `mise install`;
+- `mise outdated` reports a newer tag;
+- the web repositories, which have no Go, still get a binary.
 
 **Behaviors**
-1. A new marathon check, `lint-references`, runs on the repository it starts in and reads every
-   git-tracked file that isn't markdown. A line is a reference line when its first non-blank
-   characters are `#`, `//`, `--`, `/*`, or `*`. Every `*.md` path on such a line is a
-   reference, except a path inside a URL.
-2. A reference resolves from the repository root first. If nothing in the repository matches
-   its first segment, it resolves in the sibling directory of that name beside the repository.
-   A standalone project's top-level `architecture/` resolves as an ordinary path; in a
-   workspace, `architecture/...` resolves against the architecture repository beside it.
-3. A reference that resolves in neither place fails with
-   `<file>:<line>: reference <path> does not resolve; fix the path or remove the reference`.
-   This covers a missing path in the repository or in an existing named sibling, and a
-   one-segment path missing at the root.
-4. When the first segment names nothing in the repository and no sibling of that name exists,
-   as in CI, the check skips the reference and prints
-   `<file>:<line>: skipped <path>: no <segment>/ in this repository or beside it`. Skips alone
-   pass. The check exits nonzero only when a reference fails. A file that isn't UTF-8 is skipped
-   silently.
-5. `lint-references` ships beside `lint-context` with the same requirements: stdlib Python 3.11,
-   and on PATH in a session. marathon documents the two together: every repository's check
-   calls both, and a CI without the plugin downloads both from one pinned `marathon/vX.Y.Z`
-   tag, shown with a v0.20.0 example.
-6. claude-plugins' own check runs `lint-references` and its tests. Any broken reference it finds
-   is fixed, and the check passes.
-7. marathon reads the roadmap from a root `roadmap/` directory: `roadmap/index.toml` for the
-   three arrays and `roadmap/<goal>.toml` for each goal. This holds at the coordinator and in a
-   standalone project, everywhere the skill names, reads, writes, or creates the roadmap,
-   including LOCATE, `status`, `plan`, `intake`, `init`, and sync. There is no fallback.
-8. `lint-context` checks the root `roadmap/` exactly as it checked the roadmap in `context/`:
-   - the index's arrays and its two-line comment limit;
-   - goal files carry no comments;
-   - `repos`, `order`, and the summary, proof, and criteria budgets.
+1. lint-context, lint-references, marathon, and wrap-formats are Go commands in one module at
+   claude-plugins' root `marathon/`. Each keeps 0.20.0's arguments, output, and exit status. The
+   ported tests compare stdout, stderr, and exit status as the Python tests did.
+2. lint-references counts a line that starts with `*` as a comment only inside a `/*` block
+   comment, so a `.gitignore` pattern such as `*.md` is not a reference.
+3. The module follows the architecture Go pages that claude-plugins' `STANDARDS.md` points to:
+   - topology-and-naming, dependencies, construction-and-execution, tests-and-docs, the
+     release-and-ci check, comments, and tool-beside-library;
+   - logic in internal packages, and a thin standard-library `main` for each tool;
+   - dependencies: the standard library plus `BurntSushi/toml`.
 
-   A file in `roadmap/` that is neither `index.toml` nor a `<goal>.toml` fails and names its fix.
-   `context/` no longer counts roadmap files among its kinds.
-9. `lint-context` fails on a `context/roadmap.toml` with
-   `context/roadmap.toml: the roadmap index moved; move it to roadmap/index.toml`. It fails on
-   each `context/roadmap/<goal>.toml` with `move it to roadmap/<goal>.toml`.
-10. The `plan-round-in-reply` eval builds its fixture on the new layout, and the release gate
-    passes.
-11. marathon's CHANGELOG `v0.20.0` lists the new check and the roadmap move. Its
-    `### Migrating from 0.19.0` has numbered steps:
-    1. Install 0.20.0.
-    2. At the coordinator or in a standalone project, move the index and every goal file into
-       the root `roadmap/`, and update the notes that name the old paths.
-    3. In each repository, add `lint-references` to the check, and have CI download it beside
-       `lint-context` at `marathon/v0.20.0` or later.
-    4. Run it, then fix or remove each reference that fails.
-12. The plugin's version, the skill's Version line, and the CHANGELOG all read 0.20.0, and the
-    read-first and description budgets still hold.
+   `STANDARDS.md` states two exemptions:
+   - from cli-applications, domain-files, and lifecycle-and-context: the tools don't build on
+     go-cli-sdk;
+   - from release-and-ci's Keep-a-Changelog form: marathon's CHANGELOG is the module's record.
+4. Each `marathon/vX.Y.Z` release carries four archives, for linux and darwin on amd64 and
+   arm64. Each archive holds all four binaries, beside a `SHA256SUMS`, and each binary reports
+   the tag's version. Other plugins' tags release as before, with no files.
+5. A repository pins the tools as
+   `"github:standards-lab/claude-plugins" = { version = "0.21.0", version_prefix = "marathon/v" }`.
+   `mise install` puts all four on PATH, and `mise outdated` reports a newer marathon tag.
+6. In a session, each of the plugin's `bin/` commands and the Stop hook runs the binary from the
+   gitignored local build when it is present. Otherwise it `mise exec`s the release that matches
+   the plugin's own version, ignoring the repository's mise config. claude-plugins' check fails
+   when a shim's version differs from `plugin.json`'s. A failed shim in the Stop hook doesn't
+   block the reply.
+7. The release gate cross-builds all four targets and fails on a broken build. It builds the
+   host's binaries into the local build for the eval and removes them when it exits.
+8. claude-plugins' check:
+   - runs the Go check from release-and-ci: build, vet, gofmt, `go fix -diff`,
+     `go mod tidy -diff`, `go test -race`, and golangci-lint;
+   - tests the eval graders' patterns against the stored plan rounds with `node --test`;
+   - tests itself with a bash script;
+   - fails when any Python file is tracked.
+
+   Its `mise.toml` pins Go, Node, and golangci-lint. CI installs through mise, and the currency
+   command adds `mise outdated`.
+9. marathon's docs:
+   - The requirements name mise, not Python.
+   - The CI section shows the mise pin in place of the `curl` download.
+   - `init`'s check calls the pinned lints.
+10. marathon's CHANGELOG `v0.21.0` has `### Migrating from 0.20.0`:
+    1. Install 0.21.0 with mise on PATH.
+    2. Pin `github:standards-lab/claude-plugins` with `version_prefix = "marathon/v"` at 0.21.0
+       or later in each repository's `mise.toml`.
+    3. In CI, call `lint-context` and `lint-references` after `mise install`, and drop any
+       `curl` download.
+
+    The plugin's version, the skill's Version line, and the CHANGELOG read 0.21.0. The budgets
+    hold, and the gate passes.
 
 **Test seams**
-- `lint-references`, run on a temporary repository and its siblings; the tests compare stdout,
-  stderr, and the exit status.
-- `lint-context`, run on a temporary repository with a root `roadmap/` or the old layout.
-- claude-plugins' check and release gate, for the skill and the eval fixture.
+- Each Go command, run on a temporary repository; the tests compare stdout, stderr, and exit
+  status.
+- `node --test` over the graders and the stored plan rounds.
+- claude-plugins' check and release gate, including the cross-build and the eval.
 
 **Slices**
-1. Upgrade: CI's Claude Code pin 2.1.328 → 2.1.329; the currency command exits 0 and the check
-   passes.
-2. The reference check (behaviors 1–4, 6): the command, its tests, and claude-plugins' check
-   calling it, with broken references fixed.
-3. The reference check documented (behavior 5): configuration, the pinned CI download, `init`'s
-   check, and `Unreleased` CHANGELOG entries with migration steps 3 and 4.
-4. `lint-context` follows the roadmap (behaviors 8, 9), with its tests.
-5. The skill follows the roadmap (behaviors 7, 10): every skill file, the README, the eval
-   scaffold, and the CHANGELOG entry with migration step 2.
-6. The release (behaviors 11, 12): `Unreleased` becomes `v0.20.0` with migration step 1, the
-   versions agree, the budgets hold, and the gate passes.
+1. The module and lint-references (behaviors 1–3 for it, and 8):
+   - `mise.toml`, CI through mise, the Go check, and the currency command;
+   - `STANDARDS.md`'s Go pointers and exemptions.
+2. lint-context in Go, with its tests (behavior 1).
+3. marathon and wrap-formats in Go, with their tests (behavior 1).
+4. The shims and the local build (behavior 6). The Python tools go, check.sh's tests become
+   bash, the grader tests move to `node --test`, and the no-Python check lands (behavior 8).
+5. The release workflow and the gate's cross-build (behaviors 4, 7).
+6. The docs and `Unreleased` CHANGELOG entries with migration steps 2 and 3 (behaviors 5, 9).
+7. The release: `Unreleased` becomes `v0.21.0` with migration step 1, the versions agree, and
+   the gate passes (behavior 10).
 
 **Out of scope**
 
-- Moving the coordinator's roadmap (a `plan harness.adoption` session, after install).
-- Switching architecture's check to `lint-references` (the `architecture` task).
-- Every other repository's check and CI (the adoption tasks).
-- A currency command that reports a trailing `marathon/vX.Y.Z` download pin.
+- Any adopting repository's pin, check, or CI: those are the adoption tasks.
+- Windows builds.
+- Schemas, a `spec/` directory, and new tool commands (`v1.harness.tooling`).
 - Any marathon-architecture release.
 
 **Door**
 
-The `marathon/v0.20.0` tag is one-way, with the layout change it ships: once pushed, a roadmap
-still in `context/` fails `lint-context`. The work before the tag is two-way.
+The `marathon/v0.21.0` tag and its release files are one-way: consumers pin them, and a release
+is never re-cut. Everything before the tag is two-way.
 
 **Release**
 
-- `marathon/v0.20.0`
-
+- `marathon/v0.21.0`
 
 ## Decisions
 
