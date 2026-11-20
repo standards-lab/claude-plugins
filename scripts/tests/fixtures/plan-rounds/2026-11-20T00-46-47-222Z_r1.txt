@@ -1,0 +1,53 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name an internal host or a secret path, each in its step 1:
+  - `disk-full.md` names the host `db-primary-01.int.example.net`.
+  - `queue-backlog.md` names the host `jobs-01.int.example.net`.
+  - `cert-expiry.md` names the secret path `secret/platform/acme-token` (runbooks/).
+- `deploy-rollback.md` and `dns-failure.md` name neither (runbooks/).
+- The repository has no remote and no CI, and its one commit is local only. There is no
+  `.github/`, CI config or `mkdocs.yml` (`.git/config`, repository tree).
+- `STANDARDS.md` has one rule: "A runbook's first line says when to use it." It doesn't constrain
+  the edition's format.
+- `scripts/check.sh` checks each runbook's `Use when` first line and every `](./…)` link in any
+  `.md` file. An index page with `./` links would fall under it.
+- `dns-failure.md` is for when "internal names stop resolving". Every format is served from an
+  internal host behind SSO: the docs host, the file share, or the repository host
+  (`context/publishing.md`).
+- Format and audience are independent. One access group grants all three formats, and the
+  redaction pass depends only on the audience. Only `context/publishing.md` states the single
+  access group; nothing in the repository confirms it.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Edition format: a static MkDocs site, a single PDF, or a Markdown index page in the repo?**
+   - **rec:** a single PDF, rendered from the five runbooks with pandoc (the standard
+     Markdown-to-PDF tool, so no converter of our own). The DNS-failure runbook is needed when
+     internal names stop resolving. That can take down the internal docs host and repository host
+     that serve a site or an index, but a downloaded PDF still opens offline and on a phone. A
+     site also needs a build and a host, and an index needs a hosted remote. This repository has
+     neither a remote nor CI.
+   - **changes:** a PDF adds a pandoc build of one dated PDF, which is then uploaded to the
+     internal file share outside the repo. Every later edit needs a new PDF, and old copies
+     linger. A site would add MkDocs, a build and a docs host. An index would add one page, and a
+     remote would have to be created first.
+2. **Edition audience: on-call engineers only, or on-call engineers plus the support team?**
+   - **rec:** on-call only for the first edition. Three of the five runbooks name an internal host
+     or a secret path in step 1. Redacting those removes exactly what an on-call engineer needs
+     mid-incident. Support's request for read access can become its own backlog goal.
+   - **changes:** on-call only ships the runbooks as written and adds a backlog goal for support
+     access. On-call plus support adds two things before publishing: a redaction pass on the
+     three runbooks, and a `scripts/check.sh` rule that keeps new runbooks free of internal hosts
+     and secret paths. Support would also have to join the access group, which happens outside
+     the repo.
+
+**reply:** "1 ok, 2 ok, or 1 yes but ..."
+
+Round 2 depends on these answers. Publishing leaves the repository whichever format you choose,
+so it's a one-way door. Round 2 will ask who does that step, how a later edition replaces this
+one, and where the built artifact lives. It will also check whether pandoc or MkDocs is
+installed.

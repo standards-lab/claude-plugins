@@ -1,0 +1,57 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- The repository has no remote. `.git/config` has only `[core]`, and `.claude/marathon.toml` has no
+  `[remote]`.
+- There's no CI and no build tooling: no `mkdocs.yml`, no pandoc config. The only script is
+  `scripts/check.sh` (repository file listing).
+- Three of the five runbooks name internal hosts or secret paths (`context/publishing.md`:21):
+  - `runbooks/disk-full.md`:3: host `db-primary-01.int.example.net`
+  - `runbooks/cert-expiry.md`:3: secret path `secret/platform/acme-token`
+  - `runbooks/queue-backlog.md`:3: host `jobs-01.int.example.net`
+  - `deploy-rollback.md` and `dns-failure.md` name neither.
+- `runbooks/dns-failure.md`:1 applies "when internal names stop resolving". During that incident,
+  the internal docs host and file share may not resolve either.
+- One single sign-on access group grants every format, so the audience doesn't depend on the
+  format. Redaction depends only on the audience (`context/publishing.md`:24-30).
+- `STANDARDS.md` has one rule: a runbook's first line says when to use it. `scripts/check.sh` only
+  checks relative links that start with `./` (`scripts/check.sh`:11).
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **First-edition format: a single PDF on the internal file share, a static MkDocs site on the
+   internal docs host, or a Markdown index page in this repository?**
+   - **rec:** a single PDF, built with pandoc, the standard Markdown-to-PDF converter, so no
+     custom script. Only a PDF that on-call has already downloaded still opens when internal
+     names stop resolving. The Markdown index can't reach readers today because the repository
+     has no remote. The site can be built locally, but there's no host, remote, or CI to deploy
+     it. Whether pandoc is installed here is still unverified.
+   - **changes:** the task adds a PDF build step and publishes one dated PDF. Every later edit
+     means a new PDF, and old copies linger.
+2. **First-edition audience: on-call engineers only, or on-call engineers and the support team?**
+   - **rec:** on-call and support. Support asked for read access at the last quarterly review.
+     Redaction touches one line in each of three runbooks: the hosts in disk-full and
+     queue-backlog, and the secret path in cert-expiry.
+   - **changes:** adds a redaction slice for those three runbooks and a rule that keeps new
+     runbooks clean. Support is then added to the sign-on access group, which happens outside
+     this repository. With on-call only, the runbooks publish as written.
+
+**reply:** "1 ok, 2 ok" or "1 site, 2 on-call only", etc.
+
+---
+
+Round 2 depends on these answers:
+- If support is included: how to redact (placeholders, or a pointer to an on-call-only
+  reference) and where the clean-runbook rule lives (a `scripts/check.sh` check or a
+  `STANDARDS.md` line).
+- Where the build step lives, and whether there's a Release line. With no remote there's nowhere
+  to push a tag, so probably not.
+
+Publishing to support is a one-way door, because a copy with secret paths in it can't be taken
+back. The redaction will land before the publish step.
+
+The planner had no shell, so `scripts/check.sh` hasn't been run yet. From reading the files, it
+should pass, and it will run before the brief is approved.

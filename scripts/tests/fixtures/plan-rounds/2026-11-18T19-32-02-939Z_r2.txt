@@ -1,0 +1,35 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name an internal host or a secret path:
+  - `runbooks/disk-full.md:3`: `db-primary-01.int.example.net`
+  - `runbooks/queue-backlog.md:3`: `jobs-01.int.example.net`
+  - `runbooks/cert-expiry.md:3`: `secret/platform/acme-token`
+  - `deploy-rollback.md` and `dns-failure.md` name neither.
+- `scripts/check.sh` checks two things: every runbook opens with "Use when", and every `](./…)` link resolves. It does not look for hosts or secrets. Reading the files, it should pass today (not run).
+- `STANDARDS.md` has one rule: a runbook's first line says when to use it. It says nothing about redaction.
+- One single sign-on group grants access to the docs host, the file share and this repository. So the audience is whoever is in that group, whatever the format (`context/publishing.md:24-27`).
+- Redaction depends on the audience, not the format (`publishing.md:28-30`).
+- Readers can only get the edition once it is uploaded to the docs host or file share, or the repository is hosted. Each of those happens outside this repository, needs credentials this machine isn't known to have, and can't be undone once readers see it.
+- `dns-failure.md` covers "internal names stop resolving". A site on the internal docs host may be unreachable during exactly that failure.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Format of the first edition: an MkDocs static site, a single PDF, or a Markdown index page in the repository?**
+   - **rec:** an MkDocs static site. It stays current and searchable, while copies of a PDF go stale after every edit. A Markdown index would first need a hosted remote, which doesn't exist.
+   - **changes:** the task adds an MkDocs config and a local build. No PDF and no repository hosting are set up.
+2. **Audience of the first edition: on-call engineers only, or on-call engineers and the support team?**
+   - **rec:** on-call engineers and support. Support asked for access, and the redaction covers three lines in three runbooks.
+   - **changes:** adds a redaction pass to the brief. Someone outside the repository must also add support to the sign-on access group.
+3. **Who uploads the first edition to its readers: you by hand after accepting the session brief, or a session using credentials you grant it?**
+   - **rec:** you by hand. The upload is irreversible and happens outside the repository, and no subagent is allowed to publish.
+   - **changes:** the task ends with a built, checked edition and written upload steps. The brief's Door is marked one-way for the upload only, and the proof (a reader opening the edition) is yours to confirm.
+
+**reply:** "1 ok, 2 ok, 3 yes but ..."
+
+**Round 2, depending on your answers above**
+- If support is included: how to redact the three lines; whether `scripts/check.sh` should fail on `*.int.example.net` and `secret/` paths; and whether `STANDARDS.md` gains a rule keeping new runbooks free of them.
+- If MkDocs is chosen: whether the built site is committed or gitignored; whether an offline copy covers the DNS-failure runbook; and how to get MkDocs onto this machine if it's missing.

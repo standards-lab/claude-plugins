@@ -1,0 +1,49 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name an internal host or a secret path, one line each:
+  - `runbooks/disk-full.md:3`: host `db-primary-01.int.example.net`
+  - `runbooks/queue-backlog.md:3`: host `jobs-01.int.example.net`
+  - `runbooks/cert-expiry.md:3`: secret path `secret/platform/acme-token`
+  - `deploy-rollback.md` and `dns-failure.md` name neither (search for `int.example.net`, `secret/`).
+- `scripts/check.sh` enforces two rules: every runbook opens with `Use when`, and every `./` link
+  resolves. A grep for hosts and secret paths would fit the same loop.
+- `STANDARDS.md` has one rule: a runbook's first line says when to use it. It says nothing about
+  hosts, secrets, or comments.
+- The repository has no publishing tooling: no `mkdocs.yml`, pandoc config, build script, or CI.
+- Every format sits behind single sign-on, and one access group grants all three. So the audience
+  is that group's membership, whatever the format (`context/publishing.md`).
+- `runbooks/dns-failure.md` covers the case where "internal names stop resolving".
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **First edition's format: one PDF on the internal file share, a static MkDocs site on the
+   internal docs host, or a Markdown index page in this repository?**
+   - **rec:** one PDF. Only a PDF someone has downloaded still opens when internal names stop
+     resolving, which is the failure the DNS runbook covers. pandoc, the standard converter,
+     builds it, so we write no converter. A site needs a build and a host, and the project has
+     no CI. An index page needs repository access, which misses the goal's "without cloning".
+     The cost: every edit means a new PDF, and old copies linger.
+   - **changes:** the task adds a pandoc build of the five runbooks into one PDF, to be published
+     on the internal file share. No site config and no hosting.
+2. **First edition's audience: on-call engineers only, or on-call engineers plus the support team,
+   who asked for read access at the last quarterly review?**
+   - **rec:** both. The redaction is small: two internal hostnames and one secret path, in three
+     runbooks. Leaving support out now means another edition later.
+   - **changes:** if support is included, the task first redacts those three lines and adds a
+     rule that keeps hosts and secret paths out of new runbooks. Once published to support, that
+     can't be undone. If on-call only, neither happens and the runbooks stay as written.
+
+**reply:** "1 ok, 2 ok", or your answer to each
+
+Round 2 depends on these answers. If support is included, it asks how to redact (remove, use
+placeholders, or move to an on-call-only page) and whether the clean-runbooks rule goes in the
+check or in `STANDARDS.md`. Depending on the format, it also asks how readers can tell which copy
+is current, and who uploads the edition. No agent can reach the file share or the docs host, so
+that upload will probably be your step.
+
+One thing outside this task: `scripts/check.sh` only checks links that start with `./`. A Markdown
+index could add links it wouldn't check. I'll treat this as a note unless you want it in scope.

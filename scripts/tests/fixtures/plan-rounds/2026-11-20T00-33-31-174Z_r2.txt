@@ -1,0 +1,40 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- No goal record exists yet (`context/goals/publish.md` is absent). This is the goal's only task, so
+  shipping it also syncs the goal (`context/roadmap/publish.toml`).
+- The repository has no remote, and `.claude/marathon.toml` has no `[remote] publish`. SHIP merges
+  locally (`.git/config`, `.claude/marathon.toml`).
+- Three of five runbooks name internal hosts or secret paths: `cert-expiry` (`secret/platform/
+  acme-token`), `disk-full` (`db-primary-01.int.example.net`), `queue-backlog`
+  (`jobs-01.int.example.net`). `deploy-rollback` and `dns-failure` are clean (`runbooks/`).
+- All three formats sit behind single sign-on, and one access group covers all of them. So the
+  audience is set by group membership, not by the format, and redaction depends only on the
+  audience (`context/publishing.md`).
+- The check covers runbooks' first lines and relative links only (`scripts/check.sh`).
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Publishing format: an MkDocs static site on the internal docs host, a single PDF on the
+   internal file share, or a Markdown index page read in the repository?**
+   - **rec:** MkDocs static site. It's the standard tool for this, so we build nothing of our
+     own. Readers get search and links, and they always see the current runbooks. A PDF breaks the
+     goal's "current runbooks" because old downloaded copies linger. A Markdown index still needs
+     a hosted repository, and this one has no remote. The cost is a build step and a manual
+     deploy, since there's no CI.
+   - **changes:** with MkDocs, the task adds a site config, an index page, and a site build in
+     the check. The first deploy to the docs host reaches beyond the repository, so it's the
+     task's one-way door. With PDF, the task adds a PDF build instead. With a Markdown index, it
+     adds only the index page.
+2. **First-edition audience: on-call engineers only, or on-call engineers plus the support team?**
+   - **rec:** on-call engineers only. The runbooks can ship as written. Support access goes on the
+     backlog as its own goal, together with the redaction pass on the three runbooks that name
+     internal hosts or secret paths and a check rule that keeps new runbooks clean.
+   - **changes:** with on-call only, the task has no redaction work and the backlog gains a
+     support-access goal. With support included, the task gains a redaction slice for three
+     runbooks, and round 2 asks how a check rule keeps new runbooks clean.
+
+**reply:** "1 ok, 2 ok" or "1 PDF, 2 …"

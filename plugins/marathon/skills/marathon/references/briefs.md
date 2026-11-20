@@ -5,8 +5,9 @@ Each one the architect reads is read in the terminal, fits on about one screen, 
 what needs a decision. Agents look up facts; the architect makes decisions.
 
 Every format is markdown, hard-wrapped at 100 characters in the reply, and code fences appear only
-around code. Each template below is shown as a blockquote so it renders as it will in the reply;
-the reply drops the `> `.
+around code. marathon's Stop hook rewraps a reply that runs over (`mechanics/configuration.md`).
+Each template below is shown as a blockquote so it renders as it will in the reply; the reply
+drops the `> `.
 
 ## Plan round
 
@@ -43,9 +44,6 @@ next round; it is never asked conditionally, as in "only if 1 is yes". The round
 >
 > **reply:** "1 ok, 2 ok, 3 yes but ..."
 
-- Hard-wrap every line at 100 characters, indentation and markup included, as the template
-  does: break a longer line at a space and indent the rest under its text, though markdown would
-  render it unbroken. Rewrap the planner's draft before printing it.
 - Number every question.
 - Name each question's subject in its own words, with the options it chooses between, so the
   architect can decide it from the question, its **rec:**, and its **changes:** alone. All three

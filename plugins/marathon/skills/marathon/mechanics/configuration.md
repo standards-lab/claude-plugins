@@ -101,3 +101,11 @@ as declared. A single-line command gets the arguments appended, each shell-quote
 `marathon gate v1.4.0`. A multi-line command, such as `ci`, runs as one script and gets them as
 its positional parameters. `marathon` exits with the command's status. An unset or unknown key
 fails with the fix, such as "set [remote] merge in .claude/marathon.toml".
+
+## Wrapping the formats
+
+The plugin's Stop hook, `wrap-formats` in its `bin/`, reads each reply that ends a turn. When the
+reply holds a format from `references/briefs.md`, found by its heading, and a line over 100
+characters outside code fences and tables, the hook blocks once and hands the session the reply
+rewrapped at 100 columns, words unchanged, to print as is. A word over 100 characters stays
+whole, and the hook reports its line instead of blocking.

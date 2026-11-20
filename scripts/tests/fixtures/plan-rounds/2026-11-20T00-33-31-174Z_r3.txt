@@ -1,0 +1,59 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name an internal host or a secret path, each on its line 3:
+  - runbooks/disk-full.md: "Find the largest directories on `db-primary-01.int.example.net`…"
+  - runbooks/queue-backlog.md: "Scale the workers on `jobs-01.int.example.net`…"
+  - runbooks/cert-expiry.md: "Read the renewal token from `secret/platform/acme-token`."
+- runbooks/deploy-rollback.md and runbooks/dns-failure.md name no host or path.
+- The check enforces two rules: every runbook opens with "Use when", and every `](./…)` link
+  resolves. It doesn't look for hosts or secret paths (scripts/check.sh).
+- The check hasn't been run, because this session has no shell. Reading the files suggests it
+  passes: all five runbooks open with "Use when", and no file has a relative link.
+- No remote, no CI, no MkDocs or PDF configuration. History is one commit, e359ab2 (.git/config,
+  file listing). Whether pandoc or mkdocs is installed hasn't been checked.
+- One single-sign-on access group covers the internal docs host, the internal file share, and
+  repository read access. So the audience is that group's membership whatever the format
+  (context/publishing.md).
+- Support asked for read access in the last quarterly review (context/publishing.md).
+- Goal proof: a reader in the chosen audience opens the first edition and finds every runbook
+  (context/roadmap/publish.toml).
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **First edition's format: a MkDocs static site on the internal docs host, a single PDF on the
+   internal file share, or an index page over the Markdown files in this repository?**
+   - **rec:** the MkDocs static site. The goal asks that readers reach the current runbooks
+     without cloning. A site serves one current copy, while every PDF edit leaves stale copies
+     in circulation. The repository has no remote, so a Markdown index still means cloning.
+     MkDocs is the standard Markdown-to-site tool, so the task writes configuration, not a
+     generator. Costs: with no CI, the first edition is built and uploaded by hand. And during
+     the outage where internal names stop resolving, the site may be unreachable when a
+     downloaded PDF would still open.
+   - **changes:**
+     - Site: adds a MkDocs configuration with navigation over the five runbooks, plus a manual
+       build-and-upload step.
+     - PDF: adds a build that produces one file for the file share.
+     - Markdown index: adds one index page and no build, but readers can't reach it until the
+       repository has a remote.
+2. **First edition's audience: on-call engineers only, or on-call engineers and the support
+   team?** The same access group grants every format. Support asked for read access last
+   quarter. Three runbooks name `db-primary-01.int.example.net`, `jobs-01.int.example.net`, and
+   `secret/platform/acme-token`.
+   - **rec:** on-call engineers only for the first edition. The runbooks ship as written and
+     keep the exact hosts on-call needs mid-incident. Support can join later through a
+     redaction pass and a group membership change, but exposing secret paths can't be undone.
+   - **changes:**
+     - On-call only: no redaction slice, and support's request is left to a later goal.
+     - With support: adds a slice that redacts the three runbooks, and a rule, enforced by the
+       check, that keeps internal hosts and secret paths out of new runbooks.
+
+**reply:** "1 ok, 2 ok", or your choices.
+
+Round 2 will settle the details that depend on these answers: the build tool, the redaction
+wording if support is in, and a backlog goal for support if not. Uploading to the docs host or
+file share happens outside the repository, so the brief will name it as the one-way part of the
+task.

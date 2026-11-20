@@ -1,0 +1,55 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name internal hosts or a secret path: `runbooks/disk-full.md:3`
+  (db-primary-01.int.example.net), `runbooks/cert-expiry.md:3` (secret/platform/acme-token),
+  `runbooks/queue-backlog.md:3` (jobs-01.int.example.net). The other two name neither.
+- `scripts/check.sh` checks two things: each runbook's first line starts with "Use when", and
+  every `./` relative link in a .md file points to a file that exists. It has no rule about
+  hostnames or secrets (`scripts/check.sh:5-12`).
+- The repository has no remote (`.git/config`), no build tooling and no CI.
+  `.claude/marathon.toml` sets only `kind` and `check`.
+- All three formats sit behind single sign-on, and one access group grants all three. The
+  audience is that group's members whatever the format (`context/publishing.md`).
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Format of the first edition: a Markdown index in the repository, a MkDocs static site, or
+   a single PDF?**
+   - **rec:** a Markdown index in the repository. It needs no build, and the repository has no
+     build tooling or CI. Every merge becomes the current edition, which is what the goal asks
+     for. A PDF can't promise that, because old downloaded copies linger. A static site would
+     use MkDocs, the standard tool, rather than a custom build. MkDocs reads these same
+     Markdown files, so it can be added later without rewriting any runbook.
+   - **changes:** with Markdown, the task adds an index page linking all five runbooks, needs
+     no build or host, and the repository gets a remote that readers browse. With MkDocs, the
+     task adds a build config and a docs host. With a PDF, it adds a converter (pandoc) and an
+     upload to the file share.
+2. **Audience of the first edition: on-call engineers only, or on-call engineers and the support
+   team?**
+   - **rec:** on-call engineers only, with support's request saved as a backlog goal. Three of
+     the five runbooks name internal hosts or a secret path that the on-call steps rely on.
+     Letting support in first means redacting those runbooks and adding a rule that keeps new
+     runbooks clean. Widening the audience later can be undone. Exposing a secret path can't.
+   - **changes:** with on-call only, the runbooks stay as written and the backlog gains a goal
+     for support access. With support included, the task adds a redaction slice for three
+     runbooks and a keep-clean rule.
+
+**reply:** "1 ok, 2 ok" or "1 yes but ..."
+
+---
+
+I'll ask about the remote's host, where the index lives, and whether the edition gets a git tag
+in round 2, once the format is settled. None of this round's questions depends on another, so all
+both are open now.
+
+Two things you should know:
+- **The plan file wasn't written.** This session has no write tool, so it can't save the plan
+  file under `.claude/plans/`. The round exists only in this conversation for now. The planner
+  saw a `.claude/settings.json` file during its read and flagged it, but nothing in that file
+  affects this round.
+- **The check has a gap.** The planner found that `scripts/check.sh` doesn't check relative
+  links unless they start with `./`. I'll record it as a note instead of fixing it in this task.

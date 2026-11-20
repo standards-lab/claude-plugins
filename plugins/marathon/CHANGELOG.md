@@ -30,6 +30,14 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
   passes them to a multi-line value as positional parameters, and exits with the command's
   status. An unknown or unset key, a missing configuration, or no key fails with the fix. Every
   step that runs a configured command now calls it (`mechanics/pipeline.md`, "Invariants").
+- **A Stop hook that wraps marathon's formats at 100 columns** (`hooks/hooks.json`,
+  `bin/wrap-formats`, `mechanics/configuration.md`, "Wrapping the formats"). When a reply holds a
+  format the architect reads, found by its heading, and a line over 100 characters outside code
+  fences and tables, the hook blocks the stop once and hands the session the reply rewrapped at
+  100 columns to print again. The rewrap is a stdlib Python textwrap: it breaks only at spaces,
+  keeps list and blockquote markers, indents continuation lines under the text, and leaves every
+  word as it was. A line that a single word keeps over 100 characters stays whole; when only such
+  lines run over, the hook reports them instead of blocking. Any other reply passes untouched.
 
 ### Changed
 
@@ -154,14 +162,13 @@ becomes an index plus one file per goal. Every repository migrates; see Migratin
   commit's runs. The `plan-round-in-reply` fixture writes the same uncommented `marathon.toml`
   and `.gitignore`, and its graders' front matter carries no comments: what each regex matches
   moves into the case's description, and the AskUserQuestion grader's note into its body.
-- **A plan round is wrapped before it is printed** (`references/briefs.md`, Plan round;
-  `behavior/planning.md`; `agents/planner.md`): the round's rules now say to hard-wrap every line
-  at 100 characters, indentation and markup included, by breaking each longer line at a space and
-  indenting the rest under its text even though markdown would render it unbroken, and to rewrap
-  the planner's draft before printing it; the planner returns the round already wrapped. Sessions
-  had printed long facts and **rec:** lines unwrapped, as markdown paragraphs of up to 360
-  characters, failing `plan-round-in-reply`'s line-width grader in five of nine runs. A question also restates any fact it leans on, never pointing back with a phrase like
-  "the three files above", and its **rec:** gives its reason.
+- **A plan round is wrapped by the hook, not by hand** (`references/briefs.md`, Plan round;
+  `behavior/planning.md`; `agents/planner.md`). Sessions printed long facts and **rec:** lines as
+  markdown paragraphs of up to 360 characters, failing `plan-round-in-reply`'s line-width grader
+  in seven of 27 runs, and rules to hard-wrap by hand didn't stop it; the Stop hook above now
+  rewraps the round, and those rules are gone. A question also restates any fact it leans on,
+  never pointing back with a phrase like "the three files above", and its **rec:** gives its
+  reason.
 
 ### Migrating from 0.18.0
 

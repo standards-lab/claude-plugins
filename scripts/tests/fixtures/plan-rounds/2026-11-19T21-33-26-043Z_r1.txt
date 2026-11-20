@@ -1,0 +1,53 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- There are five runbooks: cert-expiry, deploy-rollback, disk-full, dns-failure and queue-backlog
+  (`runbooks/`).
+- Three of them name an internal host or a secret path, each on line 3:
+  - `runbooks/disk-full.md:3` names `db-primary-01.int.example.net`.
+  - `runbooks/queue-backlog.md:3` names `jobs-01.int.example.net`.
+  - `runbooks/cert-expiry.md:3` names `secret/platform/acme-token`.
+
+  deploy-rollback and dns-failure name neither.
+- `scripts/check.sh` checks two things: every runbook's first line starts with "Use when", and
+  every `](./…)` link resolves. It knows nothing about hosts or secrets.
+- `STANDARDS.md` has one rule: a runbook's first line says when to use it. It says nothing about
+  redaction or publishing.
+- The repo has no git remote and no CI (`.git/config`). There's no `mkdocs.yml` and no pandoc
+  config.
+- `.claude/marathon.toml` has no `[remote] publish`, so SHIP merges the task branch locally.
+- Every format sits behind single sign-on, and one access group covers all three. So the audience
+  is that group whatever the format, and the redaction pass depends only on the audience
+  (`context/publishing.md`).
+- Whether MkDocs or pandoc is installed locally is unchecked.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Format of the first edition: MkDocs static site, single PDF, or a Markdown index in the
+   repo?**
+   - **rec:** MkDocs static site. During an incident it's searchable and linkable. MkDocs is the
+     standard tool for this, so nothing gets custom-built. Its cost: with no remote and no CI, the
+     first build and the upload to the internal docs host are done by hand. A Markdown index
+     needs no build, but the repo has no remote to browse. A PDF works offline, but old copies
+     outlive every edit.
+   - **changes:** adds an MkDocs config over the existing runbooks and a build step. Round 2 then
+     asks how the site reaches the docs host and whether a strict MkDocs build joins the check.
+2. **Audience of the first edition: on-call engineers only, or on-call engineers plus the support
+   team?**
+   - **rec:** on-call plus support. Support asked for read access in the last quarterly review.
+     The redaction is three lines: two internal hostnames, in disk-full and queue-backlog, and one
+     secret path, in cert-expiry. Its cost: on-call engineers lose those three names from the text
+     unless something points to them.
+   - **changes:** adds a redaction slice for those three runbooks and a rule that keeps new
+     runbooks free of hosts and secret paths. Round 2 asks what replaces the redacted names and
+     whether the check enforces the rule or `STANDARDS.md` states it. Answering "on-call only"
+     drops both.
+
+**reply:** "1 ok, 2 ok", or "1 PDF, 2 …"
+
+Round 2 depends on these answers. It covers how the edition reaches the docs host or file share,
+what replaces the redacted names, and whether to add a remote and CI now. The brief will probably
+be a one-way door: once readers outside the repo have the edition, it can't be pulled back.

@@ -1,0 +1,56 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name internal hosts or secret paths, one line each:
+  - `runbooks/disk-full.md:3`: host `db-primary-01.int.example.net`
+  - `runbooks/queue-backlog.md:3`: host `jobs-01.int.example.net`
+  - `runbooks/cert-expiry.md:3`: secret path `secret/platform/acme-token`
+  - `deploy-rollback.md` and `dns-failure.md` name neither (grep across the repository).
+- No remote is configured: `.git/config` has no `[remote]`. `.claude/marathon.toml` declares only
+  `kind = "context"` and `check = "scripts/check.sh"`, so it has no publish, merge, or currency
+  command.
+- There's no CI and no build tooling: no `mkdocs.yml`, no workflows, no PDF toolchain
+  (file listing; `context/publishing.md`, "Format").
+- `scripts/check.sh` enforces two rules. Every `runbooks/*.md` must open with `Use when`, and
+  every `./` link must resolve (`scripts/check.sh:5-12`). Reading the script, the current tree
+  passes. Nobody has run it this session, because no shell was available.
+- `STANDARDS.md` has one rule, "A runbook's first line says when to use it." It has none on
+  format, redaction, or comments.
+- Every format sits behind single sign-on, and one access group grants all three. The audience
+  is that group's membership whatever the format (`context/publishing.md`, "Audience").
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Publishing format: a MkDocs static site, a single PDF, or a Markdown index page in the
+   repository?** The repository has no remote, no CI, and no build tooling.
+   - A site on the internal docs host is searchable and linkable, but it needs a build and a
+     host.
+   - A PDF on the internal file share works offline, but every edit means handing out a new
+     file, and old copies linger.
+   - An index page needs no build, but readers need repository access, and there is no remote
+     they could browse.
+   - **rec:** a MkDocs static site on the internal docs host. It's the only option readers reach
+     without cloning that keeps a single current copy. MkDocs is the standard Markdown site
+     builder and needs no custom generator. Its gap: during a DNS failure, the incident the
+     `dns-failure` runbook covers, the docs host may be unreachable too. A PDF would still be
+     readable then.
+   - **changes:** adds a MkDocs configuration, an index page outside `runbooks/` (any `.md` in
+     `runbooks/` must open with `Use when`), and a build slice. The site is built by hand until
+     CI exists. Round 2 asks how the built site reaches the docs host.
+2. **Audience: on-call engineers only, or on-call engineers and the support team?** Support asked
+   for read access at the last quarterly review. On-call only keeps the runbooks as written.
+   Adding support first means redacting three step-1 lines: the host
+   `db-primary-01.int.example.net` (disk-full), the host `jobs-01.int.example.net`
+   (queue-backlog), and the secret path `secret/platform/acme-token` (cert-expiry). It also needs
+   a rule that keeps new runbooks free of internal hosts and secret paths. Opening the runbooks
+   to a wider audience can't be undone, so this choice is a one-way door.
+   - **rec:** on-call engineers and the support team. Support asked for access, and the cost is
+     three lines plus one rule.
+   - **changes:** adds a redaction slice before the edition and a no-hosts/no-secret-paths rule.
+     Round 2 asks what replaces each redacted line so on-call can still act on it, and whether
+     the check or `STANDARDS.md` enforces the rule.
+
+**reply:** "1 ok, 2 ok" or "1 PDF, 2 ok"

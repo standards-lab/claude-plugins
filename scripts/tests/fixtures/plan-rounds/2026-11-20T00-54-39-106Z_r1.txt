@@ -1,0 +1,61 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- No goal record yet: `context/goals/publish.md` doesn't exist. The goal has one task,
+  `first-edition`. Its proof is "a reader in the chosen audience opens the first edition and
+  finds every runbook" (context/roadmap/publish.toml).
+- Three of the five runbooks name internal hosts or secret paths:
+  - runbooks/disk-full.md:3: host `db-primary-01.int.example.net`
+  - runbooks/queue-backlog.md:3: host `jobs-01.int.example.net`
+  - runbooks/cert-expiry.md:3: secret path `secret/platform/acme-token`
+  - runbooks/deploy-rollback.md and runbooks/dns-failure.md name neither.
+- The repository has no remote: `.git/config` has only `[core]`, and there is one commit, 3088e8b.
+  There is no CI configuration.
+- Every format sits behind single sign-on, and one access group grants all three: a site on the
+  internal docs host, a PDF on the internal file share, or read access to this repository. In
+  every format, the audience is that group's membership (context/publishing.md).
+- `scripts/check.sh` checks two things: each runbook's first line starts with "Use when", and
+  each Markdown link starting with `./` resolves. Links written as `runbooks/x.md` aren't checked
+  (scripts/check.sh:11). I haven't run it this session because I have no shell.
+- STANDARDS.md has one rule: a runbook's first line says when to use it. No rule covers hosts or
+  secrets.
+- Not checked: whether mkdocs, pandoc, or a PDF engine is installed. The repository doesn't
+  declare any of them (no `mkdocs.yml`, no requirements file).
+- Standard tools for each format: MkDocs, often with the Material theme, for a static site. For a
+  single PDF, pandoc with a PDF engine (LaTeX, WeasyPrint, or Typst). A Markdown index needs no
+  tool: the forge's web view renders it, so the task writes one page.
+
+**Currency**
+- cwd (ops-handbook): no currency command
+
+**Questions**
+
+1. **Publishing format for the first edition: a MkDocs static site, a single PDF, or a Markdown
+   index page in this repository?**
+   - **rec:** a Markdown index page in this repository. It needs no build or tools, and it is
+     current whenever `main` is. A static site needs a build, a host, and CI, and none of these
+     exist. A PDF goes stale with every edit, and old copies keep circulating. If the index
+     links are written `./runbooks/<name>.md`, the existing check covers them.
+   - **changes:** the task adds one index page linking all five runbooks, and no build tool or
+     CI. Readers reach it through repository read access, which needs a remote with a web view.
+     Where that remote lives is settled next round.
+2. **Audience for the first edition: on-call engineers only, or on-call engineers and the
+   support team?**
+   - **rec:** on-call and support. Support asked for read access in the last quarterly review,
+     and the redaction is small: two hostnames, in runbooks/disk-full.md and
+     runbooks/queue-backlog.md, and one secret path, in runbooks/cert-expiry.md. The cost:
+     during an incident, on-call has to look up the exact host or path somewhere else.
+   - **changes:** adds a redaction slice before publishing, and a rule that keeps new runbooks
+     clean. Whether that rule is a check pattern, a STANDARDS.md line, or both is settled next
+     round. With on-call only, the runbooks stay as written and the task has no redaction slice.
+
+**reply:** "1 ok, 2 ok" or "1 PDF, 2 on-call only ..."
+
+---
+
+Round 2 will cover two questions that depend on these answers: where the edition is published
+and how readers reach it, and how new runbooks are kept clean if support is in the audience.
+
+There are also two check hazards, which I'm leaving for later. `scripts/check.sh` scans the
+gitignored `.claude/plans/` and `.claude/briefs/` too, so a broken `./` link in a session file
+could fail the check. It also depends on `grep -P`, which only GNU grep has.

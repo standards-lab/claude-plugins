@@ -1,0 +1,65 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name internal hosts or secret paths:
+  - `runbooks/disk-full.md` step 1 names the host `db-primary-01.int.example.net`.
+  - `runbooks/cert-expiry.md` step 1 names the secret path `secret/platform/acme-token`.
+  - `runbooks/queue-backlog.md` step 1 names the host `jobs-01.int.example.net`.
+- `runbooks/deploy-rollback.md` and `runbooks/dns-failure.md` name no host or secret.
+- You use `runbooks/dns-failure.md` "when internal names stop resolving". A site served by name
+  from an internal host may not load during that incident.
+- `scripts/check.sh` enforces two rules:
+  - The first line of every `runbooks/*.md` starts with "Use when".
+  - Every `./` relative link in a `.md` file resolves.
+- The check doesn't look for hosts or secrets, and it builds nothing.
+- An index page at the repo root passes the check unchanged. An index or MkDocs home page inside
+  `runbooks/` fails the "Use when" rule unless the check exempts it.
+- `STANDARDS.md` has one rule: "A runbook's first line says when to use it." It says nothing about
+  redaction or publishing.
+- Nothing is set up yet for any format: there's no `mkdocs.yml`, no index page, and no PDF tooling.
+- The project has no git remote, no CI, and no `[remote] publish` in `.claude/marathon.toml`.
+- One single sign-on access group grants the docs host, the file share, and read access to this
+  repository. That makes the audience the group's membership, whatever the format
+  (`context/publishing.md`). So format and audience are independent, and both can be decided in
+  this round.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **First edition's format: an MkDocs static site, a single PDF, or a Markdown index page in the
+   repository?**
+   - **rec:** an MkDocs static site on the internal docs host. Readers can search it and link to
+     it, and each publish replaces the previous one, so nobody reads a stale copy. A PDF leaves
+     stale copies behind after every edit. A Markdown index needs a hosted repository, and this
+     project has no remote. MkDocs is the standard tool for this, so the task writes no generator
+     of its own. Cost: the docs host may not load while internal DNS is down.
+   - **changes:** MkDocs adds a `mkdocs.yml` and a site build that runs by hand, since there's no
+     CI. The check has to exempt or move the home page so the "Use when" rule doesn't fail. A PDF
+     replaces those with a PDF build and needs no change to the check. A Markdown index replaces
+     them with one index page, also with no change to the check, but the repository needs a remote
+     first.
+2. **First edition's audience: on-call engineers only, or on-call engineers and the support team?**
+   - **rec:** on-call engineers only. The five runbooks can then ship as written. Support asked
+     for access in the last quarterly review. Opening the edition to them would first need a
+     redaction pass over the three runbooks that name `db-primary-01.int.example.net`,
+     `secret/platform/acme-token`, and `jobs-01.int.example.net`. It would also need a check rule
+     that keeps new runbooks free of hosts and secrets. I'd record support's request as a backlog
+     goal instead.
+   - **changes:** "On-call only" leaves the access group as on-call and adds no redaction work;
+     support's request goes to `backlog`. Adding support puts a redaction pass and a new check
+     rule in this task, and adds support to the access group.
+
+**reply:** "1 ok, 2 ok" or "1 yes but ..."
+
+---
+
+Round 2 depends on your answers. Your format answer decides who uploads the edition to the docs
+host or file share, since no agent publishes outside the repository. If you add support, round 2
+also covers how to redact. The Door will probably be one-way, because an edition can't be recalled
+once readers have it.
+
+This session has no file-writing tool, so I couldn't create the plan file under `.claude/plans/`
+that should hold this round. If the next session doesn't pick the round up from this conversation,
+it starts from your answers.

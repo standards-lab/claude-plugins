@@ -1,0 +1,65 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Three of the five runbooks name internal hosts or secret paths:
+  - `runbooks/disk-full.md:3` names the host `db-primary-01.int.example.net`
+  - `runbooks/cert-expiry.md:3` names the secret path `secret/platform/acme-token`
+  - `runbooks/queue-backlog.md:3` names the host `jobs-01.int.example.net`
+  - `deploy-rollback.md` and `dns-failure.md` name neither.
+- The check (`scripts/check.sh:5-12`) enforces two things:
+  - every runbook's first line starts with `Use when`
+  - every relative link starting with `./` resolves
+
+  It doesn't check redaction. An index page placed under `runbooks/` would fail the `Use when` test.
+- `STANDARDS.md` holds one rule ("A runbook's first line says when to use it") and has nothing on
+  publishing or redaction.
+- The repository has no remote and no CI, and `.claude/marathon.toml` has no `[remote]` publish or
+  merge setting, so SHIP merges locally.
+- All three formats sit behind single sign-on, and one access group grants all three, so the
+  audience is that group's membership whatever the format (`context/publishing.md:24-27`).
+- Format and audience are independent of each other. Stale PDF copies are a cost of the format
+  only, and redaction depends on the audience only (`context/publishing.md:24-30`).
+- Support asked for read access in the last quarterly review (`context/publishing.md:20-21`).
+- The goal wants readers to reach the *current* runbooks without cloning
+  (`context/roadmap/publish.toml:2`).
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **First edition's format: a MkDocs static site on the internal docs host, a single PDF on the
+   internal file share, or a Markdown index page read through repository access?**
+   - **rec:** the MkDocs static site.
+     - The goal asks for *current* runbooks, and PDF copies linger after every edit.
+     - The Markdown option needs a hosted remote, and this repository has none.
+     - MkDocs is the standard tool and renders the runbooks as they are, so the task writes only a
+       config and an index page.
+     - One caveat: MkDocs 1.x may now be mostly unmaintained. Neither the planner nor I could check
+       that here. If the site wins, round 2 checks it before choosing the generator.
+   - **changes:**
+     - Site: adds a config-and-index slice. Round 2 then asks how each edition reaches the docs
+       host, since there's no CI.
+     - PDF: adds a pandoc build slice. Round 2 then asks about version labels and redistribution.
+     - Markdown index: adds an index page outside `runbooks/`. Round 2 then asks where the remote
+       will live.
+2. **First edition's audience: on-call engineers only, or on-call engineers and the support team?**
+   - **rec:** on-call engineers only for the first edition. The runbooks publish as written, and the
+     engineers who get paged keep the hostnames and secret paths they need. Support's request
+     becomes its own backlog goal, which carries the redaction work.
+   - **changes:**
+     - On-call only: no redaction slice, and a pending edit adds a "support access" goal to
+       `backlog`.
+     - With support: adds a slice that redacts the three runbooks above. Round 2 then asks which
+       redaction rule to adopt and whether the check enforces it.
+
+**reply:** "1 ok, 2 ok, …"
+
+---
+
+Notes outside this task, for the record:
+- The check only follows links that start with `./`, so links like `runbooks/x.md` and `../x.md` are
+  never checked.
+- The check scans every `*.md` file on disk, including the gitignored `.claude/plans/`.
+- Uploading an edition to the docs host or the file share can't be undone, so the brief's Door line
+  will mark that step as one-way.

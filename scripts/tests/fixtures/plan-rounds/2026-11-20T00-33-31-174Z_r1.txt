@@ -1,0 +1,27 @@
+## PLAN ROUND 1 · publish · task first-edition
+
+**Facts found**
+- Readers can reach the runbooks today only by cloning the repository (context/publishing.md).
+- There are five runbooks. Three of them name internal hosts or secret paths:
+  - disk-full names `db-primary-01.int.example.net`
+  - queue-backlog names `jobs-01.int.example.net`
+  - cert-expiry names `secret/platform/acme-token`
+
+  deploy-rollback and dns-failure name neither (runbooks/).
+- All three formats sit behind the company's single sign-on, and one access group grants all of them: a site on the internal docs host, a PDF on the internal file share, or read access to this repository. So the format doesn't change who can read the handbook (context/publishing.md).
+- The repository has no git remote and no CI (.git/config, context/publishing.md).
+- `scripts/check.sh` checks that every runbook opens with a "Use when" line and that every relative `./` link resolves. It would also check a Markdown index page's links.
+
+**Currency**
+- cwd: no currency command
+
+**Questions**
+
+1. **Publishing format for the first edition: a MkDocs static site, a single PDF, or a Markdown index page over the runbooks in this repository?**
+   - **rec:** a Markdown index page. It needs no build, no host and no CI, none of which the project has. It never goes stale the way a downloaded PDF does, and the existing check already verifies its links. Every format is behind the same sign-on group, so a site or PDF reaches no extra readers. What you give up is the site's search.
+   - **changes:** the task becomes one slice: an index page linking all five runbooks, plus a pointer to it from the notes. A site would add a MkDocs config, a build and a hosting decision. A PDF would add a build script and a step to redistribute each edition.
+2. **Audience for the first edition: on-call engineers only, or on-call engineers plus the support team?**
+   - **rec:** on-call engineers only for the first edition. Add support access to the backlog as its own goal. Opening the handbook to support needs two things first: a pass that removes the internal hosts and secret path from disk-full, queue-backlog and cert-expiry, and a check rule that keeps new runbooks free of them. That is a separate job from publishing.
+   - **changes:** with on-call only, the runbooks stay as written, and a new backlog goal records the support access with its redaction pass and check rule. With support included, the task gains a redaction slice and a check rule before it publishes.
+
+**reply:** "1 ok, 2 ok", or your choices
