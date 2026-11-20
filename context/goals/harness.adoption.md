@@ -7,16 +7,17 @@
 ## Tasks
 
 1. [x] references
-2. [ ] ai-hosting
-3. [ ] core
-4. [ ] docproc
-5. [ ] go-ai
-6. [ ] go-libraries
-7. [ ] templates
-8. [ ] web
-9. [ ] go-web-service
-10. [ ] architecture
-11. [ ] spikes
+2. [ ] go-tools
+3. [ ] ai-hosting
+4. [ ] core
+5. [ ] docproc
+6. [ ] go-ai
+7. [ ] go-libraries
+8. [ ] templates
+9. [ ] web
+10. [ ] go-web-service
+11. [ ] architecture
+12. [ ] spikes
 
 ## Task brief · references
 
@@ -131,7 +132,34 @@ still in `context/` fails `lint-context`. The work before the tag is two-way.
   committed with its adoption.
 - references: rejected a pinned architecture checkout in CI, so `architecture/...` references
   skip there: architecture has no tags, so it would pin a bare SHA no currency command tracks.
+- ai-hosting: `context/design.md` splits into one note per planned capability, each under 1,500
+  words and linked from a `(planned)` map entry: engines, the `hosting` suite, host-class
+  profiles, gateway, secrets, Foundry embedding overflow, and cleanup. The H/G/P/Q findings table
+  goes (git history keeps it); settlements only it states move to their tasks' notes;
+  v1.ai.hosting's `design:` decision and P14 pending edit are reworded, its `secrets` brief
+  untouched; ai-hosting's `STANDARDS.md` source line changes.
+- ai-hosting: the Foundry embedding-overflow prices lose their dates and keep their figures and
+  source URLs; the `embedding` task re-reads them before relying on them.
+- adoption: comments outside the five kinds go where the code already says them (a key name, a
+  mise task description) or where they describe planned work; a script's section comments become
+  named functions; a reference comment points where the reasoning has a home, and a new `docs/`
+  page holds only reasoning with none. In ai-hosting this removes 15 lines and creates no `docs/`.
+- adoption: each repository's `STANDARDS.md` comment rule covers every configuration file (TOML,
+  YAML, `.gitignore`), as claude-plugins' does.
+- ai-hosting: `scripts/check.sh` keeps its own link check over every tracked `.md` beside
+  `lint-context`, which doesn't check `CLAUDE.md` or `STANDARDS.md`.
+- plan: the harness tools port to Go release binaries pinned through mise before any repository
+  adopts them; rejected adopting the Python lints first, which would rewire about 25 repositories
+  twice. Should the port fall through: the system `python3`, nothing pinned.
+- go-tools: a repository pins the tools as `"github:standards-lab/claude-plugins" = { version =
+  "…", version_prefix = "marathon/v" }` and CI gets them from `mise install`; releases cover
+  linux and darwin only.
+- go-tools: claude-plugins tracks no Python; the eval graders' patterns are tested with
+  `node --test`, since the eval runs them as JavaScript; rejected `dlclark/regexp2`, which only
+  imitates that engine.
 
 ## Pending edits
 
-- none
+- coordinator, once ai-hosting splits `context/design.md`: standards-lab's
+  `context/ai-hosting.md`, `docs/ai-hosting.md`, and `roadmap/v1.ai.hosting.toml` name it; point
+  each at the note that now holds its subject.
