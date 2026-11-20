@@ -1,7 +1,7 @@
 {
-  "description": "Rewraps a reply holding a marathon format at 100 columns (bin/wrap-formats); a failed run passes the reply.",
+  "description": "Rewraps a marathon format at 100 columns on screen as the reply streams (bin/wrap-formats); a failed run displays the reply as it is.",
   "hooks": {
-    "Stop": [
+    "MessageDisplay": [
       {
         "hooks": [
           {

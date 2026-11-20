@@ -1,13 +1,13 @@
 package wrapformats
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
+	"path/filepath"
 	"regexp"
 	"slices"
-	"strconv"
 	"strings"
 	"unicode/utf8"
 
@@ -26,46 +26,11 @@ var (
 	marker     = regexp.MustCompile(`^([ \t]*(?:>[ \t]?)*[ \t]*)((?:[-*+]|\p{Nd}+[.)]|#{1,6})[ \t]+)?`)
 	blockStart = regexp.MustCompile(`^(?:[*_]*\p{Nd}+[.)]|[-*+]|#{1,6}|[>|].*|(?:` + "```|~~~" +
 		`).*|[-=]+|[*_]{3,})$`)
+	unsafeName = regexp.MustCompile(`[^A-Za-z0-9_-]`)
 )
-
-type proseLine struct {
-	text  string
-	prose bool
-}
-
-func proseLines(text string) []proseLine {
-	inFence := false
-	var lines []proseLine
-	for line := range strings.SplitSeq(text, "\n") {
-		if fence.MatchString(line) {
-			inFence = !inFence
-			lines = append(lines, proseLine{line, false})
-			continue
-		}
-		table := strings.HasPrefix(strings.TrimLeft(line, " \t>"), "|")
-		lines = append(lines, proseLine{line, !inFence && !table})
-	}
-	return lines
-}
 
 func length(s string) int {
 	return utf8.RuneCountInString(s)
-}
-
-func holdsFormat(text string) bool {
-	return slices.ContainsFunc(proseLines(text), func(l proseLine) bool {
-		return l.prose && formatHeading.MatchString(l.text)
-	})
-}
-
-func overlong(text string) int {
-	count := 0
-	for _, l := range proseLines(text) {
-		if l.prose && length(l.text) > width {
-			count++
-		}
-	}
-	return count
 }
 
 func filled(words []string, first, rest string) string {
@@ -117,73 +82,55 @@ func rewrappedLine(line string) string {
 	return lines
 }
 
-func rewrap(text string) string {
-	var lines []string
-	for _, l := range proseLines(text) {
-		if l.prose && length(l.text) > width {
-			lines = append(lines, rewrappedLine(l.text))
-		} else {
-			lines = append(lines, l.text)
+type state struct {
+	format, fence bool
+}
+
+func statePath(sessionID, messageID string) string {
+	return filepath.Join(os.TempDir(), "marathon-wrap-formats."+
+		unsafeName.ReplaceAllString(sessionID, "_")+"."+unsafeName.ReplaceAllString(messageID, "_"))
+}
+
+func loadState(path string) state {
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return state{}
+	}
+	words := strings.Fields(string(content))
+	return state{slices.Contains(words, "format"), slices.Contains(words, "fence")}
+}
+
+func saveState(path string, s state) {
+	if s == (state{}) {
+		_ = os.Remove(path)
+		return
+	}
+	var words []string
+	if s.format {
+		words = append(words, "format")
+	}
+	if s.fence {
+		words = append(words, "fence")
+	}
+	_ = os.WriteFile(path, []byte(strings.Join(words, " ")+"\n"), 0o600)
+}
+
+func displayed(delta string, s state) (string, state) {
+	lines := strings.Split(delta, "\n")
+	for i, line := range lines {
+		if fence.MatchString(line) {
+			s.fence = !s.fence
+			continue
+		}
+		prose := !s.fence && !strings.HasPrefix(strings.TrimLeft(line, " \t>"), "|")
+		if prose && formatHeading.MatchString(line) {
+			s.format = true
+		}
+		if prose && s.format && length(line) > width {
+			lines[i] = rewrappedLine(line)
 		}
 	}
-	return strings.Join(lines, "\n")
-}
-
-type field struct {
-	key, value string
-}
-
-func verdict(hookInput map[string]any) []field {
-	reply, isString := hookInput["last_assistant_message"].(string)
-	if truthy(hookInput["stop_hook_active"]) || !isString {
-		return nil
-	}
-	if !holdsFormat(reply) || overlong(reply) == 0 {
-		return nil
-	}
-	rewrapped := rewrap(reply)
-	if rewrapped == reply {
-		return []field{{"systemMessage", fmt.Sprintf("marathon: %d line(s) of this reply run past "+
-			"%d characters on a single word, so they stay unwrapped.", overlong(reply), width)}}
-	}
-	return []field{
-		{"decision", "block"},
-		{"reason", fmt.Sprintf("marathon prints its formats wrapped at %d columns, and this reply "+
-			"has longer lines. Print the reply again exactly as below, rewrapped at %d columns, "+
-			"with nothing before or after it:\n\n", width, width) + rewrapped},
-	}
-}
-
-func truthy(value any) bool {
-	switch v := value.(type) {
-	case nil:
-		return false
-	case bool:
-		return v
-	case json.Number:
-		f, _ := strconv.ParseFloat(string(v), 64)
-		return f != 0
-	case string:
-		return v != ""
-	case []any:
-		return len(v) != 0
-	case map[string]any:
-		return len(v) != 0
-	}
-	return true
-}
-
-func pythonJSON(fields []field) string {
-	var b strings.Builder
-	b.WriteByte('{')
-	for i, f := range fields {
-		if i > 0 {
-			b.WriteString(", ")
-		}
-		b.WriteString(pythonJSONString(f.key) + ": " + pythonJSONString(f.value))
-	}
-	b.WriteByte('}')
-	return b.String()
+	return strings.Join(lines, "\n"), s
 }
 
 func pythonJSONString(s string) string {
@@ -216,24 +163,34 @@ func pythonJSONString(s string) string {
 	return b.String()
 }
 
-// Run reads the Stop hook's input from stdin, writes the hook's output to
-// stdout when the reply needs one, and returns the exit status, which is
-// always 0.
+// Run reads one MessageDisplay batch from stdin, writes the batch rewrapped
+// to stdout when the message holds a marathon format and the rewrap changes
+// the batch, and returns the exit status, which is always 0.
 func Run(stdin io.Reader, stdout io.Writer) int {
 	input, err := io.ReadAll(stdin)
 	if err != nil || !utf8.Valid(input) || !json.Valid(input) {
 		return 0
 	}
-	decoder := json.NewDecoder(bytes.NewReader(input))
-	decoder.UseNumber()
-	var hookInput any
-	if decoder.Decode(&hookInput) != nil {
+	var batch struct {
+		SessionID string  `json:"session_id"`
+		MessageID *string `json:"message_id"`
+		Final     bool    `json:"final"`
+		Delta     *string `json:"delta"`
+	}
+	if json.Unmarshal(input, &batch) != nil || batch.MessageID == nil || batch.Delta == nil {
 		return 0
 	}
-	if object, ok := hookInput.(map[string]any); ok {
-		if output := verdict(object); output != nil {
-			_, _ = fmt.Fprintln(stdout, pythonJSON(output))
-		}
+	path := statePath(batch.SessionID, *batch.MessageID)
+	before := loadState(path)
+	shown, after := displayed(*batch.Delta, before)
+	if batch.Final {
+		_ = os.Remove(path)
+	} else if after != before {
+		saveState(path, after)
+	}
+	if shown != *batch.Delta {
+		_, _ = fmt.Fprintln(stdout, `{"hookSpecificOutput": {"hookEventName": "MessageDisplay", `+
+			`"displayContent": `+pythonJSONString(shown)+`}}`)
 	}
 	return 0
 }

@@ -1,19 +1,26 @@
 #!/usr/bin/env bash
 # A shim for the marathon Go command this file is named after, run in the caller's working
-# directory with the caller's arguments. It runs the plugin's local build, .build/ beside bin/,
-# when that holds the command, as claude-plugins' scripts/build.sh makes it. Otherwise it runs the
-# command from the marathon/v<version> release of standards-lab/claude-plugins through mise exec,
-# at the plugin's own version, ignoring every project mise config so the caller's repository can't
-# change or break it.
+# directory with the caller's arguments and environment. It runs the plugin's local build, .build/
+# beside bin/, when that holds the command, as claude-plugins' scripts/build.sh makes it. Otherwise
+# it runs the command from the marathon/v<version> release of standards-lab/claude-plugins at the
+# plugin's own version, which mise finds, installing it on first use. Only those mise calls ignore
+# every project mise config, so the caller's repository can't change or break the release it runs.
 set -euo pipefail
 
-version=0.21.0
+version=0.22.0
 
 name=$(basename "$0")
 local_build=$(dirname "$0")/../.build/$name
 if [ -x "$local_build" ]; then
   exec "$local_build" "$@"
 fi
-MISE_OVERRIDE_CONFIG_FILENAMES=no-project-config MISE_OVERRIDE_TOOL_VERSIONS_FILENAMES=none \
-  exec mise exec \
-  "github:standards-lab/claude-plugins[version_prefix=marathon/v]@$version" -- "$name" "$@"
+release="github:standards-lab/claude-plugins[version_prefix=marathon/v]@$version"
+release_mise() {
+  MISE_OVERRIDE_CONFIG_FILENAMES=no-project-config MISE_OVERRIDE_TOOL_VERSIONS_FILENAMES=none \
+    mise "$@"
+}
+dir=$(release_mise where "$release" 2>/dev/null) || {
+  release_mise install "$release" >&2
+  dir=$(release_mise where "$release")
+}
+exec "$dir/$name" "$@"
