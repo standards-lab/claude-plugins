@@ -2,8 +2,8 @@
 # Repository consistency checks, run by .github/workflows/ci.yml and runnable locally: each
 # plugin's versions agree, its CHANGELOG's release headings carry only their version and it
 # defines no link references, the marketplace sources resolve, claude validates every plugin and
-# the marketplace (a missing claude fails the check), the plugins' markdown has no @-include
-# lines and its links and backtick file citations resolve, the word budgets in
+# the marketplace (a missing claude fails the check), the plugins' markdown outside eval results
+# has no @-include lines and its links and backtick file citations resolve, the word budgets in
 # scripts/budgets.txt hold, every skill description fits in 1,024 characters, every marathon
 # extension skill declares user-invocable: false, and lint-context and scripts/tests pass.
 set -uo pipefail
@@ -64,7 +64,7 @@ else
 fi
 
 plugin_markdown() {
-  find plugins -name '*.md'
+  find plugins -path 'plugins/*/evals*/results' -prune -o -name '*.md' -print
 }
 
 at_include_line='^\s*@\S+\s*$'
