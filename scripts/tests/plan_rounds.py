@@ -6,7 +6,9 @@ from pathlib import Path
 GRADERS = (
     Path(__file__).resolve().parents[2] / "plugins/marathon/evals/plan-round-in-reply/graders"
 )
-ROUNDS = Path(__file__).resolve().parent / "fixtures/plan-rounds"
+ROUNDS = (
+    Path(__file__).resolve().parents[2] / "marathon/internal/wrapformats/testdata/plan-rounds"
+)
 
 
 def regex_grader(name):
