@@ -1,8 +1,8 @@
 # goal · harness.optimization
 
-- **State:** brief ready
-- **Task:** release
-- **Branch:** release
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
@@ -14,7 +14,7 @@
 6. [x] evidence-artifacts
 7. [x] comment-standard
 8. [x] harness-standards
-9. [ ] release
+9. [x] release
 
 ## Task brief · harness.optimization · release
 
@@ -86,10 +86,6 @@ commits.
 **Release**
 
 `marathon/v0.19.0`, then `marathon-architecture/v0.4.0`.
-
-## Progress
-
-slices 2/2 committed (slices 3–5 run at SHIP and sync) · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
