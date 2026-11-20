@@ -2,12 +2,13 @@
 """Check that the markdown references in a repository's comments resolve.
 
 Runs on the repository at the current working directory and reads every
-git-tracked file that isn't markdown; a file that isn't UTF-8 is skipped. A
-reference line is one whose first non-blank characters are #, //, --, /*, or *.
-A reference is a path on such a line made of letters, digits, '.', '_', '/', and
-'-' that ends in '.md' and starts with a letter, digit, '_', or '.'. A path that
-follows one of those characters, or '/', '*', '$', '{', '}', '<', or '>', is
-part of a URL, pattern, or template, and isn't a reference.
+git-tracked file that isn't markdown; a file that isn't UTF-8, a submodule, and
+a tracked file missing from the working tree are skipped. A reference line is
+one whose first non-blank characters are #, //, --, /*, or *. A reference is a
+path on such a line made of letters, digits, '.', '_', '/', and '-' that ends in
+'.md' and starts with a letter, digit, '_', or '.'. A path that follows one of
+those characters, or '/', '*', '$', '{', '}', '<', or '>', is part of a URL,
+pattern, or template, and isn't a reference.
 
 A reference, normalized, resolves from the repository root when its first
 segment names something there, or when it has only one segment. Otherwise it
@@ -49,9 +50,9 @@ def numbered_references(text):
 
 def named_directory_and_target(root, path):
     parts = Path(posixpath.normpath(path)).parts
-    ups = len([part for part in parts if part == ".."])
+    ups = parts.count("..")
     base = root.joinpath(*parts[:ups])
-    segment = parts[ups] if ups < len(parts) else ""
+    segment = parts[ups]
     if ups == 0 and len(parts) > 1 and not (root / segment).exists():
         base = root.parent
     return segment, base / segment, base.joinpath(*parts[ups:])
