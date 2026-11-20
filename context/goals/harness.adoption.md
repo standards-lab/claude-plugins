@@ -1,8 +1,8 @@
 # goal · harness.adoption
 
-- **State:** idle
-- **Task:** none
-- **Branch:** none
+- **State:** building
+- **Task:** ai-hosting
+- **Branch:** ai-hosting
 
 ## Tasks
 
@@ -18,6 +18,65 @@
 10. [ ] go-web-service
 11. [ ] architecture
 12. [ ] spikes
+
+## Task brief · ai-hosting
+
+**Problem**
+
+ai-hosting is the first repository to adopt marathon 0.21.0, and the later adoption tasks copy
+its pattern. Its check doesn't run marathon's lints, its design note is about four times the note
+budget, its capability map has no built/planned markers, fifteen comment lines fall outside
+architecture's five kinds, and its orientation files point at a roadmap file that no longer
+exists.
+
+**Behaviors**
+1. `mise install` puts lint-context and lint-references from marathon 0.21.0 on PATH through the
+   repository's pin; the currency command reports a newer marathon tag when one exists.
+2. The check runs shellcheck, the existing link check over every tracked Markdown file,
+   lint-context, and lint-references, and fails when any fails. When either lint isn't on PATH the
+   check fails and names `mise install` as the fix. The check's header and task description name
+   all four.
+3. lint-context passes: the design note becomes one note per planned capability, each under 1,500
+   words (engines, the `hosting` suite, host-class profiles, gateway, secrets, Foundry embedding
+   overflow, cleanup), each linked from a `(planned)` capability map entry; every map entry is
+   marked `(planned)`; each point left open for a task's plan sits in that capability's note.
+4. The findings table is gone; each settlement only it stated sits in its task's note, with no
+   dangling finding IDs.
+5. The Foundry note keeps its prices, figures, and source URLs, with no dates.
+6. Every comment in tracked code and configuration is one of the five kinds: the 15 lines are
+   gone, each script section becomes a named function, planned work moves to its note, no `docs/`
+   is created, and lint-references passes.
+7. The standards file's comment rule covers every configuration file (TOML, YAML, `.gitignore`),
+   and its source line names the notes in place of the design note.
+8. The orientation files point at `standards-lab/roadmap/index.toml`.
+9. In the `v1.ai.hosting` goal record, the `design:` decision and the P14 pending edit name the
+   notes that now hold their subjects; its `secrets` brief is unchanged byte for byte.
+10. CI runs the check after `mise install` and passes on the task's pull request.
+
+**Test seams**
+- The check (`mise run check`), with lint-context and lint-references inside it.
+
+**Slices**
+1. Comments: five kinds only, section comments become named functions, the standards comment
+   rule covers configuration (behaviors 6, 7).
+2. Context: design note split, capability map, Foundry dates, findings table removed,
+   `v1.ai.hosting` record reworded, roadmap pointers; lint-context passes by hand (3, 4, 5, 7, 8,
+   9).
+3. Pin and check: the mise pin, the check calling both lints, CI green (1, 2, 10).
+
+**Out of scope**
+
+The coordinator edits to standards-lab's ai-hosting note, docs page, and `v1.ai.hosting` goal
+file (pending edits until sync); any `secrets` work; a `docs/` directory; replacing the existing
+link check.
+
+**Door**
+
+Two-way: prose, configuration, and scripts in one repository, with no release.
+
+## Progress
+
+slices 0/3 committed · standards — · spec — · editor —
 
 ## Decisions
 
