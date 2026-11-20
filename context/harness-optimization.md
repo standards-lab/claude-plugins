@@ -71,8 +71,9 @@ Read these sizes, in words, to judge the work:
   has already followed them (marathon's `references/briefs.md`).
 - **Formats wrapped by a hook** (built). marathon's Stop hook, `bin/wrap-formats`, rewraps a
   reply that holds a marathon format at 100 columns and asks the session to reprint it. This
-  repository's release gate judges `plan-round-in-reply` on sonnet, against criteria that mirror
-  marathon's plan-round rules (`harness-testing.md`).
+  repository's release gate rests on deterministic graders; the LLM judge, on sonnet against
+  criteria that mirror marathon's plan-round rules, runs in its own suite outside the gate
+  (`harness-testing.md`).
 - **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
 
 ## Findings for later
