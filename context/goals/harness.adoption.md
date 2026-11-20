@@ -71,7 +71,8 @@ slices 3/3 committed · standards — · spec — · editor —
   `MessageDisplay` hook, and the release becomes v0.22.0.
 - slice 2, decided: hook state also opens for a fence still open at a batch's end, so a heading
   inside it isn't a format; one overlong word stays unwrapped, with no report.
-- slice 3: the line-width eval grader cannot score displayed text (no grader type runs a command); escalated.
+- escalation, slice 3: drop plan-round-in-reply's line-width grader, which can't see the displayed
+  text? Answer: yes (fd135b2); graders.test.mjs holds the displayed width.
 
 ## Decisions
 
