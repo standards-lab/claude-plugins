@@ -21,11 +21,9 @@ description: >-
   indentation, list bullets, and bold markup before each. no-back-reference fails when a
   numbered question's lines, up to the next numbered line or the line that contains reply:, say
   above, below, option and a capital letter, Facts found, see the plan file, or details to follow,
-  the pointers references/briefs.md forbids in a question. Every grader here is deterministic: the
-  gate rests on them alone, since eval keeps no judge reasoning and can't re-grade a stored reply,
-  and eval's sonnet judge failed a round 3/3 that the same model, given the same criteria outside
-  eval, passed 3/3. The judge, self-contained-questions, runs on the same fixture as
-  plan-round-judged in evals-judged/, which the gate doesn't run.
+  the pointers references/briefs.md forbids in a question. Every grader here is deterministic,
+  since a gated suite holds no llm grader (scripts/gate.sh); the judge, self-contained-questions,
+  runs on the same fixture as plan-round-judged in evals-judged/, which the gate doesn't run.
 tags: [plan, plan-round]
 context:
   scaffold_script: scaffold.sh
