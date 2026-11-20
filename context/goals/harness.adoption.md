@@ -1,6 +1,6 @@
 # goal · harness.adoption
 
-- **State:** building
+- **State:** brief ready
 - **Task:** go-tools
 - **Branch:** go-tools
 
