@@ -73,7 +73,7 @@ Two-way: prose, configuration, one script; no tags.
 
 ## Progress
 
-slices 4/4 (architecture) committed · review running · standards — · spec — · editor —
+slices 4/4 (architecture) committed · review done: 361 findings, triage escalated (.claude/plans/triage-harness.adoption-architecture.md) · standards — · spec — · editor —
 
 ## Decisions
 
