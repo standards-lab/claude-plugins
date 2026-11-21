@@ -1,6 +1,6 @@
 # goal · harness.adoption
 
-- **State:** building
+- **State:** brief ready
 - **Task:** architecture
 - **Branch:** architecture
 
@@ -73,8 +73,7 @@ Two-way: prose, configuration, one script; no tags.
 
 ## Progress
 
-slices 7/7: architecture 1-4 committed; review triaged (all recs accepted); fix slices committed in 25
-repositories (docproc running) · standards running · spec — · editor —
+slices 7/7 committed in 26 repositories · standards ✓ · spec ✓ (no gaps) · editor ✓
 - escalation, slice 5: the review triage (selfcontain, stdpointer, history, readme, spike holds,
   defers): all recs accepted; claude-plugins findings move into marathon.repo-access.
 
