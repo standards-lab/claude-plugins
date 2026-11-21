@@ -91,6 +91,13 @@ slices 4/4 (architecture) committed · review done: 361 findings, triage escalat
 - architecture: a page's claims hold regardless of another repository's current state.
 - architecture: the Fable review's fixes land inside this task, while the lock exception holds;
   the goal's `repos` widen to each fixed repository through the sync.
+- architecture: review triage (escalation, all recs accepted): architecture's pages state rules
+  only, with the Go Elemental member catalog the one exception; each STANDARDS.md points at
+  comments.md with only its own narrowing; whole history sections go once their content has a
+  home; standards-lab, ai-hosting and spike-harness-driver gain a root README; the spikes hold
+  their bench Python with a reason; webappgen and web-stack findings defer to v1.client.stack.
+- architecture: every claude-plugins finding (the triage's CLP items, currency.sh's null bug,
+  mise-action v5.3.0, the marathon-architecture plugin docs) moves into `marathon.repo-access`.
 
 ## Pending edits
 
@@ -119,7 +126,13 @@ slices 4/4 (architecture) committed · review done: 361 findings, triage escalat
 - coordinator · standards-lab: goal `marathon.repo-access` (tasks `ci-awareness`: a declared
   per-repository CI flag so no session waits on CI that doesn't exist; `shared-repos`: a goal owns
   its root, and non-root repositories lock only while off their default branch, so goals queue on
-  them) at the top of `planned`, not staged.
+  them) at the top of `planned`, not staged; it also carries the claude-plugins findings of
+  this task's review (`.claude/plans/triage-harness.adoption-architecture.md`, CLP items).
+- coordinator · standards-lab: the review's accepted standards-lab findings (triage STL items).
+- coordinator · standards-lab: v1.client.stack's `template` summary adds webappgen's review
+  findings (triage OUT-1..3); its `standard` summary adds the web stack's repeated rules and the
+  pnpm release-age reasoning as the standard's to hold (WTL-7, WTL-8), and web-components' peer
+  range excluding web-foundation v0.4.0 (WCM-7).
 - coordinator · standards-lab: `roadmap/sites.toml` `tasks.architecture-site` summary: drop
   "It repoints `architecture/context/README.md`, which names backlog.docs-site …"; the
   architecture task named the site in its capability map.
