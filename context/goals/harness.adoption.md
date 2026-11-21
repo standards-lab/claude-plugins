@@ -73,7 +73,7 @@ Two-way: prose, configuration, one script; no tags.
 
 ## Progress
 
-slices 0/4 committed · review — · standards — · spec — · editor —
+slices 4/4 (architecture) committed · review running · standards — · spec — · editor —
 
 ## Decisions
 
@@ -120,6 +120,9 @@ slices 0/4 committed · review — · standards — · spec — · editor —
   per-repository CI flag so no session waits on CI that doesn't exist; `shared-repos`: a goal owns
   its root, and non-root repositories lock only while off their default branch, so goals queue on
   them) at the top of `planned`, not staged.
+- coordinator · standards-lab: `roadmap/sites.toml` `tasks.architecture-site` summary: drop
+  "It repoints `architecture/context/README.md`, which names backlog.docs-site …"; the
+  architecture task named the site in its capability map.
 - claude-plugins: `context/repo-access.md`, the note for `marathon.repo-access`, with its open
   points; a backlog note for anchor checking in lint-references;
   `context/harness-optimization.md` "Code repositories adopt it in `harness.adoption`" becomes
