@@ -6,13 +6,16 @@ on:
 permissions:
   contents: read
 
+env:
+  MISE_ENV: ci
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
 
-      - name: Install the tools mise.toml pins
+      - name: Install the tools mise.toml and mise.ci.toml pin
         uses: jdx/mise-action@v5.2.10
 
       - name: Repository consistency checks
