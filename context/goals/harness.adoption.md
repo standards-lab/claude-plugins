@@ -83,30 +83,16 @@ repositories (docproc running) · standards running · spec — · editor —
 - plan: staged over the locks of v1.ai.processing, v1.client.stack, v1.ai.inference, and
   v1.ai.hosting, a one-time exception that the sibling adoption goals share; no session runs on
   those goals until every adoption goal syncs (standards-lab/context/harness-adoption.md).
-- plan: the rest of the adoption runs as 14 sibling `harness.adoption-<slug>` goals, in one
-  orchestrating session once `shim` releases marathon/v0.22.0; the rules they share live in
-  standards-lab/context/harness-adoption.md.
-- plan: architecture's `scripts/check.sh` switches to marathon's `lint-references` (the
-  `architecture` task).
-- references: rejected a pinned architecture checkout in CI, so `architecture/...` references
-  skip there: architecture has no tags, so it would pin a bare SHA no currency command tracks.
 - architecture: no CI for architecture; the merge waits on no checks.
-- architecture: a page's claims hold regardless of another repository's current state.
-- architecture: the Fable review's fixes land inside this task, while the lock exception holds;
-  the goal's `repos` widen to each fixed repository through the sync.
-- architecture: review triage (escalation, all recs accepted): architecture's pages state rules
-  only, with the Go Elemental member catalog the one exception; each STANDARDS.md points at
-  comments.md with only its own narrowing; whole history sections go once their content has a
-  home; standards-lab, ai-hosting and spike-harness-driver gain a root README; the spikes hold
-  their bench Python with a reason; webappgen and web-stack findings defer to v1.client.stack.
-- architecture: every claude-plugins finding (the triage's CLP items, currency.sh's null bug,
-  mise-action v5.3.0, the marathon-architecture plugin docs) moves into `marathon.repo-access`.
 
 ## Pending edits
 
-- coordinator · standards-lab: marathon 0.22.0, the release the adoptions pin, in place of 0.21.0:
-  `context/harness-adoption.md`'s opening sentence, and the `harness.adoption-*` goal files'
-  names and summaries.
+- coordinator · standards-lab: delete `context/harness-adoption.md` and its entry in
+  `context/README.md`; delete `roadmap/harness.adoption.toml`, and remove `harness.adoption` from
+  `roadmap/index.toml` `active`. The architecture task fixed the review's findings in every
+  repository it covered, which would widen the goal's `repos` and `tasks.architecture` summary to
+  each of them; the goal file is deleted instead, so the session brief is the record of which
+  repositories changed.
 - coordinator · standards-lab: repoint each mention of ai-hosting's removed `context/design.md`
   at the ai-hosting note that now holds its subject:
   - `context/ai-hosting.md`, "What `ai-hosting` holds", the suite's design:
@@ -126,12 +112,6 @@ repositories (docproc running) · standards running · spec — · editor —
   release: mise pins them, the check runs lint-context and lint-references, `context/README.md`
   has a capability map, and every comment is one of `architecture/principles/comments.md`'s five
   kinds."
-- coordinator · standards-lab: goal `marathon.repo-access` (tasks `ci-awareness`: a declared
-  per-repository CI flag so no session waits on CI that doesn't exist; `shared-repos`: a goal owns
-  its root, and non-root repositories lock only while off their default branch, so goals queue on
-  them) at the top of `planned`, not staged; it also carries the claude-plugins findings of
-  this task's review (`.claude/plans/triage-harness.adoption-architecture.md`, CLP items).
-- coordinator · standards-lab: the review's accepted standards-lab findings (triage STL items).
 - coordinator · standards-lab: v1.client.stack's `template` summary adds webappgen's review
   findings (triage OUT-1..3); its `standard` summary adds the web stack's repeated rules and the
   pnpm release-age reasoning as the standard's to hold (WTL-7, WTL-8), and web-components' peer
@@ -139,7 +119,19 @@ repositories (docproc running) · standards running · spec — · editor —
 - coordinator · standards-lab: `roadmap/sites.toml` `tasks.architecture-site` summary: drop
   "It repoints `architecture/context/README.md`, which names backlog.docs-site …"; the
   architecture task named the site in its capability map.
+- coordinator · standards-lab: goal `marathon.repo-access` at the top of `planned`, not staged,
+  with tasks `ci-awareness` (a declared per-repository CI flag, so no session waits on CI that
+  doesn't exist) and `shared-repos` (a goal owns its root, and a non-root repository locks only
+  while off its default branch, so goals queue on it). The goal also carries every claude-plugins
+  finding of the review: the triage's CLP items, among them currency.sh's null bug (CLP-1) and the
+  marathon-architecture plugin docs (CLP-14, CLP-15), and the mise-action v5.3.0 bump. The triage
+  file is gitignored, so the goal copies each item's text rather than citing the file.
+- coordinator · standards-lab: apply the review's accepted standards-lab findings, triage STL-1..37
+  and STL-40..46, as each item's fix states. STL-38 and STL-39 are the sites.toml and design.md
+  edits above.
 - claude-plugins: `context/repo-access.md`, the note for `marathon.repo-access`, with its open
-  points; a backlog note for anchor checking in lint-references;
-  `context/harness-optimization.md` "Code repositories adopt it in `harness.adoption`" becomes
-  "every repository's check runs it".
+  points; a backlog note for anchor checking in lint-references, which also records the rejected
+  alternative of a pinned architecture checkout in CI (architecture has no tags, so the pin would
+  be a bare SHA that no currency command tracks; `architecture/...` references skip in CI
+  instead); `context/harness-optimization.md:52` "Code repositories adopt it in
+  `harness.adoption`" becomes "every repository's check runs it".
