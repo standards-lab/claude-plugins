@@ -48,8 +48,8 @@ Read these sizes, in words, to judge the work:
   standards-reviewer judges every other comment.
   marathon's standards-reviewer applies the comment rule a repository's `STANDARDS.md` declares.
   claude-plugins' scripts, tests, and configuration files follow it, as its `STANDARDS.md`
-  declares, and marathon's configuration examples carry no comments. Code repositories adopt it
-  in `harness.adoption`.
+  declares, and marathon's configuration examples carry no comments. Every repository's check
+  runs `lint-references`.
 - **One release** (built). marathon 0.19.0 and marathon-architecture 0.4.0 carry the goal's
   changes, and marathon's CHANGELOG gives the migration from 0.18.0 as ordered steps.
 - **Roadmap layout** (built). marathon reads the root `roadmap/`: `roadmap/index.toml`, of the
@@ -106,3 +106,8 @@ A retro can take these up.
 - `scripts/check.sh`'s `unreleased_path_citations_with_owner` reads every markdown file whole and
   stops only a CHANGELOG at its first release heading, so "unreleased" describes only part of
   what it returns.
+- `lint-references` and `lint-context` resolve a relative link's path but not its `#anchor`
+  fragment, so reviews keep finding broken anchors by hand. Checking anchors is backlog for
+  `lint-references`. A pinned architecture checkout in CI, to resolve `architecture/...`
+  references there, was rejected: architecture has no tags, so the pin would be a bare SHA that no
+  currency command tracks. Those references skip in CI instead.
