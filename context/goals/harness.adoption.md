@@ -73,7 +73,10 @@ Two-way: prose, configuration, one script; no tags.
 
 ## Progress
 
-slices 4/4 (architecture) committed · review done: 361 findings, triage escalated (.claude/plans/triage-harness.adoption-architecture.md) · standards — · spec — · editor —
+slices 7/7: architecture 1-4 committed; review triaged (all recs accepted); fix slices committed in 25
+repositories (docproc running) · standards running · spec — · editor —
+- escalation, slice 5: the review triage (selfcontain, stdpointer, history, readme, spike holds,
+  defers): all recs accepted; claude-plugins findings move into marathon.repo-access.
 
 ## Decisions
 
