@@ -28,6 +28,9 @@ repository is developed with marathon, so the workflow runs against its own sour
   See [marathon-extraction.md](marathon-extraction.md).
 - **marathon-references** (planned): a proposed extension that holds the references catalog.
   See [marathon-references-extension.md](marathon-references-extension.md).
+- **Repository access** (planned): marathon learns from each repository's configuration whether
+  it runs CI, and a goal locks only its root, holding its other repositories while they are off
+  their default branch ([repo-access.md](repo-access.md)).
 - **Tooling layer** (planned): deterministic tools the skills call in place of procedure written
   as prose. See [tool-based-skills.md](tool-based-skills.md).
 - **Harness testing** (built): `scripts/check.sh` runs on every push. It checks the plugins'
