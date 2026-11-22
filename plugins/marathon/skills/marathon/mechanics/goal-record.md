@@ -99,6 +99,7 @@ to their budgets.
 
 ## Where it is committed
 
-The root is a repository the goal locks, so the record changes on the task's branch and merges
-with the task's pull request. Only bookkeeping commits it straight to the root's default branch
-(`mechanics/pipeline.md`, "Branches and pull requests").
+The root is the repository staging reserves for the goal (`mechanics/goals.md`, "The repository
+lock"), so the record changes on the task's branch and merges with the task's pull request. Only
+bookkeeping commits it straight to the root's default branch (`mechanics/pipeline.md`, "Branches
+and pull requests").

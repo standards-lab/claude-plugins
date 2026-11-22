@@ -38,7 +38,7 @@ budgets. A goal file has these fields:
 
 - `name`: the outcome, as a title.
 - `summary`: what it means for this outcome to hold.
-- `repos`: the repositories it locks while active, other than the coordinator. `[]` means the
+- `repos`: the repositories it works in, other than the coordinator. `[]` means the
   goal touches only the coordinator's `context/`, so only `plan` works on it and it has no
   record. An active goal's `repos` cover every repository its tasks touch, other than the
   coordinator.
@@ -66,7 +66,7 @@ A spike's file adds:
 A spike's `root` and `repos` are its own repository, and nothing else.
 
 No goal field takes its value from an ancestor: each goal file states its own `repos` and `root`,
-and a reader learns what a goal locks from its file alone.
+and a reader learns what a goal works in from its file alone.
 
 `context` entries are file paths: relative to the workspace in a workspace
 (`go-web-service/context/data-layer.md`), and relative to the repository otherwise.
@@ -215,7 +215,7 @@ summary = "The documentation site that serves the project's published pages."
 repos = []
 ```
 
-`v1.messaging` stays planned while `v1.data` holds `service`, and its file gains `root` when it is
-staged. Both spikes of `experiment.cache` are active at once, each locking only its own
+`v1.messaging`'s file gains `root` when it is staged: any of its `repos` but `service`,
+`v1.data`'s root. Both spikes of `experiment.cache` are active at once, each rooted in its own
 repository, while `experiment.cache` itself is never listed. It cites `org/context/cache.md`, a
 note in the coordinator, `org`, where each spike's sync lands its answer section.

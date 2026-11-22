@@ -13,6 +13,10 @@ A repository declares whether it runs CI on pull requests with `[remote] checks`
 waits on that command only where it is set. A repository without CI merges directly; a
 `gh pr checks --watch` in its merge command failed there, because no checks were reported.
 
+Active goals share repositories. Staging reserves only a goal's root, and a repository is held only
+while a session works in it, so two goals that list the same library no longer wait on each other
+for their whole lives.
+
 ### Added
 
 - **`[remote] checks`** (`skills/marathon/mechanics/configuration.md`). An optional key: the
@@ -32,6 +36,16 @@ waits on that command only where it is set. A repository without CI merges direc
 
 ### Changed
 
+- **The repository lock follows the branch, not the goal's life**
+  (`skills/marathon/mechanics/goals.md`, "The repository lock"). Staging fails only when another
+  active goal declares the same root, or when it would break a `[workspace] exclusive` group; a
+  goal's `repos` may name any other repository, another active goal's root included. A
+  repository, root included, is held while it is off its default branch, or while an active
+  goal's "tag <names>" Handoff has it short of released. `exclusive` is the one way to reserve a
+  repository other than a root for a goal's whole life. The manifest's `repos`, `exclusive`,
+  workspace coordination, the goal record, `plan`'s staging check, the session brief's Sync line,
+  which counts the finishing goal's root as released, the README, and the plugin description
+  cite the rule.
 - **Every merge runs `marathon checks` first where `checks` is set**
   (`skills/marathon/mechanics/pipeline.md`, `skills/marathon/mechanics/releasing.md`). SHIP's
   merge step, each merge in "Branches and pull requests", and a release's merge step run

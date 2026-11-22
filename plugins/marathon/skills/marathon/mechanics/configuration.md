@@ -91,8 +91,8 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   example's does. SHIP runs it before tagging a release; without it, tagging follows the merge
   directly (`mechanics/releasing.md`).
 - **`[workspace]`**: for the coordinator only. `order` lists layers, lowest first, and an array
-  entry is a layer of peers. `exclusive` lists groups of repositories that at most one active goal
-  may touch at a time, narrowing the repository lock (`mechanics/goals.md`). `[workspace.paths]`
+  entry is a layer of peers. `exclusive` lists groups of repositories that at most one active goal's
+  `repos` may touch at a time (`mechanics/goals.md`, "The repository lock"). `[workspace.paths]`
   gives the location of a key that isn't a sibling directory
   (`references/workspace-coordination.md`). `[workspace.experiments]` gives the local path and
   remote a new spike takes, with `<slug>` replaced (`commands/experiment.md`).
