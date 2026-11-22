@@ -104,32 +104,22 @@ the plugins. Everything before tagging is two-way.
 
 ## Progress
 
-slices 6/6 committed · standards — · spec — · editor —
+slices 6/6 committed · standards ✓ · spec ✓ (1 gap closed) · editor ✓
 
 ## Decisions
 
 - goal: one release, at shared-repos: `marathon/v0.23.0` and `marathon-architecture/v0.4.1`;
   ci-awareness and review-findings tag nothing.
-- shared-repos: moves claude-plugins' own configuration to `[remote] checks` with the release,
-  since the installed 0.22.0 copy and binary don't know the key.
-- shared-repos: active goals never share a root; a goal's `repos` may include another active
-  goal's root; every repository is held only while off its default branch.
-- shared-repos: holders are found from the active goals' records (State, Branch), not a marker or
-  goal-qualified branches; skill prose until the tooling layer's LOCATE and status CLI.
-- shared-repos: a repository named in an unreleased "tag <names>" Handoff stays held until released.
-- shared-repos: `[workspace] exclusive` stays a staging-time rule over `repos`.
-- shared-repos: a goal waiting on a held repository stops and reports; it never skips ahead or polls.
-- shared-repos: a held root at PLAN keeps the approved brief in the plan file.
-- shared-repos: status keeps the column name `locks`, listing the root plus held repositories.
-- shared-repos: read-first budget raises are pre-approved up to 100 words per set.
-- shared-repos: marathon-architecture 0.4.1 keeps the marathon ≥ 0.19.0 floor.
+- shared-repos: SHIP waits on CI by hand before merging, since the installed 0.22.0 copy and
+  binary don't run the `[remote] checks` key this task adds to claude-plugins' configuration.
 
 ## Pending edits
 
-- coordinator · roadmap/marathon.repo-access.toml: end the `review-findings` summary's first
-  sentence with "and the stale read-first sizes in claude-plugins' harness note".
 - coordinator · roadmap/v1.harness.toml: `door-scaled-review`'s `context` becomes
   `claude-plugins/context/harness-findings.md`.
 - coordinator · context/waves.md: wave B's sentence on v1.ai.hosting sharing "the architecture
   lock" with v1.ai.processing, freed by the architect, becomes: both goals hold the architecture
   repository only while a task's branch is checked out there.
+- coordinator · docs/ai-hosting.md: "The goal's coordination"'s sentence on the `architecture`
+  task sharing "the architecture lock" with v1.ai.processing, freed by the architect, becomes:
+  both goals hold the architecture repository only while a task's branch is checked out there.
