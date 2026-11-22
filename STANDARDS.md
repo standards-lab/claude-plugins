@@ -10,6 +10,7 @@ The judgement calls the standards-reviewer applies to claude-plugins, beyond wha
 - A procedural section in a skill is a candidate tool.
 - An instruction that changes no behavior is cut.
 - Each change gets an Unreleased entry; a change to the extension contract bumps the floor.
+- A read-first budget rises only with the architect's approval, with the reason in the Unreleased entry.
 - An eval case comes from an observed failure.
 - `architecture/principles/comments.md` governs scripts, tests, and every configuration file (TOML, YAML, `.gitignore`), not just source; a data file's header is its package documentation.
 - `architecture/principles/rolling-currency.md`

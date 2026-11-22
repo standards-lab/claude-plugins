@@ -85,10 +85,6 @@ A retro can take these up.
 - marathon's manifest reference says `repos = []` means "only `plan` works on it", but `intake`
   runs on experiment goals, which write `repos = []`.
 - A spike's `docs/` pages that link to its goal record break when sync deletes the record.
-- `start`'s and `intake`'s read-first sets sit 54 and 26 words under their budgets, so most edits
-  to either need a budget change.
-- Read-first budgets rise with every task: `start`'s went from 7,900 to 8,300 and `retro`'s from
-  6,400 to 6,700. A fixed ceiling that only the architect raises would stop the ratchet.
 - Reviewers read the whole diff and the whole goal record. They could read `git diff --stat`
   first and receive excerpts of the brief.
 - marathon's `references/context-engineering.md` says the session lists the editor's note operations
