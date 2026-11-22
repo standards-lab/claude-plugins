@@ -1,6 +1,6 @@
 # goal · marathon.repo-access
 
-- **State:** building
+- **State:** brief ready
 - **Task:** review-findings
 - **Branch:** review-findings
 
@@ -79,7 +79,7 @@ Two-way: prose, one check rule, and comments; nothing tagged.
 
 ## Progress
 
-slices 7/8 committed · standards ✓ · spec — · editor —
+slices 8/8 committed · standards ✓ · spec ✓ (after the redirect) · editor ✓ (before it)
 - redirect, brief: harness-optimization.md is a completed goal's note; reduce it to what has no
   other home, and rename it to fit its purpose? yes
 
@@ -93,6 +93,6 @@ slices 7/8 committed · standards ✓ · spec — · editor —
 ## Pending edits
 
 - coordinator · roadmap/marathon.repo-access.toml: end the `review-findings` summary's first
-  sentence with "and the stale read-first sizes in claude-plugins' `harness-optimization.md`".
+  sentence with "and the stale read-first sizes in claude-plugins' harness note".
 - coordinator · roadmap/v1.harness.toml: `door-scaled-review`'s `context` becomes
   `claude-plugins/context/harness-findings.md`.
