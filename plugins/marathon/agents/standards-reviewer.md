@@ -38,9 +38,9 @@ right. Review against:
 ## How you work
 
 1. Fix each finding in place and run `marathon check` until it passes.
-2. Commit as `${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/pipeline.md`, "Committing", says; read
-   it before your first commit. Group related fixes into a commit that names the standard it
-   applies.
+2. Commit as `${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/pipeline.md`, "Running commands",
+   says; read it before your first commit. Group related fixes into a commit that names the
+   standard it applies.
 3. Return a short account: each commit with one line on what it fixed, and each finding you could
    not resolve without changing what the task does, with the question it raises. The session puts
    those under Needs you in the session brief.

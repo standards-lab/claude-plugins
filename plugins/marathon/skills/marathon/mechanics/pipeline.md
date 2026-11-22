@@ -1,8 +1,8 @@
 # Session pipeline
 
-A marathon session takes one task of one active goal from plan to merged work. The architect is
-involved at two points: approving the task brief, which starts BUILD, and accepting the session
-brief, which authorizes publishing and merging. Agents do everything in between.
+A session involves the architect twice: approving the task brief, which starts BUILD, and
+accepting the session brief, which authorizes publishing and merging. Agents do everything in
+between.
 
 ```
 PLAN   architect ⇄ planner, in rounds → task brief + slices     ✔ approve           [touch 1]
@@ -12,8 +12,8 @@ BRIEF  session brief                                             ✔ accept / re
 SHIP   commit the goal record → publish (body = brief) → merge → tag if Release → sync if last
 ```
 
-Each playbook under `commands/` says which stages it runs. Extension hooks fire only at the points
-this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/hooks.md`).
+Extension hooks fire only at the points this file, `mechanics/resume.md`, and
+`mechanics/releasing.md` name (`mechanics/hooks.md`).
 
 ## Stages
 
@@ -120,10 +120,10 @@ coordinator during BUILD. When the context fills, hand off (`references/build.md
 4. Publish each touched repository's branch with `marathon publish`, lowest layer first, using
    the brief file as the body (for GitHub, `--body-file`). A repository with no
    `[remote] publish` merges its branch locally instead ("Branches and pull requests").
-5. Merge each one with `marathon merge`, lowest layer first, once its checks pass. Without a
-   merge command, or when a check fails, set State to `handoff` with the next move
-   ("merge" or the failing check), commit it on the branch, tell the architect, and stop. When
-   the task brief has a Release line, merge and tag one repository at a time instead
+5. Merge each one, lowest layer first: run `marathon checks` where `checks` is set, then
+   `marathon merge`. Without a merge command, or when a check fails, set State to `handoff` with
+   the next move ("merge" or the failing check), commit it on the branch, tell the architect, and
+   stop. When the task brief has a Release line, merge and tag one repository at a time instead
    (`mechanics/releasing.md`).
 6. Switch each repository back to its default branch, pull, and delete the local task branch,
    where Releasing hasn't already. Delete the brief file.
@@ -151,10 +151,10 @@ request, in each repository it changes.
 
 Each branch starts from the freshly pulled default branch. The architect's approval of the
 outcome, the session brief, or the ticked findings authorizes publishing and merging. Each
-repository publishes with `marathon publish` and merges with `marathon merge` once its checks
-pass, lowest layer first, then switches back to its default branch, pulls, and deletes the local
-branch. A merge that can't happen leaves the branch checked out,
-which holds the repository until it merges: tell the architect and stop.
+repository, lowest layer first, publishes with `marathon publish`, runs `marathon checks` where
+`checks` is set, merges with `marathon merge`, switches back to its default branch, pulls, and
+deletes the local branch. A merge that can't happen leaves the branch checked out, which holds the
+repository until it merges: tell the architect and stop.
 
 A project with no `[remote] publish` branches the same way and, once the architect approves,
 merges the branch locally into its default branch. A standalone project's own manifest, notes,
@@ -171,11 +171,13 @@ coordinator findings, goes through a pull request. The one other direct commit i
 repository's first: `init`'s commit, pushed to create the default branch that later pull requests
 merge into (`commands/init.md`).
 
-## Committing
+## Running commands
 
-Before every commit, any agent confirms the checkout is on the session's branch, or on the root's
-default branch for goal-record bookkeeping. A checkout on any other branch means the session stops
-and reports. Each commit stages explicit paths, never everything.
+Each command that changes git or remote state runs in its own tool call, after the previous one
+succeeds: commit, branch, checkout or switch, merge, rebase, tag, push, `marathon publish`,
+`marathon merge`, `marathon checks`, and `gh` writes. Read-only commands may be chained. Before
+each commit, confirm the checkout is on the session's branch, or the root's default branch for
+goal-record bookkeeping; otherwise, stop and report. Each commit stages explicit paths.
 
 ## How each command uses the pipeline
 

@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	keys = "keys: check, currency, gate, publish, merge, ci"
+	keys = "keys: check, currency, gate, publish, merge, ci, checks"
 
 	configuration = `[project]
 kind = "context"
@@ -123,6 +123,17 @@ func TestGateTakesItsTag(t *testing.T) {
 func TestMultiLineCIRunsAsOneScriptWithPositionalArguments(t *testing.T) {
 	r := newRepo(t)
 	r.assertResult(r.marathon("ci", "x y", "$z;"), result{3, "ci 2,<x y><$z;>", ""})
+}
+
+func TestChecksRunsAndPropagatesItsStatus(t *testing.T) {
+	r := newRepo(t)
+	r.Write(".claude/marathon.toml", "[remote]\nchecks = \"printf checks && exit 6\"\n")
+	r.assertResult(r.marathon("checks"), result{6, "checks", ""})
+}
+
+func TestUnsetChecks(t *testing.T) {
+	r := newRepo(t)
+	r.assertUsageFailure(r.marathon("checks"), "set [remote] checks in .claude/marathon.toml")
 }
 
 func TestSignaledCommandExitsAsAShellReportsIt(t *testing.T) {

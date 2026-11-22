@@ -3,9 +3,9 @@
 # each, and exits non-zero when it reports any. The pins are the tools in
 # mise.toml and CI's mise.ci.toml, checked by mise outdated, and the GitHub
 # Actions in .github/workflows, checked against the action's latest release tag.
-# A pin is current only when it equals that latest exactly. It reads the network
-# through mise and gh and writes nothing; it is a development-time command and CI
-# never runs it.
+# A pin is current only when it equals that latest exactly, and a pin with no
+# latest version is not reported. It reads the network through mise and gh and
+# writes nothing; it is a development-time command and CI never runs it.
 #
 # Each lookup captures its command's output in a variable before reading it, so
 # under set -e a failed lookup fails currency instead of reporting nothing. The
@@ -23,8 +23,10 @@ grep_matches_or_none() {
 }
 
 outdated_mise_tools=$(MISE_ENV=ci mise outdated --bump --local --json)
-outdated_mise_tools=$(jq -r 'to_entries[] | "mise: \(.key) \(.value.requested) -> \(.value.bump)"' \
-  <<<"$outdated_mise_tools")
+outdated_mise_tools=$(jq -r 'to_entries[]
+  | (.value.bump // .value.latest) as $latest
+  | select($latest != null and $latest != .value.requested)
+  | "mise: \(.key) \(.value.requested) -> \($latest)"' <<<"$outdated_mise_tools")
 while read -r line; do
   [ -n "$line" ] || continue
   trailing+=("$line")

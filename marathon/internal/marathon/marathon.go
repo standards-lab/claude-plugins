@@ -24,7 +24,7 @@ const (
 	positionalArgument0 = "marathon"
 )
 
-var keys = []string{"check", "currency", "gate", "publish", "merge", "ci"}
+var keys = []string{"check", "currency", "gate", "publish", "merge", "ci", "checks"}
 
 var tableOfKey = map[string]string{
 	"check":    "project",
@@ -33,6 +33,7 @@ var tableOfKey = map[string]string{
 	"publish":  "remote",
 	"merge":    "remote",
 	"ci":       "remote",
+	"checks":   "remote",
 }
 
 var shellUnsafe = regexp.MustCompile(`[^\w@%+=:,./-]`)

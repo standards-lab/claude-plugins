@@ -23,17 +23,17 @@ one you write together. It gives the vision and the scope. The structure comes o
 - **The check**: the one deterministic command that runs the build, tests, and lint, or the
   consistency script of a context project (`references/build.md`). It calls `lint-context`
   and `lint-references`, pinned in the repository's `mise.toml` (`mechanics/configuration.md`).
-- **The currency command**: optional. The read-only command that reports which direct
-  dependencies, toolchain versions, and pins trail their latest release, run at PLAN and never in
-  CI (`mechanics/configuration.md`).
-- **The release gate**: optional. The command SHIP runs before each Release tag to decide whether
-  it may be pushed, such as a plugin's eval suite, and never in CI (`mechanics/configuration.md`).
+- **The currency command**: optional. The read-only command that reports what trails its latest
+  release (`mechanics/configuration.md`).
+- **The release gate**: optional. The command SHIP runs before each Release tag, such as a
+  plugin's eval suite (`mechanics/configuration.md`).
 - **Capability map**: the project's major capabilities, broad, shallow, and unordered, as built
   and planned entries under `## Capability map` in `context/README.md`, in the shape
   `lint-context` checks.
 - **The first goal**: the one outcome the first sessions work toward, and its first task.
-- **Remote**: the platform, its publish command (`gh pr create`, `glab mr create`), and its merge
-  command, or none for a local-only project.
+- **Remote**: the platform, its publish command (`gh pr create`, `glab mr create`), its merge
+  command, and, if it runs CI on pull requests, its `checks` command (`gh pr checks --watch`);
+  or none for a local-only project.
 
 ## 3. Create the structure
 

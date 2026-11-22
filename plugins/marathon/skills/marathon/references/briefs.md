@@ -2,7 +2,7 @@
 
 These are the formats marathon writes for the architect, and the slice brief for an implementer.
 Each one the architect reads is read in the terminal, fits on about one screen, and leads with
-what needs a decision. Agents look up facts; the architect makes decisions.
+what needs a decision.
 
 Every format is markdown, hard-wrapped at 100 characters in the reply, and code fences appear only
 around code. As the reply streams, marathon's MessageDisplay hook, `bin/wrap-formats`, rewraps on
@@ -181,7 +181,8 @@ session writes it to `.claude/briefs/<goal>.md` in the goal's root, which gitign
 >
 > 1. Escalation, slice 2: raise pi's floor to 0.9 for RPC mode? Answer: yes.
 >
-> **Merge danger:** two-way door · blast radius: the spike repository only
+> **Merge danger:** two-way door · blast radius: the spike repository only ·
+> spike-harness-driver: merge waits on CI
 >
 > **Needs you:** none
 
@@ -198,7 +199,8 @@ session writes it to `.claude/briefs/<goal>.md` in the goal's root, which gitign
 - **Redirects and escalations** lists each BUILD escalation and each BRIEF redirect in the task,
   one line each with the architect's answer, or reads "none". Progress holds them
   (`mechanics/goal-record.md`).
-- **Merge danger** names the door type and the blast radius. A one-way door gets the close read.
+- **Merge danger** names the door type, the blast radius, and whether each repository's merge
+  waits on CI. A one-way door gets the close read.
   When the task brief has a Release line, Merge danger repeats its tags, which accepting the
   brief authorizes (`mechanics/releasing.md`).
 - **Needs you** reads "none" when nothing remains.
