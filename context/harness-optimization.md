@@ -13,7 +13,7 @@ note holds its sources, what it settled, and the findings it leaves for later.
 - **Brandon Thomas, "Let's Open Source the World"** (AI Engineer Code 2026). CLI and MCP are
   first-class, and humans review what is hard to reverse. The second point is the backlog task
   `v1.harness.door-scaled-review`.
-- **Matt Pocock, "Fixing the PR Bottleneck"** is the baseline marathon 0.16 adopted.
+- **Matt Pocock, "Fixing the PR Bottleneck"** is marathon's baseline, since 0.16.
 
 ## Settled
 

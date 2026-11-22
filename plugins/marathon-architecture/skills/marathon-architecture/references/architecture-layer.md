@@ -28,9 +28,9 @@ is the architecture, with a README in every directory as its index.
 A repository's `STANDARDS.md` holds its judgement calls, one line each, and points to the layer's
 pages that apply, by path: `architecture/principles/<page>.md` in a workspace, relative to the
 workspace, or relative to the repository when standalone. A spike outside the workspace directory
-writes its pointer relative to the architecture repository, as `principles/<page>.md`. A pointer may narrow the page with a
-convention of the repository's own, stated beside it; it never restates the page. A rule a check
-can enforce goes in the check, not in `STANDARDS.md` and not in a page.
+writes its pointer relative to the architecture repository, as `principles/<page>.md`. A pointer
+may narrow the page with a convention of the repository's own, stated beside it; it never restates
+the page. A rule a check can enforce goes in the check, not in `STANDARDS.md` and not in a page.
 
 ## How a page arrives
 

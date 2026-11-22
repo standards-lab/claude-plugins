@@ -41,8 +41,8 @@ CI installs the exact versions `mise.toml` and `mise.ci.toml` pin; it reads `mis
 it sets `MISE_ENV=ci` (`.github/workflows/ci.yml`), which a developer's machine doesn't. Claude
 Code is pinned in `mise.ci.toml` alone, so a session run from a developer's machine keeps its own
 claude. `scripts/currency.sh` reports any tool or GitHub Action pin that trails its latest release.
-The check is deterministic and runs no model. Each failure message names what to change for the check
-to pass.
+The check is deterministic and runs no model. Each failure message names what to change for the
+check to pass.
 
 ## Per release: the gate
 

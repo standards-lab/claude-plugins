@@ -49,6 +49,6 @@ repository is developed with marathon, so the workflow runs against its own sour
 
 ## How this repository works
 
-- Notes for planned work sit directly under `context/`. A goal rooted here keeps its record in
-  `context/goals/<goal>.md` while it is active; the workspace roadmap is at the coordinator
-  (standards-lab).
+Notes for planned work sit directly under `context/`. A goal rooted here keeps its record in
+`context/goals/<goal>.md` while it is active; the workspace roadmap is at the coordinator
+(standards-lab).
