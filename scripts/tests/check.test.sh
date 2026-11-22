@@ -232,9 +232,10 @@ test_budget_above_its_rounded_size_fails() {
 }
 
 test_budget_at_its_rounded_size_passes() {
-  local implementer=plugins/marathon/agents/implementer.md words
+  local implementer=plugins/marathon/agents/implementer.md words pad
   words=$(wc -w <"$root/$implementer")
-  append "$implementer" "$(printf ' word%.0s' $(seq $(((words + 99) / 100 * 100 - words))))"$'\n'
+  pad=$(((words + 99) / 100 * 100 - words))
+  [ "$pad" -eq 0 ] || append "$implementer" "$(printf ' word%.0s' $(seq "$pad"))"$'\n'
   run_check
   expect 0
 }
