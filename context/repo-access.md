@@ -1,7 +1,32 @@
 # Repository access: which repositories a goal holds
 
 Repository access is planned work, tracked as `marathon.repo-access`. It changes which
-repositories a goal holds, and it carries this repository's open review findings.
+repositories a goal holds, gives marathon's read-first sets room, and it carries this
+repository's open review findings.
+
+## Task `read-first-split`
+
+Each command's read-first set counts every file its Read first list names, whole. The largest,
+`references/briefs.md` at about 2,550 words, holds all nine formats, yet each command writes only a
+few, so retro and status pay about 2,300 words for formats they never write, plan about 1,600,
+intake about 1,350, and start about 580. After `ci-awareness`, retro and plan sit within one word
+of their budgets in `scripts/budgets.txt`.
+
+- **The split**: one file per format under `references/`, each command's Read first list naming
+  the formats it writes, and a format that cites another (the intake round cites the plan round)
+  pointing to it. No rule's wording changes.
+- **The check**: `scripts/check.sh` holds each command to listing every format it writes, so a
+  split can't silently drop one.
+- **Budgets**: re-baselined to the new sets. A budget is a ratchet recorded from a past size, so
+  raising one with a reason in the Unreleased entry stays a decision for the architect.
+- **Restorations**: where the room allows, the sentences `ci-awareness` cut for budget return:
+  SKILL.md's "The architect approves the task brief and accepts the session brief; agents do the
+  rest", pipeline.md's opening sentence and "Each playbook under `commands/` says which stages it
+  runs", briefs.md's "Agents look up facts; the architect makes decisions", init.md's currency and
+  gate details, and "never everything" in the commit rule.
+- **Evidence**: the gate's eval, `plan-round-in-reply`, covers the plan-round path, the one whose
+  format moves; no other command has an eval, and STANDARDS.md takes a new case only from an
+  observed failure.
 
 ## Task `review-findings`
 
