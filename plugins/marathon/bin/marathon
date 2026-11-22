@@ -7,7 +7,7 @@
 # every project mise config, so the caller's repository can't change or break the release it runs.
 set -euo pipefail
 
-version=0.22.0
+version=0.23.0
 
 name=$(basename "$0")
 local_build=$(dirname "$0")/../.build/$name

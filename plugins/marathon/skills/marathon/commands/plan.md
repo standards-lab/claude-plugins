@@ -33,8 +33,9 @@ of change:
 - **Roadmap**: stage a goal into `active`, pivot any of the three arrays, add or delete goal
   files and their tasks, and sharpen the next task's entry (`mechanics/goals.md`,
   `references/manifest.md`).
-  Staging checks the goal's `root`, `repos`, and lock first. A spike added to an existing
-  experiment is a sub-goal shaped as `experiment` shapes one (`commands/experiment.md`).
+  Staging checks the goal's `root`, `repos`, and the repository lock's staging rule first. A
+  spike added to an existing experiment is a sub-goal shaped as `experiment` shapes one
+  (`commands/experiment.md`).
 - **Notes**: write a note a coming goal needs, sharpen one, or delete one the discussion ruled
   out (`references/context-engineering.md`).
 - **Catalog and configuration**: the workspace's repository catalog, `order`, and
@@ -44,8 +45,8 @@ of change:
   (`commands/init.md`), add it to the workspace `order`, the repository catalog, and the goal's
   `repos` (and `root`, when there is none), write the tasks into the goal's file, and create or
   extend the goal record in the root, with the tasks the rounds settled checked. A goal with no
-  `root` locks nothing, and `start` on it stops and asks for this `plan`. A spike sub-goal adds its
-  own steps ("Spike setup").
+  `root` reserves nothing, and `start` on it stops and asks for this `plan`. A spike sub-goal adds
+  its own steps ("Spike setup").
 - **A next brief**: when an active goal's root is on its default branch with no task in
   progress, write the approved brief for its next task (`references/briefs/task-brief.md`) into
   the goal record there, as a direct commit on that default branch, never on the plan branch,
@@ -83,8 +84,10 @@ Goal setup then runs with these steps:
    repository. The spike stays out of the workspace `order` and the repository catalog: LOCATE
    finds it through its `path` (`mechanics/pipeline.md`).
 
-A change the rounds decide for a member repository is recorded as a task of the goal that locks
-it, and lands with that goal's next `start`.
+A change the rounds decide for an active goal's root is recorded as a task of that goal, and lands
+with that goal's next `start`. While any repository the edits change is held
+(`mechanics/goals.md`, "The repository lock"), plan applies nothing, names the holder as LOCATE
+step 5 does, and stops.
 
 Publish and merge each `plan-<goal>` branch with the approved round outcome as its body
 (`mechanics/pipeline.md`, "Branches and pull requests"). Delete the plan file once its edits are

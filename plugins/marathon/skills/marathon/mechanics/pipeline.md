@@ -39,9 +39,9 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
    first (`mechanics/goals.md`), except an experiment goal, `experiment.<topic>`, which is never
    staged: only `intake` runs on it (`commands/intake.md`), and `start` refuses and points there.
    A goal no longer listed, because its coordinator sync pull request merged, is found when its
-   record in its root is in `handoff` with the next move "merge `sync-<goal>`, then delete the
-   record": its root is the `root` in its deleted goal file's last version in the coordinator's
-   git history. START, then RESUME.
+   record in its root is in `handoff` with a sync's next move (`mechanics/goals.md`, "Sync"): its
+   root is the `root` in its deleted goal file's last version in the coordinator's git history.
+   START, then RESUME.
 4. Find where the goal stands, in this order:
    - A plan file under `.claude/plans/` whose title names the goal holds an open plan round:
      continue it. START, then PLAN.
@@ -51,12 +51,14 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
      - no record, or `idle`: the next unchecked task. START, then PLAN.
      - `building` or `handoff`: resume. START, then RESUME.
      - `brief ready`: START, then BRIEF.
-5. Check the lock: every repository the task touches, other than the coordinator, is on its
-   default branch with a clean working tree, on the task's branch or its `<slug>-fix` branch
-   (`mechanics/releasing.md`), or, resuming a sync, on `sync-<goal>`. A coordinator on a session
-   branch ("Branches and pull requests") is held the same way, unless the branch is the resuming
-   session's own, the one the table names for this goal or topic: the session resumes on it.
-   Anything else means another session holds it: stop and report.
+5. Check the lock (`mechanics/goals.md`, "The repository lock"). Each repository the task touches
+   is on its default branch with a clean working tree, or on the record's Branch, its
+   `<slug>-fix`, or `sync-<goal>` while the record is mid-task: `building`, `brief ready`, or
+   `handoff`. The coordinator may also be on the resuming session's own branch, the one "Branches
+   and pull requests" names for this goal or topic. Anything else, or another active goal's "tag
+   <names>" Handoff short of released, holds it: stop and name each holder, each active goal
+   mid-task on that branch or with that Handoff, or the goal or topic a session branch names. A
+   waiting goal never skips to a later task and never polls.
 
 ### 2 · START
 
@@ -80,7 +82,10 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
    doesn't cover, and in that case open one round on it before approval.
 3. Present the task brief for approval through ExitPlanMode, with the full brief in the plan
    file ("Invariants"). **[touch 1]**
-4. On approval, fire `on-build`.
+4. On approval, recheck the lock as LOCATE step 5 does. When a repository other than the root is
+   held, log the plan as step 6 does with State `idle`, fire `on-record`, commit it as bookkeeping
+   on the root's default branch, and delete the plan file; when the root is, keep the plan file.
+   Name the holders and stop. Otherwise, fire `on-build`.
 5. Create the task's branch, named by the task's slug, from the fetched default branch in each
    repository the task touches. The coordinator gets no branch.
 6. Log the plan into the goal record, creating the record if it doesn't exist: the brief under
@@ -162,14 +167,14 @@ and configuration follow the same rule as a coordinator's.
 
 Only goal-record bookkeeping commits straight to the root's default branch: the header lines
 (State, Task, Branch) between tasks; State `handoff` with its Handoff section for a release's
-"tag <names>" once the root's task branch has merged, and for a stuck sync's "merge
-`sync-<goal>`, then delete the record"; the return to `idle` once a resumed release's last tag
-releases (`mechanics/releasing.md`); the approved next brief `plan` writes; and deleting the
-record once its sync pull request merges (`mechanics/goal-record.md`). Everything else, including
-the manifest and its arrays, the notes, the repository catalog, the configuration, and `retro`'s
-coordinator findings, goes through a pull request. The one other direct commit is a new
-repository's first: `init`'s commit, pushed to create the default branch that later pull requests
-merge into (`commands/init.md`).
+"tag <names>" once the root's task branch has merged, and for an unfinished sync
+(`mechanics/goals.md`, "Sync"); the return to `idle` once a resumed release's last tag releases
+(`mechanics/releasing.md`); the approved next brief `plan` writes, or PLAN keeps while
+another repository is held; and deleting the record once its sync pull request merges
+(`mechanics/goal-record.md`). Everything else, including the manifest and its arrays, the notes,
+the repository catalog, the configuration, and `retro`'s coordinator findings, goes through a pull
+request. The one other direct commit is a new repository's first: `init`'s commit, pushed to
+create the default branch that later pull requests merge into (`commands/init.md`).
 
 ## Running commands
 

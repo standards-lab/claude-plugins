@@ -20,10 +20,10 @@ projects and ask.
 
 ## Goals running side by side
 
-Each active goal locks the repositories in its `repos`, so goals that run at the same time never
-share a member repository, and each works on the main checkout of its own
-(`mechanics/goals.md`). Each goal's record lives in its root, one of the repositories it locks.
-The coordinator is the one shared repository, and it changes only through the sessions
+Goals that run at the same time share member repositories under the repository lock
+(`mechanics/goals.md`, "The repository lock"), each on the main checkout, with no worktrees, and
+each goal's record lives in its root.
+The coordinator is in no goal's `repos`, and it changes only through the sessions
 `mechanics/goals.md` lists, each landing through its own branch and pull request
 (`mechanics/pipeline.md`, "Branches and pull requests").
 
@@ -37,8 +37,8 @@ one as that repository's own pull request, lowest layer first.
 ## Experiments
 
 An experiment's spikes are sub-goals, each with a goal file that names the remote and local path
-of its own repository outside the workspace. Each spike locks only that repository, so spikes run
-beside each other and beside the workspace's goals. A spike session starts from the
+of its own repository outside the workspace. Each spike is rooted in that repository, so spikes
+run beside each other and beside the workspace's goals. A spike session starts from the
 coordinator or the workspace, and LOCATE finds the spike's repository through its `path`
 (`mechanics/pipeline.md`). The experiment's intake decides what the served goals take from the
 answers and archives the spikes (`commands/intake.md`).

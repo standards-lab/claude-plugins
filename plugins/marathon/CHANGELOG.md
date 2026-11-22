@@ -7,11 +7,15 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
-## Unreleased
+## v0.23.0
 
 A repository declares whether it runs CI on pull requests with `[remote] checks`, and every merge
 waits on that command only where it is set. A repository without CI merges directly; a
 `gh pr checks --watch` in its merge command failed there, because no checks were reported.
+
+Active goals share repositories. Staging reserves only a goal's root, and a repository is held only
+while a session works in it, so two goals that list the same library no longer wait on each other
+for their whole lives.
 
 ### Added
 
@@ -32,6 +36,47 @@ waits on that command only where it is set. A repository without CI merges direc
 
 ### Changed
 
+- **The repository lock holds a repository only while it is off its default branch**
+  (`skills/marathon/mechanics/goals.md`, "The repository lock"). Staging fails only when another
+  active goal declares the same root, or when it would break a `[workspace] exclusive` group; a
+  goal's `repos` may name any other repository, another active goal's root included. A
+  repository, root included, is held while it is off its default branch, or while an active
+  goal's "tag <names>" Handoff has it short of released. `exclusive` is the one way to reserve a
+  repository other than a root for a goal's whole life. The session brief's Sync line counts the
+  finishing goal's root as released when it stages the proposed goal. The manifest's `repos`,
+  `exclusive`, workspace coordination, the goal record, `plan`'s staging check, the Sync line, the
+  README, and the plugin description cite the rule.
+- **LOCATE names who holds a repository** (`skills/marathon/mechanics/pipeline.md`, 1 · LOCATE,
+  step 5). LOCATE accepts a checked-out branch only when the goal's record is mid-task on it:
+  State `building`, `brief ready`, or `handoff`, and the branch is the record's Branch, its
+  `<slug>-fix`, or `sync-<goal>`. Any other branch holds the repository: LOCATE stops and names
+  each active goal whose record is mid-task on that branch, or the goal or topic a session branch
+  names. A waiting goal never skips to a later task and never polls.
+- **PLAN rechecks the lock before branching** (`skills/marathon/mechanics/pipeline.md`, 3 · PLAN,
+  step 4; `skills/marathon/mechanics/hooks.md`). On approval, when a repository other than the root
+  is held, PLAN stores the approved brief in the goal record, as bookkeeping on the root's default
+  branch with State `idle`, after `on-record`; when the root is held, PLAN keeps it in the plan
+  file. Either way PLAN names the holders and stops, and the next `start` takes the brief to
+  approval. RESUME's sync step says deleting the record releases the goal's root.
+- **Sync, retro, and plan check whether a changed repository is an active goal's root or held**
+  (`skills/marathon/mechanics/goals.md`, "Sync", step 3; `skills/marathon/commands/retro.md`, Apply;
+  `skills/marathon/commands/plan.md`). A change to an active goal's root becomes a task of that
+  goal; a change to any other repository goes on the session's own branch there. While a repository
+  it changes is held, retro or plan applies nothing, names the holder, and stops. A sync applies its
+  other edits, and a held repository's edits wait: the record stays in `handoff` with the next move
+  "sync <repo>, then delete the record", which the goal record's Handoff field lists and RESUME
+  takes up (`skills/marathon/mechanics/resume.md`). The pipeline's list of bookkeeping commits cites
+  Sync for an unfinished sync's Handoff.
+- **The status digest's `locks` column lists the repositories a goal holds**
+  (`skills/marathon/commands/status.md`, step 4;
+  `skills/marathon/references/briefs/status-digest.md`). It lists the goal's root, then each other
+  repository in its `repos` checked out on a branch LOCATE step 5 accepts as the goal's own, read
+  with `git branch --show-current`. A goal between tasks lists only its root. The digest's example
+  shows a goal holding a shared library on its branch.
+- **This repository's read-first budgets rise for the lock check** (`scripts/budgets.txt`).
+  LOCATE's holder rule and PLAN's recheck add about 100 words to `mechanics/pipeline.md`, which
+  every set below reads first. With the architect's approval, experiment rises to 8700, intake to
+  8800, plan to 8000, reset to 4700, retro to 4600, and start to 7900.
 - **Every merge runs `marathon checks` first where `checks` is set**
   (`skills/marathon/mechanics/pipeline.md`, `skills/marathon/mechanics/releasing.md`). SHIP's
   merge step, each merge in "Branches and pull requests", and a release's merge step run

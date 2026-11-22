@@ -22,7 +22,9 @@ Read first, before acting:
    `planning`.
 3. Mark with `!` each goal that is `planning` or `brief ready`, or whose Handoff holds an
    unanswered escalation or an unmerged pull request, and sort those first.
-4. Print the digest, with each goal's locked repositories in its row's last column.
+4. Print the digest. A row's last column lists the goal's root, then each other repository in
+   its `repos` whose checkout, read with `git branch --show-current`, is on a branch LOCATE step 5
+   accepts as the goal's own (`mechanics/pipeline.md`). A goal between tasks lists only its root.
 
 With a goal named (`references/briefs/goal-status.md`):
 
