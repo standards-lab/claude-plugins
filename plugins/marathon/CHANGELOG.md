@@ -67,6 +67,11 @@ for their whole lives.
   `handoff` with the next move "sync <repo>, then delete the record", which the goal record's
   Handoff field lists and RESUME takes up (`skills/marathon/mechanics/resume.md`). The pipeline's
   list of bookkeeping commits cites Sync for an unfinished sync's Handoff.
+- **The status digest's `locks` column follows the branch** (`skills/marathon/commands/status.md`,
+  step 4; `skills/marathon/references/briefs/status-digest.md`). It lists the goal's root, then
+  each other repository in its `repos` checked out on a branch LOCATE step 5 accepts as the goal's
+  own, read with `git branch --show-current`. A goal between tasks lists only its root. The
+  digest's example shows a goal holding a shared library on its branch.
 - **This repository's read-first budgets rise for the lock check** (`scripts/budgets.txt`).
   LOCATE's holder rule and PLAN's recheck add about 100 words to `mechanics/pipeline.md`, which
   every set below reads first. With the architect's approval, experiment rises to 8700, intake to
