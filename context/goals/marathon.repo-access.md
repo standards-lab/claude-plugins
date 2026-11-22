@@ -1,6 +1,6 @@
 # goal · marathon.repo-access
 
-- **State:** brief ready
+- **State:** building
 - **Task:** review-findings
 - **Branch:** review-findings
 
@@ -33,9 +33,9 @@ rule. The read-first budget rule lives only in the goal record, and the notes' f
 5. The root README's tree lists every tracked top-level entry (CI workflow, CI tool file,
    standards file, `scripts/`, `.gitignore`) and doesn't say CI installs only the development
    tool file.
-6. The harness-optimization note opens with "marathon's rules are checks, not prose" and no
-   longer has "What the goal measures against", "One release", the `retro-routes` sentence, the
-   judged-suite sentences, the LOCATE/status CLI entry, or either read-first budget finding.
+6. The completed harness.optimization goal's note is renamed `harness-findings.md` and holds only
+   what has no other home: the Brandon Thomas source behind `door-scaled-review` and the findings
+   for later. The capability map points harness.optimization at marathon's own files.
 7. The tool-based-skills note lists a CLI for LOCATE and `status` as a first consumer.
 8. The marathon-extraction note's first paragraph defines "the blueprint" and "a consumer of the
    standard"; its open questions drop the extension-enablement and adding-references questions.
@@ -66,6 +66,7 @@ rule. The read-first budget rule lives only in the goal record, and the notes' f
 5. Orientation: standards comments line, context README, root README (5, 9).
 6. marathon-extraction note (8).
 7. marathon-architecture: README, layer reference, CHANGELOG (12–14).
+8. The harness note renamed and reduced; the capability map repointed (6, redirect).
 
 **Out of scope**
 
@@ -78,7 +79,9 @@ Two-way: prose, one check rule, and comments; nothing tagged.
 
 ## Progress
 
-slices 7/7 committed · standards ✓ · spec ✓ · editor ✓
+slices 7/8 committed · standards ✓ · spec — · editor —
+- redirect, brief: harness-optimization.md is a completed goal's note; reduce it to what has no
+  other home, and rename it to fit its purpose? yes
 
 ## Decisions
 
@@ -91,3 +94,5 @@ slices 7/7 committed · standards ✓ · spec ✓ · editor ✓
 
 - coordinator · roadmap/marathon.repo-access.toml: end the `review-findings` summary's first
   sentence with "and the stale read-first sizes in claude-plugins' `harness-optimization.md`".
+- coordinator · roadmap/v1.harness.toml: `door-scaled-review`'s `context` becomes
+  `claude-plugins/context/harness-findings.md`.
