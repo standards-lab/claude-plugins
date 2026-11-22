@@ -19,7 +19,7 @@ a fresh context.
 
 - **The implementer never loads `STANDARDS.md` whole.** The session quotes the sections that bear
   on the slice, and the architecture pages they point to, into the slice brief
-  (`references/briefs.md`, "Slice brief"). Whole standards cost the implementer context it needs
+  (`references/briefs/slice-brief.md`). Whole standards cost the implementer context it needs
   for exploring, editing, and debugging; quoted lines cost less than a fix at standards review.
 - **The reviewers stay apart.** Standards and spec run in separate contexts, so work that follows
   every convention but builds the wrong thing can't pass on its conventions.

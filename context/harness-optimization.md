@@ -70,7 +70,7 @@ Read these sizes, in words, to judge the work:
 - **Verification artifacts** (built). Following Lauren Tan, review reads verification
   artifacts. The session brief's Verify section gives the steps the architect can run to see the
   work behave, and what they should see, or "none" for a prose-only change. The spec-reviewer
-  has already followed them (marathon's `references/briefs.md`).
+  has already followed them (marathon's `references/briefs/session-brief.md`).
 - **Formats wrapped by a hook** (built). marathon's MessageDisplay hook runs `wrap-formats`,
   which rewraps a marathon format at 100 columns on screen as the reply streams, so the model never
   reprints it. This repository's release gate rests on deterministic graders. The LLM judge runs
@@ -91,8 +91,8 @@ A retro can take these up.
   6,400 to 6,700. A fixed ceiling that only the architect raises would stop the ratchet.
 - Reviewers read the whole diff and the whole goal record. They could read `git diff --stat`
   first and receive excerpts of the brief.
-- marathon's `references/context-engineering.md` says the session lists the editor's note
-  operations in the session brief's Decided without you, but `references/briefs.md` lists there
+- marathon's `references/context-engineering.md` says the session lists the editor's note operations
+  in the session brief's Decided without you, but `references/briefs/session-brief.md` lists there
   only the decisions the brief didn't cover and the dropped Decisions. One of them should give way.
 - The standards-reviewer rewraps markdown to 100 columns by hand; a check could enforce the
   width instead.

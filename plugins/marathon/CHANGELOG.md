@@ -21,6 +21,10 @@ waits on that command only where it is set. A repository without CI merges direc
   .claude/marathon.toml" when it isn't set.
 - **init asks about CI** (`skills/marathon/commands/init.md`). The Remote decision asks whether
   the repository runs CI on pull requests, and writes `checks` when it does.
+- **This repository's check requires each cited brief format.** `scripts/check.sh` fails when a
+  playbook's read-first set lacks a brief file, `references/briefs.md` or one under
+  `references/briefs/`, that the playbook or a format in the set cites. The failure names the file
+  to add to the playbook's Read first list. `experiment`'s list adds the answer section it cites.
 
 ### Changed
 
@@ -33,13 +37,27 @@ waits on that command only where it is set. A repository without CI merges direc
   (`skills/marathon/mechanics/configuration.md`). It sets `checks = "gh pr checks --watch"` and
   `merge = "gh pr merge --merge --delete-branch"`. `[remote] ci` stays the wait on the default
   branch's CI after the merge, which only releasing runs.
-- **Merge danger names each repository's CI wait** (`skills/marathon/references/briefs.md`). The
-  session brief's Merge danger line says, for each repository, whether its merge waits on CI.
+- **Merge danger names each repository's CI wait**
+  (`skills/marathon/references/briefs/session-brief.md`). The session brief's Merge danger line
+  says, for each repository, whether its merge waits on CI.
 - **"Running commands" replaces "Committing"** (`skills/marathon/mechanics/pipeline.md`,
   `skills/marathon/behavior/delegation.md`, `agents/`). Every command that changes git or remote
   state, such as a commit, push, `marathon merge`, or `gh` write, runs in its own tool call after
   the previous one succeeds; read-only commands may still be chained. The commit rules stay, and
   every profile and delegation.md's Limits cite the rule by its new name.
+- **One file per brief format** (`skills/marathon/references/briefs.md`). Each of the nine formats
+  is its own file under `skills/marathon/references/briefs/`, and `references/briefs.md` keeps only
+  the rules every format shares. Each command's Read first list names the shared rules and only the
+  formats it writes or cites.
+- **Sentences cut for budget return** (`skills/marathon/SKILL.md`,
+  `skills/marathon/mechanics/pipeline.md`, `skills/marathon/references/briefs.md`). SKILL.md
+  says again that the architect approves the task brief and accepts the session brief; the
+  pipeline opens with what a session takes from plan to merged work and says each playbook names
+  its stages; the shared brief rules say agents look up facts and the architect makes decisions;
+  and each commit stages explicit paths, never everything.
+- **This repository's read-first budgets drop to the split's sizes** (`scripts/budgets.txt`).
+  The new budgets are experiment 8600, intake 8700, plan 7900, retro 4500, start 7800, and status
+  3500; init and reset keep 3800 and 4600.
 
 ### Migrating from 0.22.0
 

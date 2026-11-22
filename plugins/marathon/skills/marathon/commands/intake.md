@@ -11,6 +11,9 @@ Read first, before acting:
 - [`../behavior/planning.md`](../behavior/planning.md)
 - [`../behavior/delegation.md`](../behavior/delegation.md)
 - [`../references/briefs.md`](../references/briefs.md)
+- [`../references/briefs/intake-round.md`](../references/briefs/intake-round.md)
+- [`../references/briefs/plan-round.md`](../references/briefs/plan-round.md)
+- [`../references/briefs/answer-section.md`](../references/briefs/answer-section.md)
 - [`../mechanics/goals.md`](../mechanics/goals.md)
 - [`../references/manifest.md`](../references/manifest.md)
 - [`../references/context-engineering.md`](../references/context-engineering.md)
@@ -37,13 +40,13 @@ intake's own branch, and it resumes there (`mechanics/pipeline.md`, 1 · LOCATE)
 ## Rounds
 
 Enter plan mode and run plan rounds with the architect, led by the spikes' answers
-(`references/briefs.md`, "Intake round"), each presented as `behavior/planning.md`, "Ask for
+(`references/briefs/intake-round.md`), each presented as `behavior/planning.md`, "Ask for
 decisions, never for facts", says. The planner finds the facts.
 
 - **The first round** names the goals the experiment serves, which no manifest field names: the
   experiment's summary and its intake task's entry inform the proposal. It consolidates every
   spike's answer section from the note the experiment cites in its `context`
-  (`references/briefs.md`, "Answer section").
+  (`references/briefs/answer-section.md`).
 - **Later rounds** decide, for each served goal, what it builds from the answers: the tasks to
   write into it, and the note each answer section folds into.
 - **The rounds also name** the spike remotes to archive and what the repository catalog records

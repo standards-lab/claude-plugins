@@ -16,20 +16,27 @@ Read first, before acting:
 - [`../behavior/delegation.md`](../behavior/delegation.md)
 - [`../mechanics/goal-record.md`](../mechanics/goal-record.md)
 - [`../references/briefs.md`](../references/briefs.md)
+- [`../references/briefs/plan-round.md`](../references/briefs/plan-round.md)
+- [`../references/briefs/task-brief.md`](../references/briefs/task-brief.md)
+- [`../references/briefs/slice-brief.md`](../references/briefs/slice-brief.md)
+- [`../references/briefs/session-brief.md`](../references/briefs/session-brief.md)
+- [`../references/briefs/answer-section.md`](../references/briefs/answer-section.md)
 - [`../references/build.md`](../references/build.md)
 
 ## Plan
 
-LOCATE routes an `idle` goal to PLAN. Without an approved brief for the next task, plan the
-task in rounds to an approved brief and slice list (`behavior/planning.md`,
-`references/briefs.md`). With one, PLAN takes it to approval (`mechanics/pipeline.md`, 3 ·
-PLAN). Add detail to the notes the task touches only as far as the brief needs.
+LOCATE routes an `idle` goal to PLAN. Without an approved brief for the next task, plan the task in
+rounds to an approved brief and slice list (`behavior/planning.md`,
+`references/briefs/plan-round.md`, `references/briefs/task-brief.md`). With one, PLAN takes it to
+approval (`mechanics/pipeline.md`, 3 · PLAN). Add detail to the notes the task touches only as far
+as the brief needs.
 
 Branch slug: the task.
 
 ## Build
 
-Run the build loop (`references/build.md`) without stopping:
+Run the build loop (`references/build.md`) without stopping, briefing each slice
+(`references/briefs/slice-brief.md`):
 
 - On a **code** project, each slice adds behavior through the test seam, with the check passing.
 - On a **context** project, each slice is the deliverable itself, with the consistency script
@@ -42,8 +49,8 @@ the brief describes a finished state.
 
 Write and show the session brief, and act on the architect's accept or redirect
 (`mechanics/pipeline.md`, 5 · BRIEF). On the goal's last task, the brief has a Sync section
-(`references/briefs.md`, "Session brief"). A spike's last brief gives its answer
-(`references/briefs.md`, "Answer section").
+(`references/briefs/session-brief.md`). A spike's last brief gives its answer
+(`references/briefs/answer-section.md`).
 
 ## Ship
 

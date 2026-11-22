@@ -75,7 +75,7 @@ anything is deleted:
    `active`, and delete its file and its sub-goals' files. Then delete the file of each ancestor
    whose criteria now hold, or that is left empty: one with no tasks of its own and no file whose
    name extends its own. When the session brief's Sync section reads "staged on accept", stage
-   that goal in the same commit (`references/briefs.md`, "Session brief"), checking staging's
+   that goal in the same commit (`references/briefs/session-brief.md`), checking staging's
    requirements again; if one no longer holds, leave the goal where it is and give the architect
    the reason.
 3. Apply each pending edit for another repository on a `sync-<goal>` branch there, when no active
@@ -90,9 +90,9 @@ anything is deleted:
 
 A spike sub-goal syncs the same way. Its last task's session brief gives the spike's answer, and
 its pending edits carry the spike's answer section for the note its experiment cites
-(`references/briefs.md`, "Answer section"), which step 2 lands. The goal its Sync section
+(`references/briefs/answer-section.md`), which step 2 lands. The goal its Sync section
 proposes is the next planned spike of the same experiment, or, with none left, the experiment's
-intake (`references/briefs.md`, "Session brief"). The experiment stays until its intake,
+intake (`references/briefs/session-brief.md`). The experiment stays until its intake,
 which takes in the spikes' answers and archives their remotes (`commands/intake.md`).
 
 If the task's merge can't happen, because `[remote] merge` is unset or a check fails,

@@ -1,8 +1,8 @@
 # Session pipeline
 
-A session involves the architect twice: approving the task brief, which starts BUILD, and
-accepting the session brief, which authorizes publishing and merging. Agents do everything in
-between.
+A marathon session takes one task of one active goal from plan to merged work. It involves the
+architect twice: approving the task brief, which starts BUILD, and accepting the session brief,
+which authorizes publishing and merging. Agents do everything in between.
 
 ```
 PLAN   architect ⇄ planner, in rounds → task brief + slices     ✔ approve           [touch 1]
@@ -12,8 +12,8 @@ BRIEF  session brief                                             ✔ accept / re
 SHIP   commit the goal record → publish (body = brief) → merge → tag if Release → sync if last
 ```
 
-Extension hooks fire only at the points this file, `mechanics/resume.md`, and
-`mechanics/releasing.md` name (`mechanics/hooks.md`).
+Each playbook under `commands/` says which stages it runs. Extension hooks fire only at the points
+this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/hooks.md`).
 
 ## Stages
 
@@ -69,8 +69,8 @@ Extension hooks fire only at the points this file, `mechanics/resume.md`, and
 1. Enter plan mode. The plan file holds the session's planning state: title it with the goal and
    task, and keep each round, its answers, and the drafted brief in it.
 2. Run plan rounds with the architect, each presented as `behavior/planning.md`, "Ask for
-   decisions, never for facts", says, in the format of `references/briefs.md`. The planner
-   profile finds the facts and drafts each round, then the task brief and its slices
+   decisions, never for facts", says, in the format of `references/briefs/plan-round.md`. The
+   planner profile finds the facts and drafts each round, then the task brief and its slices
    (`behavior/delegation.md`). Before round 1, the planner runs `marathon currency` on the
    default branch of each repository the task touches that declares it
    (`mechanics/configuration.md`), and reads the release notes of what trails. Round 1 notes each
@@ -100,10 +100,10 @@ coordinator during BUILD. When the context fills, hand off (`references/build.md
 
 ### 5 · BRIEF
 
-1. Write the session brief (`references/briefs.md`) to `.claude/briefs/<goal>.md` in the root's
-   checkout, and set State to `brief ready`. On the goal's last task, the brief has a Sync
-   section. If the root's `.gitignore` doesn't list `.claude/briefs/`, add the line on the task's
-   branch first.
+1. Write the session brief (`references/briefs/session-brief.md`) to `.claude/briefs/<goal>.md`
+   in the root's checkout, and set State to `brief ready`. On the goal's last task, the brief has a
+   Sync section. If the root's `.gitignore` doesn't list `.claude/briefs/`, add the line on the
+   task's branch first.
 2. Show it, and wait for the architect. **[touch 2]**
    - **Accept**: continue with SHIP. On the goal's last task, accepting also authorizes the sync
      and the staging its Sync section shows.
@@ -177,7 +177,8 @@ Each command that changes git or remote state runs in its own tool call, after t
 succeeds: commit, branch, checkout or switch, merge, rebase, tag, push, `marathon publish`,
 `marathon merge`, `marathon checks`, and `gh` writes. Read-only commands may be chained. Before
 each commit, confirm the checkout is on the session's branch, or the root's default branch for
-goal-record bookkeeping; otherwise, stop and report. Each commit stages explicit paths.
+goal-record bookkeeping; otherwise, stop and report. Each commit stages explicit paths, never
+everything.
 
 ## How each command uses the pipeline
 

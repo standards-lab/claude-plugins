@@ -21,9 +21,10 @@ Version: 0.22.0
 
 marathon is a workflow for long-running development. Each session takes one task of an active goal
 from an approved plan to merged work, and the tasks add up to a production-quality version of the
-original concept. The project's written context lives in a top-level `context/` directory, which
-every task keeps current, so the context window holds the task instead of stale notes. The
-repository is the source of truth, not an issue tracker and not the conversation.
+original concept. The architect approves the task brief and accepts the session brief; agents do
+the rest. The project's written context lives in a top-level `context/` directory, which every
+task keeps current, so the context window holds the task instead of stale notes. The repository
+is the source of truth, not an issue tracker and not the conversation.
 
 Use this skill whenever a session begins, advances, pauses, resumes, or ends on a marathon
 repository: one with a top-level `context/`, or a workspace of such repositories. Set up a new
@@ -83,7 +84,8 @@ Read each reference when its subject comes up:
   maintaining the notes in `context/`.
 - [`references/build.md`](./references/build.md): checks, slices, the build loop, escalation,
   and handoff.
-- [`references/briefs.md`](./references/briefs.md): every format the architect reads.
+- [`references/briefs.md`](./references/briefs.md) and
+  [`references/briefs/`](./references/briefs/): every format the architect reads.
 - [`references/workspace-coordination.md`](./references/workspace-coordination.md): the
   coordinator, the dependency order, and steps that span repositories.
 - [`references/manifest.md`](./references/manifest.md): the roadmap index and goal files. Read it

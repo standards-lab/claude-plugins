@@ -13,14 +13,16 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 - no plugin's markdown contains an `@`-include line, which Claude Code expands only in CLAUDE.md
 - the `./` and `../` links in the plugins' markdown resolve
 - the backtick file citations in the plugins' markdown resolve, including `${CLAUDE_PLUGIN_ROOT}`
-  paths and paths another plugin owns, as in marathon's `references/briefs.md`. A bare path counts
-  as a citation only when its first segment is a directory in a plugin or skill root; a first
-  segment one edit from such a directory fails as a typo. A citation inside a skill also resolves
-  against its plugin's root, and a CHANGELOG's released sections are skipped.
+  paths and paths another plugin owns, as in marathon's `references/briefs/plan-round.md`. A bare
+  path counts as a citation only when its first segment is a directory in a plugin or skill root; a
+  first segment one edit from such a directory fails as a typo. A citation inside a skill also
+  resolves against its plugin's root, and a CHANGELOG's released sections are skipped.
 - each command playbook has exactly one "Read first" line
 - each command's read-first set and each agent profile stay within the word budget recorded in
   `scripts/budgets.txt`. A command's set is its skill's SKILL.md, the playbook, and every file
   reached through "Read first" lists from there. A file with no budget fails.
+- each command's read-first set contains every brief file (`references/briefs.md` or a file
+  under `references/briefs/`) that its playbook, or a brief format in the set, cites
 - each skill description is at most 1,024 characters
 - each skill whose description calls it a marathon extension declares `user-invocable: false`
 - each marketplace source points to a plugin

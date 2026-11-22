@@ -15,6 +15,7 @@ planned spikes. When `experiment.<topic>` already exists, stop: a later spike is
 Read first, before acting:
 
 - [`./plan.md`](./plan.md), and the files in its Read first list
+- [`../references/briefs/answer-section.md`](../references/briefs/answer-section.md)
 
 ## Rounds
 
@@ -40,7 +41,7 @@ At the coordinator, in one commit on an `experiment-<topic>` branch:
   is none. The experiment goal is never listed in the arrays.
 - Create the note the experiment cites, or extend it when it exists, with an
   `## Answers · experiment.<topic>` heading under which the spikes' answer sections land
-  (`references/briefs.md`, "Answer section").
+  (`references/briefs/answer-section.md`).
 - Create a file for each spike, a sub-goal with its `root` and `repos` set to its repository, its
   `remote` and `path`, and a summary of its question and the decision it changes
   (`references/manifest.md`). Append the spikes to `planned` in the settled order.
@@ -52,5 +53,5 @@ The architect then sets up each spike with `plan experiment.<topic>.<spike>`, wh
 repository (`commands/plan.md`, "Spike setup"), and runs it with `start`. The spike's last task
 writes its answer under "The answer" in the spike's `context/README.md`, its session brief gives
 the answer, and its sync lands an answer section in the note the experiment cites and proposes
-the next planned spike to stage (`references/briefs.md`, "Answer section"; `mechanics/goals.md`,
+the next planned spike to stage (`references/briefs/answer-section.md`; `mechanics/goals.md`,
 "Sync").

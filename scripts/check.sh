@@ -5,12 +5,14 @@
 # it defines no link references, the marketplace sources resolve, claude validates every plugin and
 # the marketplace (a missing claude fails the check), the plugins' markdown outside eval results
 # has no @-include lines and its links and backtick file citations resolve, the word budgets in
-# scripts/budgets.txt hold, every skill description fits in 1,024 characters, every marathon
-# extension skill declares user-invocable: false, no tracked file is Python (a .py file or one
-# with a python shebang), the Go module in marathon/ passes the Go check (build, vet, gofmt, go
-# fix, go mod tidy, go test -race, and golangci-lint, with GOWORK=off), lint-context and
-# lint-references, built from marathon/ by scripts/build.sh, pass, and scripts/tests pass: its
-# node --test files, given that build's directory as MARATHON_BUILD, and its *.test.sh scripts.
+# scripts/budgets.txt hold, each command's read-first set holds every brief rules or format file
+# that its playbook or a brief format in the set cites, every skill description fits in 1,024
+# characters, every marathon extension skill declares user-invocable: false, no tracked file is
+# Python (a .py file or one with a python shebang), the Go module in marathon/ passes the Go check
+# (build, vet, gofmt, go fix, go mod tidy, go test -race, and golangci-lint, with GOWORK=off),
+# lint-context and lint-references, built from marathon/ by scripts/build.sh, pass, and
+# scripts/tests pass: its node --test files, given that build's directory as MARATHON_BUILD, and
+# its *.test.sh scripts.
 set -uo pipefail
 
 fail=0
@@ -213,14 +215,50 @@ within_budget() {
   fi
 }
 
+relative_links_and_backtick_paths() {
+  awk '
+    /^[ \t]*(```|~~~)/ { in_fenced_code = !in_fenced_code; next }
+    in_fenced_code { next }
+    {
+      line = $0
+      while (match(line, /\]\(\.\.?\/[^)#]+/)) {
+        print "file\t" substr(line, RSTART + 2, RLENGTH - 2)
+        line = substr(line, RSTART + RLENGTH)
+      }
+      line = $0
+      while (match(line, /`[^`]+`/)) {
+        span = substr(line, RSTART + 1, RLENGTH - 2)
+        line = substr(line, RSTART + RLENGTH)
+        if (span ~ /^\.\.?\//) print "file\t" span
+        else if (span ~ /\//) print "skill\t" span
+      }
+    }
+  ' "$1"
+}
+
+cited_briefs_files() {
+  local file=$1 skill_root=$2 relative_to target cited
+  while IFS=$'\t' read -r relative_to target; do
+    if [ "$relative_to" = file ]; then
+      cited=$(realpath -m --relative-to=. "$(dirname "$file")/$target")
+    else
+      cited=$(realpath -m --relative-to=. "$skill_root/$target")
+    fi
+    case $cited in
+      "$skill_root/references/briefs.md" | "$skill_root"/references/briefs/*.md) echo "$cited" ;;
+    esac
+  done < <(relative_links_and_backtick_paths "$file")
+}
+
 for playbook in plugins/*/skills/*/commands/*.md; do
   read_first_lines=$(grep -c '^Read first' "$playbook")
   [ "$read_first_lines" -eq 1 ] ||
     err "$playbook: has $read_first_lines \"Read first\" lines;" \
       "give it exactly one \"Read first, before acting:\" list"
+  skill_root=$(dirname "$(dirname "$playbook")")
   declare -A seen=()
   queue=("$playbook")
-  read_first_set=("$(dirname "$(dirname "$playbook")")/SKILL.md")
+  read_first_set=("$skill_root/SKILL.md")
   while [ ${#queue[@]} -gt 0 ]; do
     file=${queue[0]}
     queue=("${queue[@]:1}")
@@ -232,6 +270,24 @@ for playbook in plugins/*/skills/*/commands/*.md; do
     done < <(read_first_list_links "$file")
   done
   within_budget "$playbook" "${read_first_set[@]}"
+
+  [ -d "$skill_root/references/briefs" ] || continue
+  declare -A reported=()
+  for citing in "${read_first_set[@]}"; do
+    if [ "$citing" = "$playbook" ]; then
+      cites="cites"
+    elif [[ $citing == "$skill_root"/references/briefs/* ]]; then
+      cites="its ${citing#"$skill_root"/} cites"
+    else
+      continue
+    fi
+    while read -r cited; do
+      [ -z "${seen[$cited]:-}" ] && [ -z "${reported[$cited]:-}" ] || continue
+      reported[$cited]=1
+      err "$playbook: $cites ${cited#"$skill_root"/}, which its read-first set lacks;" \
+        "add it to its Read first list"
+    done < <(cited_briefs_files "$citing" "$skill_root")
+  done
 done
 
 for profile in plugins/*/agents/*.md; do
