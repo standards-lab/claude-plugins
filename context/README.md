@@ -30,16 +30,15 @@ repository is developed with marathon, so the workflow runs against its own sour
 - **marathon-references** (planned): a proposed extension that holds the references catalog.
   See [marathon-references-extension.md](marathon-references-extension.md).
 - **Repository access** (planned): a goal locks only its root, holding its other repositories
-  while they are off their default branch, and each command reads only the brief formats it
-  writes ([repo-access.md](repo-access.md)).
+  while they are off their default branch ([repo-access.md](repo-access.md)).
 - **Tooling layer** (planned): deterministic tools the skills call in place of procedure written
   as prose. See [tool-based-skills.md](tool-based-skills.md).
 - **Harness testing** (built): `scripts/check.sh` runs on every push. It checks the plugins'
   versions, CHANGELOG headings, links, citations, word budgets, the brief formats each Read first
   list must name, and manifests, fails on any tracked Python file, and runs the Go check over the
   `marathon/` module, the `lint-context` and `lint-references` it builds, and the tests in
-  `scripts/tests/`. Each failure message names its fix. Before each tag, the release gate, `scripts/gate.sh`, runs the check, cross-builds
-  marathon's release binaries for a marathon tag, and runs the plugin's `claude plugin eval`
+  `scripts/tests/`. Each failure message names its fix. Before each tag, the release gate,
+  `scripts/gate.sh`, runs the check, cross-builds marathon's release binaries for a marathon tag, and runs the plugin's `claude plugin eval`
   suite. marathon's suite has one case, drawn from an observed failure. See
   [harness-testing.md](harness-testing.md).
 - **Marketplace host** (built): the marketplace manifest,

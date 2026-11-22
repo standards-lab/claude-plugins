@@ -71,7 +71,7 @@ Two-way: no tag. Files move within the plugin, and nothing outside claude-plugin
 
 ## Progress
 
-slices 0/4 committed · standards — · spec — · editor —
+slices 4/4 committed (gate eval pending) · standards ✓ (2 fixes) · spec ✓ (no gaps) · editor ✓
 
 ## Decisions
 
@@ -79,11 +79,10 @@ slices 0/4 committed · standards — · spec — · editor —
   ci-awareness and review-findings tag nothing.
 - shared-repos: moves claude-plugins' own configuration to `[remote] checks` with the release,
   since the installed 0.22.0 copy and binary don't know the key.
-- read-first-split: the rules every brief format shares stay in `references/briefs.md`; each
-  format is its own file under `references/briefs/`.
-- read-first-split: init.md's cut currency and gate details stay cut, since
-  `mechanics/configuration.md` states them; init's budget stays 3800.
+- read-first-split: a read-first budget sits at its set's size rounded up to the next hundred, and
+  rises only when the architect approves, with the reason in the CHANGELOG's Unreleased entry.
 
 ## Pending edits
 
-None.
+- coordinator · roadmap/marathon.repo-access.toml: end the `review-findings` summary's first
+  sentence with "and the stale read-first sizes in claude-plugins' `harness-optimization.md`".

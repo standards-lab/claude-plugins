@@ -22,9 +22,9 @@ waits on that command only where it is set. A repository without CI merges direc
 - **init asks about CI** (`skills/marathon/commands/init.md`). The Remote decision asks whether
   the repository runs CI on pull requests, and writes `checks` when it does.
 - **This repository's check requires each cited brief format.** `scripts/check.sh` fails when a
-  playbook, or a brief format in its read-first set, cites `references/briefs.md` or a file under
-  `references/briefs/` that the playbook's read-first set lacks, and names the file to add to its
-  Read first list. `experiment`'s Read first list adds the answer section it cites.
+  playbook's read-first set lacks a brief file, `references/briefs.md` or one under
+  `references/briefs/`, that the playbook or a format in the set cites. The failure names the file
+  to add to the playbook's Read first list. `experiment`'s list adds the answer section it cites.
 
 ### Changed
 
@@ -56,8 +56,8 @@ waits on that command only where it is set. A repository without CI merges direc
   its stages; the shared brief rules say agents look up facts and the architect makes decisions;
   and each commit stages explicit paths, never everything.
 - **This repository's read-first budgets drop to the split's sizes** (`scripts/budgets.txt`).
-  experiment 8600, intake 8700, plan 7900, retro 4500, start 7800, and status 3500; init and
-  reset keep 3800 and 4600.
+  The new budgets are experiment 8600, intake 8700, plan 7900, retro 4500, start 7800, and status
+  3500; init and reset keep 3800 and 4600.
 
 ### Migrating from 0.22.0
 
