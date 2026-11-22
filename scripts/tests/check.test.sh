@@ -221,18 +221,20 @@ test_budget_messages_give_the_budget_to_record() {
 }
 
 test_budget_above_its_rounded_size_fails() {
-  local reviewer=plugins/marathon/agents/spec-reviewer.md reviewer_words
-  reviewer_words=$(wc -w <"$root/$reviewer")
-  replace scripts/budgets.txt "$reviewer 300"$'\n' "$reviewer 400"$'\n'
+  local reviewer=plugins/marathon/agents/spec-reviewer.md words rounded
+  words=$(wc -w <"$root/$reviewer")
+  rounded=$(((words + 99) / 100 * 100))
+  replace scripts/budgets.txt "$reviewer $rounded"$'\n' "$reviewer $((rounded + 100))"$'\n'
   run_check
-  expect 1 "FAIL: $reviewer: $reviewer_words words, its budget of 400 in scripts/budgets.txt sits\
- above its size rounded up to the next hundred; lower the budget to 300"
+  expect 1 "FAIL: $reviewer: $words words, its budget of $((rounded + 100)) in\
+ scripts/budgets.txt sits above its size rounded up to the next hundred; lower the budget to\
+ $rounded"
 }
 
 test_budget_at_its_rounded_size_passes() {
-  local implementer=plugins/marathon/agents/implementer.md implementer_words
-  implementer_words=$(wc -w <"$root/$implementer")
-  append "$implementer" "$(printf ' word%.0s' $(seq $((300 - implementer_words))))"$'\n'
+  local implementer=plugins/marathon/agents/implementer.md words
+  words=$(wc -w <"$root/$implementer")
+  append "$implementer" "$(printf ' word%.0s' $(seq $(((words + 99) / 100 * 100 - words))))"$'\n'
   run_check
   expect 0
 }
