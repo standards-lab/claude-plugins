@@ -1,15 +1,15 @@
 # goal · marathon.repo-access
 
-- **State:** building
-- **Task:** shared-repos
-- **Branch:** shared-repos
+- **State:** idle
+- **Task:** none
+- **Branch:** none
 
 ## Tasks
 
 1. [x] ci-awareness
 2. [x] read-first-split
 3. [x] review-findings
-4. [ ] shared-repos
+4. [x] shared-repos
 
 ## Task brief · shared-repos
 
@@ -101,10 +101,6 @@ the plugins. Everything before tagging is two-way.
 **Release**
 
 `marathon/v0.23.0`, `marathon-architecture/v0.4.1`
-
-## Progress
-
-slices 6/6 committed · standards ✓ · spec ✓ (1 gap closed) · editor ✓
 
 ## Decisions
 
