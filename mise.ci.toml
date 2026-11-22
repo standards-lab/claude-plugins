@@ -1,5 +1,5 @@
-# The tools CI adds to mise.toml's, read only where MISE_ENV=ci is set, so a session run from a
-# developer's machine keeps its own claude.
+# The tools CI adds to mise.toml's, read only where MISE_ENV=ci is set.
 # See architecture/principles/rolling-currency.md
+# See context/harness-testing.md
 [tools]
 claude-code = "2.1.330"
