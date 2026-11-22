@@ -104,7 +104,7 @@ the plugins. Everything before tagging is two-way.
 
 ## Progress
 
-slices 0/6 committed · standards — · spec — · editor —
+slices 6/6 committed · standards — · spec — · editor —
 
 ## Decisions
 

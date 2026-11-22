@@ -7,7 +7,7 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
-## Unreleased
+## v0.23.0
 
 A repository declares whether it runs CI on pull requests with `[remote] checks`, and every merge
 waits on that command only where it is set. A repository without CI merges directly; a

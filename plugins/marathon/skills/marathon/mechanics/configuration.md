@@ -61,7 +61,7 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
 
   ```toml
   [tools]
-  "github:standards-lab/claude-plugins" = { version = "0.22.0", version_prefix = "marathon/v" }
+  "github:standards-lab/claude-plugins" = { version = "0.23.0", version_prefix = "marathon/v" }
   ```
 
   CI calls both after `mise install`.
