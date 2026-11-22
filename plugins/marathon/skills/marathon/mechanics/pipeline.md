@@ -1,8 +1,8 @@
 # Session pipeline
 
-A session involves the architect twice: approving the task brief, which starts BUILD, and
-accepting the session brief, which authorizes publishing and merging. Agents do everything in
-between.
+A marathon session takes one task of one active goal from plan to merged work. It involves the
+architect twice: approving the task brief, which starts BUILD, and accepting the session brief,
+which authorizes publishing and merging. Agents do everything in between.
 
 ```
 PLAN   architect ⇄ planner, in rounds → task brief + slices     ✔ approve           [touch 1]
@@ -12,8 +12,8 @@ BRIEF  session brief                                             ✔ accept / re
 SHIP   commit the goal record → publish (body = brief) → merge → tag if Release → sync if last
 ```
 
-Extension hooks fire only at the points this file, `mechanics/resume.md`, and
-`mechanics/releasing.md` name (`mechanics/hooks.md`).
+Each playbook under `commands/` says which stages it runs. Extension hooks fire only at the points
+this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/hooks.md`).
 
 ## Stages
 
@@ -177,7 +177,8 @@ Each command that changes git or remote state runs in its own tool call, after t
 succeeds: commit, branch, checkout or switch, merge, rebase, tag, push, `marathon publish`,
 `marathon merge`, `marathon checks`, and `gh` writes. Read-only commands may be chained. Before
 each commit, confirm the checkout is on the session's branch, or the root's default branch for
-goal-record bookkeeping; otherwise, stop and report. Each commit stages explicit paths.
+goal-record bookkeeping; otherwise, stop and report. Each commit stages explicit paths, never
+everything.
 
 ## How each command uses the pipeline
 
