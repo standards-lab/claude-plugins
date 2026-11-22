@@ -7,8 +7,9 @@
 ## Tasks
 
 1. [x] ci-awareness
-2. [ ] review-findings
-3. [ ] shared-repos
+2. [ ] read-first-split
+3. [ ] review-findings
+4. [ ] shared-repos
 
 ## Decisions
 
@@ -19,8 +20,4 @@
 
 ## Pending edits
 
-- coordinator · roadmap/marathon.repo-access.toml: add task `read-first-split` before
-  `review-findings` in `order`: split `references/briefs.md` into one file per format, each
-  command's Read first list naming only the formats it writes; a check that every command lists
-  each format it writes; re-baselined budgets; the gate's eval run; restore the sentences
-  ci-awareness cut for budget where the room allows.
+None.
