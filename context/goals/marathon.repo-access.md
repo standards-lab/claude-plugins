@@ -73,7 +73,7 @@ Two-way. The task tags nothing, and installed copies don't change until the goal
 
 ## Progress
 
-slices 3/4 committed · standards — · spec — · editor —
+slices 4/4 committed · standards — · spec — · editor —
 
 ## Decisions
 
