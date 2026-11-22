@@ -3,8 +3,8 @@
 The rules every format shares are in [`../briefs.md`](../briefs.md).
 
 `status` prints a table with one row per active goal: the goal, its tasks done out of its total,
-its state, and the repositories it locks (`commands/status.md`, step 4). Goals that need the
-architect sort first and carry a `!`.
+its state, and its root and each other repository it holds (`commands/status.md`, step 4). Goals
+that need the architect sort first and carry a `!`.
 
 > ## Status · 2026-10-01
 >
