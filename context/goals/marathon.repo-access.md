@@ -1,8 +1,8 @@
 # goal · marathon.repo-access
 
-- **State:** idle
-- **Task:** none
-- **Branch:** none
+- **State:** building
+- **Task:** ci-awareness
+- **Branch:** ci-awareness
 
 ## Tasks
 
@@ -70,6 +70,10 @@ remote operations into one tool call fail more often than the architect accepts.
 **Door**
 
 Two-way. The task tags nothing, and installed copies don't change until the goal's release.
+
+## Progress
+
+slices 0/4 committed · standards — · spec — · editor —
 
 ## Decisions
 
