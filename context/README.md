@@ -24,7 +24,9 @@ repository is developed with marathon, so the workflow runs against its own sour
 - **harness.optimization** (built): marathon checks its rules instead of describing them. Its
   `lint-context` holds each repository's `context/` and `roadmap/` to their file kinds, word
   budgets, and shapes, and its `lint-references` resolves the markdown references in comments.
-  See [harness-optimization.md](harness-optimization.md).
+  Both are Go commands in the [`marathon/` module](../marathon/cmd/), and each repository's
+  `[project] check` runs them (marathon's
+  [`mechanics/configuration.md`](../plugins/marathon/skills/marathon/mechanics/configuration.md)).
 - **marathon-extraction** (planned): carries patterns a consumer proves back to the blueprint.
   See [marathon-extraction.md](marathon-extraction.md).
 - **marathon-references** (planned): a proposed extension that holds the references catalog.
