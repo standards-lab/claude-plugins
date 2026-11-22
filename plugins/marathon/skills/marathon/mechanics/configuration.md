@@ -13,7 +13,8 @@ gate     = "mise run gate"
 [remote]
 platform = "github"
 publish  = "gh pr create"
-merge    = "gh pr checks --watch && gh pr merge --merge --delete-branch"
+checks   = "gh pr checks --watch"
+merge    = "gh pr merge --merge --delete-branch"
 ci       = '''
 sha=$(git rev-parse HEAD)
 for _ in $(seq 30); do
@@ -79,15 +80,16 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   argument, as in `mise run gate v1.4.0` (`mechanics/releasing.md`). It exits 0 when the tag may
   be pushed, and nonzero to hold it. CI never runs it. marathon fixes only this contract and
   prescribes no tool.
-- **`[remote]`**: the platform, the command SHIP runs to publish a branch, and optionally the
-  command it runs to merge the published branch once its checks pass.
+- **`[remote]`**: the platform, and the commands SHIP runs to publish a branch and, optionally,
+  to merge it.
+- **`[remote] checks`**: optional, for a repository that runs CI on pull requests. A command that
+  waits for the pull request's checks and exits nonzero if one fails. Every merge runs it first.
 - **`[remote] ci`**: optional. A command that waits for the default branch's CI runs on the merge
   commit, with that commit checked out, and exits nonzero if one fails or none starts. CI often
   runs more after a merge than on the pull request, such as integration tests only on the default
-  branch, so the merge command's wait on the pull request's checks isn't enough. The runs can take
-  a few seconds to appear after the merge, so the command polls for them first, as the example's
-  does. SHIP runs it before tagging a release; without it, tagging follows the merge directly
-  (`mechanics/releasing.md`).
+  branch. Runs take a few seconds to appear, so the command polls for them first, as the
+  example's does. SHIP runs it before tagging a release; without it, tagging follows the merge
+  directly (`mechanics/releasing.md`).
 - **`[workspace]`**: for the coordinator only. `order` lists layers, lowest first, and an array
   entry is a layer of peers. `exclusive` lists groups of repositories that at most one active goal
   may touch at a time, narrowing the repository lock (`mechanics/goals.md`). `[workspace.paths]`
@@ -99,10 +101,11 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
 
 ## Running a command
 
-`marathon <key> [args]` runs the `check`, `currency`, `gate`, `publish`, `merge`, or `ci` command
-above, and is on PATH in a session beside `lint-context` and `lint-references`. It reads
-`.claude/marathon.toml` at the root of the git repository it runs in, and runs the key's value
-with bash from that root, exactly as declared. A single-line command gets the arguments appended,
-each shell-quoted, as in `marathon gate v1.4.0`. A multi-line command, such as `ci`, runs as one
-script and gets them as its positional parameters. `marathon` exits with the command's status. An
-unset or unknown key fails with the fix, such as "set [remote] merge in .claude/marathon.toml".
+`marathon <key> [args]` runs the `check`, `currency`, `gate`, `publish`, `checks`, `merge`, or
+`ci` command above, and is on PATH in a session beside `lint-context` and `lint-references`. It
+reads `.claude/marathon.toml` at the root of the git repository it runs in, and runs the key's
+value with bash from that root, exactly as declared. A single-line command gets the arguments
+appended, each shell-quoted, as in `marathon gate v1.4.0`. A multi-line command, such as `ci`,
+runs as one script and gets them as its positional parameters. `marathon` exits with the command's
+status. An unset or unknown key fails with the fix, such as "set [remote] merge in
+.claude/marathon.toml".

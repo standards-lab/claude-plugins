@@ -12,8 +12,8 @@ BRIEF  session brief                                             ✔ accept / re
 SHIP   commit the goal record → publish (body = brief) → merge → tag if Release → sync if last
 ```
 
-Each playbook under `commands/` says which stages it runs. Extension hooks fire only at the points
-this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/hooks.md`).
+Extension hooks fire only at the points this file, `mechanics/resume.md`, and
+`mechanics/releasing.md` name (`mechanics/hooks.md`).
 
 ## Stages
 
@@ -120,10 +120,10 @@ coordinator during BUILD. When the context fills, hand off (`references/build.md
 4. Publish each touched repository's branch with `marathon publish`, lowest layer first, using
    the brief file as the body (for GitHub, `--body-file`). A repository with no
    `[remote] publish` merges its branch locally instead ("Branches and pull requests").
-5. Merge each one with `marathon merge`, lowest layer first, once its checks pass. Without a
-   merge command, or when a check fails, set State to `handoff` with the next move
-   ("merge" or the failing check), commit it on the branch, tell the architect, and stop. When
-   the task brief has a Release line, merge and tag one repository at a time instead
+5. Merge each one, lowest layer first, with `marathon checks` where `checks` is set, then
+   `marathon merge`. Without a merge command, or when a check fails, set State to `handoff` with
+   the next move ("merge" or the failing check), commit it on the branch, tell the architect, and
+   stop. When the task brief has a Release line, merge and tag one repository at a time instead
    (`mechanics/releasing.md`).
 6. Switch each repository back to its default branch, pull, and delete the local task branch,
    where Releasing hasn't already. Delete the brief file.
@@ -151,10 +151,10 @@ request, in each repository it changes.
 
 Each branch starts from the freshly pulled default branch. The architect's approval of the
 outcome, the session brief, or the ticked findings authorizes publishing and merging. Each
-repository publishes with `marathon publish` and merges with `marathon merge` once its checks
-pass, lowest layer first, then switches back to its default branch, pulls, and deletes the local
-branch. A merge that can't happen leaves the branch checked out,
-which holds the repository until it merges: tell the architect and stop.
+repository, lowest layer first, publishes with `marathon publish`, runs `marathon checks` where
+`checks` is set, merges with `marathon merge`, switches back to its default branch, pulls, and
+deletes the local branch. A merge that can't happen leaves the branch checked out, which holds the
+repository until it merges: tell the architect and stop.
 
 A project with no `[remote] publish` branches the same way and, once the architect approves,
 merges the branch locally into its default branch. A standalone project's own manifest, notes,

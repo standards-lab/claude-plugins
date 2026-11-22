@@ -7,6 +7,42 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
+## Unreleased
+
+A repository declares whether it runs CI on pull requests with `[remote] checks`, and every merge
+waits on that command only where it is set. A repository without CI merges directly, where a
+`gh pr checks --watch` in its merge command failed for want of checks.
+
+### Added
+
+- **`[remote] checks`** (`skills/marathon/mechanics/configuration.md`). An optional key: the
+  command that waits for a published pull request's checks, such as `gh pr checks --watch`.
+  `marathon checks` runs it like the other keys, and fails with "set [remote] checks in
+  .claude/marathon.toml" when it isn't set.
+- **init asks about CI** (`skills/marathon/commands/init.md`). The Remote decision asks whether
+  the repository runs CI on pull requests, and writes `checks` when it does.
+
+### Changed
+
+- **Every merge runs `marathon checks` first where `checks` is set**
+  (`skills/marathon/mechanics/pipeline.md`, `skills/marathon/mechanics/releasing.md`). SHIP's
+  merge step, each merge in "Branches and pull requests", and a release's merge step run
+  `marathon checks` before `marathon merge`. A failing check goes to `handoff` as before. A
+  repository without `checks` merges directly.
+- **The configuration example splits the wait from the merge**
+  (`skills/marathon/mechanics/configuration.md`). It sets `checks = "gh pr checks --watch"` and
+  `merge = "gh pr merge --merge --delete-branch"`. `[remote] ci` stays the wait on the default
+  branch's CI after the merge, which only releasing runs.
+- **Merge danger names each repository's CI wait** (`skills/marathon/references/briefs.md`). The
+  session brief's Merge danger line says, for each repository, whether its merge waits on CI.
+
+### Migrating from 0.22.0
+
+1. In a repository whose `[remote] merge` waits on CI, move the wait into its own key: set
+   `checks = "gh pr checks --watch"` in `.claude/marathon.toml` and drop
+   `gh pr checks --watch && ` from `merge`. A repository without CI on pull requests leaves
+   `checks` unset.
+
 ## v0.22.0
 
 The format hook rewraps a marathon format on screen as the reply streams, so the model no longer
