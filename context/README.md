@@ -12,8 +12,8 @@ repository is developed with marathon, so the workflow runs against its own sour
   Goals and tasks in the roadmap manifest are the units of work. PLAN runs each repository's
   optional `currency` command first, so a task begins by upgrading what trails, and SHIP waits on
   a pull request's checks only where `[remote] checks` declares CI, and runs an optional release
-  gate before each tag. Each step that runs a configured command calls the
-  plugin's `marathon` command, which runs it exactly as declared. Its design lives in
+  gate before each tag. Each step that runs a configured command calls the plugin's `marathon`
+  command, which runs it exactly as declared. Its design lives in
   [plugins/marathon](../plugins/marathon/), and its tools are Go commands in the
   [`marathon/` module](../marathon/).
 - **marathon-architecture** (built): the extension that finds the architecture layer each
@@ -24,7 +24,9 @@ repository is developed with marathon, so the workflow runs against its own sour
 - **harness.optimization** (built): marathon checks its rules instead of describing them. Its
   `lint-context` holds each repository's `context/` and `roadmap/` to their file kinds, word
   budgets, and shapes, and its `lint-references` resolves the markdown references in comments.
-  See [harness-optimization.md](harness-optimization.md).
+  Both are Go commands in the [`marathon/` module](../marathon/cmd/), and each repository's
+  `[project] check` runs them (marathon's
+  [`mechanics/configuration.md`](../plugins/marathon/skills/marathon/mechanics/configuration.md)).
 - **marathon-extraction** (planned): carries patterns a consumer proves back to the blueprint.
   See [marathon-extraction.md](marathon-extraction.md).
 - **marathon-references** (planned): a proposed extension that holds the references catalog.
@@ -38,9 +40,9 @@ repository is developed with marathon, so the workflow runs against its own sour
   list must name, and manifests, fails on any tracked Python file, and runs the Go check over the
   `marathon/` module, the `lint-context` and `lint-references` it builds, and the tests in
   `scripts/tests/`. Each failure message names its fix. Before each tag, the release gate,
-  `scripts/gate.sh`, runs the check, cross-builds marathon's release binaries for a marathon tag, and runs the plugin's `claude plugin eval`
-  suite. marathon's suite has one case, drawn from an observed failure. See
-  [harness-testing.md](harness-testing.md).
+  `scripts/gate.sh`, runs the check, cross-builds marathon's release binaries for a marathon tag,
+  and runs the plugin's `claude plugin eval` suite. marathon's suite has one case, drawn from an
+  observed failure. See [harness-testing.md](harness-testing.md).
 - **Marketplace host** (built): the marketplace manifest,
   [.claude-plugin/marketplace.json](../.claude-plugin/marketplace.json), with each plugin
   versioned and released on its own.
@@ -49,8 +51,6 @@ repository is developed with marathon, so the workflow runs against its own sour
 
 ## How this repository works
 
-- Each plugin's design lives in its own files under `plugins/<name>/`, not in `context/`.
-  `scripts/check.sh` verifies that every pointer inside them resolves.
-- Notes for planned work sit directly under `context/`. A goal rooted here keeps its record in
-  `context/goals/<goal>.md` while it is active; the workspace roadmap is at the coordinator
-  (standards-lab).
+Notes for planned work sit directly under `context/`. A goal rooted here keeps its record in
+`context/goals/<goal>.md` while it is active; the workspace roadmap is at the coordinator
+(standards-lab).

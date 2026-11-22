@@ -21,6 +21,8 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 - each command's read-first set and each agent profile stay within the word budget recorded in
   `scripts/budgets.txt`. A command's set is its skill's SKILL.md, the playbook, and every file
   reached through "Read first" lists from there. A file with no budget fails.
+- no word budget in `scripts/budgets.txt` sits above its read-first set's or profile's size
+  rounded up to the next hundred
 - each command's read-first set contains every brief file (`references/briefs.md` or a file
   under `references/briefs/`) that its playbook, or a brief format in the set, cites
 - each skill description is at most 1,024 characters
@@ -35,10 +37,12 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 - the tests in `scripts/tests/` pass: `node --test` files for the eval graders' patterns, and bash
   scripts for the check, the `bin/` shims, the gate, and the release build
 
-CI installs the exact versions `mise.toml` pins, Claude Code and Go among them, and
-`scripts/currency.sh` reports, through `mise outdated`, a pin that trails its latest release. The
-check is deterministic and runs no model. Each failure message names what to change for the check
-to pass.
+CI installs the exact versions that `mise.toml` and `mise.ci.toml` pin. mise reads `mise.ci.toml`
+only where `MISE_ENV=ci` is set, which CI's workflow (`.github/workflows/ci.yml`) does and a
+developer's machine doesn't. Claude Code is pinned in `mise.ci.toml` alone, so a session run from a
+developer's machine keeps its own claude. `scripts/currency.sh` reports any tool or GitHub Action
+pin that trails its latest release. The check is deterministic and runs no model. Each failure
+message names what to change for the check to pass.
 
 ## Per release: the gate
 
@@ -83,13 +87,12 @@ skips it. Each suite's `results/` is gitignored.
 ## The seed case
 
 `plan-round-in-reply` runs `start` on a task whose note leaves two independent decisions open, and
-grades the final reply with six graders:
+grades the final reply with five graders:
 
 - AskUserQuestion is never called.
 - The reply contains `PLAN ROUND 1`.
 - The round doesn't sit inside a code fence.
-- No line of the round exceeds 100 characters.
-- At least two numbered questions each carry a `rec:` line and a `changes:` line.
+- At least one numbered question carries a `rec:` line and then a `changes:` line.
 - No numbered question points outside itself with "above", "below", "option" and a capital
   letter, "Facts found", "see the plan file", or "details to follow". Its `node --test` test runs
   the pattern on the stored rounds in `scripts/tests/fixtures/plan-rounds/`.
@@ -103,9 +106,9 @@ The case comes from marathon 0.16 sessions in which the architect rejected round
 AskUserQuestion headlines, and a question asked without its context.
 
 The case checks the round's shape in the reply, not the original failure. `claude plugin eval`
-2.1.289 runs each case as `claude -p --permission-mode dontAsk` with no permission-prompt tool,
-which drops AskUserQuestion, EnterPlanMode, and ExitPlanMode, so the AskUserQuestion grader
-passes whatever the skill does. The grader stays for when eval offers that tool.
+runs each case as `claude -p --permission-mode dontAsk` with no permission-prompt tool, which
+drops AskUserQuestion, EnterPlanMode, and ExitPlanMode, so the AskUserQuestion grader passes
+whatever the skill does. The grader stays for when eval offers that tool.
 
 ## Failures without a case
 

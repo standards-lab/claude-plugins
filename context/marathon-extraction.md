@@ -1,9 +1,11 @@
 # marathon-extraction: carrying proven patterns out of a consumer
 
-marathon-extraction is a planned marathon extension, tracked as `v1.harness.extraction`. It
-records the patterns a consumer of the standard proves, and it carries that record back to the
-blueprint's context and documentation. The consumer can be a workspace member or a repository
-the workspace can never see.
+marathon-extraction is a planned marathon extension, tracked as `v1.harness.extraction`. The
+blueprint is Standards Lab: the organization's architecture and the standards that implement it, as
+the architecture repository's README describes them. A consumer of the standard is a repository
+built to those standards, such as go-web-service. The extension records the patterns a consumer
+proves, and it carries that record back to the blueprint's context and documentation. The consumer
+can be a workspace member or a repository the workspace can never see.
 
 ## The problem it solves
 
@@ -29,7 +31,8 @@ it: a note or a documentation page names the pattern, and a later session builds
 
 The extension has three parts:
 
-- **Capture, on the consumer side.** The consumer enables it in its `marathon.toml`. It owns
+- **Capture, on the consumer side.** The consumer enables it in its `.claude/marathon.toml`, as
+  [`extensions.md`](../plugins/marathon/skills/marathon/references/extensions.md) describes. It owns
   `context/extraction.toml`, a ledger of the patterns the consumer nominates. At `on-ship`, the
   shipping session compares the task's changes with the want-list (below) and with any nomination
   markers, and drafts ledger entries. The architect accepts or rejects each one in the session
@@ -123,5 +126,3 @@ references, and intake are built when a bundle first needs to cross.
   design assumes a bundle and treats the same-machine case as a special case of it.
 - Whether the standard states the marker convention on a per-module page, or each consumer
   chooses its own.
-- How the extension records that it is enabled and which marathon version it targets.
-- Whether adding references belongs to intake or to the references extension that intake calls.

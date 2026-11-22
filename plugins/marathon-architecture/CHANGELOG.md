@@ -4,6 +4,20 @@ All notable changes to the marathon-architecture plugin are documented here. Ver
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html); dates and release links live on the
 GitHub releases the tags cut.
 
+## Unreleased
+
+### Changed
+
+- **A spike's pointer is relative to the architecture repository**
+  (`references/architecture-layer.md`). A spike outside the workspace directory writes its
+  `STANDARDS.md` pointer as `principles/<page>.md`.
+- **A page's claims hold regardless of any other repository's current state**
+  (`references/architecture-layer.md`). What belongs in the layer now includes the
+  self-containment rule: a page may link a repository or tool as an example, but never asserts
+  its current behavior, version, or adoption.
+- **The README links to the layer reference.** Its section on what the layer holds is now a link
+  to `references/architecture-layer.md`, the one place that says it.
+
 ## v0.4.0
 
 ### Changed

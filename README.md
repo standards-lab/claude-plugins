@@ -84,14 +84,19 @@ claude-plugins/
 │   └── marketplace.json         # Host manifest
 ├── .github/
 │   └── workflows/
+│       ├── ci.yml               # Runs scripts/check.sh on every push
 │       └── release.yml          # Tag-triggered release automation
+├── .gitignore                   # Editor files, local plans and briefs, eval results, build output
 ├── CLAUDE.md                    # Agent orientation: the repo is developed under marathon
+├── STANDARDS.md                 # The judgement calls the standards-reviewer applies
 ├── context/                     # marathon working context for the repo itself
 ├── marathon/                    # Go module: the source of marathon's tools
 ├── plugins/
 │   ├── marathon/                # Long-haul development as a software factory
 │   └── marathon-architecture/   # Marathon extension: the architecture layer
-├── mise.toml                    # Development tools, which CI installs
+├── scripts/                     # The check, release gate, build, and currency scripts, with tests
+├── mise.toml                    # Development tools
+├── mise.ci.toml                 # The tools CI adds, read only under MISE_ENV=ci
 ├── LICENSE
 └── README.md
 ```
