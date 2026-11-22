@@ -49,6 +49,15 @@ waits on that command only where it is set. A repository without CI merges direc
   is its own file under `skills/marathon/references/briefs/`, and `references/briefs.md` keeps only
   the rules every format shares. Each command's Read first list names the shared rules and only the
   formats it writes or cites.
+- **Sentences cut for budget return** (`skills/marathon/SKILL.md`,
+  `skills/marathon/mechanics/pipeline.md`, `skills/marathon/references/briefs.md`). SKILL.md
+  says again that the architect approves the task brief and accepts the session brief; the
+  pipeline opens with what a session takes from plan to merged work and says each playbook names
+  its stages; the shared brief rules say agents look up facts and the architect makes decisions;
+  and each commit stages explicit paths, never everything.
+- **This repository's read-first budgets drop to the split's sizes** (`scripts/budgets.txt`).
+  experiment 8600, intake 8700, plan 7900, retro 4500, start 7800, and status 3500; init and
+  reset keep 3800 and 4600.
 
 ### Migrating from 0.22.0
 
