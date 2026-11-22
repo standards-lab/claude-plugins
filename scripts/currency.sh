@@ -3,11 +3,9 @@
 # each, and exits non-zero when it reports any. The pins are the tools in
 # mise.toml and CI's mise.ci.toml, checked by mise outdated, and the GitHub
 # Actions in .github/workflows, checked against the action's latest release tag.
-# A pin is current only when it equals that latest exactly. mise outdated also
-# lists a pinned tool that isn't installed, so an entry with no latest version,
-# or whose latest equals its pin, is not reported. It reads the network
-# through mise and gh and writes nothing; it is a development-time command and CI
-# never runs it.
+# A pin is current only when it equals that latest exactly, and a pin with no
+# latest version is not reported. It reads the network through mise and gh and
+# writes nothing; it is a development-time command and CI never runs it.
 #
 # Each lookup captures its command's output in a variable before reading it, so
 # under set -e a failed lookup fails currency instead of reporting nothing. The
