@@ -17,6 +17,9 @@ is the architecture, with a README in every directory as its index.
   somewhere. Nothing a reader could learn from a repository's source: a page that restates an
   implementation is a defect, reduced to its principle or removed. A principle no code follows
   yet is speculation, and stays a note until code proves it.
+- Only claims that hold regardless of any other repository's current state. A page may link a
+  repository or a tool as an example; it never asserts that repository's or tool's current
+  behavior, version, or adoption as fact.
 - Only what is true now: no changelog, no revision log, and no record of who wrote a page.
 - No project documentation. `docs/` is one repository's guide.
 
@@ -24,7 +27,8 @@ is the architecture, with a README in every directory as its index.
 
 A repository's `STANDARDS.md` holds its judgement calls, one line each, and points to the layer's
 pages that apply, by path: `architecture/principles/<page>.md` in a workspace, relative to the
-workspace, or relative to the repository when standalone. A pointer may narrow the page with a
+workspace, or relative to the repository when standalone. A spike outside the workspace directory
+writes its pointer relative to the architecture repository, as `principles/<page>.md`. A pointer may narrow the page with a
 convention of the repository's own, stated beside it; it never restates the page. A rule a check
 can enforce goes in the check, not in `STANDARDS.md` and not in a page.
 

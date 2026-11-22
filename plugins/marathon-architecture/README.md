@@ -56,9 +56,5 @@ creates it. Requires marathon 0.19.0 or later.
 
 ## What the layer holds
 
-The layer holds only knowledge that applies beyond one repository: a principle, a definition, or a
-convention, and only one that code expresses or a check enforces somewhere. It holds nothing a
-reader could learn from a repository's source, so a page that restates an implementation is a
-defect. A page arrives from validated code: when the same principle holds in more than one
-repository's merged code, `retro` proposes it, and a task writes the page and the `STANDARDS.md`
-pointers to it.
+[`references/architecture-layer.md`](./skills/marathon-architecture/references/architecture-layer.md)
+says what belongs in the layer, how a repository points to it, and how a page arrives.
