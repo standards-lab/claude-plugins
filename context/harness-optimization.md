@@ -1,7 +1,7 @@
 # harness.optimization: marathon checked, not described
 
-`harness.optimization` turns marathon's rules into checks. marathon had carried them as prose,
-and the content it produces outgrew them.
+marathon's rules are checks, not prose. Goal `harness.optimization` turns them into checks, and this
+note holds its sources, what it settled, and the findings it leaves for later.
 
 ## Sources
 
@@ -13,26 +13,7 @@ and the content it produces outgrew them.
 - **Brandon Thomas, "Let's Open Source the World"** (AI Engineer Code 2026). CLI and MCP are
   first-class, and humans review what is hard to reverse. The second point is the backlog task
   `v1.harness.door-scaled-review`.
-- **Matt Pocock, "Fixing the PR Bottleneck"** is the baseline marathon 0.16 adopted. Its retro
-  checks for tool economy and bloat are now marathon `retro`'s tool-economy and instruction-trim
-  findings (task `retro-routes`).
-
-## What the goal measures against
-
-Read these sizes, in words, to judge the work:
-
-- The skill: SKILL.md links each file instead of `@`-including it, and each command's playbook
-  opens with a "Read first" list of the files it needs. `start`'s read-first set, SKILL.md and the
-  playbook included, is 8,246 words against a budget of 8,300. `mechanics/pipeline.md` is about
-  1,980 words, down from 2,715, since Releasing and RESUME moved to their own files.
-- The planner profile: 272 words, down from 554, since profiles cite the skill's rules instead of
-  restating them.
-- The coordinator's roadmap as one file, then `context/roadmap.toml`: 13,353 words over 61 goals
-  and 74 tasks, with no task order and dated lines its format forbids.
-- A long goal record: docproc's `v1.ai.processing` runs to 15,245 words, 12,334 of them
-  Decisions.
-- Spike READMEs that became lab notebooks: `spike-html-conventions`, at 24,678 words.
-- Coordinator notes that carry history: `ai-hosting.md`, at 8,698 words.
+- **Matt Pocock, "Fixing the PR Bottleneck"** is the baseline marathon 0.16 adopted.
 
 ## Settled
 
@@ -50,8 +31,6 @@ Read these sizes, in words, to judge the work:
   claude-plugins' scripts, tests, and configuration files follow it, as its `STANDARDS.md`
   declares, and marathon's configuration examples carry no comments. Every repository's check
   runs `lint-references`.
-- **One release** (built). marathon 0.19.0 and marathon-architecture 0.4.0 carry the goal's
-  changes, and marathon's CHANGELOG gives the migration from 0.18.0 as ordered steps.
 - **Roadmap layout** (built). marathon reads the root `roadmap/`: `roadmap/index.toml`, of the
   three arrays, plus one `roadmap/<goal>.toml` per goal, holding its own `root` and `repos`, an
   `order` array, and its tasks (marathon's `references/manifest.md`).
@@ -73,10 +52,7 @@ Read these sizes, in words, to judge the work:
   has already followed them (marathon's `references/briefs/session-brief.md`).
 - **Formats wrapped by a hook** (built). marathon's MessageDisplay hook runs `wrap-formats`,
   which rewraps a marathon format at 100 columns on screen as the reply streams, so the model never
-  reprints it. This repository's release gate rests on deterministic graders. The LLM judge runs
-  on sonnet, against criteria that mirror marathon's plan-round rules, in its own suite outside the
-  gate (`harness-testing.md`).
-- **The LOCATE and status CLI** stays with `v1.harness.tooling` (`tool-based-skills.md`).
+  reprints it.
 
 ## Findings for later
 

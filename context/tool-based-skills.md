@@ -26,8 +26,9 @@ runs; a tool is tested, versioned, and the same on every call. So the plan is:
   configuration, an adapter, or a document.
 
 The first consumers are marathon's roadmap manifest and goal records, whose formats the skill
-documents in prose and `lint-context` checks only for shape and budgets, and
-marathon-extraction's deterministic checks (`marathon-extraction.md`, "Tooling").
+documents in prose and `lint-context` checks only for shape and budgets; a CLI for marathon's LOCATE
+step and its `status` command, which the skill carries as procedure; and marathon-extraction's
+deterministic checks (`marathon-extraction.md`, "Tooling").
 
 ## Deferred guards
 
