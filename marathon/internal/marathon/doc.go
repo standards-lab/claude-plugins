@@ -5,7 +5,7 @@
 // runs in, and a key's value runs with bash from that top-level, as declared,
 // so a chained value keeps its && and a multi-line value runs as one script.
 // The keys are check, currency, and gate in the [project] table, and publish,
-// merge, and ci in the [remote] table. Arguments are quoted as Python's
+// merge, ci, and checks in the [remote] table. Arguments are quoted as Python's
 // shlex.quote quotes them: a single-line value gets them appended, and a
 // multi-line value gets them as its positional parameters. The configuration
 // is read as UTF-8 with Python's universal newlines.
