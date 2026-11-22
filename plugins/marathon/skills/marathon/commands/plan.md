@@ -84,8 +84,10 @@ Goal setup then runs with these steps:
    repository. The spike stays out of the workspace `order` and the repository catalog: LOCATE
    finds it through its `path` (`mechanics/pipeline.md`).
 
-A change the rounds decide for a member repository is recorded as a task of the goal that locks
-it, and lands with that goal's next `start`.
+A change the rounds decide for an active goal's root is recorded as a task of that goal, and lands
+with that goal's next `start`. While any repository the edits change is held
+(`mechanics/goals.md`, "The repository lock"), plan applies nothing, names the holder as LOCATE
+step 5 does, and stops.
 
 Publish and merge each `plan-<goal>` branch with the approved round outcome as its body
 (`mechanics/pipeline.md`, "Branches and pull requests"). Delete the plan file once its edits are

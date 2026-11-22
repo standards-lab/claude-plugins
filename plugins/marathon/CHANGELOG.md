@@ -58,6 +58,15 @@ for their whole lives.
   with State `idle`, after `on-record`; a held root keeps it in the plan file. Either way PLAN
   names the holders and stops, and the next `start` takes the brief to approval. RESUME's sync
   step says deleting the record releases the goal's root.
+- **Sync, retro, and plan route a change by root and hold**
+  (`skills/marathon/mechanics/goals.md`, "Sync", step 3; `skills/marathon/commands/retro.md`,
+  Apply; `skills/marathon/commands/plan.md`). A change to an active goal's root becomes a task of
+  that goal; a change to any other repository goes on the session's own branch there. While a
+  repository it changes is held, retro or plan applies nothing, names the holder, and stops. A
+  sync applies its other edits, and a held repository's edits wait: the record stays in
+  `handoff` with the next move "sync <repo>, then delete the record", which the goal record's
+  Handoff field lists and RESUME takes up (`skills/marathon/mechanics/resume.md`). The pipeline's
+  list of bookkeeping commits cites Sync for an unfinished sync's Handoff.
 - **This repository's read-first budgets rise for the lock check** (`scripts/budgets.txt`).
   LOCATE's holder rule and PLAN's recheck add about 100 words to `mechanics/pipeline.md`, which
   every set below reads first. With the architect's approval, experiment rises to 8700, intake to

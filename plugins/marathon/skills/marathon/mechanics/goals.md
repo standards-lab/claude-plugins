@@ -81,9 +81,9 @@ anything is deleted:
    that goal in the same commit (`references/briefs/session-brief.md`), checking staging's
    requirements again; if one no longer holds, leave the goal where it is and give the architect
    the reason.
-3. Apply each pending edit for another repository on a `sync-<goal>` branch there, when no active
-   goal locks that repository. When one does, add the edit as a task of the locking goal in step
-   2's commit instead.
+3. Apply each pending edit for another repository on a `sync-<goal>` branch there; one for an
+   active goal's root becomes its task in step 2's commit, and one for a held repository waits
+   ("The repository lock").
 4. Publish and merge each `sync-<goal>` branch, lowest layer first, with the Sync section of the
    last task's session brief as its body (`mechanics/pipeline.md`, "Branches and pull requests").
 5. Once every sync pull request merges, delete the goal record from the root, as a direct commit
@@ -101,6 +101,6 @@ which takes in the spikes' answers and archives their remotes (`commands/intake.
 If the task's merge can't happen, because `[remote] merge` is unset or a check fails,
 nothing is synced and the record stays: set State to `handoff` with the next move "merge, then
 sync", and stop. If the context fills while the release is unfinished, the next move is "tag
-<names>, then sync". If a sync pull request can't merge, the record stays too: set State to
-`handoff` with the next move "merge `sync-<goal>`, then delete the record", as a bookkeeping
-commit on the root's default branch, and stop.
+<names>, then sync". If a sync pull request can't merge, or an edit waits, the record stays in
+`handoff` with the next move "merge `sync-<goal>`, then delete the record" or "sync <repo>, then
+delete the record", as goal-record bookkeeping, and stop.

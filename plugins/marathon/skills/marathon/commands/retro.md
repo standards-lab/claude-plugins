@@ -60,9 +60,12 @@ Each repository the ticked findings change gets a `retro-<topic>` branch, publis
 the ticked findings as its body (`mechanics/pipeline.md`, "Branches and pull requests"):
 
 - A ticked finding in the coordinator is applied on the coordinator's branch.
-- A ticked finding in a repository no active goal locks is applied on that repository's branch.
-- A ticked finding in a repository another active goal locks becomes a task in that goal's
-  file, on the coordinator's branch.
+- A ticked finding in an active goal's root becomes a task in that goal's file, on the
+  coordinator's branch.
+- A ticked finding in any other repository is applied on that repository's branch.
+
+While any repository the ticked findings change is held (`mechanics/goals.md`, "The repository
+lock"), retro applies nothing, names the holder as LOCATE step 5 does, and stops.
 
 A ticked design finding becomes a task in the goal that owns the work, on the coordinator's
 branch; retro doesn't make the change. When no active goal owns the repository, the finding's line

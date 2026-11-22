@@ -167,9 +167,9 @@ and configuration follow the same rule as a coordinator's.
 
 Only goal-record bookkeeping commits straight to the root's default branch: the header lines
 (State, Task, Branch) between tasks; State `handoff` with its Handoff section for a release's
-"tag <names>" once the root's task branch has merged, and for a stuck sync's "merge
-`sync-<goal>`, then delete the record"; the return to `idle` once a resumed release's last tag
-releases (`mechanics/releasing.md`); the approved next brief `plan` writes, or PLAN keeps while
+"tag <names>" once the root's task branch has merged, and for an unfinished sync
+(`mechanics/goals.md`, "Sync"); the return to `idle` once a resumed release's last tag releases
+(`mechanics/releasing.md`); the approved next brief `plan` writes, or PLAN keeps while
 another repository is held; and deleting the record once its sync pull request merges
 (`mechanics/goal-record.md`). Everything else, including the manifest and its arrays, the notes,
 the repository catalog, the configuration, and `retro`'s coordinator findings, goes through a pull

@@ -83,7 +83,8 @@ to their budgets.
   wrote (`commands/reset.md`); "merge", or the failing check, when SHIP can't merge; "tag
   <names>" when the context fills during a release (`mechanics/releasing.md`); "merge, then
   sync" or "tag <names>, then sync" on the goal's last task; or "merge `sync-<goal>`, then
-  delete the record" when a sync pull request can't merge (`mechanics/goals.md`, "Sync").
+  delete the record" when a sync pull request can't merge, and "sync <repo>, then delete the
+  record" when a sync edit waits on a held repository (`mechanics/goals.md`, "Sync").
 - **Decisions** keeps only what binds later tasks, one line each, so a later task doesn't decide
   it again: a settled question a later task relies on, a rejected alternative
   (`behavior/planning.md`), a hold, and a falsified assumption

@@ -15,6 +15,10 @@ GitHub releases the tags cut.
   (`references/architecture-layer.md`). What belongs in the layer now includes the
   self-containment rule: a page may link a repository or tool as an example, but never asserts
   its current behavior, version, or adoption.
+- **A page task belongs to a goal rooted in the architecture repository**
+  (`references/architecture-layer.md`, "How a page arrives"). In a workspace, the task that
+  writes a page is a task of a goal whose root is the architecture repository, in place of a goal
+  that locks it, since marathon's staging now reserves only a goal's root.
 - **The README links to the layer reference.** Its section on what the layer holds is now a link
   to `references/architecture-layer.md`, the one place that says it.
 
