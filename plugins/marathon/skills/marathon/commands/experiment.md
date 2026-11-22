@@ -15,6 +15,7 @@ planned spikes. When `experiment.<topic>` already exists, stop: a later spike is
 Read first, before acting:
 
 - [`./plan.md`](./plan.md), and the files in its Read first list
+- [`../references/briefs/answer-section.md`](../references/briefs/answer-section.md)
 
 ## Rounds
 

@@ -21,6 +21,8 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 - each command's read-first set and each agent profile stay within the word budget recorded in
   `scripts/budgets.txt`. A command's set is its skill's SKILL.md, the playbook, and every file
   reached through "Read first" lists from there. A file with no budget fails.
+- each command's read-first set contains every brief file (`references/briefs.md` or a file
+  under `references/briefs/`) that its playbook, or a brief format in the set, cites
 - each skill description is at most 1,024 characters
 - each skill whose description calls it a marathon extension declares `user-invocable: false`
 - each marketplace source points to a plugin

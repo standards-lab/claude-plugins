@@ -35,7 +35,8 @@ Branch slug: the task.
 
 ## Build
 
-Run the build loop (`references/build.md`) without stopping:
+Run the build loop (`references/build.md`) without stopping, briefing each slice
+(`references/briefs/slice-brief.md`):
 
 - On a **code** project, each slice adds behavior through the test seam, with the check passing.
 - On a **context** project, each slice is the deliverable itself, with the consistency script

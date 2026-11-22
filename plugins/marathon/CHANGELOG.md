@@ -21,6 +21,10 @@ waits on that command only where it is set. A repository without CI merges direc
   .claude/marathon.toml" when it isn't set.
 - **init asks about CI** (`skills/marathon/commands/init.md`). The Remote decision asks whether
   the repository runs CI on pull requests, and writes `checks` when it does.
+- **This repository's check requires each cited brief format.** `scripts/check.sh` fails when a
+  playbook, or a brief format in its read-first set, cites `references/briefs.md` or a file under
+  `references/briefs/` that the playbook's read-first set lacks, and names the file to add to its
+  Read first list. `experiment`'s Read first list adds the answer section it cites.
 
 ### Changed
 

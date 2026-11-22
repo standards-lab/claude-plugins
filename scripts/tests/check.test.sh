@@ -90,6 +90,29 @@ test_playbook_needs_exactly_one_read_first_line() {
     "FAIL: $skill/commands/status.md: has 2 \"Read first\" lines; $read_first_fix"
 }
 
+test_playbook_citing_an_unlisted_format_fails() {
+  replace "$skill/commands/retro.md" \
+    $'- [`../references/briefs/retro.md`](../references/briefs/retro.md)\n' ""
+  run_check
+  expect 1 "FAIL: $skill/commands/retro.md: cites references/briefs/retro.md, which its read-first\
+ set lacks; add it to its Read first list"
+}
+
+test_listed_format_citing_an_unlisted_format_fails() {
+  replace "$skill/commands/intake.md" \
+    $'- [`../references/briefs/plan-round.md`](../references/briefs/plan-round.md)\n' ""
+  run_check
+  expect 1 "FAIL: $skill/commands/intake.md: its references/briefs/intake-round.md cites\
+ references/briefs/plan-round.md, which its read-first set lacks; add it to its Read first list"
+}
+
+test_citing_formats_the_read_first_set_reaches_passes() {
+  replace "$skill/commands/experiment.md" "(\`commands/plan.md\`)" \
+    "(\`commands/plan.md\`, \`references/briefs/plan-round.md\`)"
+  run_check
+  expect 0
+}
+
 test_typo_in_first_directory_fails() {
   write "$unbudgeted_seed" $'# Seeded\n\nSee `refrences/build.md`.\n'
   run_check

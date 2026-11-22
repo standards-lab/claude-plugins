@@ -35,10 +35,10 @@ repository is developed with marathon, so the workflow runs against its own sour
 - **Tooling layer** (planned): deterministic tools the skills call in place of procedure written
   as prose. See [tool-based-skills.md](tool-based-skills.md).
 - **Harness testing** (built): `scripts/check.sh` runs on every push. It checks the plugins'
-  versions, CHANGELOG headings, links, citations, word budgets, and manifests, fails on any tracked
-  Python file, and runs the Go check over the `marathon/` module, the `lint-context` and
-  `lint-references` it builds, and the tests in `scripts/tests/`. Each failure message names its
-  fix. Before each tag, the release gate, `scripts/gate.sh`, runs the check, cross-builds
+  versions, CHANGELOG headings, links, citations, word budgets, the brief formats each Read first
+  list must name, and manifests, fails on any tracked Python file, and runs the Go check over the
+  `marathon/` module, the `lint-context` and `lint-references` it builds, and the tests in
+  `scripts/tests/`. Each failure message names its fix. Before each tag, the release gate, `scripts/gate.sh`, runs the check, cross-builds
   marathon's release binaries for a marathon tag, and runs the plugin's `claude plugin eval`
   suite. marathon's suite has one case, drawn from an observed failure. See
   [harness-testing.md](harness-testing.md).
