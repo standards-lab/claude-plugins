@@ -1,6 +1,6 @@
 # harness.optimization: marathon checked, not described
 
-marathon's rules are checks, not prose. Goal `harness.optimization` turns them into checks, and this
+marathon's rules are checks, not prose. Goal `harness.optimization` built those checks, and this
 note holds its sources, what it settled, and the findings it leaves for later.
 
 ## Sources

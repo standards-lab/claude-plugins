@@ -1,11 +1,11 @@
 # marathon-extraction: carrying proven patterns out of a consumer
 
 marathon-extraction is a planned marathon extension, tracked as `v1.harness.extraction`. The
-blueprint is Standards Lab, the organization's architecture and the standards that implement it
-(the architecture repository's README). A consumer of the standard is a repository built to
-those standards, such as go-web-service. The extension records the patterns a consumer proves,
-and it carries that record back to the blueprint's context and documentation. The consumer can
-be a workspace member or a repository the workspace can never see.
+blueprint is Standards Lab: the organization's architecture and the standards that implement it, as
+the architecture repository's README describes them. A consumer of the standard is a repository
+built to those standards, such as go-web-service. The extension records the patterns a consumer
+proves, and it carries that record back to the blueprint's context and documentation. The consumer
+can be a workspace member or a repository the workspace can never see.
 
 ## The problem it solves
 

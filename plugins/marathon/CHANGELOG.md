@@ -25,7 +25,7 @@ waits on that command only where it is set. A repository without CI merges direc
   playbook's read-first set lacks a brief file, `references/briefs.md` or one under
   `references/briefs/`, that the playbook or a format in the set cites. The failure names the file
   to add to the playbook's Read first list. `experiment`'s list adds the answer section it cites.
-- **This repository's check holds each word budget to its size.** `scripts/check.sh` fails when
+- **This repository's check caps each word budget at its size.** `scripts/check.sh` fails when
   a budget in `scripts/budgets.txt` sits above its read-first set's or profile's size rounded up
   to the next hundred, and the failure names the budget to set. The over-budget failure says
   raising a budget needs the architect's approval.

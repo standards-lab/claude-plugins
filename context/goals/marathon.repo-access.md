@@ -78,7 +78,7 @@ Two-way: prose, one check rule, and comments; nothing tagged.
 
 ## Progress
 
-slices 7/7 committed · standards ✓ · spec ✓ · editor —
+slices 7/7 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
@@ -86,10 +86,6 @@ slices 7/7 committed · standards ✓ · spec ✓ · editor —
   ci-awareness and review-findings tag nothing.
 - shared-repos: moves claude-plugins' own configuration to `[remote] checks` with the release,
   since the installed 0.22.0 copy and binary don't know the key.
-- read-first-split: a read-first budget sits at its set's size rounded up to the next hundred, and
-  rises only when the architect approves, with the reason in the CHANGELOG's Unreleased entry.
-- review-findings: the check holds each budget at most its size rounded up to the next hundred;
-  `STANDARDS.md` holds only the approval rule for raising one.
 
 ## Pending edits
 

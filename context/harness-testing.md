@@ -37,12 +37,12 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 - the tests in `scripts/tests/` pass: `node --test` files for the eval graders' patterns, and bash
   scripts for the check, the `bin/` shims, the gate, and the release build
 
-CI installs the exact versions `mise.toml` and `mise.ci.toml` pin; it reads `mise.ci.toml` because
-it sets `MISE_ENV=ci` (`.github/workflows/ci.yml`), which a developer's machine doesn't. Claude
-Code is pinned in `mise.ci.toml` alone, so a session run from a developer's machine keeps its own
-claude. `scripts/currency.sh` reports any tool or GitHub Action pin that trails its latest release.
-The check is deterministic and runs no model. Each failure message names what to change for the
-check to pass.
+CI installs the exact versions that `mise.toml` and `mise.ci.toml` pin. mise reads `mise.ci.toml`
+only where `MISE_ENV=ci` is set, which CI's workflow (`.github/workflows/ci.yml`) does and a
+developer's machine doesn't. Claude Code is pinned in `mise.ci.toml` alone, so a session run from a
+developer's machine keeps its own claude. `scripts/currency.sh` reports any tool or GitHub Action
+pin that trails its latest release. The check is deterministic and runs no model. Each failure
+message names what to change for the check to pass.
 
 ## Per release: the gate
 
