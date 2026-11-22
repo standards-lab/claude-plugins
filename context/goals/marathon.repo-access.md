@@ -1,6 +1,6 @@
 # goal · marathon.repo-access
 
-- **State:** building
+- **State:** brief ready
 - **Task:** review-findings
 - **Branch:** review-findings
 
