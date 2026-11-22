@@ -47,7 +47,11 @@ release with the goal:
 
 The task also corrects `harness-optimization.md`'s read-first sizes, which `read-first-split` made
 stale: `start`'s 8,246 words against 8,300 in "What the goal measures against", and the 54 and 26
-words of headroom in "Findings for later".
+words of headroom in "Findings for later". It also drops that section's "Read-first budgets rise
+with every task" finding, whose figures `read-first-split` falsified, and moves its rule into
+`STANDARDS.md` so it outlasts the goal record: "A read-first budget is its set's size rounded up
+to the next hundred; it rises only with the architect's approval, with the reason in the
+Unreleased entry."
 
 ## Task `shared-repos`
 
