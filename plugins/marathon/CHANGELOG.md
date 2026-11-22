@@ -46,6 +46,22 @@ for their whole lives.
   workspace coordination, the goal record, `plan`'s staging check, the session brief's Sync line,
   which counts the finishing goal's root as released, the README, and the plugin description
   cite the rule.
+- **LOCATE names who holds a repository** (`skills/marathon/mechanics/pipeline.md`, 1 · LOCATE,
+  step 5). LOCATE accepts a checked-out branch only when the goal's record is mid-task on it, in
+  `building`, `brief ready`, or `handoff` with the branch its Branch, that Branch's `<slug>-fix`,
+  or `sync-<goal>`. Any other branch holds the repository: LOCATE stops and names each active goal
+  whose record is mid-task on that branch, or the goal or topic a session branch names. A waiting
+  goal never skips to a later task and never polls.
+- **PLAN rechecks the lock before branching** (`skills/marathon/mechanics/pipeline.md`, 3 · PLAN,
+  step 4; `skills/marathon/mechanics/hooks.md`). On approval, a held repository other than the
+  root stores the approved brief in the goal record, as bookkeeping on the root's default branch
+  with State `idle`, after `on-record`; a held root keeps it in the plan file. Either way PLAN
+  names the holders and stops, and the next `start` takes the brief to approval. RESUME's sync
+  step says deleting the record releases the goal's root.
+- **This repository's read-first budgets rise for the lock check** (`scripts/budgets.txt`).
+  LOCATE's holder rule and PLAN's recheck add about 100 words to `mechanics/pipeline.md`, which
+  every set below reads first. With the architect's approval, experiment rises to 8700, intake to
+  8800, plan to 8000, reset to 4700, retro to 4600, and start to 7900.
 - **Every merge runs `marathon checks` first where `checks` is set**
   (`skills/marathon/mechanics/pipeline.md`, `skills/marathon/mechanics/releasing.md`). SHIP's
   merge step, each merge in "Branches and pull requests", and a release's merge step run

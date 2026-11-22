@@ -14,5 +14,5 @@ then returns to the pipeline at BUILD, or past it for a release or a sync.
    - "tag <names>" resumes the release at SHIP, from each repository's recorded position
      (`mechanics/releasing.md`, "Resuming a release").
    - "merge `sync-<goal>`, then delete the record" resumes the sync at its remaining steps: merge
-     each `sync-<goal>` branch not yet merged, then delete the record and release the lock
-     (`mechanics/goals.md`, "Sync", steps 4 to 6).
+     each `sync-<goal>` branch not yet merged, then delete the record, which releases the goal's
+     root (`mechanics/goals.md`, "Sync", steps 4 to 6).

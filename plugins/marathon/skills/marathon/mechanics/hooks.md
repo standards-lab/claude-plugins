@@ -27,7 +27,7 @@ declares the hook, do what its SKILL.md says for it. A hook fires just before th
 | `on-start` | At 2 · START, step 1, before the session reads its context |
 | `on-build` | At 3 · PLAN, step 4, on approval, or at 3R · RESUME, step 2 (`mechanics/resume.md`), after checkout, except when resuming only a sync or a release; and when a release opens or resumes a `<slug>-fix` branch (`mechanics/releasing.md`) |
 | `on-ship` | At 6 · SHIP, step 1, once the architect accepts the session brief |
-| `on-record` | Before any commit that writes a goal record: at 6 · SHIP, step 3, after `on-ship` and before publishing; at `reset`; at `plan` and `retro`; and at a sync, before it reads the record's pending edits |
+| `on-record` | Before any commit that writes a goal record: at 6 · SHIP, step 3, after `on-ship` and before publishing; at 3 · PLAN, step 4, when a repository other than the root is held; at `reset`; at `plan` and `retro`; and at a sync, before it reads the record's pending edits |
 
 Order constraints:
 
