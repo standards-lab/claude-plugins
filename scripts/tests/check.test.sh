@@ -70,6 +70,10 @@ run_check() {
   lines=$stderr
 }
 
+without_rounded_budget_failures() {
+  lines=$(grep -v "sits above its size rounded up to the next hundred" <<<"$lines")
+}
+
 expect() {
   local expected_code=$1 expected_lines
   shift
@@ -85,6 +89,7 @@ test_playbook_needs_exactly_one_read_first_line() {
   append "$skill/commands/status.md" $'\nRead first, before acting:\n'
   replace "$skill/commands/reset.md" $'\nRead first' $'\nRead these first'
   run_check
+  without_rounded_budget_failures
   expect 1 \
     "FAIL: $skill/commands/reset.md: has 0 \"Read first\" lines; $read_first_fix" \
     "FAIL: $skill/commands/status.md: has 2 \"Read first\" lines; $read_first_fix"
@@ -94,6 +99,7 @@ test_playbook_citing_an_unlisted_format_fails() {
   replace "$skill/commands/retro.md" \
     $'- [`../references/briefs/retro.md`](../references/briefs/retro.md)\n' ""
   run_check
+  without_rounded_budget_failures
   expect 1 "FAIL: $skill/commands/retro.md: cites references/briefs/retro.md, which its read-first\
  set lacks; add it to its Read first list"
 }
@@ -102,6 +108,7 @@ test_listed_format_citing_an_unlisted_format_fails() {
   replace "$skill/commands/intake.md" \
     $'- [`../references/briefs/plan-round.md`](../references/briefs/plan-round.md)\n' ""
   run_check
+  without_rounded_budget_failures
   expect 1 "FAIL: $skill/commands/intake.md: its references/briefs/intake-round.md cites\
  references/briefs/plan-round.md, which its read-first set lacks; add it to its Read first list"
 }
@@ -207,9 +214,27 @@ test_budget_messages_give_the_budget_to_record() {
   run_check
   expect 1 \
     "FAIL: $implementer: $implementer_words words, over its budget of 100 in scripts/budgets.txt;\
- trim it or raise the budget to $(((implementer_words + 99) / 100 * 100))" \
+ trim it, or raise the budget to $(((implementer_words + 99) / 100 * 100)) with the architect's\
+ approval" \
     "FAIL: $planner: $planner_words words, no budget in scripts/budgets.txt; add the line\
  '$planner $(((planner_words + 99) / 100 * 100))' to it"
+}
+
+test_budget_above_its_rounded_size_fails() {
+  local reviewer=plugins/marathon/agents/spec-reviewer.md reviewer_words
+  reviewer_words=$(wc -w <"$root/$reviewer")
+  replace scripts/budgets.txt "$reviewer 300"$'\n' "$reviewer 400"$'\n'
+  run_check
+  expect 1 "FAIL: $reviewer: $reviewer_words words, its budget of 400 in scripts/budgets.txt sits\
+ above its size rounded up to the next hundred; lower the budget to 300"
+}
+
+test_budget_at_its_rounded_size_passes() {
+  local implementer=plugins/marathon/agents/implementer.md implementer_words
+  implementer_words=$(wc -w <"$root/$implementer")
+  append "$implementer" "$(printf ' word%.0s' $(seq $((300 - implementer_words))))"$'\n'
+  run_check
+  expect 0
 }
 
 test_long_description_fails() {

@@ -5,14 +5,14 @@
 # it defines no link references, the marketplace sources resolve, claude validates every plugin and
 # the marketplace (a missing claude fails the check), the plugins' markdown outside eval results
 # has no @-include lines and its links and backtick file citations resolve, the word budgets in
-# scripts/budgets.txt hold, each command's read-first set holds every brief rules or format file
-# that its playbook or a brief format in the set cites, every skill description fits in 1,024
-# characters, every marathon extension skill declares user-invocable: false, no tracked file is
-# Python (a .py file or one with a python shebang), the Go module in marathon/ passes the Go check
-# (build, vet, gofmt, go fix, go mod tidy, go test -race, and golangci-lint, with GOWORK=off),
-# lint-context and lint-references, built from marathon/ by scripts/build.sh, pass, and
-# scripts/tests pass: its node --test files, given that build's directory as MARATHON_BUILD, and
-# its *.test.sh scripts.
+# scripts/budgets.txt hold and none sits above its size rounded up to the next hundred, each
+# command's read-first set holds every brief rules or format file that its playbook or a brief
+# format in the set cites, every skill description fits in 1,024 characters, every marathon
+# extension skill declares user-invocable: false, no tracked file is Python (a .py file or one
+# with a python shebang), the Go module in marathon/ passes the Go check (build, vet, gofmt, go
+# fix, go mod tidy, go test -race, and golangci-lint, with GOWORK=off), lint-context and
+# lint-references, built from marathon/ by scripts/build.sh, pass, and scripts/tests pass: its node
+# --test files, given that build's directory as MARATHON_BUILD, and its *.test.sh scripts.
 set -uo pipefail
 
 fail=0
@@ -211,7 +211,10 @@ within_budget() {
       "add the line '$key $budget_to_record' to it"
   elif [ "$words" -gt "${word_budget[$key]}" ]; then
     err "$key: $words words, over its budget of ${word_budget[$key]} in scripts/budgets.txt;" \
-      "trim it or raise the budget to $budget_to_record"
+      "trim it, or raise the budget to $budget_to_record with the architect's approval"
+  elif [ "${word_budget[$key]}" -gt "$budget_to_record" ]; then
+    err "$key: $words words, its budget of ${word_budget[$key]} in scripts/budgets.txt sits above" \
+      "its size rounded up to the next hundred; lower the budget to $budget_to_record"
   fi
 }
 
