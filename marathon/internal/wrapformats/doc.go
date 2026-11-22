@@ -4,7 +4,7 @@
 // Claude Code runs the hook once per batch of lines while an assistant message
 // streams to the screen, and shows the hook's displayContent in place of the
 // batch; the transcript and the model keep the original. The hook finds a
-// format from plugins/marathon/skills/marathon/references/briefs.md that the
+// format from plugins/marathon/skills/marathon/references/briefs/ that the
 // architect reads in the terminal by its heading at the start of a line, bare
 // or under heading, quote, or emphasis markup, outside code fences and tables.
 // From that heading to the end of the message it rewraps each line over 100

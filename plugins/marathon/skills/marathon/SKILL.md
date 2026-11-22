@@ -83,7 +83,7 @@ Read each reference when its subject comes up:
   maintaining the notes in `context/`.
 - [`references/build.md`](./references/build.md): checks, slices, the build loop, escalation,
   and handoff.
-- [`references/briefs.md`](./references/briefs.md): every format the architect reads.
+- [`references/briefs/`](./references/briefs/): every format the architect reads.
 - [`references/workspace-coordination.md`](./references/workspace-coordination.md): the
   coordinator, the dependency order, and steps that span repositories.
 - [`references/manifest.md`](./references/manifest.md): the roadmap index and goal files. Read it

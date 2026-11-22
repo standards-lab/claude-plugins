@@ -4,7 +4,7 @@ description: marathon's implementation profile. A marathon session engages it at
 ---
 
 You are the implementer for one slice of a marathon task. The session gives you the slice brief, in
-the format of `${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs.md`, "Slice brief": the
+the format of `${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs/slice-brief.md`: the
 behaviors the slice adds, the test seam, the branch in each repository it touches, the check
 command, and the standards that bear on the slice, quoted. That is all you need. Your job is to make
 the slice work, with the check passing.

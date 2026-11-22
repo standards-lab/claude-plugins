@@ -20,7 +20,7 @@ goes to one-way doors.
   slice; SHIP runs `marathon gate` before each Release tag (`mechanics/releasing.md`).
 - **Standards.** A repository's `STANDARDS.md` holds judgement calls only, with pointers to the
   architecture pages that apply. Only the standards-reviewer reads it whole; each slice brief
-  quotes the sections that bear on its slice (`references/briefs.md`, "Slice brief"). `CLAUDE.md`
+  quotes the sections that bear on its slice (`references/briefs/slice-brief.md`). `CLAUDE.md`
   holds navigation pointers only.
 - **Tests can lie.** The standards-reviewer sweeps for tests that pass without proving anything
   ([`agents/standards-reviewer.md`](../../../agents/standards-reviewer.md)).
@@ -42,7 +42,7 @@ first, so each higher layer builds against the real change below it.
 ## The loop
 
 1. **Implement.** For each slice in order, engage a fresh implementer with the slice brief
-   (`references/briefs.md`, "Slice brief"). It commits the slice with the check passing.
+   (`references/briefs/slice-brief.md`). It commits the slice with the check passing.
 2. **Review standards.** Once every slice is committed, engage the standards-reviewer on the whole
    diff. It commits its fixes with the check passing.
 3. **Review the spec.** Engage the spec-reviewer with the task brief. For each gap it returns,
@@ -68,8 +68,8 @@ BUILD stops for the architect only for:
   the brief
 - **scope beyond the task**
 
-An escalation uses the plan-round format, headed `ESCALATION` (`references/briefs.md`), and is
-presented as a round is (`behavior/planning.md`, "Ask for decisions, never for facts"). BUILD
+An escalation uses the plan-round format, headed `ESCALATION` (`references/briefs/plan-round.md`),
+and is presented as a round is (`behavior/planning.md`, "Ask for decisions, never for facts"). BUILD
 resumes once it is answered, and the session records the escalation in Progress
 (`mechanics/goal-record.md`). Anything else a delegate decides goes under Decided without you.
 

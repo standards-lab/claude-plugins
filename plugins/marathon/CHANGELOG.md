@@ -33,13 +33,18 @@ waits on that command only where it is set. A repository without CI merges direc
   (`skills/marathon/mechanics/configuration.md`). It sets `checks = "gh pr checks --watch"` and
   `merge = "gh pr merge --merge --delete-branch"`. `[remote] ci` stays the wait on the default
   branch's CI after the merge, which only releasing runs.
-- **Merge danger names each repository's CI wait** (`skills/marathon/references/briefs.md`). The
-  session brief's Merge danger line says, for each repository, whether its merge waits on CI.
+- **Merge danger names each repository's CI wait**
+  (`skills/marathon/references/briefs/session-brief.md`). The session brief's Merge danger line
+  says, for each repository, whether its merge waits on CI.
 - **"Running commands" replaces "Committing"** (`skills/marathon/mechanics/pipeline.md`,
   `skills/marathon/behavior/delegation.md`, `agents/`). Every command that changes git or remote
   state, such as a commit, push, `marathon merge`, or `gh` write, runs in its own tool call after
   the previous one succeeds; read-only commands may still be chained. The commit rules stay, and
   every profile and delegation.md's Limits cite the rule by its new name.
+- **One file per brief format** (`skills/marathon/references/briefs.md`). Each of the nine formats
+  is its own file under `skills/marathon/references/briefs/`, and `references/briefs.md` keeps only
+  the rules every format shares. Each command's Read first list names the shared rules and only the
+  formats it writes or cites.
 
 ### Migrating from 0.22.0
 

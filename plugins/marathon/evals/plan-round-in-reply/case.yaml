@@ -13,17 +13,17 @@ description: >-
   fixture declares no currency command and no remote, so round 1 needs only reads, plus Write for
   the plan file that keeps the round's copy (behavior/planning.md); without it, a run can end on a
   message about the unsaved file instead of the round. The graders read the round from the line that
-  contains PLAN ROUND 1, headed as references/briefs.md shows it. no-code-fence fails when that line
-  follows an odd number of fence lines, so the last one opens a block the round sits in; a fence
-  line may be indented or quoted, and opens with ``` or ~~~. numbered-questions needs a numbered
-  question with a rec: line and then a changes: line before the next numbered line, allowing
-  indentation, list bullets, and bold markup before each; one suffices, since a round holds a single
-  question when the others depend on its answer. no-back-reference fails when a numbered question's
-  lines, up to the next numbered line or the line that contains reply:, say above, below, option and
-  a capital letter, Facts found, see the plan file, or details to follow, the pointers
-  references/briefs.md forbids in a question. Every grader here is deterministic, since a gated
-  suite holds no llm grader (scripts/gate.sh); the judge, self-contained-questions, runs on the same
-  fixture as plan-round-judged in evals-judged/, which the gate doesn't run.
+  contains PLAN ROUND 1, headed as references/briefs/plan-round.md shows it. no-code-fence fails
+  when that line follows an odd number of fence lines, so the last one opens a block the round sits
+  in; a fence line may be indented or quoted, and opens with ``` or ~~~. numbered-questions needs a
+  numbered question with a rec: line and then a changes: line before the next numbered line,
+  allowing indentation, list bullets, and bold markup before each; one suffices, since a round holds
+  a single question when the others depend on its answer. no-back-reference fails when a numbered
+  question's lines, up to the next numbered line or the line that contains reply:, say above, below,
+  option and a capital letter, Facts found, see the plan file, or details to follow, the pointers
+  references/briefs/plan-round.md forbids in a question. Every grader here is deterministic, since
+  a gated suite holds no llm grader (scripts/gate.sh); the judge, self-contained-questions, runs on
+  the same fixture as plan-round-judged in evals-judged/, which the gate doesn't run.
 tags: [plan, plan-round]
 context:
   scaffold_script: scaffold.sh

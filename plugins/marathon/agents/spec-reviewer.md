@@ -26,7 +26,7 @@ none. Report:
 A numbered list of gaps, each with the behavior it concerns, what you observed, and the command that
 shows it. Return "no gaps" when the work matches the brief. Also return those steps and what
 they showed, in the session brief's Verify form
-(`${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs.md`, "Session brief").
+(`${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs/session-brief.md`).
 
 ## Limits
 

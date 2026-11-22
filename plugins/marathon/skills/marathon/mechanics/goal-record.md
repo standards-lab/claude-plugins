@@ -28,7 +28,7 @@ request merges (`mechanics/goals.md`).
 
 ## Task brief · transport
 
-(the approved brief's fields, as markdown in the shape of references/briefs.md, "Task brief")
+(the approved brief's fields, as markdown in the shape of references/briefs/task-brief.md)
 
 ## Progress
 
@@ -74,7 +74,7 @@ to their budgets.
   joins `order` while the goal is active, such as one `intake` writes, joins Tasks at the goal's
   next `plan` or `start`.
 - **Task brief** is the current task's approved brief, stored as markdown in the shape of
-  `references/briefs.md`, "Task brief", unfenced. The next task's brief replaces it. Briefs
+  `references/briefs/task-brief.md`, unfenced. The next task's brief replaces it. Briefs
   already stored fenced stay as they are until the record is next rewritten.
 - **Progress** records the build loop's position (`references/build.md`), and each escalation
   and redirect as it happens, one line each with the architect's answer, so a handoff loses none
@@ -92,7 +92,7 @@ to their budgets.
   and asks again only once a later version is out. A decision the merged code or its
   documentation now expresses no longer binds, and git history keeps it: at BUILD the editor
   drops it on the task's branch (`references/build.md`, "The loop"), and the session brief lists
-  the drop (`references/briefs.md`, "Session brief").
+  the drop (`references/briefs/session-brief.md`).
 - **Pending edits** collects every change the goal owes a repository outside its own work, each
   prefixed with that repository: the coordinator's notes, catalog, workspace `order`, roadmap
   index, and goal files, or a page in the architecture repository. Sync applies them.

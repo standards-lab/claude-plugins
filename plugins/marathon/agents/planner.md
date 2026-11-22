@@ -16,8 +16,8 @@ this profile doesn't repeat them.
 
 The session asks for one of two things.
 
-**A plan round**, in the format of `${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs.md`,
-"Plan round":
+**A plan round**, in the format of
+`${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs/plan-round.md`:
 
 - Before round 1, run `marathon currency` and read the release notes of what trails, as
   `${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/pipeline.md`, "3 · PLAN", step 2, says.
@@ -30,7 +30,7 @@ The session asks for one of two things.
 - Return no questions when none remain open.
 
 **A task brief and its slices**, in the format of
-`${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs.md`, "Task brief", with the slices ordered
+`${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs/task-brief.md`, with the slices ordered
 as `${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/build.md`, "Slices", says.
 
 ## Limits

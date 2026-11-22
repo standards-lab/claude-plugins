@@ -8,6 +8,7 @@ Read first, before acting:
 
 - [`../mechanics/pipeline.md`](../mechanics/pipeline.md)
 - [`../references/briefs.md`](../references/briefs.md)
+- [`../references/briefs/retro.md`](../references/briefs/retro.md)
 - [`../references/context-engineering.md`](../references/context-engineering.md)
 
 ## Gather
@@ -50,7 +51,7 @@ touched repository's `STANDARDS.md` resolves to a page in the layer; a broken po
 Drift findings route the same way: a note the built work expresses is culled, a note it
 contradicts is fixed, and a `docs/` page it made wrong becomes a task.
 
-Show the findings in the retro format (`references/briefs.md`, "Retro"), each one line with its
+Show the findings in the retro format (`references/briefs/retro.md`), each one line with its
 proposed change, and let the architect tick the ones to apply.
 
 ## Apply

@@ -98,8 +98,9 @@ Round 1 lists what trails and asks only about what needs a decision: a breaking 
 to, a feature to adopt, or a new major to upgrade, hold, or give its own task. The task's slices
 then begin with one upgrade slice per trailing repository, and a held item is recorded as a
 decision. CI never runs the command. See
-[`mechanics/configuration.md`](./skills/marathon/mechanics/configuration.md) and
-[`references/briefs.md`](./skills/marathon/references/briefs.md).
+[`mechanics/configuration.md`](./skills/marathon/mechanics/configuration.md),
+[`references/briefs/plan-round.md`](./skills/marathon/references/briefs/plan-round.md), and
+[`references/briefs/task-brief.md`](./skills/marathon/references/briefs/task-brief.md).
 
 ## Workspaces
 

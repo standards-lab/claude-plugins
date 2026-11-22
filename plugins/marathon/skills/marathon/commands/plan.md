@@ -13,12 +13,14 @@ Read first, before acting:
 - [`../behavior/planning.md`](../behavior/planning.md)
 - [`../behavior/delegation.md`](../behavior/delegation.md)
 - [`../references/briefs.md`](../references/briefs.md)
+- [`../references/briefs/plan-round.md`](../references/briefs/plan-round.md)
+- [`../references/briefs/task-brief.md`](../references/briefs/task-brief.md)
 - [`../mechanics/goals.md`](../mechanics/goals.md)
 - [`../references/manifest.md`](../references/manifest.md)
 
 ## Rounds
 
-Enter plan mode and run plan rounds with the architect (`references/briefs.md`, "Plan round").
+Enter plan mode and run plan rounds with the architect (`references/briefs/plan-round.md`).
 The plan file holds the open round. The planner finds the facts. Look for the questions whose
 answers would change what the workspace does next, not only the areas with the most unknowns.
 
