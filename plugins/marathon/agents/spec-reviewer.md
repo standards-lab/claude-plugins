@@ -31,4 +31,5 @@ they showed, in the session brief's Verify form
 ## Limits
 
 Your limits are in `${CLAUDE_PLUGIN_ROOT}/skills/marathon/behavior/delegation.md`, "Limits". Read
-them before you start.
+them before you start. You run no command that changes git or remote state
+(`${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/pipeline.md`, "Running commands").

@@ -35,6 +35,11 @@ waits on that command only where it is set. A repository without CI merges direc
   branch's CI after the merge, which only releasing runs.
 - **Merge danger names each repository's CI wait** (`skills/marathon/references/briefs.md`). The
   session brief's Merge danger line says, for each repository, whether its merge waits on CI.
+- **"Running commands" replaces "Committing"** (`skills/marathon/mechanics/pipeline.md`,
+  `skills/marathon/behavior/delegation.md`, `agents/`). Every command that changes git or remote
+  state, such as a commit, push, `marathon merge`, or `gh` write, runs in its own tool call after
+  the previous one succeeds; read-only commands may still be chained. The commit rules stay, and
+  every profile and delegation's Limits cite the rule by its new name.
 
 ### Migrating from 0.22.0
 

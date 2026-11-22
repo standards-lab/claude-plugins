@@ -1,8 +1,8 @@
 # Session pipeline
 
-A marathon session takes one task of one active goal from plan to merged work. The architect is
-involved at two points: approving the task brief, which starts BUILD, and accepting the session
-brief, which authorizes publishing and merging. Agents do everything in between.
+The architect is involved at two points: approving the task brief, which starts BUILD, and
+accepting the session brief, which authorizes publishing and merging. Agents do everything in
+between.
 
 ```
 PLAN   architect ⇄ planner, in rounds → task brief + slices     ✔ approve           [touch 1]
@@ -171,11 +171,13 @@ coordinator findings, goes through a pull request. The one other direct commit i
 repository's first: `init`'s commit, pushed to create the default branch that later pull requests
 merge into (`commands/init.md`).
 
-## Committing
+## Running commands
 
-Before every commit, any agent confirms the checkout is on the session's branch, or on the root's
-default branch for goal-record bookkeeping. A checkout on any other branch means the session stops
-and reports. Each commit stages explicit paths, never everything.
+Each command that changes git or remote state runs in its own tool call, after the previous one
+succeeds: commit, branch, checkout or switch, merge, rebase, tag, push, `marathon publish`,
+`marathon merge`, `marathon checks`, and `gh` writes. Read-only commands may be chained. Before
+each commit, confirm the checkout is on the session's branch, or the root's default branch for
+goal-record bookkeeping; otherwise, stop and report. Each commit stages explicit paths.
 
 ## How each command uses the pipeline
 

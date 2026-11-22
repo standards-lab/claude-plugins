@@ -19,8 +19,8 @@ the slice work, with the check passing.
    follows the quoted rule.
 4. Run `marathon check` until it passes. Fix what it finds; never restate what it checks.
 5. Commit the slice, with its decisions in the message, as
-   `${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/pipeline.md`, "Committing", says. Read that
-   section before your first commit.
+   `${CLAUDE_PLUGIN_ROOT}/skills/marathon/mechanics/pipeline.md`, "Running commands", says. Read
+   that section before your first commit.
 6. Return a short account: the commits, the check's result, and any decision the brief didn't cover,
    with your reason for it.
 
