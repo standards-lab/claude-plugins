@@ -68,8 +68,9 @@ this file, `mechanics/resume.md`, and `mechanics/releasing.md` name (`mechanics/
 
 ### 3 · PLAN
 
-1. Enter plan mode. The plan file holds the session's planning state: title it with the goal and
-   task, and keep each round, its answers, and the drafted brief in it.
+1. Enter plan mode. The plan file holds the session's planning state, and the session writes it
+   itself, never through a delegate: title it with the goal and task, and keep each round, its
+   answers, and the drafted brief in it.
 2. Run plan rounds with the architect, each presented as `behavior/planning.md`, "Ask for
    decisions, never for facts", says, in the format of `references/briefs/plan-round.md`. The
    planner profile finds the facts and drafts each round, then the task brief and its slices
