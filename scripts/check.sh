@@ -247,7 +247,7 @@ cited_briefs_files() {
     case $cited in
       "$skill_root/references/briefs.md" | "$skill_root"/references/briefs/*.md) echo "$cited" ;;
     esac
-  done < <(relative_links_and_backtick_paths "$file") | awk '!printed[$0]++'
+  done < <(relative_links_and_backtick_paths "$file")
 }
 
 for playbook in plugins/*/skills/*/commands/*.md; do
@@ -272,10 +272,7 @@ for playbook in plugins/*/skills/*/commands/*.md; do
   within_budget "$playbook" "${read_first_set[@]}"
 
   [ -d "$skill_root/references/briefs" ] || continue
-  declare -A in_read_first_set=() reported=()
-  for file in "${read_first_set[@]}"; do
-    in_read_first_set[$file]=1
-  done
+  declare -A reported=()
   for citing in "${read_first_set[@]}"; do
     if [ "$citing" = "$playbook" ]; then
       cites="cites"
@@ -285,7 +282,7 @@ for playbook in plugins/*/skills/*/commands/*.md; do
       continue
     fi
     while read -r cited; do
-      [ -z "${in_read_first_set[$cited]:-}" ] && [ -z "${reported[$cited]:-}" ] || continue
+      [ -z "${seen[$cited]:-}" ] && [ -z "${reported[$cited]:-}" ] || continue
       reported[$cited]=1
       err "$playbook: $cites ${cited#"$skill_root"/}, which its read-first set lacks;" \
         "add it to its Read first list"
