@@ -32,7 +32,7 @@ one you write together. It gives the vision and the scope. The structure comes o
   `lint-context` checks.
 - **The first goal**: the one outcome the first sessions work toward, and its first task.
 - **Remote**: the platform, its publish command (`gh pr create`, `glab mr create`), its merge
-  command, and whether it runs CI on pull requests, which writes `checks` (`gh pr checks --watch`);
+  command, and, if it runs CI on pull requests, its `checks` command (`gh pr checks --watch`);
   or none for a local-only project.
 
 ## 3. Create the structure

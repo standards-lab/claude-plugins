@@ -73,14 +73,10 @@ Two-way. The task tags nothing, and installed copies don't change until the goal
 
 ## Progress
 
-slices 4/4 committed · standards — · spec — · editor —
+slices 4/4 committed · standards ✓ · spec ✓ · editor ✓
 
 ## Decisions
 
-- ci-awareness: CI is declared by an optional `[remote] checks` command, not a boolean; a boolean
-  would make marathon know each platform's wait.
-- ci-awareness: the other repositories migrate through the CHANGELOG's "Migrating from 0.22.0"
-  step, not as goal repos, so the goal locks only claude-plugins.
 - goal: one release, at shared-repos: `marathon/v0.23.0` and `marathon-architecture/v0.4.1`;
   ci-awareness and review-findings tag nothing.
 - shared-repos: moves claude-plugins' own configuration to `[remote] checks` with the release,

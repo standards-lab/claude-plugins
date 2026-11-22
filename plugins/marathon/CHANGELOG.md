@@ -10,8 +10,8 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 ## Unreleased
 
 A repository declares whether it runs CI on pull requests with `[remote] checks`, and every merge
-waits on that command only where it is set. A repository without CI merges directly, where a
-`gh pr checks --watch` in its merge command failed for want of checks.
+waits on that command only where it is set. A repository without CI merges directly; a
+`gh pr checks --watch` in its merge command failed there, because no checks were reported.
 
 ### Added
 
@@ -39,7 +39,7 @@ waits on that command only where it is set. A repository without CI merges direc
   `skills/marathon/behavior/delegation.md`, `agents/`). Every command that changes git or remote
   state, such as a commit, push, `marathon merge`, or `gh` write, runs in its own tool call after
   the previous one succeeds; read-only commands may still be chained. The commit rules stay, and
-  every profile and delegation's Limits cite the rule by its new name.
+  every profile and delegation.md's Limits cite the rule by its new name.
 
 ### Migrating from 0.22.0
 
