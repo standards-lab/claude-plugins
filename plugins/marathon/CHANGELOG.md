@@ -107,6 +107,9 @@ for their whole lives.
 - **This repository's read-first budgets drop to the split's sizes** (`scripts/budgets.txt`).
   The new budgets are experiment 8600, intake 8700, plan 7900, retro 4500, start 7800, and status
   3500; init and reset keep 3800 and 4600.
+- **The session writes the plan file itself** (`skills/marathon/mechanics/pipeline.md`, 3 ·
+  PLAN). A delegate that can't write the file reports back after the round is printed, and the
+  session's last reply then holds a note about the unsaved file instead of the round.
 
 ### Migrating from 0.22.0
 
