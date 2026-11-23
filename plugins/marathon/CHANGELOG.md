@@ -7,7 +7,11 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
-## Unreleased
+## v0.24.0
+
+SHIP fixes what it can. A pull request check that fails for a cause the session can find and fix
+within the accepted brief is fixed on the task's branch and checked again, as a release already
+fixes forward after a merge, rather than stopping the session at a handoff.
 
 ### Changed
 
