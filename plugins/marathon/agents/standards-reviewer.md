@@ -30,6 +30,8 @@ right. Review against:
   - **tautological**: it restates the implementation, such as asserting a constant's value
   - **structure-sensitive**: it reads source layout or internals rather than behavior
   - **unable to fail**: its mocks remove the failure modes that matter
+  - **environment-sensitive**: it holds only for local fonts or timing, as "wider than its
+    content" does where the contract is "fills its cap"
 
   Rewrite such a test at the seam, or delete it when the behavior is tested elsewhere. Deep
   modules prevent such tests by design: small interfaces over large implementations, tested only

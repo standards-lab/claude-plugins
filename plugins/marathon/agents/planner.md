@@ -31,7 +31,7 @@ The session asks for one of two things.
 
 **A task brief and its slices**, in the format of
 `${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/briefs/task-brief.md`, with the slices ordered
-as `${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/build.md`, "Slices", says.
+as `${CLAUDE_PLUGIN_ROOT}/skills/marathon/references/build.md`, "Slices", says. Keep it within 1,200 words.
 
 ## Limits
 
