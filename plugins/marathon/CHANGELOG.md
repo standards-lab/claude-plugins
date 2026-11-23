@@ -26,14 +26,8 @@ fixes forward after a merge, rather than stopping the session at a handoff.
   a test that holds only for local fonts or timing, where the contract states a fixed result.
 - **A task brief fits the goal record's 1,200-word Task brief budget** (`agents/planner.md`,
   `references/briefs/task-brief.md`), so the record stores the brief as approved.
-
-### Added
-
-- **The `ship-fixes-failing-check` eval** (`evals/ship-fixes-failing-check/`): `start` on a goal
-  at brief ready, accepted in the prompt, fixes a pull request check that fails on a clean
-  checkout, pushes, checks again, and merges, rather than handing off. Its fixture serves publish,
-  checks, and merge from a local forge, offline. The release gate now grants Bash, Edit, and
-  Write to the cases that list them, since eval withholds them without an operator's grant.
+- **The release gate grants Bash, Edit, and Write** (`scripts/gate.sh`) to the eval cases that
+  list them, since eval withholds them without an operator's grant.
 
 ## v0.23.0
 

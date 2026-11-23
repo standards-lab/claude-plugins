@@ -83,6 +83,10 @@ skips it. Each suite's `results/` is gitignored.
 - **Fixtures are offline scaffold scripts.** A case that needs a repository builds it with a
   scaffold script. Replaying a recorded session through `history_file` isn't used, because it
   carries the skill text of the session it recorded.
+- **A run can't use git.** eval maps `/usr/bin/git` to a null device inside each run, so a
+  session's commits, pushes, and merges can't be eval-tested: SHIP's fix-a-failing-check behavior
+  (marathon 0.24.0) has no gated case, and its case, `ship-fixes-failing-check`, lives in git
+  history at bc0ae18 until eval allows git.
 
 ## The seed case
 
