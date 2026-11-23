@@ -17,8 +17,10 @@
 #
 # The suite passes when every case scores 1.0 over its three runs, against the
 # plugin alone (--ablation none); it builds its fixtures without a prompt
-# (--scaffold --trust-plugin), and keeps its results local (--no-publish). The
-# gate's pass rests on deterministic graders alone, and a gated suite holds no
+# (--scaffold --trust-plugin), and keeps its results local (--no-publish). It
+# grants Bash, Edit, and Write (--allow-tools), which eval withholds without an
+# operator's grant; each case still gets only the tools its allowed_tools lists.
+# The gate's pass rests on deterministic graders alone, and a gated suite holds no
 # llm grader: eval keeps no judge reasoning and can't re-grade a stored reply,
 # so no one can reproduce a judge's verdict. A plugin keeps its judges in a
 # suite the gate doesn't run, as marathon does in evals-judged/.
@@ -103,7 +105,8 @@ fi
 results="$eval_dir/results/$(date -u +%Y-%m-%dT%H-%M-%S-%3NZ)"
 eval_status=0
 claude plugin eval "$dir" --threshold 1.0 --runs 3 --ablation none --scaffold \
-  --trust-plugin --no-publish --keep-temp --output-dir "$results" || eval_status=$?
+  --trust-plugin --allow-tools Bash Edit Write --no-publish --keep-temp \
+  --output-dir "$results" || eval_status=$?
 keep_run_evidence "$results"
 [ "$eval_status" -eq 0 ] ||
   fail "the $plugin eval suite failed, so $tag is held; each run's reply is in $results"
