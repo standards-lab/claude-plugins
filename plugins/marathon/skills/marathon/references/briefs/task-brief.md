@@ -33,6 +33,7 @@ code. The goal record keeps it (`mechanics/goal-record.md`).
 >
 > The exact tags the task releases (optional).
 
+- The brief fits the goal record's 1,200-word Task brief budget.
 - **Slices** begin with upgrade slices when a repository the task touches trails: one per
   trailing repository, in the coordinator's `order`, each done when that repository's currency
   command exits 0, or reports only held items, with its check passing. The task's own slices

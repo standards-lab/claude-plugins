@@ -7,6 +7,22 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
+## Unreleased
+
+### Changed
+
+- **SHIP fixes a failing check instead of stopping** (`mechanics/pipeline.md`, 6 · SHIP, step
+  5). Every repository's checks run before any of them merges, so a root's goal record never
+  merges as shipped while another repository's checks are red. A failing check is fixed on the
+  task's branch from its log, pushed, and checked again; the session escalates only for a
+  decision the brief doesn't cover, or after two fixes leave it failing. A handoff follows only
+  when no merge command is set. "Branches and pull requests", releasing's merge step, and sync's
+  failing-check case say the same.
+- **The standards-reviewer catches environment-sensitive tests** (`agents/standards-reviewer.md`):
+  a test that holds only for local fonts or timing, where the contract states a fixed result.
+- **A task brief fits the goal record's 1,200-word Task brief budget** (`agents/planner.md`,
+  `references/briefs/task-brief.md`), so the record stores the brief as approved.
+
 ## v0.23.0
 
 A repository declares whether it runs CI on pull requests with `[remote] checks`, and every merge

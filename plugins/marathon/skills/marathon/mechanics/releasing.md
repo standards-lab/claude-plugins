@@ -6,7 +6,8 @@ tags the task releases (`references/briefs/task-brief.md`). Accepting the sessio
 authorizes them, so SHIP tags them without escalating again. SHIP takes each repository in turn,
 lowest layer first, and finishes its release before the next repository's merge:
 
-1. Merge the branch: run `marathon checks` where `checks` is set, then `marathon merge`. Switch to
+1. Merge the branch: run `marathon checks` where `checks` is set, fixing a failing check as
+   SHIP does, then `marathon merge`. Switch to
    the default branch, pull, and delete the local task branch.
 2. When `[remote] ci` is set, run `marathon ci` on the merge commit (`mechanics/configuration.md`).
    Without it, tagging follows the merge directly.

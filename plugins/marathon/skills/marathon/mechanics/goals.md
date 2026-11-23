@@ -98,9 +98,9 @@ proposes is the next planned spike of the same experiment, or, with none left, t
 intake (`references/briefs/session-brief.md`). The experiment stays until its intake,
 which takes in the spikes' answers and archives their remotes (`commands/intake.md`).
 
-If the task's merge can't happen, because `[remote] merge` is unset or a check fails,
-nothing is synced and the record stays: set State to `handoff` with the next move "merge, then
-sync", and stop. If the context fills while the release is unfinished, the next move is "tag
+If the task's merge can't happen, because `[remote] merge` is unset or a failing check needs the
+architect, nothing is synced and the record stays:
+set State to `handoff` with the next move "merge, then sync", and stop. If the context fills while the release is unfinished, the next move is "tag
 <names>, then sync". If a sync pull request can't merge, or an edit waits, the record stays in
 `handoff` with the next move "merge `sync-<goal>`, then delete the record" or "sync <repo>, then
 delete the record", as goal-record bookkeeping, and stop.
