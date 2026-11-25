@@ -9,7 +9,8 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 
 ## v0.24.1
 
-A retro's findings keep their checkboxes and numbers when the terminal renders them.
+A retro's findings keep their checkboxes and numbers when the terminal renders them, and a round's
+heading keeps the capitals the display hook finds it by.
 
 ### Fixed
 
@@ -17,6 +18,9 @@ A retro's findings keep their checkboxes and numbers when the terminal renders t
   finding reads `- [ ] **N.**`: a bare `N.` after a checkbox renders as a nested list, which drops
   the checkbox and restarts the numbering as letters under each heading, so the architect's ticks
   no longer matched the reply line.
+- **A round's heading stays in capitals** (`references/briefs/plan-round.md`). The heading reads
+  exactly `PLAN ROUND <n>`, `INTAKE ROUND <n>`, or `ESCALATION`, the words `wrap-formats` matches;
+  a round headed `Plan round 1` was never rewrapped, and failed the `plan-round-in-reply` gate.
 
 ## v0.24.0
 

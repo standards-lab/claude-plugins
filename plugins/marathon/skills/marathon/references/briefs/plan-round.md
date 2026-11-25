@@ -57,3 +57,5 @@ next round; it is never asked conditionally, as in "only if 1 is yes". The round
   task. A patch or minor bump with nothing to adapt stays a fact, and the upgrade slices take it.
 - The rounds end when no question remains open. A BUILD escalation uses the same format, headed
   `ESCALATION` in place of `PLAN ROUND <n>` ([`references/build.md`](../build.md)).
+- Write the heading's words in capitals, exactly `PLAN ROUND <n>`, `INTAKE ROUND <n>`, or
+  `ESCALATION`: the display hook finds a round by them.
