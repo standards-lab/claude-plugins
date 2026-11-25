@@ -7,7 +7,9 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
-## Unreleased
+## v0.24.1
+
+A retro's findings keep their checkboxes and numbers when the terminal renders them.
 
 ### Fixed
 
