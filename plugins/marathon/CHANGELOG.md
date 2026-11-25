@@ -7,6 +7,15 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
+## Unreleased
+
+### Fixed
+
+- **A retro's findings keep their numbers on screen** (`references/briefs/retro.md`). Each
+  finding reads `- [ ] **N.**`: a bare `N.` after a checkbox renders as a nested list, which drops
+  the checkbox and restarts the numbering as letters under each heading, so the architect's ticks
+  no longer matched the reply line.
+
 ## v0.24.0
 
 SHIP fixes what it can. A pull request check that fails for a cause the session can find and fix
