@@ -6,7 +6,7 @@
 
 ## Tasks
 
-1. [ ] lint-references
+1. [x] lint-references
 2. [ ] standards
 3. [ ] marathon-layout
 4. [ ] archive
@@ -47,9 +47,6 @@
   Templates ship no profile beyond `mise.agent.toml`, and `.gitignore` lists `mise.local.toml`.
 - plan: the session brief's Verify keeps the check's one-line result; its steps never cite agent
   harnesses or internal test commands, with a good and bad example.
-- plan: lint-references finds the coordinator through a tracked `coordinator` key in a member's
-  `.claude/marathon.toml`, resolving a first segment in the repository, beside it, then through
-  `[workspace.paths]`; CI keeps skipping. Rejected an environment variable and a check flag.
 - plan: `archive <repo> <category/path>` is a Go command in marathon's module and works in any
   directory: it records a clone in its parent's `index.md` under a hierarchical path (one heading
   per segment, at most four, matched case-insensitively, created sorted), and for a catalogued
@@ -61,5 +58,10 @@
   `EventKind.Raise` at its 12 calls. Only the templates and claude-plugins release; library and
   web moves ride their next feature release.
 - plan: `capstones` runs while the architect pauses the capstone goals.
+- lint-references: marathon releases once, at `archive`, after the goal's plugin tasks;
+  lint-references and marathon-layout leave Unreleased entries.
 
 ## Pending edits
+
+- coordinator · roadmap/harness.layout.toml: drop "Releases marathon." from the
+  lint-references and marathon-layout summaries; `archive` keeps the goal's one marathon release.
