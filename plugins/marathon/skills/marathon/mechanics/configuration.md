@@ -50,14 +50,14 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   (`references/build.md`). A context project names its consistency script, if it has one. Every
   repository's check calls `lint-context` and `lint-references`. `lint-context` holds `context/` and
   `roadmap/` to their file kinds, word budgets, and shapes, and checks the relative links in the
-  root README, `context/`, and `docs/`. `lint-references` resolves each markdown reference in the
-  comments of the tracked files that aren't markdown, one segment from the repository root, one
-  after `../` beside the repository, and any other's first segment in the first place that has it:
-  the repository, beside it, the coordinator's `[workspace.paths]`, or beside the coordinator. It
-  skips a reference whose first segment is in none, as in CI. The plugin's `bin/` shims put both on
-  a session's PATH, running the plugin's local build when present, or else its release through mise.
-  A repository pins the release in its `mise.toml`, so `mise install` puts both on PATH and
-  `mise outdated` reports a newer tag:
+  root README, `context/`, and `docs/`. `lint-references` resolves each markdown reference in
+  comments of tracked non-markdown files. A one-segment reference resolves from the repository
+  root, and one starting `../` beside the repository. Any other resolves its first segment in the
+  first place that has it: the repository, beside it, the coordinator's `[workspace.paths]`, or
+  beside the coordinator. It skips a reference whose first segment is in none, as in CI. The
+  plugin's `bin/` shims put both on a session's PATH, running the plugin's local build when
+  present, or else its release through mise. A repository pins the release in its `mise.toml`, so
+  `mise install` puts both on PATH and `mise outdated` reports a newer tag:
 
   ```toml
   [tools]
@@ -66,8 +66,8 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
 
   CI calls both after `mise install`.
 - **`[project] coordinator`**: optional. The coordinator's directory, `~/` or relative to the
-  repository root, for a workspace member not beside it. A missing directory, as in CI, is passed
-  over; one without a `[workspace]` table fails the check.
+  repository root, for a workspace member not beside it. A missing directory, as in CI, is
+  skipped; one without a `[workspace]` table fails the check.
 - **`[project] currency`**: optional. The repository's read-only command that reports what trails
   its latest release: the direct dependencies, the toolchain, and the pins, such as CI actions and
   images. Indirect dependencies are left to the ecosystem's resolver. PLAN runs it; CI never does.

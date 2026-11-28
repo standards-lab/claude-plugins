@@ -13,12 +13,13 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 
 - **lint-references finds the coordinator** (`marathon/internal/references`,
   `skills/marathon/mechanics/configuration.md`). A workspace member outside the workspace directory
-  names, in its `.claude/marathon.toml`, the coordinator's directory with `[project] coordinator`,
-  as a `~/` or repository-relative path, and a repository with a `[workspace]` table is its own
-  coordinator. A reference's first segment resolves in the repository, beside it, through the
-  coordinator's `[workspace.paths]`, then beside the coordinator, the first match deciding. A
-  missing coordinator, as in CI, still skips, and the note names it; a coordinator directory without
-  a `[workspace]` table fails the check with the fix.
+  names the coordinator's directory with `[project] coordinator` in its `.claude/marathon.toml`, as
+  a `~/` or repository-relative path. A repository with a `[workspace]` table is its own
+  coordinator. A reference's first segment resolves in the first of these places that has it: the
+  repository, beside it, the coordinator's `[workspace.paths]`, then beside the coordinator. When
+  the coordinator's directory is missing, as in CI, unresolved references still skip, and the skip
+  note names the directory. A coordinator directory without a `[workspace]` table fails the check
+  with a reason that says how to fix it.
 
 ## v0.24.1
 
