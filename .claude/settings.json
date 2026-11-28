@@ -1,5 +1,8 @@
 {
   "plansDirectory": "./.claude/plans",
+  "env": {
+    "MISE_ENV": "agent"
+  },
   "permissions": {
     "allow": [
       "Skill(marathon:marathon)"

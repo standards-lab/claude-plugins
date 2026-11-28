@@ -24,5 +24,6 @@ The judgement calls the standards-reviewer applies to claude-plugins, beyond wha
 - `architecture/standards/go-elemental/principles/construction-and-execution.md`: every exported function and type under `marathon/`.
 - `architecture/standards/go-elemental/principles/tests-and-docs.md`: the `marathon/` packages' external test packages and their `doc.go` inventories.
 - `architecture/standards/go-elemental/principles/release-and-ci.md`: the Go check `scripts/check.sh` runs over `marathon/` with the tools `mise.toml` pins, and CI's one `check` job.
+- release-and-ci's "Tasks" `build` target, the root `bin/`, doesn't apply: marathon's local build stays at `plugins/marathon/.build/`, beside the plugin's `bin/` shims that find it.
 - `architecture/standards/go-elemental/principles/cli-applications.md`, `domain-files.md`, and `lifecycle-and-context.md` don't apply: marathon's tools don't build on go-cli-sdk.
 - release-and-ci's Keep-a-Changelog form doesn't apply: `plugins/marathon/CHANGELOG.md`, in its `## vX.Y.Z` and `## Unreleased` form, is the `marathon/` module's record.

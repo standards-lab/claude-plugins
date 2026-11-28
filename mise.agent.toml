@@ -1,0 +1,4 @@
+# The agent profile, read only where MISE_ENV=agent is set: it adds the agent tasks.
+# See architecture/principles/agent-separation.md
+[task_config]
+includes = ["mise-tasks", ".agent/mise-tasks"]

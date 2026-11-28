@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Run the check's Go step over marathon/ and the lints it builds"
+# Runs scripts/check/go.sh, one step of scripts/check.sh.
+set -euo pipefail
+exec scripts/check/go.sh "$@"

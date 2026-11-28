@@ -10,3 +10,5 @@ Thumbs.db
 plugins/*/evals/results/
 plugins/*/evals-judged/results/
 plugins/marathon/.build/
+.agent/state/
+mise.local.toml
