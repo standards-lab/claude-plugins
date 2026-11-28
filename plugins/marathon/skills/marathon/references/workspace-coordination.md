@@ -18,6 +18,11 @@ resolves the same way, or through a spike sub-goal's `path`. Ask the architect a
 resolves through none of them. When no project declares itself coordinator, list the sibling
 projects and ask.
 
+A member kept outside the workspace directory, such as a capstone or a spike, names the
+coordinator's directory with `[project] coordinator`, so `lint-references` resolves its comments'
+references through the coordinator (`mechanics/configuration.md`). A member beside the coordinator
+needs no key.
+
 ## Goals running side by side
 
 Goals that run at the same time share member repositories under the repository lock

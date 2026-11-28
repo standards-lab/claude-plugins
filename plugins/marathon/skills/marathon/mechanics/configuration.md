@@ -45,19 +45,19 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
 
 - **`[project] kind`**: `code` when the repository holds production source with a build-and-test
   loop. `context` when the repository is itself context, such as prose, configuration, or skills,
-  which the agent writes directly and which has no tests. A context project can still version and
-  release what it ships.
-- **`[project] check`**: the repository's one deterministic check, which every slice and review
-  runs (`references/build.md`). A context project names its consistency script, if it has one.
-  Every repository's check calls `lint-context` and `lint-references`. `lint-context` holds
-  `context/` and `roadmap/` to their file kinds, word budgets, and shapes, and checks the relative
-  links in the root README, `context/`, and `docs/`. `lint-references` resolves each markdown
-  reference in the comments of the tracked files that aren't markdown: from the repository root,
-  or in the sibling directory its first segment names. It skips a reference whose directory
-  exists in neither place, as in CI. Both are Go binaries. The plugin's `bin/` shims put them on a
-  session's PATH, each running the plugin's local build when present, or the plugin's release
-  through mise, so a session needs mise on PATH. A repository pins the release in its
-  `mise.toml`, so `mise install` puts both on PATH and `mise outdated` reports a newer tag:
+  which has no tests. A context project can still version and release what it ships.
+- **`[project] check`**: the repository's one deterministic check, which every slice and review runs
+  (`references/build.md`). A context project names its consistency script, if it has one. Every
+  repository's check calls `lint-context` and `lint-references`. `lint-context` holds `context/` and
+  `roadmap/` to their file kinds, word budgets, and shapes, and checks the relative links in the
+  root README, `context/`, and `docs/`. `lint-references` resolves each markdown reference in
+  comments of tracked non-markdown files. A one-segment reference resolves from the repository
+  root, and one starting `../` beside the repository. Any other resolves its first segment in the
+  first place that has it: the repository, beside it, the coordinator's `[workspace.paths]`, or
+  beside the coordinator. It skips a reference whose first segment is in none, as in CI. The
+  plugin's `bin/` shims put both on a session's PATH, running the plugin's local build when
+  present, or else its release through mise. A repository pins the release in its `mise.toml`, so
+  `mise install` puts both on PATH and `mise outdated` reports a newer tag:
 
   ```toml
   [tools]
@@ -65,31 +65,30 @@ remote = "https://github.com/<owner>/spike-<slug>.git"
   ```
 
   CI calls both after `mise install`.
+- **`[project] coordinator`**: optional. The coordinator's directory, `~/` or relative to the
+  repository root, for a workspace member not beside it. A missing directory, as in CI, is
+  skipped; one without a `[workspace]` table fails the check.
 - **`[project] currency`**: optional. The repository's read-only command that reports what trails
   its latest release: the direct dependencies, the toolchain, and the pins, such as CI actions and
-  images. Indirect dependencies are left to the ecosystem's resolver. PLAN runs it at development
-  time; CI never does, since a release upstream would fail a build nothing in the repository
-  changed. It exits 0 with empty stdout when everything is current. It exits nonzero when something
-  trails, with one stdout line per trailing item, suggested as `<where>: <item> <pin> -> <latest>`,
-  where the latest is what the ecosystem's tooling reports. Nonzero with no stdout lines means the
-  command itself failed, which PLAN reports as a fact and doesn't block on. Diagnostics go to
-  stderr. marathon prescribes no tool.
+  images. Indirect dependencies are left to the ecosystem's resolver. PLAN runs it; CI never does.
+  It exits 0 with empty stdout when everything is current. It exits nonzero when something trails,
+  with one stdout line per trailing item, suggested as `<where>: <item> <pin> -> <latest>`, where
+  the latest is what the ecosystem's tooling reports. Nonzero with no stdout lines means the command
+  itself failed, which PLAN reports as a fact and doesn't block on. Diagnostics go to stderr.
+  marathon prescribes no tool.
 - **`[project] gate`**: optional. The repository's release gate, the release-time part of its
-  automated checks, such as a plugin's eval suite (`references/build.md`). SHIP runs it at
-  development time on the merge commit, before each Release tag, with that tag as its one
-  argument, as in `mise run gate v1.4.0` (`mechanics/releasing.md`). It exits 0 when the tag may
-  be pushed, and nonzero to hold it. CI never runs it. marathon fixes only this contract and
-  prescribes no tool.
-- **`[remote]`**: the platform, and the commands SHIP runs to publish a branch and, optionally,
-  to merge it.
+  automated checks, such as a plugin's eval suite (`references/build.md`). SHIP runs it on the merge
+  commit, before each Release tag, with that tag as its one argument, as in `mise run gate v1.4.0`
+  (`mechanics/releasing.md`). It exits 0 when the tag may be pushed, and nonzero to hold it. CI
+  never runs it. marathon prescribes no tool.
+- **`[remote]`**: the platform, and the commands SHIP runs to publish a branch and, optionally, to
+  merge it.
 - **`[remote] checks`**: optional, for a repository that runs CI on pull requests. A command that
   waits for the pull request's checks and exits nonzero if one fails. Every merge runs it first.
 - **`[remote] ci`**: optional. A command that waits for the default branch's CI runs on the merge
-  commit, with that commit checked out, and exits nonzero if one fails or none starts. CI often
-  runs more after a merge than on the pull request, such as integration tests only on the default
-  branch. Runs take a few seconds to appear, so the command polls for them first, as the
-  example's does. SHIP runs it before tagging a release; without it, tagging follows the merge
-  directly (`mechanics/releasing.md`).
+  commit, with that commit checked out, and exits nonzero if one fails or none starts. Runs take a
+  few seconds to appear, so the command polls for them first. SHIP runs it before tagging a release;
+  without it, tagging follows the merge directly (`mechanics/releasing.md`).
 - **`[workspace]`**: for the coordinator only. `order` lists layers, lowest first, and an array
   entry is a layer of peers. `exclusive` lists groups of repositories that at most one active goal's
   `repos` may touch at a time (`mechanics/goals.md`, "The repository lock"). `[workspace.paths]`

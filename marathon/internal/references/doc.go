@@ -14,13 +14,23 @@
 // '$', '{', '}', '<', or '>', is part of a URL, pattern, or template, and isn't
 // a reference.
 //
-// A reference, normalized, resolves from the repository root when its first
-// segment names something there, or when it has only one segment. Otherwise
-// it resolves in the sibling directory of that name beside the repository; a
-// reference that starts with '../' names that directory after the '../'. A
-// reference resolving in neither place fails. When no directory of that name
-// exists in the repository or beside it, as in CI, the reference is skipped
-// with a note.
+// A reference, normalized, resolves from the repository root when it has only
+// one segment, and in the directory beside the repository that its first
+// segment names after a leading '../'. Otherwise its first segment resolves in
+// the first of these places that has it: the repository root, beside the
+// repository, the coordinator's [workspace.paths] entry of that name, and
+// beside the coordinator. A reference missing where its first segment resolved
+// fails. When its first segment is in none of those places, as in CI, the
+// reference is skipped with a note.
+//
+// The coordinator is read from .claude/marathon.toml at the git top-level: the
+// repository itself when that configuration has a [workspace] table, or else
+// the directory its [project] coordinator key names, with a leading '~/' read
+// from the home directory and a relative path from the top-level. A
+// [workspace.paths] location takes '~/' the same way, and a relative one is
+// read from the coordinator. A key naming a directory that doesn't exist only
+// changes the skip note, which names it; a key naming a directory without a
+// readable configuration that has a [workspace] table fails the run.
 //
 // The package exports:
 //

@@ -57,7 +57,8 @@ Keep every file brief, a few sentences each.
 ```
 
 A member of a workspace has no roadmap index or goal files; its goals live in the coordinator's, and
-so do a spike's. A coordinator adds a `[workspace]` table (`references/workspace-coordination.md`).
+so do a spike's. A coordinator adds a `[workspace]` table, and a member not beside it sets
+`[project] coordinator` (`references/workspace-coordination.md`).
 Extensions are enabled later, when the project adopts them (`references/extensions.md`). Don't
 create `docs/`; a task that documents creates it.
 

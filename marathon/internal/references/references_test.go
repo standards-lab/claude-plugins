@@ -1,6 +1,9 @@
 package references_test
 
 import (
+	"bytes"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/standards-lab/claude-plugins/marathon/internal/references"
@@ -223,4 +226,204 @@ func TestASkipWithAFailureFails(t *testing.T) {
 		"src/code:1: skipped architecture/principles/comments.md: "+
 			"no architecture/ in this repository or beside it",
 		"src/code:2: reference docs/missing.md does not resolve; "+fix)
+}
+
+const reference = "# See architecture/principles/comments.md\n"
+
+func newCoordinator(t *testing.T, config string) *repotest.Repo {
+	t.Helper()
+	c := repotest.New(t)
+	c.Write(".claude/marathon.toml", config)
+	return c
+}
+
+func (r repo) member(coordinator string) {
+	r.t.Helper()
+	r.write(".claude/marathon.toml", "[project]\ncoordinator = \""+coordinator+"\"\n")
+}
+
+func TestAHomeRelativeKeyResolvesBesideTheCoordinator(t *testing.T) {
+	c := newCoordinator(t, "[workspace]\n")
+	c.WriteBeside("architecture/principles/comments.md", "# Page\n")
+	t.Setenv("HOME", c.Parent)
+	r := newRepo(t)
+	r.member("~/repo")
+	r.write("src/code", reference)
+	r.assertResult(0)
+}
+
+func TestARelativeKeyIsReadFromTheRepositoryRoot(t *testing.T) {
+	c := newCoordinator(t, "[workspace]\n")
+	c.WriteBeside("architecture/principles/comments.md", "# Page\n")
+	r := newRepo(t)
+	key, err := filepath.Rel(r.Root, c.Root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	r.member(key)
+	r.write("src/code", reference)
+	r.assertResult(0)
+}
+
+func TestTheKeyIsReadAtTheGitTopLevel(t *testing.T) {
+	r := newRepo(t)
+	missing := filepath.Join(r.Parent, "absent")
+	r.member(missing)
+	r.write("sub/code", reference)
+	var stdout, stderr bytes.Buffer
+	code := references.Run(filepath.Join(r.Root, "sub"), &stdout, &stderr)
+	want := "code:1: skipped architecture/principles/comments.md: no architecture/ in this " +
+		"repository or beside it, and coordinator " + missing + " does not exist\n"
+	if code != 0 || stdout.String() != want || stderr.Len() != 0 {
+		t.Errorf("got (%d, %q, %q), want (0, %q, \"\")", code, stdout.String(), stderr.String(), want)
+	}
+}
+
+func TestAWorkspaceIsItsOwnCoordinator(t *testing.T) {
+	elsewhere := repotest.New(t)
+	elsewhere.Write("principles/comments.md", "# Page\n")
+	r := newRepo(t)
+	r.write(".claude/marathon.toml",
+		"[workspace.paths]\narchitecture = \""+elsewhere.Root+"\"\n")
+	r.write("src/code", reference)
+	r.assertResult(0)
+}
+
+func TestAWorkspacePathResolves(t *testing.T) {
+	for name, location := range map[string]func(home string) string{
+		"absolute":      func(home string) string { return home + "/arch" },
+		"home-relative": func(string) string { return "~/arch" },
+	} {
+		t.Run(name, func(t *testing.T) {
+			home := repotest.New(t)
+			home.Write("arch/principles/comments.md", "# Page\n")
+			t.Setenv("HOME", home.Root)
+			c := newCoordinator(t,
+				"[workspace.paths]\narchitecture = \""+location(home.Root)+"\"\n")
+			c.WriteBeside("architecture/principles/other.md", "# Other\n")
+			r := newRepo(t)
+			r.member(c.Root)
+			r.write("src/code", reference)
+			r.assertResult(0)
+		})
+	}
+}
+
+func TestTheFirstPlaceWithTheSegmentDecides(t *testing.T) {
+	for _, place := range []string{"repository", "beside", "paths"} {
+		t.Run(place, func(t *testing.T) {
+			elsewhere := repotest.New(t)
+			c := newCoordinator(t,
+				"[workspace.paths]\narchitecture = \""+elsewhere.Root+"\"\n")
+			c.WriteBeside("architecture/principles/comments.md", "# Page\n")
+			elsewhere.Write("principles/comments.md", "# Page\n")
+			r := newRepo(t)
+			r.member(c.Root)
+			switch place {
+			case "repository":
+				r.write("architecture/principles/other.md", "# Other\n")
+			case "beside":
+				r.WriteBeside("architecture/principles/other.md", "# Other\n")
+			case "paths":
+				elsewhere.Remove("principles/comments.md")
+			}
+			r.write("src/code", reference)
+			r.assertResult(1,
+				"src/code:1: reference architecture/principles/comments.md does not resolve; "+fix)
+		})
+	}
+}
+
+func TestMissingWhereTheCoordinatorResolvedFails(t *testing.T) {
+	c := newCoordinator(t, "[workspace]\n")
+	c.WriteBeside("architecture/principles/other.md", "# Other\n")
+	r := newRepo(t)
+	r.member(c.Root)
+	r.write("src/code", reference)
+	r.assertResult(1,
+		"src/code:1: reference architecture/principles/comments.md does not resolve; "+fix)
+}
+
+func TestTheCoordinatorDoesNotServeParentOrOneSegmentReferences(t *testing.T) {
+	c := newCoordinator(t, "[workspace.paths]\n\"NOTES.md\" = \"~/NOTES.md\"\n")
+	c.WriteBeside("architecture/principles/comments.md", "# Page\n")
+	c.WriteBeside("NOTES.md", "# Notes\n")
+	t.Setenv("HOME", c.Parent)
+	r := newRepo(t)
+	r.member(c.Root)
+	r.write("src/code", "# See ../architecture/principles/comments.md\n# See NOTES.md\n")
+	r.assertResult(1,
+		"src/code:1: skipped ../architecture/principles/comments.md: "+
+			"no architecture/ in this repository or beside it",
+		"src/code:2: reference NOTES.md does not resolve; "+fix)
+}
+
+func TestASegmentFoundNowhereIsSkipped(t *testing.T) {
+	c := newCoordinator(t, "[workspace]\n")
+	r := newRepo(t)
+	r.member(c.Root)
+	r.write("src/code", reference)
+	r.assertResult(0,
+		"src/code:1: skipped architecture/principles/comments.md: no architecture/ in this "+
+			"repository, beside it, in the [workspace.paths] of coordinator "+c.Root+", or beside it")
+}
+
+func TestAMissingCoordinatorIsNamedInTheSkip(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	r := newRepo(t)
+	r.member("~/architecture")
+	r.write("src/code", reference)
+	r.assertResult(0,
+		"src/code:1: skipped architecture/principles/comments.md: no architecture/ in this "+
+			"repository or beside it, and coordinator "+home+"/architecture does not exist")
+}
+
+func TestAMisconfiguredCoordinatorFails(t *testing.T) {
+	for name, tc := range map[string]struct{ file, content, fix string }{
+		"no configuration": {"", "",
+			"or give the coordinator a .claude/marathon.toml with a [workspace] table"},
+		"no workspace table": {".claude/marathon.toml", "[project]\nkind = \"context\"\n",
+			"or add a [workspace] table to"},
+		"unparseable": {".claude/marathon.toml", "[workspace\n", "; fix it"},
+		"unreadable": {".claude/marathon.toml/inner", "",
+			"or give the coordinator a .claude/marathon.toml with a [workspace] table"},
+		"non-string location": {".claude/marathon.toml", "[workspace.paths]\narchitecture = 1\n",
+			"set it to the directory's location"},
+	} {
+		t.Run(name, func(t *testing.T) {
+			c := repotest.New(t)
+			if tc.file != "" {
+				c.Write(tc.file, tc.content)
+			}
+			r := newRepo(t)
+			r.member(c.Root)
+			r.write("src/code", reference)
+			code, lines, stderr := r.Run(references.Run)
+			if code != 1 || lines != nil || !strings.Contains(stderr, c.Root) ||
+				!strings.Contains(stderr, tc.fix) {
+				t.Errorf("got (%d, %q, %q), want exit 1 with a reason naming %s and %q",
+					code, lines, stderr, c.Root, tc.fix)
+			}
+		})
+	}
+}
+
+func TestAKeyThatIsNotAPathFails(t *testing.T) {
+	r := newRepo(t)
+	r.write(".claude/marathon.toml", "[project]\ncoordinator = 1\n")
+	r.write("src/code", reference)
+	code, _, stderr := r.Run(references.Run)
+	if code != 1 || !strings.Contains(stderr, "set it to the coordinator's directory") {
+		t.Errorf("got (%d, %q), want exit 1 naming the fix", code, stderr)
+	}
+}
+
+func TestAConfigurationWithoutTheKeyChangesNothing(t *testing.T) {
+	r := newRepo(t)
+	r.write(".claude/marathon.toml", "[project]\nkind = \"code\"\n")
+	r.write("src/code", reference)
+	r.assertResult(0,
+		"src/code:1: skipped architecture/principles/comments.md: "+
+			"no architecture/ in this repository or beside it")
 }
