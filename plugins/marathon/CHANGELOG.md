@@ -21,11 +21,12 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   note names the directory. A coordinator directory without a `[workspace]` table fails the check
   with a reason that says how to fix it.
 - **A shipped session ends with the next session's prompt** (`commands/start.md`). Once the task
-  merges, the last message ends with a fenced `/marathon:marathon start <goal>` for the next task or
-  the staged goal, `/marathon:marathon plan <goal>` for a goal only proposed, or
+  merges, the last message ends with a fenced `/marathon:marathon start <goal>` for the next task
+  or the staged goal, `/marathon:marathon plan <goal>` for a goal only proposed, or
   `/marathon:marathon intake experiment.<topic>` when a spike's sync leaves no planned spike. A
-  session that stops in `handoff` ends without one. start's read-first budget rises from 8,000 to
-  8,100 words for the rule, with the architect's approval.
+  session that stops in `handoff` ends without one, and the session brief's Sync line names
+  `intake` in the same form. start's read-first budget rises from 8,000 to 8,100 words for the
+  rule, with the architect's approval.
 
 ### Changed
 

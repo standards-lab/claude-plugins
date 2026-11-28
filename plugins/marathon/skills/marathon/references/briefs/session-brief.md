@@ -65,7 +65,7 @@ session writes it to `.agent/state/briefs/<goal>.md` in the goal's root, which g
 - **Sync** appears only on the goal's last task, after Needs you. It lists the pending edits the
   sync will apply, per repository, and the goal proposed to stage next: for a spike, the next
   planned spike of its experiment; otherwise the top of `planned`. When a spike's experiment has
-  no planned spike left, the line reads "next: none — run `marathon intake experiment.<topic>`".
+  no planned spike left, the line reads "next: none — run `/marathon:marathon intake experiment.<topic>`".
   Accepting the brief authorizes the sync, and stages that goal when staging's checks pass
   (`mechanics/goals.md`, "The repository lock"), counting this goal's root as released.
   When a check fails, the line reads "proposed, not staged: <reason>", and nothing is staged; a
