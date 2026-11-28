@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Tests for scripts/check.sh, run against a seeded copy of the repository.
+# Tests for scripts/check.sh and its step scripts in scripts/check/, run against a seeded copy of
+# the repository.
 #
 # The outer check runs the real test suite and validates the plugins, so the copy's scripts/tests
 # holds one passing test in their place, which keeps the check from recursing into these tests, and
@@ -321,6 +322,23 @@ EOF
       "${FUNCNAME[0]}" "$code" "$actual" "$expected" >&2
     failures=1
   fi
+}
+
+test_each_step_runs_alone_and_reports_its_own_failures() {
+  local step expected
+  replace .claude-plugin/marketplace.json "./$extension" ./plugins/gone
+  write scripts/tests/seeded.test.sh $'#!/usr/bin/env bash\nexit 1\n'
+  for step in plugins go tests; do
+    lines=$(cd "$root" && PATH=$check_path scripts/check/$step.sh 2>&1 >/dev/null)
+    code=$?
+    lines=$(grep '^FAIL: ' <<<"$lines")
+    case $step in
+      plugins) expect 1 "FAIL: marketplace source ./plugins/gone does not resolve to a plugin;\
+ point it at a directory holding .claude-plugin/plugin.json" ;;
+      go) expect 0 ;;
+      tests) expect 1 "FAIL: scripts/tests failed; $rerun" ;;
+    esac
+  done
 }
 
 for test in $(declare -F | awk '$3 ~ /^test_/ { print $3 }'); do
