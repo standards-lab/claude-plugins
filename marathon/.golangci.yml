@@ -1,5 +1,5 @@
-# golangci-lint v2 configuration for the marathon module, run by scripts/check.sh: the standard set
-# plus testpackage and nolintlint.
+# golangci-lint v2 configuration for the marathon module, run by scripts/check/go.sh: the standard
+# set plus testpackage and nolintlint.
 # See architecture/standards/go-elemental/principles/tests-and-docs.md
 # See architecture/principles/comments.md
 version: "2"

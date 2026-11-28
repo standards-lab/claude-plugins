@@ -9,6 +9,5 @@ err() {
 }
 
 finish() {
-  [ "$fail" -eq 0 ]
-  exit
+  exit "$fail"
 }

@@ -66,7 +66,7 @@ replace() {
 
 run_check() {
   local stderr
-  stderr=$(cd "$root" && PATH=$check_path scripts/check.sh 2>&1 >/dev/null)
+  stderr=$(cd "$root" && PATH=$check_path "${1:-scripts/check.sh}" 2>&1 >/dev/null)
   code=$?
   lines=$stderr
 }
@@ -325,12 +325,11 @@ EOF
 }
 
 test_each_step_runs_alone_and_reports_its_own_failures() {
-  local step expected
+  local step
   replace .claude-plugin/marketplace.json "./$extension" ./plugins/gone
   write scripts/tests/seeded.test.sh $'#!/usr/bin/env bash\nexit 1\n'
   for step in plugins go tests; do
-    lines=$(cd "$root" && PATH=$check_path scripts/check/$step.sh 2>&1 >/dev/null)
-    code=$?
+    run_check "scripts/check/$step.sh"
     lines=$(grep '^FAIL: ' <<<"$lines")
     case $step in
       plugins) expect 1 "FAIL: marketplace source ./plugins/gone does not resolve to a plugin;\
