@@ -21,6 +21,12 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   note names the directory. A coordinator directory without a `[workspace]` table fails the check
   with a reason that says how to fix it.
 
+### Changed
+
+- **marathon's Go tests sit in each package's `test/` directory** (`marathon/internal/<pkg>/test/`).
+  Each package's unit tests move from beside its source to `<pkg>/test/*_test.go`, still as
+  external test packages.
+
 ## v0.24.1
 
 A retro's findings keep their checkboxes and numbers when the terminal renders them, and a round's

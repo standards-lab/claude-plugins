@@ -39,7 +39,7 @@ func TestEachCommandReportsItsBuildVersion(t *testing.T) {
 		{stamp + "0.21.0", "0.21.0"},
 	} {
 		bin := t.TempDir()
-		cmd := exec.Command("go", "build", "-C", filepath.Join("..", ".."),
+		cmd := exec.Command("go", "build", "-C", filepath.Join("..", "..", ".."),
 			"-ldflags", build.ldflags, "-o", bin+string(filepath.Separator), "./cmd/...")
 		if out, err := cmd.CombinedOutput(); err != nil {
 			t.Fatalf("go build -ldflags %q: %v\n%s", build.ldflags, err, out)
