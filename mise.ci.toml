@@ -2,4 +2,4 @@
 # See architecture/principles/rolling-currency.md
 # See context/harness-testing.md
 [tools]
-claude-code = "2.1.330"
+claude-code = "2.1.332"
