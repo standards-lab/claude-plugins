@@ -48,9 +48,9 @@ session writes it to `.agent/state/briefs/<goal>.md` in the goal's root, which g
 - **Core changes** lists one to five entries, each with one line on why and, where the code is
   the change, a short excerpt or signature fenced as code.
 - **Verify** opens with the check's one-line result. Each step is one a person runs against the
-  product, with what they should see. Good: step 1 above. Bad: `go test ./driver/` → ok. No step
-  runs an agent harness, agent task, or internal test. The spec-reviewer followed each. A task
-  with no such step reads "none".
+  product, with what they should see: step 1 above, not `go test ./driver/` → ok. No step runs an
+  agent harness, agent task, or internal test. The spec-reviewer followed each. A task with no
+  such step reads "none".
 - **Decided without you** lists the decisions the brief didn't cover and each Decision the
   editor dropped (`mechanics/goal-record.md`). A drop the architect rejects is a redirect, and
   the session restores the line.

@@ -5,8 +5,8 @@ and a release gate runs the check and the plugin's eval suite before each tag.
 
 ## Per push: the check
 
-`scripts/check.sh` runs in CI on every push and locally, where `mise run check` runs it. It runs
-three steps in order, each runnable alone: `scripts/check/plugins.sh`, `scripts/check/go.sh`, and
+`scripts/check.sh` runs in CI on every push, and locally as `mise run check`. It runs three steps
+in order, each runnable alone: `scripts/check/plugins.sh`, `scripts/check/go.sh`, and
 `scripts/check/tests.sh`, which an agent runs as the `check:plugins`, `check:go`, and `check:tests`
 tasks in `.agent/mise-tasks/`. Every step runs even when an earlier one fails. Together they
 check that:

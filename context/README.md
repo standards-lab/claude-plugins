@@ -57,6 +57,6 @@ Notes for planned work sit directly under `context/`. A goal rooted here keeps i
 `context/goals/<goal>.md` while it is active; the workspace roadmap is at the coordinator
 (standards-lab).
 
-The repository's tasks run through mise: `mise.toml` holds a person's `check`, `currency`, `gate`,
-and `build`, and the agent's tasks sit in `.agent/mise-tasks/`, loaded only under the `agent`
-profile that `.claude/settings.json` sets.
+The repository's tasks run through mise ([README](../README.md#development)). The agent's tasks sit
+in `.agent/mise-tasks/`, which mise loads only under the `agent` profile that
+`.claude/settings.json` sets.
