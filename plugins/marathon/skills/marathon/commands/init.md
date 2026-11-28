@@ -43,10 +43,12 @@ Keep every file brief, a few sentences each.
 <repo>/
 ├── CLAUDE.md          # navigation pointers only: context/README.md, STANDARDS.md, the check
 ├── STANDARDS.md       # judgement calls for the standards-reviewer; starts as a stub
-├── .gitignore         # .claude/plans/ and .claude/briefs/
+├── .gitignore         # .claude/plans/, .agent/state/, and mise.local.toml
 ├── mise.toml          # the lints' pin; mechanics/configuration.md
+├── mise.agent.toml    # [task_config] includes = ["mise-tasks", ".agent/mise-tasks"]
 ├── .claude/
-│   ├── settings.json  # plansDirectory = ./.claude/plans; allow Skill(marathon:marathon)
+│   ├── settings.json  # plansDirectory = ./.claude/plans; env MISE_ENV = agent; allow
+│   │                  # Skill(marathon:marathon)
 │   └── marathon.toml  # mechanics/configuration.md
 ├── context/
 │   ├── README.md      # vision and capability map
@@ -60,7 +62,7 @@ A member of a workspace has no roadmap index or goal files; its goals live in th
 so do a spike's. A coordinator adds a `[workspace]` table, and a member not beside it sets
 `[project] coordinator` (`references/workspace-coordination.md`).
 Extensions are enabled later, when the project adopts them (`references/extensions.md`). Don't
-create `docs/`; a task that documents creates it.
+create `docs/`, `mise-tasks/`, or `.agent/`; the task that first needs one creates it.
 
 The `STANDARDS.md` stub says what the file is for: judgement calls the check can't enforce, each
 one line, with pointers to the architecture pages that apply. It never restates what the check

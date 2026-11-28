@@ -35,6 +35,11 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   when it isn't listed, in place of `.claude/briefs/`. `.claude/` is Claude Code's own directory;
   the agent's working state sits apart from it, under `.agent/`. To migrate, move an open brief
   from `.claude/briefs/` to `.agent/state/briefs/` and swap the ignore line.
+- **`init` sets up the agent area** (`commands/init.md`). The new repository's `.gitignore` lists
+  `.agent/state/` and `mise.local.toml`, its `mise.agent.toml` includes `mise-tasks` and
+  `.agent/mise-tasks`, and its settings set `MISE_ENV=agent` in `env`, so only an agent's mise loads
+  the agent tasks. `init` creates no task directories; the first task that needs one does. init's
+  read-first budget rises from 3,800 to 3,900 words for these lines, with the architect's approval.
 
 ## v0.24.1
 
