@@ -7,6 +7,18 @@ GitHub releases the tags cut.
 An entry that changes the extension contract (`skills/marathon/references/extensions.md`) starts
 with `**Extension contract:**`, so an agent checking an extension's floor can scan for it.
 
+## Unreleased
+
+### Added
+
+- **lint-references finds the coordinator** (`marathon/internal/references`). A repository's
+  `.claude/marathon.toml` names the coordinator's directory with `[project] coordinator`, as a
+  `~/` or repository-relative path, and a repository with a `[workspace]` table is its own
+  coordinator. A reference's first segment resolves in the repository, beside it, through the
+  coordinator's `[workspace.paths]`, then beside the coordinator, the first match deciding. A
+  missing coordinator, as in CI, still skips, and the note names it; a coordinator directory
+  without a `[workspace]` table fails the check with the fix.
+
 ## v0.24.1
 
 A retro's findings keep their checkboxes and numbers when the terminal renders them, and a round's

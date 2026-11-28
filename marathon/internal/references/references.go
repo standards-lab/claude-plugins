@@ -51,6 +51,10 @@ func check(dir string) ([]string, bool, error) {
 	if err != nil {
 		return nil, false, err
 	}
+	coord, err := findCoordinator(root)
+	if err != nil {
+		return nil, false, err
+	}
 	var lines []string
 	failed := false
 	for _, rel := range files {
@@ -62,7 +66,7 @@ func check(dir string) ([]string, bool, error) {
 			continue
 		}
 		for _, ref := range numberedReferences(text) {
-			line, fails := outcome(root, rel, ref)
+			line, fails := outcome(root, coord, rel, ref)
 			if line != "" {
 				lines = append(lines, line)
 				failed = failed || fails
@@ -73,21 +77,29 @@ func check(dir string) ([]string, bool, error) {
 }
 
 func trackedNonMarkdownFiles(root string) ([]string, error) {
-	cmd := exec.Command("git", "ls-files", "-z")
-	cmd.Dir = root
-	var gitStderr bytes.Buffer
-	cmd.Stderr = &gitStderr
-	listing, err := cmd.Output()
+	listing, err := gitOutput(root, "ls-files", "-z")
 	if err != nil {
-		return nil, fmt.Errorf("git ls-files: %w: %s", err, strings.TrimSpace(gitStderr.String()))
+		return nil, err
 	}
 	var files []string
-	for rel := range strings.SplitSeq(string(listing), "\x00") {
+	for rel := range strings.SplitSeq(listing, "\x00") {
 		if rel != "" && !strings.HasSuffix(rel, ".md") {
 			files = append(files, rel)
 		}
 	}
 	return files, nil
+}
+
+func gitOutput(root string, args ...string) (string, error) {
+	cmd := exec.Command("git", args...)
+	cmd.Dir = root
+	var gitStderr bytes.Buffer
+	cmd.Stderr = &gitStderr
+	out, err := cmd.Output()
+	if err != nil {
+		return "", fmt.Errorf("git %s: %w: %s", args[0], err, strings.TrimSpace(gitStderr.String()))
+	}
+	return string(out), nil
 }
 
 func readUTF8(name string) (string, bool, error) {
@@ -230,7 +242,7 @@ func precedesNonReference(c byte) bool {
 	return isPathChar(c) || strings.IndexByte("*${}<>", c) >= 0
 }
 
-func outcome(root, rel string, ref reference) (string, bool) {
+func outcome(root string, coord coordinator, rel string, ref reference) (string, bool) {
 	parts := strings.Split(path.Clean(ref.path), "/")
 	ups := 0
 	for _, part := range parts {
@@ -238,19 +250,29 @@ func outcome(root, rel string, ref reference) (string, bool) {
 			ups++
 		}
 	}
-	base := root + strings.Repeat("/..", ups)
 	segment := parts[ups]
-	if ups == 0 && len(parts) > 1 && !exists(filepath.Join(root, segment)) {
-		base = filepath.Dir(root)
+	rest := strings.Join(parts[ups+1:], "/")
+	var dir, unresolved string
+	switch {
+	case len(parts)-ups == 1:
+		dir = root + strings.Repeat("/..", ups)
+		rest = segment
+	case ups > 0:
+		dir = root + strings.Repeat("/..", ups) + "/" + segment
+		if !exists(dir) {
+			unresolved = coordinator{}.unresolved(segment)
+		}
+	default:
+		dir = coord.locate(root, segment)
+		if dir == "" {
+			unresolved = coord.unresolved(segment)
+		}
 	}
-	target := base + "/" + strings.Join(parts[ups:], "/")
-	if exists(target) {
+	if unresolved != "" {
+		return fmt.Sprintf("%s:%d: skipped %s: %s", rel, ref.number, ref.path, unresolved), false
+	}
+	if exists(dir + "/" + rest) {
 		return "", false
-	}
-	hasMoreSegments := len(parts)-ups > 1
-	if hasMoreSegments && !exists(base+"/"+segment) {
-		return fmt.Sprintf("%s:%d: skipped %s: no %s/ in this repository or beside it",
-			rel, ref.number, ref.path, segment), false
 	}
 	return fmt.Sprintf("%s:%d: reference %s does not resolve; %s", rel, ref.number, ref.path, fix), true
 }
