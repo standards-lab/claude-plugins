@@ -133,7 +133,7 @@ func expandPath(base, name string) (string, error) {
 }
 
 func (c coordinator) locate(root, segment string) string {
-	candidates := []string{root + "/" + segment, filepath.Dir(root) + "/" + segment}
+	candidates := []string{filepath.Join(root, segment), filepath.Join(filepath.Dir(root), segment)}
 	if c.found {
 		if member, ok := c.members[segment]; ok {
 			candidates = append(candidates, member)

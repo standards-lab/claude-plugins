@@ -2,7 +2,6 @@ package references_test
 
 import (
 	"bytes"
-	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -296,17 +295,12 @@ func TestAWorkspacePathResolves(t *testing.T) {
 		"home-relative": func(string) string { return "~/arch" },
 	} {
 		t.Run(name, func(t *testing.T) {
-			home := t.TempDir()
-			t.Setenv("HOME", home)
+			home := repotest.New(t)
+			home.Write("arch/principles/comments.md", "# Page\n")
+			t.Setenv("HOME", home.Root)
 			c := newCoordinator(t,
-				"[workspace.paths]\narchitecture = \""+location(home)+"\"\n")
+				"[workspace.paths]\narchitecture = \""+location(home.Root)+"\"\n")
 			c.WriteBeside("architecture/principles/other.md", "# Other\n")
-			if err := os.MkdirAll(home+"/arch/principles", 0o755); err != nil {
-				t.Fatal(err)
-			}
-			if err := os.WriteFile(home+"/arch/principles/comments.md", nil, 0o644); err != nil {
-				t.Fatal(err)
-			}
 			r := newRepo(t)
 			r.member(c.Root)
 			r.write("src/code", reference)
@@ -386,30 +380,30 @@ func TestAMissingCoordinatorIsNamedInTheSkip(t *testing.T) {
 }
 
 func TestAMisconfiguredCoordinatorFails(t *testing.T) {
-	for name, config := range map[string]string{
-		"no configuration":    "",
-		"no workspace table":  "[project]\nkind = \"context\"\n",
-		"unparseable":         "[workspace\n",
-		"unreadable":          "directory",
-		"non-string location": "[workspace.paths]\narchitecture = 1\n",
+	for name, tc := range map[string]struct{ file, content, fix string }{
+		"no configuration": {"", "",
+			"or give the coordinator a .claude/marathon.toml with a [workspace] table"},
+		"no workspace table": {".claude/marathon.toml", "[project]\nkind = \"context\"\n",
+			"or add a [workspace] table to"},
+		"unparseable": {".claude/marathon.toml", "[workspace\n", "; fix it"},
+		"unreadable": {".claude/marathon.toml/inner", "",
+			"or give the coordinator a .claude/marathon.toml with a [workspace] table"},
+		"non-string location": {".claude/marathon.toml", "[workspace.paths]\narchitecture = 1\n",
+			"set it to the directory's location"},
 	} {
 		t.Run(name, func(t *testing.T) {
 			c := repotest.New(t)
-			switch config {
-			case "":
-			case "directory":
-				c.Write(".claude/marathon.toml/inner", "")
-			default:
-				c.Write(".claude/marathon.toml", config)
+			if tc.file != "" {
+				c.Write(tc.file, tc.content)
 			}
 			r := newRepo(t)
 			r.member(c.Root)
 			r.write("src/code", reference)
 			code, lines, stderr := r.Run(references.Run)
 			if code != 1 || lines != nil || !strings.Contains(stderr, c.Root) ||
-				!strings.Contains(stderr, "; ") {
-				t.Errorf("got (%d, %q, %q), want exit 1 with a reason naming %s and its fix",
-					code, lines, stderr, c.Root)
+				!strings.Contains(stderr, tc.fix) {
+				t.Errorf("got (%d, %q, %q), want exit 1 with a reason naming %s and %q",
+					code, lines, stderr, c.Root, tc.fix)
 			}
 		})
 	}
