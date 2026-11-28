@@ -26,6 +26,15 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
 - **marathon's Go tests sit in each package's `test/` directory** (`marathon/internal/<pkg>/test/`).
   Each package's unit tests move from beside its source to `<pkg>/test/*_test.go`, still as
   external test packages.
+- **A session brief's Verify steps run the product** (`references/briefs/session-brief.md`). Each
+  step is one a person runs against the product, with what they should see; no step runs an agent
+  harness, an agent task, or an internal test command. The format sets a bad step, one package's
+  tests, beside a good one, the shipped command and its visible result.
+- **The session brief is written to `.agent/state/briefs/<goal>.md`** (`mechanics/pipeline.md`,
+  `references/briefs/session-brief.md`). BRIEF adds `.agent/state/` to the root's `.gitignore`
+  when it isn't listed, in place of `.claude/briefs/`. `.claude/` is Claude Code's own directory;
+  the agent's working state sits apart from it, under `.agent/`. To migrate, move an open brief
+  from `.claude/briefs/` to `.agent/state/briefs/` and swap the ignore line.
 
 ## v0.24.1
 
