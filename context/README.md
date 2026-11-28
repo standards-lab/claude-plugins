@@ -56,3 +56,7 @@ repository is developed with marathon, so the workflow runs against its own sour
 Notes for planned work sit directly under `context/`. A goal rooted here keeps its record in
 `context/goals/<goal>.md` while it is active; the workspace roadmap is at the coordinator
 (standards-lab).
+
+The repository's tasks run through mise ([README](../README.md#development)). The agent's tasks sit
+in `.agent/mise-tasks/`, which mise loads only under the `agent` profile that
+`.claude/settings.json` sets.

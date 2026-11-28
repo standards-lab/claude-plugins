@@ -59,4 +59,10 @@ merge (`mechanics/pipeline.md`, 6 · SHIP). When the task brief has a Release li
 the release, fixing forward until the planned version releases (`mechanics/releasing.md`). On
 the goal's last task, sync (`mechanics/goals.md`).
 
+Once the task merges, end the last message with the prompt that starts the next session, fenced as
+code: `/marathon:marathon start <goal>` for the goal's next task or the goal the sync staged;
+`/marathon:marathon plan <goal>` for a goal the sync only proposed; or
+`/marathon:marathon intake experiment.<topic>` when a spike's sync leaves no planned spike. A
+session that stops in `handoff` ends without one, and the session brief never carries it.
+
 If the context fills before BRIEF, the session hands off (`references/build.md`, "Handoff").

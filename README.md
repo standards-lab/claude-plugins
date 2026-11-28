@@ -68,6 +68,19 @@ project), it loads the appropriate skill to provide specialized guidance and com
 
 User-invocable skills can also be triggered directly with slash commands (e.g., `/marathon:marathon`).
 
+## Development
+
+The repository's tasks run through [mise](https://mise.jdx.dev):
+
+```bash
+mise run check                  # the plugins' consistency, the Go check over marathon/, and the tests
+mise run build                  # marathon's commands into plugins/marathon/.build/
+mise run currency               # every pin behind its latest
+mise run gate marathon/v0.1.0   # the release gate for a tag
+```
+
+Each task wraps a script in `scripts/`, which also runs without mise.
+
 ## Releases
 
 Releases are tag-driven. Pushing a tag of the form `<plugin>/v<version>` (e.g. `marathon/v0.1.0`)
@@ -79,6 +92,7 @@ marathon's Go tools.
 
 ```
 claude-plugins/
+├── .agent/                      # The agent's tasks, loaded only under MISE_ENV=agent
 ├── .claude/                     # marathon project configuration for this repository
 ├── .claude-plugin/
 │   └── marketplace.json         # Host manifest
@@ -86,7 +100,7 @@ claude-plugins/
 │   └── workflows/
 │       ├── ci.yml               # Runs scripts/check.sh on every push
 │       └── release.yml          # Tag-triggered release automation
-├── .gitignore                   # Editor files, local plans and briefs, eval results, build output
+├── .gitignore                   # Editor files, local plans and briefs, eval results, build output, agent state
 ├── CLAUDE.md                    # Agent orientation: the repo is developed under marathon
 ├── STANDARDS.md                 # The judgement calls the standards-reviewer applies
 ├── context/                     # marathon working context for the repo itself
@@ -95,8 +109,9 @@ claude-plugins/
 │   ├── marathon/                # Long-haul development as a software factory
 │   └── marathon-architecture/   # Marathon extension: the architecture layer
 ├── scripts/                     # The check, release gate, build, and currency scripts, with tests
-├── mise.toml                    # Development tools
+├── mise.toml                    # Development tools and tasks
 ├── mise.ci.toml                 # The tools CI adds, read only under MISE_ENV=ci
+├── mise.agent.toml              # The agent profile, read only under MISE_ENV=agent
 ├── LICENSE
 └── README.md
 ```

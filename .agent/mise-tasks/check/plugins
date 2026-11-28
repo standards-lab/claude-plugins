@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Run the check's plugin consistency step"
+# Runs scripts/check/plugins.sh, one step of scripts/check.sh.
+set -euo pipefail
+exec scripts/check/plugins.sh "$@"

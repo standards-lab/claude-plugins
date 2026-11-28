@@ -32,7 +32,7 @@ EOF
 
 cat >.gitignore <<'EOF'
 .claude/plans/
-.claude/briefs/
+.agent/state/
 EOF
 
 cat >.claude/settings.json <<'EOF'

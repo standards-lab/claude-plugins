@@ -106,10 +106,9 @@ coordinator during BUILD. When the context fills, hand off (`references/build.md
 
 ### 5 · BRIEF
 
-1. Write the session brief (`references/briefs/session-brief.md`) to `.claude/briefs/<goal>.md`
-   in the root's checkout, and set State to `brief ready`. On the goal's last task, the brief has a
-   Sync section. If the root's `.gitignore` doesn't list `.claude/briefs/`, add the line on the
-   task's branch first.
+1. Write the session brief (`references/briefs/session-brief.md`) to
+   `.agent/state/briefs/<goal>.md` in the root's checkout, and set State to `brief ready`. If the
+   root's `.gitignore` doesn't list `.agent/state/`, add the line on the task's branch first.
 2. Show it, and wait for the architect. **[touch 2]**
    - **Accept**: continue with SHIP. On the goal's last task, accepting also authorizes the sync
      and the staging its Sync section shows.

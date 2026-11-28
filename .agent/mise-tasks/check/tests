@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Run the check's tests step over scripts/tests"
+# Runs scripts/check/tests.sh, one step of scripts/check.sh.
+set -euo pipefail
+exec scripts/check/tests.sh "$@"

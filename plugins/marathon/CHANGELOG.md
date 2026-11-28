@@ -20,6 +20,33 @@ with `**Extension contract:**`, so an agent checking an extension's floor can sc
   the coordinator's directory is missing, as in CI, unresolved references still skip, and the skip
   note names the directory. A coordinator directory without a `[workspace]` table fails the check
   with a reason that says how to fix it.
+- **A shipped session ends with the next session's prompt** (`commands/start.md`). Once the task
+  merges, the last message ends with a fenced `/marathon:marathon start <goal>` for the next task
+  or the staged goal, `/marathon:marathon plan <goal>` for a goal only proposed, or
+  `/marathon:marathon intake experiment.<topic>` when a spike's sync leaves no planned spike. A
+  session that stops in `handoff` ends without one, and the session brief's Sync line names
+  `intake` in the same form. start's read-first budget rises from 8,000 to 8,100 words for the
+  rule, with the architect's approval.
+
+### Changed
+
+- **marathon's Go tests sit in each package's `test/` directory** (`marathon/internal/<pkg>/test/`).
+  Each package's unit tests move from beside its source to `<pkg>/test/*_test.go`, still as
+  external test packages.
+- **A session brief's Verify steps run the product** (`references/briefs/session-brief.md`). Each
+  step is one a person runs against the product, with what they should see; no step runs an agent
+  harness, an agent task, or an internal test command. The format contrasts a good step, which runs
+  the shipped command and names its visible result, with a bad one, which runs one package's tests.
+- **The session brief is written to `.agent/state/briefs/<goal>.md`** (`mechanics/pipeline.md`,
+  `references/briefs/session-brief.md`). BRIEF adds `.agent/state/` to the root's `.gitignore`
+  when it isn't listed, in place of `.claude/briefs/`. `.claude/` is Claude Code's own directory;
+  the agent's working state sits apart from it, under `.agent/`. To migrate, move an open brief
+  from `.claude/briefs/` to `.agent/state/briefs/` and swap the ignore line.
+- **`init` sets up the agent area** (`commands/init.md`). The new repository's `.gitignore` lists
+  `.agent/state/` and `mise.local.toml`, its `mise.agent.toml` includes `mise-tasks` and
+  `.agent/mise-tasks`, and its settings set `MISE_ENV=agent` in `env`, so only an agent's mise loads
+  the agent tasks. `init` creates no task directories; the first task that needs one does. init's
+  read-first budget rises from 3,800 to 3,900 words for these lines, with the architect's approval.
 
 ## v0.24.1
 

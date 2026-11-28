@@ -1,7 +1,24 @@
-# The development tools, which CI installs through mise and a developer's machine reads; CI also
-# reads mise.ci.toml.
+# The development tools, which CI installs through mise and a developer's machine reads, and the
+# repository's tasks; CI also reads mise.ci.toml.
 # See architecture/principles/rolling-currency.md
 [tools]
 go = "1.27.4"
 golangci-lint = "2.15.0"
 node = "26.13.1"
+
+[tasks.check]
+description = "Run the repository's check: the plugins' consistency, the Go check over marathon/, and the tests in scripts/tests"
+run = "scripts/check.sh"
+
+[tasks.currency]
+description = "Report every pin behind its latest, exiting nonzero if any"
+run = "scripts/currency.sh"
+quiet = true
+
+[tasks.gate]
+description = "Decide whether a <plugin>/v<version> release tag may be pushed: the check, then the plugin's eval suite"
+run = "scripts/gate.sh"
+
+[tasks.build]
+description = "Build marathon's Go commands from marathon/ into plugins/marathon/.build/, the local build the bin/ shims run"
+run = "scripts/build.sh"

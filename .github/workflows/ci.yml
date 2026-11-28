@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
 
       - name: Install the tools mise.toml and mise.ci.toml pin
-        uses: jdx/mise-action@v5.3.0
+        uses: jdx/mise-action@v5.4.0
 
       - name: Repository consistency checks
-        run: bash scripts/check.sh
+        run: mise run check

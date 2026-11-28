@@ -26,11 +26,11 @@ a retro can take up.
   reads `$1`.
 - `claude plugin eval` stores no judge reasoning and makes the judge answer in one word, so a
   flipped verdict can't be traced. Both are upstream requests.
-- `scripts/check.sh`'s header lists every check it runs, so each new check must be added there by
-  hand, and nothing checks that it is.
-- `scripts/check.sh`'s `unreleased_path_citations_with_owner` reads every markdown file whole and
-  stops only a CHANGELOG at its first release heading, so "unreleased" describes only part of
-  what it returns.
+- Each `scripts/check/` step script's header lists every check it runs, so each new check must be
+  added there by hand, and nothing checks that it is.
+- `scripts/check/plugins.sh`'s `unreleased_path_citations_with_owner` reads every markdown file
+  whole and stops only a CHANGELOG at its first release heading, so "unreleased" describes only
+  part of what it returns.
 - `lint-references` and `lint-context` resolve a relative link's path but not its `#anchor`
   fragment, so reviews keep finding broken anchors by hand. Checking anchors is backlog for
   `lint-references`. A pinned architecture checkout in CI, to resolve `architecture/...`

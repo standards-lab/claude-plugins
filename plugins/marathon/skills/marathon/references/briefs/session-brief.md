@@ -4,8 +4,8 @@ The rules every format shares are in [`../briefs.md`](../briefs.md).
 
 The session brief is the architect's view of the finished task, and the body of its pull request. It
 opens with what changed, then how to see it behave: the architect judges outcomes, not code. The
-session writes it to `.claude/briefs/<goal>.md` in the goal's root, which gitignores
-`.claude/briefs/`.
+session writes it to `.agent/state/briefs/<goal>.md` in the goal's root, which gitignores
+`.agent/state/`.
 
 > ## experiment.ai.spike-harness-driver · task 3/5 · harness-adapters
 >
@@ -47,9 +47,10 @@ session writes it to `.claude/briefs/<goal>.md` in the goal's root, which gitign
   bullets or a table, never a fenced block.
 - **Core changes** lists one to five entries, each with one line on why and, where the code is
   the change, a short excerpt or signature fenced as code.
-- **Verify** opens with the check's one-line result. Then come the steps the architect can run,
-  outside the check and tests, to see the behavior, each with what they should see. The
-  spec-reviewer followed each. A task with no such step, such as a prose change, reads "none".
+- **Verify** opens with the check's one-line result. Each step is one a person runs against the
+  product, with what they should see: step 1 above, not `go test ./driver/` → ok. No step runs an
+  agent harness, agent task, or internal test. The spec-reviewer followed each. A task with no
+  such step reads "none".
 - **Decided without you** lists the decisions the brief didn't cover and each Decision the
   editor dropped (`mechanics/goal-record.md`). A drop the architect rejects is a redirect, and
   the session restores the line.
@@ -64,7 +65,7 @@ session writes it to `.claude/briefs/<goal>.md` in the goal's root, which gitign
 - **Sync** appears only on the goal's last task, after Needs you. It lists the pending edits the
   sync will apply, per repository, and the goal proposed to stage next: for a spike, the next
   planned spike of its experiment; otherwise the top of `planned`. When a spike's experiment has
-  no planned spike left, the line reads "next: none — run `marathon intake experiment.<topic>`".
+  no planned spike left, the line reads "next: none — run `/marathon:marathon intake experiment.<topic>`".
   Accepting the brief authorizes the sync, and stages that goal when staging's checks pass
   (`mechanics/goals.md`, "The repository lock"), counting this goal's root as released.
   When a check fails, the line reads "proposed, not staged: <reason>", and nothing is staged; a
